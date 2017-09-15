@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.df</groupId>
+		<artifactId>tja-root</artifactId>
+		<version>1.0</version>
+	</parent>
+	<artifactId>tja-web</artifactId>
+	<packaging>war</packaging>
+	<name>tja-web</name>
+	<url>http://maven.apache.org</url>
+	
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+        <maven.compiler.compilerVersion>1.7</maven.compiler.compilerVersion>
+    </properties>
+    
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+        <dependency>
+            <groupId>com.df</groupId>
+            <artifactId>df-hbm-base</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+		<dependency>
+			<groupId>com.df</groupId>
+			<artifactId>df-sys-web</artifactId>
+			<version>1.0</version>
+			<type>war</type>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<finalName>tja-web</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
+                <configuration>
+                    <workDirectory>${project.build.directory}/work</workDirectory>
+                    <overlays>
+                        <overlay>
+                            <groupId>com.df</groupId>
+                            <artifactId>df-sys-web</artifactId>
+                        </overlay>
+                    </overlays>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <port>85</port>
+                    <uriEncoding>UTF-8</uriEncoding>
+                    <path>/tja-web</path>
+                    <systemProperties>
+                        <JAVA_OPTS>-Xms512m -Xmx1024m -XX:MaxPermSize=256m</JAVA_OPTS>
+                    </systemProperties>
+                </configuration>
+            </plugin>
+        </plugins>
+
+	</build>
+</project>
