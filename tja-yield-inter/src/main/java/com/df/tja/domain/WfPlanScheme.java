@@ -48,9 +48,6 @@ public class WfPlanScheme extends BaseDomain {
       */
     private static final long serialVersionUID = -4049750483896033751L;
 
-    /** 属性：主键ID */
-    private java.lang.String id;
-
     /** 属性：项目ID */
     private java.lang.String proId;
 
@@ -74,37 +71,6 @@ public class WfPlanScheme extends BaseDomain {
 
     /** 属性：备注 */
     private String remark;
-
-    /** 属性：登记人（申请人） */
-    private java.lang.String creator;
-
-    /** 属性：登记时间（申请时间） */
-    private java.util.Date createDate;
-
-    /** 属性：修改人 */
-    private java.lang.String modifier;
-
-    /** 属性：修改时间 */
-    private java.util.Date modifyDate;
-
-    /**
-     * <p> 属性：id的Getter方法. </p>
-     * 
-     * @return 返回主键ID属性的值
-     */
-    @Column(name = "ID")
-    public java.lang.String getId() {
-        return id;
-    }
-
-    /**
-     * <p> 属性主键ID的Setter方法. </p>
-     * 
-     * @param id 为属性id设置的值
-     */
-    public void setId(java.lang.String id) {
-        this.id = id;
-    }
 
     /**
      * <p> 属性：proId的Getter方法. </p>
@@ -269,15 +235,6 @@ public class WfPlanScheme extends BaseDomain {
     }
 
     /**
-     * <p> 属性登记人的Setter方法. </p>
-     * 
-     * @param creator 为属性creator设置的值
-     */
-    public void setCreator(java.lang.String creator) {
-        this.creator = creator;
-    }
-
-    /**
      * <p> 属性：createDate的Getter方法. </p>
      * 
      * @return 返回登记时间属性的值
@@ -285,15 +242,6 @@ public class WfPlanScheme extends BaseDomain {
     @Column(name = "CREATE_DATE")
     public java.util.Date getCreateDate() {
         return createDate;
-    }
-
-    /**
-     * <p> 属性登记时间的Setter方法. </p>
-     * 
-     * @param createDate 为属性createDate设置的值
-     */
-    public void setCreateDate(java.util.Date createDate) {
-        this.createDate = createDate;
     }
 
     /**
@@ -307,15 +255,6 @@ public class WfPlanScheme extends BaseDomain {
     }
 
     /**
-     * <p> 属性修改人的Setter方法. </p>
-     * 
-     * @param modifier 为属性modifier设置的值
-     */
-    public void setModifier(java.lang.String modifier) {
-        this.modifier = modifier;
-    }
-
-    /**
      * <p> 属性：modifyDate的Getter方法. </p>
      * 
      * @return 返回修改时间属性的值
@@ -323,15 +262,6 @@ public class WfPlanScheme extends BaseDomain {
     @Column(name = "MODIFY_DATE")
     public java.util.Date getModifyDate() {
         return modifyDate;
-    }
-
-    /**
-     * <p> 属性修改时间的Setter方法. </p>
-     * 
-     * @param modifyDate 为属性modifyDate设置的值
-     */
-    public void setModifyDate(java.util.Date modifyDate) {
-        this.modifyDate = modifyDate;
     }
 
     public boolean equals(Object o) {

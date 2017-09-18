@@ -10,6 +10,8 @@ package com.df.tja.domain;
 * 2016 上海一勤信息技术有限公司-版权所有 
 */
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -46,9 +48,6 @@ public class OcPermitYield extends BaseDomain {
       */
     private static final long serialVersionUID = -9198990026166689940L;
 
-    /** 属性：主键ID */
-    private java.lang.String id;
-
     /** 属性：期间ID */
     private java.lang.String periodId;
 
@@ -59,41 +58,10 @@ public class OcPermitYield extends BaseDomain {
     private java.lang.String majorCode;
 
     /** 属性：特批产值 */
-    private Double permitYield;
+    private BigDecimal permitYield;
 
     /** 属性：备注 */
     private java.lang.String remark;
-
-    /** 属性：登记人 */
-    private java.lang.String creator;
-
-    /** 属性：登记时间 */
-    private java.util.Date createDate;
-
-    /** 属性：修改人 */
-    private java.lang.String modifier;
-
-    /** 属性：修改时间 */
-    private java.util.Date modifyDate;
-
-    /**
-     * <p> 属性：id的Getter方法. </p>
-     * 
-     * @return 返回主键ID属性的值
-     */
-    @Column(name = "ID")
-    public java.lang.String getId() {
-        return id;
-    }
-
-    /**
-     * <p> 属性主键ID的Setter方法. </p>
-     * 
-     * @param id 为属性id设置的值
-     */
-    public void setId(java.lang.String id) {
-        this.id = id;
-    }
 
     /**
      * <p> 属性：periodId的Getter方法. </p>
@@ -158,7 +126,7 @@ public class OcPermitYield extends BaseDomain {
      * @return 返回特批产值属性的值
      */
     @Column(name = "PERMIT_YIELD")
-    public Double getPermitYield() {
+    public BigDecimal getPermitYield() {
         return permitYield;
     }
 
@@ -167,7 +135,7 @@ public class OcPermitYield extends BaseDomain {
      * 
      * @param permitYield 为属性permitYield设置的值
      */
-    public void setPermitYield(Double permitYield) {
+    public void setPermitYield(BigDecimal permitYield) {
         this.permitYield = permitYield;
     }
 
@@ -201,15 +169,6 @@ public class OcPermitYield extends BaseDomain {
     }
 
     /**
-     * <p> 属性登记人的Setter方法. </p>
-     * 
-     * @param creator 为属性creator设置的值
-     */
-    public void setCreator(java.lang.String creator) {
-        this.creator = creator;
-    }
-
-    /**
      * <p> 属性：createDate的Getter方法. </p>
      * 
      * @return 返回登记时间属性的值
@@ -217,15 +176,6 @@ public class OcPermitYield extends BaseDomain {
     @Column(name = "CREATE_DATE")
     public java.util.Date getCreateDate() {
         return createDate;
-    }
-
-    /**
-     * <p> 属性登记时间的Setter方法. </p>
-     * 
-     * @param createDate 为属性createDate设置的值
-     */
-    public void setCreateDate(java.util.Date createDate) {
-        this.createDate = createDate;
     }
 
     /**
@@ -239,15 +189,6 @@ public class OcPermitYield extends BaseDomain {
     }
 
     /**
-     * <p> 属性修改人的Setter方法. </p>
-     * 
-     * @param modifier 为属性modifier设置的值
-     */
-    public void setModifier(java.lang.String modifier) {
-        this.modifier = modifier;
-    }
-
-    /**
      * <p> 属性：modifyDate的Getter方法. </p>
      * 
      * @return 返回修改时间属性的值
@@ -255,15 +196,6 @@ public class OcPermitYield extends BaseDomain {
     @Column(name = "MODIFY_DATE")
     public java.util.Date getModifyDate() {
         return modifyDate;
-    }
-
-    /**
-     * <p> 属性修改时间的Setter方法. </p>
-     * 
-     * @param modifyDate 为属性modifyDate设置的值
-     */
-    public void setModifyDate(java.util.Date modifyDate) {
-        this.modifyDate = modifyDate;
     }
 
     public boolean equals(Object o) {

@@ -46,9 +46,6 @@ public class SysMessageTm extends BaseDomain {
       */
     private static final long serialVersionUID = -137782931588614720L;
 
-    /** 属性：主键ID */
-    private java.lang.String id;
-
     /** 属性：操作人ID */
     private java.lang.String operatorId;
 
@@ -72,25 +69,6 @@ public class SysMessageTm extends BaseDomain {
 
     /** 属性：应用业务对象ID */
     private java.lang.String oppId;
-
-    /**
-     * <p> 属性：id的Getter方法. </p>
-     * 
-     * @return 返回主键ID属性的值
-     */
-    @Column(name = "ID")
-    public java.lang.String getId() {
-        return id;
-    }
-
-    /**
-     * <p> 属性主键ID的Setter方法. </p>
-     * 
-     * @param id 为属性id设置的值
-     */
-    public void setId(java.lang.String id) {
-        this.id = id;
-    }
 
     /**
      * <p> 属性：operatorId的Getter方法. </p>

@@ -46,9 +46,6 @@ public class WfFlowMain extends BaseDomain {
       */
     private static final long serialVersionUID = -7728108676184072719L;
 
-    /** 属性：主键ID */
-    private java.lang.String id;
-
     /** 属性：流水号 */
     private java.lang.String seqNo;
 
@@ -72,25 +69,6 @@ public class WfFlowMain extends BaseDomain {
 
     /** 属性：审核完成时间 */
     private java.util.Date completedDate;
-
-    /**
-     * <p> 属性：id的Getter方法. </p>
-     * 
-     * @return 返回主键ID属性的值
-     */
-    @Column(name = "ID")
-    public java.lang.String getId() {
-        return id;
-    }
-
-    /**
-     * <p> 属性主键ID的Setter方法. </p>
-     * 
-     * @param id 为属性id设置的值
-     */
-    public void setId(java.lang.String id) {
-        this.id = id;
-    }
 
     /**
      * <p> 属性：seqNo的Getter方法. </p>

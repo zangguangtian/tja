@@ -46,9 +46,6 @@ public class WfFlowManageTm extends BaseDomain {
       */
     private static final long serialVersionUID = -1907715089251825107L;
 
-    /** 属性：主键ID */
-    private java.lang.String id;
-
     /** 属性：流程分组代码。 */
     private java.lang.String groupCode;
 
@@ -96,25 +93,6 @@ public class WfFlowManageTm extends BaseDomain {
 
     /** 属性：是否抄送发起人。1：是；0：否 */
     private Boolean ccFlag;
-
-    /**
-     * <p> 属性：id的Getter方法. </p>
-     * 
-     * @return 返回主键ID属性的值
-     */
-    @Column(name = "ID")
-    public java.lang.String getId() {
-        return id;
-    }
-
-    /**
-     * <p> 属性主键ID的Setter方法. </p>
-     * 
-     * @param id 为属性id设置的值
-     */
-    public void setId(java.lang.String id) {
-        this.id = id;
-    }
 
     /**
      * <p> 属性：groupCode的Getter方法. </p>

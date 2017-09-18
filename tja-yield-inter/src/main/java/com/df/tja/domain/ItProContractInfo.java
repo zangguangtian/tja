@@ -10,6 +10,8 @@ package com.df.tja.domain;
 * 2016 上海一勤信息技术有限公司-版权所有 
 */
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -46,9 +48,6 @@ public class ItProContractInfo extends BaseDomain {
       */
     private static final long serialVersionUID = 5323011672758446380L;
 
-    /** 属性：主键ID */
-    private java.lang.String id;
-
     /** 属性：合同类型。1000：项目合同；2000：项目分包合同 */
     private java.lang.String contractType;
 
@@ -59,32 +58,10 @@ public class ItProContractInfo extends BaseDomain {
     private java.lang.String contractName;
 
     /** 属性：所属项目合同额 */
-    private Double contractMoney;
+    private BigDecimal contractMoney;
 
     /** 属性：关联项目ID */
     private java.lang.String itemId;
-
-    /** 属性：同步时间 */
-    private java.util.Date createDate;
-
-    /**
-     * <p> 属性：id的Getter方法. </p>
-     * 
-     * @return 返回主键ID属性的值
-     */
-    @Column(name = "ID")
-    public java.lang.String getId() {
-        return id;
-    }
-
-    /**
-     * <p> 属性主键ID的Setter方法. </p>
-     * 
-     * @param id 为属性id设置的值
-     */
-    public void setId(java.lang.String id) {
-        this.id = id;
-    }
 
     /**
      * <p> 属性：contractType的Getter方法. </p>
@@ -149,7 +126,7 @@ public class ItProContractInfo extends BaseDomain {
      * @return 返回所属项目合同额属性的值
      */
     @Column(name = "CONTRACT_MONEY")
-    public Double getContractMoney() {
+    public BigDecimal getContractMoney() {
         return contractMoney;
     }
 
@@ -158,7 +135,7 @@ public class ItProContractInfo extends BaseDomain {
      * 
      * @param contractMoney 为属性contractMoney设置的值
      */
-    public void setContractMoney(Double contractMoney) {
+    public void setContractMoney(BigDecimal contractMoney) {
         this.contractMoney = contractMoney;
     }
 
@@ -189,15 +166,6 @@ public class ItProContractInfo extends BaseDomain {
     @Column(name = "CREATE_DATE")
     public java.util.Date getCreateDate() {
         return createDate;
-    }
-
-    /**
-     * <p> 属性同步时间的Setter方法. </p>
-     * 
-     * @param createDate 为属性createDate设置的值
-     */
-    public void setCreateDate(java.util.Date createDate) {
-        this.createDate = createDate;
     }
 
     public boolean equals(Object o) {

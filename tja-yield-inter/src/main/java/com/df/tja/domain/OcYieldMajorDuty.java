@@ -10,6 +10,8 @@ package com.df.tja.domain;
 * 2016 上海一勤信息技术有限公司-版权所有 
 */
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -46,9 +48,6 @@ public class OcYieldMajorDuty extends BaseDomain {
       */
     private static final long serialVersionUID = -7789593741118585697L;
 
-    /** 属性：主键ID */
-    private java.lang.String id;
-
     /** 属性：策划ID */
     private java.lang.String schemeId;
 
@@ -56,35 +55,10 @@ public class OcYieldMajorDuty extends BaseDomain {
     private java.lang.String majorCode;
 
     /** 属性：专业产值 */
-    private Double majorYield;
+    private BigDecimal majorYield;
 
     /** 属性：专业负责人ID */
     private java.lang.String principalId;
-
-    /** 属性：登记人 */
-    private java.lang.String creator;
-
-    /** 属性：登记时间 */
-    private java.util.Date createDate;
-
-    /**
-     * <p> 属性：id的Getter方法. </p>
-     * 
-     * @return 返回主键ID属性的值
-     */
-    @Column(name = "ID")
-    public java.lang.String getId() {
-        return id;
-    }
-
-    /**
-     * <p> 属性主键ID的Setter方法. </p>
-     * 
-     * @param id 为属性id设置的值
-     */
-    public void setId(java.lang.String id) {
-        this.id = id;
-    }
 
     /**
      * <p> 属性：schemeId的Getter方法. </p>
@@ -130,7 +104,7 @@ public class OcYieldMajorDuty extends BaseDomain {
      * @return 返回专业产值属性的值
      */
     @Column(name = "MAJOR_YIELD")
-    public Double getMajorYield() {
+    public BigDecimal getMajorYield() {
         return majorYield;
     }
 
@@ -139,7 +113,7 @@ public class OcYieldMajorDuty extends BaseDomain {
      * 
      * @param majorYield 为属性majorYield设置的值
      */
-    public void setMajorYield(Double majorYield) {
+    public void setMajorYield(BigDecimal majorYield) {
         this.majorYield = majorYield;
     }
 
@@ -173,15 +147,6 @@ public class OcYieldMajorDuty extends BaseDomain {
     }
 
     /**
-     * <p> 属性登记人的Setter方法. </p>
-     * 
-     * @param creator 为属性creator设置的值
-     */
-    public void setCreator(java.lang.String creator) {
-        this.creator = creator;
-    }
-
-    /**
      * <p> 属性：createDate的Getter方法. </p>
      * 
      * @return 返回登记时间属性的值
@@ -189,15 +154,6 @@ public class OcYieldMajorDuty extends BaseDomain {
     @Column(name = "CREATE_DATE")
     public java.util.Date getCreateDate() {
         return createDate;
-    }
-
-    /**
-     * <p> 属性登记时间的Setter方法. </p>
-     * 
-     * @param createDate 为属性createDate设置的值
-     */
-    public void setCreateDate(java.util.Date createDate) {
-        this.createDate = createDate;
     }
 
     public boolean equals(Object o) {

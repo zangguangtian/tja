@@ -10,6 +10,8 @@ package com.df.tja.domain;
 * 2016 上海一勤信息技术有限公司-版权所有 
 */
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -46,9 +48,6 @@ public class OcYieldStageMajor extends BaseDomain {
       */
     private static final long serialVersionUID = -1110767655956864262L;
 
-    /** 属性：主键ID */
-    private java.lang.String id;
-
     /** 属性：策划ID */
     private java.lang.String schemeId;
 
@@ -59,47 +58,22 @@ public class OcYieldStageMajor extends BaseDomain {
     private java.lang.String majorCode;
 
     /** 属性：初设阶段产值/比例 */
-    private Double preliminary;
+    private BigDecimal preliminary;
 
     /** 属性：施工图阶段产值/比例 */
-    private Double drawing;
+    private BigDecimal drawing;
 
     /** 属性：小计产值/比例 */
-    private Double subTotal;
+    private BigDecimal subTotal;
 
     /** 属性：施工配合产值/比例 */
-    private Double coordination;
+    private BigDecimal coordination;
 
     /** 属性：施工配合-封顶产值/比例 */
-    private Double cap;
+    private BigDecimal cap;
 
     /** 属性：产值产值/比例 */
-    private Double check;
-
-    /** 属性：登记人 */
-    private java.lang.String creator;
-
-    /** 属性：登记时间 */
-    private java.util.Date createDate;
-
-    /**
-     * <p> 属性：id的Getter方法. </p>
-     * 
-     * @return 返回主键ID属性的值
-     */
-    @Column(name = "ID")
-    public java.lang.String getId() {
-        return id;
-    }
-
-    /**
-     * <p> 属性主键ID的Setter方法. </p>
-     * 
-     * @param id 为属性id设置的值
-     */
-    public void setId(java.lang.String id) {
-        this.id = id;
-    }
+    private BigDecimal check;
 
     /**
      * <p> 属性：schemeId的Getter方法. </p>
@@ -164,7 +138,7 @@ public class OcYieldStageMajor extends BaseDomain {
      * @return 返回初设阶段属性的值
      */
     @Column(name = "PRELIMINARY")
-    public Double getPreliminary() {
+    public BigDecimal getPreliminary() {
         return preliminary;
     }
 
@@ -173,7 +147,7 @@ public class OcYieldStageMajor extends BaseDomain {
      * 
      * @param preliminary 为属性preliminary设置的值
      */
-    public void setPreliminary(Double preliminary) {
+    public void setPreliminary(BigDecimal preliminary) {
         this.preliminary = preliminary;
     }
 
@@ -183,7 +157,7 @@ public class OcYieldStageMajor extends BaseDomain {
      * @return 返回施工图阶段属性的值
      */
     @Column(name = "DRAWING")
-    public Double getDrawing() {
+    public BigDecimal getDrawing() {
         return drawing;
     }
 
@@ -192,7 +166,7 @@ public class OcYieldStageMajor extends BaseDomain {
      * 
      * @param drawing 为属性drawing设置的值
      */
-    public void setDrawing(Double drawing) {
+    public void setDrawing(BigDecimal drawing) {
         this.drawing = drawing;
     }
 
@@ -202,7 +176,7 @@ public class OcYieldStageMajor extends BaseDomain {
      * @return 返回小计属性的值
      */
     @Column(name = "SUB_TOTAL")
-    public Double getSubTotal() {
+    public BigDecimal getSubTotal() {
         return subTotal;
     }
 
@@ -211,7 +185,7 @@ public class OcYieldStageMajor extends BaseDomain {
      * 
      * @param subTotal 为属性subTotal设置的值
      */
-    public void setSubTotal(Double subTotal) {
+    public void setSubTotal(BigDecimal subTotal) {
         this.subTotal = subTotal;
     }
 
@@ -221,7 +195,7 @@ public class OcYieldStageMajor extends BaseDomain {
      * @return 返回施工配合属性的值
      */
     @Column(name = "COORDINATION")
-    public Double getCoordination() {
+    public BigDecimal getCoordination() {
         return coordination;
     }
 
@@ -230,7 +204,7 @@ public class OcYieldStageMajor extends BaseDomain {
      * 
      * @param coordination 为属性coordination设置的值
      */
-    public void setCoordination(Double coordination) {
+    public void setCoordination(BigDecimal coordination) {
         this.coordination = coordination;
     }
 
@@ -240,7 +214,7 @@ public class OcYieldStageMajor extends BaseDomain {
      * @return 返回施工配合-封顶属性的值
      */
     @Column(name = "CAP")
-    public Double getCap() {
+    public BigDecimal getCap() {
         return cap;
     }
 
@@ -249,7 +223,7 @@ public class OcYieldStageMajor extends BaseDomain {
      * 
      * @param cap 为属性cap设置的值
      */
-    public void setCap(Double cap) {
+    public void setCap(BigDecimal cap) {
         this.cap = cap;
     }
 
@@ -259,7 +233,7 @@ public class OcYieldStageMajor extends BaseDomain {
      * @return 返回施工配合-验收属性的值
      */
     @Column(name = "CHECK")
-    public Double getCheck() {
+    public BigDecimal getCheck() {
         return check;
     }
 
@@ -268,7 +242,7 @@ public class OcYieldStageMajor extends BaseDomain {
      * 
      * @param check 为属性check设置的值
      */
-    public void setCheck(Double check) {
+    public void setCheck(BigDecimal check) {
         this.check = check;
     }
 
@@ -283,15 +257,6 @@ public class OcYieldStageMajor extends BaseDomain {
     }
 
     /**
-     * <p> 属性登记人的Setter方法. </p>
-     * 
-     * @param creator 为属性creator设置的值
-     */
-    public void setCreator(java.lang.String creator) {
-        this.creator = creator;
-    }
-
-    /**
      * <p> 属性：createDate的Getter方法. </p>
      * 
      * @return 返回登记时间属性的值
@@ -299,15 +264,6 @@ public class OcYieldStageMajor extends BaseDomain {
     @Column(name = "CREATE_DATE")
     public java.util.Date getCreateDate() {
         return createDate;
-    }
-
-    /**
-     * <p> 属性登记时间的Setter方法. </p>
-     * 
-     * @param createDate 为属性createDate设置的值
-     */
-    public void setCreateDate(java.util.Date createDate) {
-        this.createDate = createDate;
     }
 
     public boolean equals(Object o) {

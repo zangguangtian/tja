@@ -10,6 +10,8 @@ package com.df.tja.domain;
 * 2016 上海一勤信息技术有限公司-版权所有 
 */
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -46,9 +48,6 @@ public class WfYieldMajorRoleAllot extends BaseDomain {
       */
     private static final long serialVersionUID = 1L;
 
-    /** 属性：主键ID */
-    private java.lang.String id;
-
     /** 属性：流程ID */
     private java.lang.String wfId;
 
@@ -71,35 +70,10 @@ public class WfYieldMajorRoleAllot extends BaseDomain {
     private Integer staffSort;
 
     /** 属性：工作量比例 */
-    private Double staffRate;
+    private BigDecimal staffRate;
 
     /** 属性：产值 */
-    private Double staffYield;
-
-    /** 属性：登记人 */
-    private java.lang.String creator;
-
-    /** 属性：登记时间 */
-    private java.util.Date createDate;
-
-    /**
-     * <p> 属性：id的Getter方法. </p>
-     * 
-     * @return 返回主键ID属性的值
-     */
-    @Column(name = "ID")
-    public java.lang.String getId() {
-        return id;
-    }
-
-    /**
-     * <p> 属性主键ID的Setter方法. </p>
-     * 
-     * @param id 为属性id设置的值
-     */
-    public void setId(java.lang.String id) {
-        this.id = id;
-    }
+    private BigDecimal staffYield;
 
     /**
      * <p> 属性：wfId的Getter方法. </p>
@@ -240,7 +214,7 @@ public class WfYieldMajorRoleAllot extends BaseDomain {
      * @return 返回工作量比例属性的值
      */
     @Column(name = "STAFF_RATE")
-    public Double getStaffRate() {
+    public BigDecimal getStaffRate() {
         return staffRate;
     }
 
@@ -249,7 +223,7 @@ public class WfYieldMajorRoleAllot extends BaseDomain {
      * 
      * @param staffRate 为属性staffRate设置的值
      */
-    public void setStaffRate(Double staffRate) {
+    public void setStaffRate(BigDecimal staffRate) {
         this.staffRate = staffRate;
     }
 
@@ -259,7 +233,7 @@ public class WfYieldMajorRoleAllot extends BaseDomain {
      * @return 返回产值属性的值
      */
     @Column(name = "STAFF_YIELD")
-    public Double getStaffYield() {
+    public BigDecimal getStaffYield() {
         return staffYield;
     }
 
@@ -268,7 +242,7 @@ public class WfYieldMajorRoleAllot extends BaseDomain {
      * 
      * @param staffYield 为属性staffYield设置的值
      */
-    public void setStaffYield(Double staffYield) {
+    public void setStaffYield(BigDecimal staffYield) {
         this.staffYield = staffYield;
     }
 
@@ -283,15 +257,6 @@ public class WfYieldMajorRoleAllot extends BaseDomain {
     }
 
     /**
-     * <p> 属性登记人的Setter方法. </p>
-     * 
-     * @param creator 为属性creator设置的值
-     */
-    public void setCreator(java.lang.String creator) {
-        this.creator = creator;
-    }
-
-    /**
      * <p> 属性：createDate的Getter方法. </p>
      * 
      * @return 返回登记时间属性的值
@@ -299,15 +264,6 @@ public class WfYieldMajorRoleAllot extends BaseDomain {
     @Column(name = "CREATE_DATE")
     public java.util.Date getCreateDate() {
         return createDate;
-    }
-
-    /**
-     * <p> 属性登记时间的Setter方法. </p>
-     * 
-     * @param createDate 为属性createDate设置的值
-     */
-    public void setCreateDate(java.util.Date createDate) {
-        this.createDate = createDate;
     }
 
     public boolean equals(Object o) {

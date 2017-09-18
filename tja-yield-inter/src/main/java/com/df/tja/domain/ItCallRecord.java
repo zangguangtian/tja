@@ -46,9 +46,6 @@ public class ItCallRecord extends BaseDomain {
       */
     private static final long serialVersionUID = 1L;
 
-    /** 属性：主键ID */
-    private java.lang.String id;
-
     /** 属性：接口方法 */
     private java.lang.String inMethod;
 
@@ -63,28 +60,6 @@ public class ItCallRecord extends BaseDomain {
 
     /** 属性：接口响应时间 */
     private java.util.Date resDate;
-
-    /** 属性：创建时间 */
-    private java.util.Date createDate;
-
-    /**
-     * <p> 属性：id的Getter方法. </p>
-     * 
-     * @return 返回主键ID属性的值
-     */
-    @Column(name = "ID")
-    public java.lang.String getId() {
-        return id;
-    }
-
-    /**
-     * <p> 属性主键ID的Setter方法. </p>
-     * 
-     * @param id 为属性id设置的值
-     */
-    public void setId(java.lang.String id) {
-        this.id = id;
-    }
 
     /**
      * <p> 属性：inMethod的Getter方法. </p>
@@ -189,15 +164,6 @@ public class ItCallRecord extends BaseDomain {
     @Column(name = "CREATE_DATE")
     public java.util.Date getCreateDate() {
         return createDate;
-    }
-
-    /**
-     * <p> 属性创建时间的Setter方法. </p>
-     * 
-     * @param createDate 为属性createDate设置的值
-     */
-    public void setCreateDate(java.util.Date createDate) {
-        this.createDate = createDate;
     }
 
     public boolean equals(Object o) {

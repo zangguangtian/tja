@@ -10,6 +10,8 @@ package com.df.tja.domain;
 * 2016 上海一勤信息技术有限公司-版权所有 
 */
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -46,9 +48,6 @@ public class WfShemeTeam extends BaseDomain {
       */
     private static final long serialVersionUID = -2677964730008798640L;
 
-    /** 属性：主键ID */
-    private java.lang.String id;
-
     /** 属性：流程ID */
     private java.lang.String wfId;
 
@@ -59,35 +58,10 @@ public class WfShemeTeam extends BaseDomain {
     private Integer staffSort;
 
     /** 属性：对应比例 */
-    private Double refRate;
+    private BigDecimal refRate;
 
     /** 属性：对应产值 */
-    private Double refYield;
-
-    /** 属性：登记人 */
-    private java.lang.String creator;
-
-    /** 属性：登记时间 */
-    private java.util.Date createDate;
-
-    /**
-     * <p> 属性：id的Getter方法. </p>
-     * 
-     * @return 返回主键ID属性的值
-     */
-    @Column(name = "ID")
-    public java.lang.String getId() {
-        return id;
-    }
-
-    /**
-     * <p> 属性主键ID的Setter方法. </p>
-     * 
-     * @param id 为属性id设置的值
-     */
-    public void setId(java.lang.String id) {
-        this.id = id;
-    }
+    private BigDecimal refYield;
 
     /**
      * <p> 属性：wfId的Getter方法. </p>
@@ -152,7 +126,7 @@ public class WfShemeTeam extends BaseDomain {
      * @return 返回对应比例属性的值
      */
     @Column(name = "REF_RATE")
-    public Double getRefRate() {
+    public BigDecimal getRefRate() {
         return refRate;
     }
 
@@ -161,7 +135,7 @@ public class WfShemeTeam extends BaseDomain {
      * 
      * @param refRate 为属性refRate设置的值
      */
-    public void setRefRate(Double refRate) {
+    public void setRefRate(BigDecimal refRate) {
         this.refRate = refRate;
     }
 
@@ -171,7 +145,7 @@ public class WfShemeTeam extends BaseDomain {
      * @return 返回对应产值属性的值
      */
     @Column(name = "REF_YIELD")
-    public Double getRefYield() {
+    public BigDecimal getRefYield() {
         return refYield;
     }
 
@@ -180,7 +154,7 @@ public class WfShemeTeam extends BaseDomain {
      * 
      * @param refYield 为属性refYield设置的值
      */
-    public void setRefYield(Double refYield) {
+    public void setRefYield(BigDecimal refYield) {
         this.refYield = refYield;
     }
 
@@ -195,15 +169,6 @@ public class WfShemeTeam extends BaseDomain {
     }
 
     /**
-     * <p> 属性登记人的Setter方法. </p>
-     * 
-     * @param creator 为属性creator设置的值
-     */
-    public void setCreator(java.lang.String creator) {
-        this.creator = creator;
-    }
-
-    /**
      * <p> 属性：createDate的Getter方法. </p>
      * 
      * @return 返回登记时间属性的值
@@ -211,15 +176,6 @@ public class WfShemeTeam extends BaseDomain {
     @Column(name = "CREATE_DATE")
     public java.util.Date getCreateDate() {
         return createDate;
-    }
-
-    /**
-     * <p> 属性登记时间的Setter方法. </p>
-     * 
-     * @param createDate 为属性createDate设置的值
-     */
-    public void setCreateDate(java.util.Date createDate) {
-        this.createDate = createDate;
     }
 
     public boolean equals(Object o) {

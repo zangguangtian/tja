@@ -10,6 +10,8 @@ package com.df.tja.domain;
 * 2016 上海一勤信息技术有限公司-版权所有 
 */
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -46,9 +48,6 @@ public class ItProjectInfo extends BaseDomain {
       */
     private static final long serialVersionUID = 7159721120604890480L;
 
-    /** 属性：主键ID */
-    private java.lang.String id;
-
     /** 属性：项目编号 */
     private java.lang.String itemCode;
 
@@ -70,33 +69,11 @@ public class ItProjectInfo extends BaseDomain {
     /** 属性：项目负责人名称 */
     private java.lang.String principalName;
 
-    /** 属性：同步时间 */
-    private java.util.Date createDate;
-
     /** 属性：项目工时成本 */
-    private Double workCost;
+    private BigDecimal workCost;
 
     /** 属性：工时成本同步时间 */
     private java.util.Date wcCreateDate;
-
-    /**
-     * <p> 属性：id的Getter方法. </p>
-     * 
-     * @return 返回主键ID属性的值
-     */
-    @Column(name = "ID")
-    public java.lang.String getId() {
-        return id;
-    }
-
-    /**
-     * <p> 属性主键ID的Setter方法. </p>
-     * 
-     * @param id 为属性id设置的值
-     */
-    public void setId(java.lang.String id) {
-        this.id = id;
-    }
 
     /**
      * <p> 属性：itemCode的Getter方法. </p>
@@ -242,21 +219,12 @@ public class ItProjectInfo extends BaseDomain {
     }
 
     /**
-     * <p> 属性项目同步时间的Setter方法. </p>
-     * 
-     * @param createDate 为属性createDate设置的值
-     */
-    public void setCreateDate(java.util.Date createDate) {
-        this.createDate = createDate;
-    }
-
-    /**
      * <p> 属性：workCost的Getter方法. </p>
      * 
      * @return 返回项目工时成本属性的值
      */
     @Column(name = "WORK_COST")
-    public Double getWorkCost() {
+    public BigDecimal getWorkCost() {
         return workCost;
     }
 
@@ -265,7 +233,7 @@ public class ItProjectInfo extends BaseDomain {
      * 
      * @param workCost 为属性workCost设置的值
      */
-    public void setWorkCost(Double workCost) {
+    public void setWorkCost(BigDecimal workCost) {
         this.workCost = workCost;
     }
 

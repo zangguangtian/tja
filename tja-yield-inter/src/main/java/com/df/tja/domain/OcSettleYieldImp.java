@@ -10,6 +10,8 @@ package com.df.tja.domain;
 * 2016 上海一勤信息技术有限公司-版权所有 
 */
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -46,9 +48,6 @@ public class OcSettleYieldImp extends BaseDomain {
       */
     private static final long serialVersionUID = -3445901514795946482L;
 
-    /** 属性：主键ID */
-    private java.lang.String id;
-
     /** 属性：期间ID */
     private java.lang.String periodId;
 
@@ -56,38 +55,13 @@ public class OcSettleYieldImp extends BaseDomain {
     private java.lang.String proId;
 
     /** 属性：预估产值 */
-    private Double estimateYield;
+    private BigDecimal estimateYield;
 
     /** 属性：可结算产值 */
-    private Double settleYield;
+    private BigDecimal settleYield;
 
     /** 属性：异常信息 */
     private java.lang.String errorInfo;
-
-    /** 属性：登记人（导入人） */
-    private java.lang.String creator;
-
-    /** 属性：登记时间 */
-    private java.util.Date createDate;
-
-    /**
-     * <p> 属性：id的Getter方法. </p>
-     * 
-     * @return 返回主键ID属性的值
-     */
-    @Column(name = "ID")
-    public java.lang.String getId() {
-        return id;
-    }
-
-    /**
-     * <p> 属性主键ID的Setter方法. </p>
-     * 
-     * @param id 为属性id设置的值
-     */
-    public void setId(java.lang.String id) {
-        this.id = id;
-    }
 
     /**
      * <p> 属性：periodId的Getter方法. </p>
@@ -133,7 +107,7 @@ public class OcSettleYieldImp extends BaseDomain {
      * @return 返回预估产值属性的值
      */
     @Column(name = "ESTIMATE_YIELD")
-    public Double getEstimateYield() {
+    public BigDecimal getEstimateYield() {
         return estimateYield;
     }
 
@@ -142,7 +116,7 @@ public class OcSettleYieldImp extends BaseDomain {
      * 
      * @param estimateYield 为属性estimateYield设置的值
      */
-    public void setEstimateYield(Double estimateYield) {
+    public void setEstimateYield(BigDecimal estimateYield) {
         this.estimateYield = estimateYield;
     }
 
@@ -152,7 +126,7 @@ public class OcSettleYieldImp extends BaseDomain {
      * @return 返回可结算产值属性的值
      */
     @Column(name = "SETTLE_YIELD")
-    public Double getSettleYield() {
+    public BigDecimal getSettleYield() {
         return settleYield;
     }
 
@@ -161,7 +135,7 @@ public class OcSettleYieldImp extends BaseDomain {
      * 
      * @param settleYield 为属性settleYield设置的值
      */
-    public void setSettleYield(Double settleYield) {
+    public void setSettleYield(BigDecimal settleYield) {
         this.settleYield = settleYield;
     }
 
@@ -195,15 +169,6 @@ public class OcSettleYieldImp extends BaseDomain {
     }
 
     /**
-     * <p> 属性登记人的Setter方法. </p>
-     * 
-     * @param creator 为属性creator设置的值
-     */
-    public void setCreator(java.lang.String creator) {
-        this.creator = creator;
-    }
-
-    /**
      * <p> 属性：createDate的Getter方法. </p>
      * 
      * @return 返回登记时间属性的值
@@ -211,15 +176,6 @@ public class OcSettleYieldImp extends BaseDomain {
     @Column(name = "CREATE_DATE")
     public java.util.Date getCreateDate() {
         return createDate;
-    }
-
-    /**
-     * <p> 属性登记时间的Setter方法. </p>
-     * 
-     * @param createDate 为属性createDate设置的值
-     */
-    public void setCreateDate(java.util.Date createDate) {
-        this.createDate = createDate;
     }
 
     public boolean equals(Object o) {

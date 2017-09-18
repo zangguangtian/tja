@@ -46,9 +46,6 @@ public class ItProPhasesInfo extends BaseDomain {
       */
     private static final long serialVersionUID = 4100295709578472812L;
 
-    /** 属性：主键ID */
-    private java.lang.String id;
-
     /** 属性：阶段名称 */
     private java.lang.String name;
 
@@ -57,28 +54,6 @@ public class ItProPhasesInfo extends BaseDomain {
 
     /** 属性：关联项目ID */
     private java.lang.String itemId;
-
-    /** 属性：同步时间 */
-    private java.util.Date createDate;
-
-    /**
-     * <p> 属性：id的Getter方法. </p>
-     * 
-     * @return 返回主键ID属性的值
-     */
-    @Column(name = "ID")
-    public java.lang.String getId() {
-        return id;
-    }
-
-    /**
-     * <p> 属性主键ID的Setter方法. </p>
-     * 
-     * @param id 为属性id设置的值
-     */
-    public void setId(java.lang.String id) {
-        this.id = id;
-    }
 
     /**
      * <p> 属性：name的Getter方法. </p>
@@ -145,15 +120,6 @@ public class ItProPhasesInfo extends BaseDomain {
     @Column(name = "CREATE_DATE")
     public java.util.Date getCreateDate() {
         return createDate;
-    }
-
-    /**
-     * <p> 属性同步时间的Setter方法. </p>
-     * 
-     * @param createDate 为属性createDate设置的值
-     */
-    public void setCreateDate(java.util.Date createDate) {
-        this.createDate = createDate;
     }
 
     public boolean equals(Object o) {
