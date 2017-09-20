@@ -19,10 +19,6 @@
 					<jsp:param value="0" name="loadUser"/>
 				</jsp:include>
 	       	</div>
-	       <div style="text-align:center;" >
-		       <span ><input type="button" id="confirmBtn" class="btn-save mt13 " value="确定" /></span>
-			   <span ><input type="button" id="closeBtn" class="btn-cancle mt13  ml10 " value="关闭" /></span>
-		   </div>
 		</div>
 	</div>
 </div>

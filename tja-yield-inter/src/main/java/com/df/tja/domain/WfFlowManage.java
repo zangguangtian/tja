@@ -21,6 +21,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import com.df.framework.base.domain.BaseDomain;
 
+
 /**
  * <p>WfFlowManageTm </p>
  * 
@@ -40,7 +41,7 @@ import com.df.framework.base.domain.BaseDomain;
 @Table(name = "WF_FLOW_MANAGE_TM")
 @DynamicInsert(true)
 @DynamicUpdate(true)
-public class WfFlowManageTm extends BaseDomain {
+public class WfFlowManage extends BaseDomain {
     /**
       * 属性： serialVersionUID 
       */
@@ -408,7 +409,7 @@ public class WfFlowManageTm extends BaseDomain {
         if (o.getClass() != getClass()) {
             return false;
         }
-        WfFlowManageTm obj1 = (WfFlowManageTm) o;
+        WfFlowManage obj1 = (WfFlowManage) o;
         return new EqualsBuilder().append(getId(), obj1.getId()).isEquals();
     }
 

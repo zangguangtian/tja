@@ -7,13 +7,14 @@
     <title>系统配置</title>
     <%--每个jsp页面所在菜单的treePath属性值 --%>
     <df:readProp var="menu-path" value="wf.planScheme.menu.path" scope="request"  />
+    <link href="${site }/resources/css/management.css" rel="Stylesheet" type="text/css">
 </head>
 <body>
  <div class="">
 	<center>
 		<h3>年度产值结算-2017</h3>
 	</center>
-	<div class="  ">
+	<div class="">
 		<div class="form">
             <div class="row">
                 <div class="col-lg-6">
@@ -74,39 +75,39 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">设计启动时间</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control text-right" placeholder="0.00">
+							<input type="text" class="form-control text-right datetimepicker" >
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">设计完成时间</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control text-right" placeholder="0.00">
+							<input type="text" name="" class="form-control text-right datetimepicker">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">方案产值(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" placeholder="xxx">
+							<input type="text" class="form-control" placeholder="0.00">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">承接部门</label>
 						<div class="col-md-8">
 							<input type="hidden" id="orgId" name="orgId" value="">
-			            	<input type="text" id="orgName" class="form-control" value="" data-rule-required="true" readonly="readonly">
+			            	<input type="text" id="orgName" class="form-control col-md-3" value="" data-rule-required="true" readonly="readonly">
 			            	<a id="secOrg" title="选择" href="javascript:void(0);" class="icon-select"></a>
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">概况</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control text-right" placeholder="0.00">
+							<input type="text" class="form-control text-right">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">备注</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control text-right" placeholder="0.00">
+							<input type="text" class="form-control text-right">
 						</div>
 					</div>
 
@@ -121,13 +122,10 @@
 								<input type="text" class="ta_input">
 							</div> -->
 							<div class="col-lg-4 text-right col-md-4 col-sm-4 col-xs-4">
-								<button class="btn green btn_tj"> 
-								         添加
-                                 <i class="fa fa-plus"></i>
-                                </button>
+								<input type="button" class="btn green btn_tj" value="添加"/> 
 							</div>
 						</div>
-						<table class="table table-bordered">
+						<table class="table table-bordered edit">
 							<thead>
 								<tr class="row">
 									<th  class="text-center col-lg-4">姓名</th>
@@ -155,24 +153,40 @@
 				</div>
 			</form>
 			<!-- END FORM-->
-			<div>
+			<!-- <div>
 				<tr class="row none" id="">
 					<td  class="text-center col-lg-4"></td>
 					<td  class=" col-lg-4"><input type="text" placeholder="" class="text-right"></td>
 					<td  class=" col-lg-4 text-right"></td>
 				</tr>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </div>
-<script type="text/javascript" src="${site}/resources/js/ztree/ztree-3.4-extend-plugs.js"></script>
-<script type="text/javascript" src="${site}/resources/js/ztree/ztree-3.4-user-extend-plugs.js"></script>
+<script type="text/javascript" src="${site}/resources/js/ztree/ztree-3.4-extend.js"></script>
 <script type="text/javascript">
-	jQuery("#secOrg").on("click", function(){
-		jQuery("#orgId").val("");
-		jQuery("#orgName").val("");
-		jQuery("#orgName").ecolorg({"targetId":"orgId"});
-	})
+	$(function(){
+		// 初始化时间控件
+		$(".datetimepicker").datetimepicker({
+			format: "yyyy-mm-dd",
+			minView: "month",
+			todayBtn: 1,
+		    autoclose: 1
+		});
+	});
+
+	jQuery("#secOrg").on("click",function(){
+		selectOrg(callback);
+	});
+	
+	jQuery(".btn_tj").on("click",function(){
+		selectStaff(callback);
+	});
+	
+	function callback(data){
+		console.log(data.id+'---'+data.name);
+	}
+	
 </script>
 
 </body>

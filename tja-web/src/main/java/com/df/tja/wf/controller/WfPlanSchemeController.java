@@ -12,11 +12,18 @@
 
 package com.df.tja.wf.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.df.tja.domain.cust.WfPlanSchemeModel;
 
 /**
  * <p>WfPlanScheme</p>
@@ -64,5 +71,24 @@ public class WfPlanSchemeController {
         }
         return "/tjad/wf/planScheme/planScheme_edit";
     }
+
+    /**
+     * 
+     * <p>描述 : 保存或提交</p>
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/ext/ajax/asave", method = RequestMethod.POST)
+    public Map<String, String> aSave(@ModelAttribute WfPlanSchemeModel planSchemeModel) throws Exception {
+        Map<String, String> mess = new HashMap<String, String>();
+        try {
+            
+        }catch (RuntimeException e) {
+            mess.put("flag","false");
+        }
+        return mess;
+    }
+    
 
 }
