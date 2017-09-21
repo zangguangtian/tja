@@ -50,8 +50,11 @@ ul,ol,li{list-style-type:none;}
 						<table class="tb-customer mt10">
 							<thead class="tb-list-head">
 								<tr class="tb-head-center">
-									<td nowrap="nowrap" style="text-align: center;"><input
-										type="checkbox" id="chooseAll" /></td>
+									<td nowrap="nowrap" style="text-align: center;">
+									<c:if test="${openType=='checkbox'}">
+									<input type="checkbox" id="chooseAll" />
+									</c:if>
+									</td>
 									<td nowrap="nowrap">姓名</td>
 									<td nowrap="nowrap">组织名称</td>
 									<td nowrap="nowrap">设计定级</td>
@@ -95,7 +98,6 @@ ul,ol,li{list-style-type:none;}
 	<form id="frmSearch"></form>
 	<script type="text/javascript" src="${site}/resources/js/hr/select_staff.js"></script>
 	<script type="application/javascript">
-		
 	var openType = "${openType}";
 	</script>
 </body>

@@ -31,12 +31,27 @@
 			content:context+"/admin/hr/staff/toselectstaff?openType="+openType,
 			btn: ["确定"],
 			yes:function(index, layero){
-				var body = layer.getChildFrame('body', index);
 				var data = new Array();
-				jQuery.each(body.find("ul#orgStaffList-ul li"),function(index,item){
+				var body = layer.getChildFrame('body', index);
+				if(openType == 'checkbox'){
+					jQuery.each(body.find("ul#orgStaffList-ul li"),function(index,item){
+						var orgStaff = {};
+						var _this = $(item);
+						var _input = _this.find("input[type='hidden']");
+						orgStaff.id = _input.data("id");
+						orgStaff.name = _input.data("name");
+						orgStaff.orgname = _input.data("orgname");
+						orgStaff.entrydate = _input.data("entrydate");
+						orgStaff.sex = _input.data("sex");
+						orgStaff.office = _input.data("office");
+						orgStaff.orgid = _input.data("orgid");
+						orgStaff.jobnum = _input.data("jobnum");
+						orgStaff.clublevelcode = _input.data("clublevelcode");
+						data.push(orgStaff);
+					});
+				}else if(openType == 'radio'){
+					var _input = body.find("#orgStaffList input[type='radio']:checked");
 					var orgStaff = {};
-					var _this = $(item);
-					var _input = _this.find("input[type='hidden']");
 					orgStaff.id = _input.data("id");
 					orgStaff.name = _input.data("name");
 					orgStaff.orgname = _input.data("orgname");
@@ -47,7 +62,7 @@
 					orgStaff.jobnum = _input.data("jobnum");
 					orgStaff.clublevelcode = _input.data("clublevelcode");
 					data.push(orgStaff);
-				});
+				}
 				if(typeof callback === "function"){
 					callback(data);
 				}
