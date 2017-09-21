@@ -10,7 +10,7 @@
  * 2017 TabZhu-版权所有 
  */
 
-package com.df.tja.controller;
+package com.df.tja.db.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
