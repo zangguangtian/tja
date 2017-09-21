@@ -1,12 +1,24 @@
 /**
- * Created by zhoufa on 2016/8/2.
+ * Created by wang.changjiu on 2016/8/2.
  */
 jQuery(document).ready(function(){
 
-    $("#orgStaffList-ul li").find("span:nth-child(2)").off().on("click", function(){
-        deteteStaff(this);
-    });
-
+	jQuery(document).on("click","#orgStaffList input[type='"+openType+"']",function(){
+		chooseStaff(this);
+	});
+	
+	jQuery(document).on("click","#chooseAll",function(){
+		if($(this)[0].checked){
+			chooseAllStaff(this,"#orgStaffList");
+		}else{
+			jQuery("#orgStaffList").find("input[type='"+openType+"']:checked").removeAttr("checked");
+		}
+	});
+	
+	jQuery(document).on("click","#orgStaffList-ul li span:nth-child(2)",function(){
+		deteteStaff(this);
+	});
+	
     jQuery("#confirmBtn").on("click", function(){
         var selectObj = new Array();
         if ("checkbox" === openType) {
@@ -29,13 +41,14 @@ jQuery(document).ready(function(){
         }else {
             alert("请选择相关人员");
         }
-    })
+    });
 
     jQuery("#closeBtn").on("click", function(){
         window.close();
-    })
+    });
 
-    jQuery("#btnSearch").on("click", search);//在树结构页面查询
+    jQuery(document).on("click","#btnSearch",search);//在树结构页面查询
+    
 });
 
 $(document).keypress(function(e) {

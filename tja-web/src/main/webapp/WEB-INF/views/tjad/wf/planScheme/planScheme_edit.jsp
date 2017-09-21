@@ -21,8 +21,8 @@
                                                  流水号
                 </div>
                 <div class="col-lg-6 text-right">
-                    <button type="button" class="btn green">保存</button>
-                    <button type="button" class="btn default">提交</button>
+                    <button type="button" class="btn blue">保存</button>
+                    <button type="button" class="btn blue">提交</button>
                 </div>
             </div>
 			<!-- BEGIN FORM-->
@@ -31,25 +31,26 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目编号</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control">
+							<input type="hidden" name="proId" value="">
+							<input type="text" name="proCode" class="form-control" value="">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目名称</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control">
+							<input type="text" name="proName" class="form-control" value="">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目类型</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control">
+							<input type="text" name="proType" class="form-control" value="">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目级别</label>
 						<div class="col-md-8">
-						   <select class="form-control">
+						   <select class="form-control" name="itemGrade">
 								<option value="">1</option>
 								<option value="">2</option>
 								<option value="">3</option>
@@ -63,37 +64,37 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目负责人</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control text-right" placeholder="0.00">
+							<input type="text" class="form-control text-right" name="" value="">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目经理</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control text-right" placeholder="0.00">
+							<input type="text" class="form-control text-right" name="" value="">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">设计启动时间</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control text-right datetimepicker" >
+							<input type="text" class="form-control text-right datetimepicker" name="designStart" value="">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">设计完成时间</label>
 						<div class="col-md-8">
-							<input type="text" name="" class="form-control text-right datetimepicker">
+							<input type="text" name="" class="form-control text-right datetimepicker" name="designCompleted" value=""> 
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">方案产值(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" placeholder="0.00">
+							<input type="text" class="form-control" name="schemeYield" value="">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">承接部门</label>
 						<div class="col-md-8">
-							<input type="hidden" id="orgId" name="orgId" value="">
+							<input type="hidden" id="orgId" name="receptDeptId" value="">
 			            	<input type="text" id="orgName" class="form-control col-md-3" value="" data-rule-required="true" readonly="readonly">
 			            	<a id="secOrg" title="选择" href="javascript:void(0);" class="icon-select"></a>
 						</div>
@@ -101,13 +102,13 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">概况</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control text-right">
+							<input type="text" class="form-control text-right" name="schemeOverview" value="">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">备注</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control text-right">
+							<input type="text" class="form-control text-right" name="remark" value="">
 						</div>
 					</div>
 
@@ -122,7 +123,7 @@
 								<input type="text" class="ta_input">
 							</div> -->
 							<div class="col-lg-4 text-right col-md-4 col-sm-4 col-xs-4">
-								<input type="button" class="btn green btn_tj" value="添加"/> 
+								<input type="button" class="btn blue btn_tj" value="添加"/> 
 							</div>
 						</div>
 						<table class="table table-bordered edit">
@@ -180,11 +181,11 @@
 	});
 	
 	jQuery(".btn_tj").on("click",function(){
-		selectStaff(callback);
+		selectStaff(selectStaffBack,'checkbox');
 	});
 	
-	function callback(data){
-		console.log(data.id+'---'+data.name);
+	function selectStaffBack(data){
+		console.log(data);
 	}
 	
 </script>

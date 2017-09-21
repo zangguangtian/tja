@@ -103,25 +103,6 @@ public class WfWeekFill extends BaseDomain {
     private java.lang.String operationEstimate;
 
     /**
-     * <p> 属性：id的Getter方法. </p>
-     * 
-     * @return 返回主键ID属性的值
-     */
-    @Column(name = "ID")
-    public java.lang.String getId() {
-        return id;
-    }
-
-    /**
-     * <p> 属性主键ID的Setter方法. </p>
-     * 
-     * @param id 为属性id设置的值
-     */
-    public void setId(java.lang.String id) {
-        this.id = id;
-    }
-
-    /**
      * <p> 属性：periodId的Getter方法. </p>
      * 
      * @return 返回期间ID属性的值

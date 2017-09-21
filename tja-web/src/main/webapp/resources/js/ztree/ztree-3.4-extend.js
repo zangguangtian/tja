@@ -1,4 +1,3 @@
-(function($){
 	var treeElemId = "orgTree";
 	 selectOrg = function(callback){
 		 layer.open({
@@ -22,17 +21,36 @@
 			});
 	 }
 
-	 selectStaff = function(callback){
+	 selectStaff = function(callback,openType){
 		 layer.open({
 		    type: 2,
 			shade: [0.5, "#393D49"],
 			closeBtn: 2,
 			title: "选择人员", //不显示标
 			area: ["1000px", "600px"],
-			content:context+"/admin/hr/staff/toselectstaff?openType=checkbox",
+			content:context+"/admin/hr/staff/toselectstaff?openType="+openType,
 			btn: ["确定"],
 			yes:function(index, layero){
-				
+				var body = layer.getChildFrame('body', index);
+				var data = new Array();
+				jQuery.each(body.find("ul#orgStaffList-ul li"),function(index,item){
+					var orgStaff = {};
+					var _this = $(item);
+					var _input = _this.find("input[type='hidden']");
+					orgStaff.id = _input.data("id");
+					orgStaff.name = _input.data("name");
+					orgStaff.orgname = _input.data("orgname");
+					orgStaff.entrydate = _input.data("entrydate");
+					orgStaff.sex = _input.data("sex");
+					orgStaff.office = _input.data("office");
+					orgStaff.orgid = _input.data("orgid");
+					orgStaff.jobnum = _input.data("jobnum");
+					orgStaff.clublevelcode = _input.data("clublevelcode");
+					data.push(orgStaff);
+				});
+				if(typeof callback === "function"){
+					callback(data);
+				}
 				layer.closeAll();
 			}
 		});
@@ -319,33 +337,10 @@
 										"data-school":this.school, "data-endDate":this.endDate, "data-designLevel":this.designLevel,
 										"data-designSubLevel":this.designSubLevel, "data-clubLevel":this.clubLevel, "data-clubSubLevel":this.clubSubLevel,
 										"data-orgId": this.orgId, "data-ratingValue":this.ratingValue, "data-jobNum": this.jobNum, "data-clubLevelCode":this.clubLevelCode, "data-designLevelCode": this.designLevelCode})))
-						/*.append(jQuery('<td nowrap="nowrap"/>').text(index + 1))
-						.append(jQuery('<td nowrap="nowrap"/>').text(this.jobNum))*/
 						.append(jQuery('<td nowrap="nowrap"/>').text(this.name))
 						.append(jQuery('<td nowrap="nowrap"/>').text(this.orgName==null?"":this.orgName))
 						.append(jQuery('<td nowrap="nowrap"/>').text(this.designLevel==null?"":this.designLevel))
-						.append(jQuery('<td nowrap="nowrap"/>').text(this.ratingValue==null?"":this.ratingValue))
 						.append(jQuery('<td nowrap="nowrap"/>').text(this.sex == "1"?"男":"女"))
-				);
-			}else if(settingType == "random"){
-				jQuery("#orgStaffList").append(
-					jQuery('<li/>')
-						.append(jQuery('<input/>').attr(
-								{"id": "random"+index,"type":"radio","name":"random", "data-id":this.id, "data-name":this.name, 
-									"data-orgName":this.orgName, "data-entryDate":this.entryDate, "data-sex":this.sex, 
-									"data-office":this.office, "data-jobTitle":this.jobTitle, "data-school":this.school, "data-endDate":this.endDate, "data-designLevel":this.designLevel,
-									"data-designSubLevel":this.designSubLevel, "data-clubLevel":this.clubLevel, "data-clubSubLevel":this.clubSubLevel,
-									"data-orgId": this.orgId, "data-ratingValue":this.ratingValue, "data-jobNum": this.jobNum, "data-clubLevelCode":this.clubLevelCode, "data-designLevelCode": this.designLevelCode,"data-mobile":this.mobile}))
-						.append(jQuery('<label/>').attr({"for": "random"+index}).text(this.name)));
-			}else{
-				jQuery("#orgStaffList").append(
-					jQuery('<tr/>')
-						.append(jQuery('<td nowrap="nowrap"/>').text(index + 1))
-						.append(jQuery('<td nowrap="nowrap"/>').text(this.jobNum))
-						.append(jQuery('<td nowrap="nowrap"/>').text(this.name))
-						.append(jQuery('<td nowrap="nowrap"/>').text(this.sex == "1"?"男":"女"))
-						.append(jQuery('<td nowrap="nowrap"/>').text(this.designLevel==null?"":this.designLevel))
-						.append(jQuery('<td nowrap="nowrap"/>').text(this.clubLevel==null?"":this.clubLevel))
 				);
 			}
 		});
@@ -427,4 +422,3 @@
 	    $( "#loadingDiv").remove();
 	    $( "#bgDiv").remove();
 	}
-})(jQuery);

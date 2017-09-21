@@ -55,20 +55,10 @@ ul,ol,li{list-style-type:none;}
 									<td nowrap="nowrap">姓名</td>
 									<td nowrap="nowrap">组织名称</td>
 									<td nowrap="nowrap">设计定级</td>
-									<td nowrap="nowrap">UC</td>
 									<td nowrap="nowrap">性别</td>
 								</tr>
 							</thead>
 							<tbody id="orgStaffList" class="tb-list-body"></tbody>
-						</table>
-					</c:if>
-					<c:if test="${openType == 'random'}">
-						<table class="tb-customer mt20  ">
-							<tbody class="tb-customer-bodys">
-								<tr>
-									<td class="choose-name-lists" id="orgStaffList"></td>
-								</tr>
-							</tbody>
 						</table>
 					</c:if>
 				</div>
@@ -107,24 +97,6 @@ ul,ol,li{list-style-type:none;}
 	<script type="application/javascript">
 		
 	var openType = "${openType}";
-jQuery(document).ready(function(){
-	var inputType = "radio";
-	if ("checkbox" === openType) {
-		inputType = "checkbox";
-	}
-	$("#orgStaffList").find("input[type="+inputType+"]").off().on("click", function(){
-		chooseStaff(this);
-	});
-	
-	$("#chooseAll").off().on("click",function(){
-		if($(this)[0].checked){
-			chooseAllStaff(this,"#orgStaffList");
-		}else{
-			jQuery("#orgStaffList").find("input[type='checkbox']:checked").removeAttr("checked");
-		}
-	});
-});
-
 	</script>
 </body>
 </html>

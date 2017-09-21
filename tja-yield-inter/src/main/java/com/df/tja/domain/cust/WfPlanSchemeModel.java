@@ -13,6 +13,10 @@
 package com.df.tja.domain.cust;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.df.tja.domain.WfPlanScheme;
+import com.df.tja.domain.WfShemeTeam;
 
 /**
  * <p>WfPlanSchemeModel</p>
@@ -36,4 +40,23 @@ public class WfPlanSchemeModel implements Serializable {
      */
     private static final long serialVersionUID = 7929312988231785784L;
 
+    private WfPlanScheme planScheme;
+
+    private List<WfShemeTeam> shemeTeams;
+
+    public WfPlanScheme getPlanScheme() {
+        return planScheme;
+    }
+
+    public void setPlanScheme(WfPlanScheme planScheme) {
+        this.planScheme = planScheme;
+    }
+
+    public List<WfShemeTeam> getShemeTeams() {
+        return shemeTeams;
+    }
+
+    public void setShemeTeams(List<WfShemeTeam> shemeTeams) {
+        this.shemeTeams = shemeTeams;
+    }
 }
