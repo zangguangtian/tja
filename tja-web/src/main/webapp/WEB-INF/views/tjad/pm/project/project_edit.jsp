@@ -322,20 +322,42 @@ function selectStaffBack(data){
 }
 
 function save(){
+	
+	if (parseFloat($("#rateSum").text()) > 100) {
+		$.jalert({"jatext":"项目角色分配比例不能超过100"});
+		return;
+	}
+	
+	var allotCodeList = $("input[name$='.allotCode']");
+	var allotRateList = $("input[name$='.allotRate']");
+	var rateObj = {};
+ 	for (var i = 0; i < allotCodeList.length; i++) {
+ 		rateObj[allotCodeList[i].value] = parseFloat(allotRateList[i].value);
+	}
+ 	if(rateObj["PM.MAJORROLE.LEADER"] > 100){
+ 		$.jalert({"jatext":"专业负责人分配比例不能超过100"});
+		return;
+ 	}
+ 	if((rateObj["PM.MAJORROLE.CHECKER"]+rateObj["PM.MAJORROLE.APPROVER"]+rateObj["PM.MAJORROLE.DESIGNER"]) > 100){
+ 		$.jalert({"jatext":"校对人+审核人+设计人/制图人 分配比例不能超过100"});
+		return;
+ 	}
+
 	var url ="${site}/admin/pm/project/ajax/save";
 	$.ajax({
 		type : "post",
 	 	url : url,
 	 	data : $("#projectForm").serialize(),
 	 	error : function(request) {
-	 		alert("Connection error");
+	 		$.jalert({"jatext":"Connection error"});
 	 	},
 	 	success : function(data) {
 	 		if(data.flag == "true"){
-		  		alert(data.msg);
-		  		window.location.href="${site}/admin/pm/project/edit/${project.id}";
+	 			$.jalert({"jatext":data.msg, "jatype":"refresh", "onConfirm":function(){
+			  		window.location.href="${site}/admin/pm/project/edit/${project.id}";
+	 			}});
 	 		}else{
-	 			alert(data.msg);
+	 			$.jalert({"jatext":data.msg});
 	 		}
 	 	}
 	});
