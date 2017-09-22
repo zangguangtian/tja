@@ -89,4 +89,25 @@ public class ProjectController extends BaseController {
         return resultMap;
     }
 
+    /**
+     * 
+     * <p>描述 : 查询项目的基本信息</p>
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @ResponseBody
+    @RequestMapping(value = "/ajax/proinfo", method = RequestMethod.GET)
+    public Map<String, Object> proInfo(String proId) throws Exception {
+        Map<String, Object> params = new HashMap<String, Object>();
+        try {
+            projectService.queryProInfoById(proId, params);
+            params.put("flag", "true");
+        } catch (Exception e) {
+            params.put("flag", "false");
+            logger.error("", e);
+        }
+        return params;
+    }
 }

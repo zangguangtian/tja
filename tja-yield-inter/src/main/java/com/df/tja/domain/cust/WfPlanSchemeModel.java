@@ -59,4 +59,5 @@ public class WfPlanSchemeModel implements Serializable {
     public void setShemeTeams(List<WfShemeTeam> shemeTeams) {
         this.shemeTeams = shemeTeams;
     }
+
 }

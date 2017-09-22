@@ -15,6 +15,7 @@ package com.df.tja.wf.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,7 +24,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.df.activiti.domain.ProcessArgs;
+import com.df.framework.base.controller.BaseController;
+import com.df.framework.util.HttpUtil;
+import com.df.tja.domain.WfPlanScheme;
 import com.df.tja.domain.cust.WfPlanSchemeModel;
+import com.df.tja.service.IWfPlanSchemeService;
 
 /**
  * <p>WfPlanScheme</p>
@@ -41,8 +47,10 @@ import com.df.tja.domain.cust.WfPlanSchemeModel;
  */
 @Controller
 @RequestMapping("/admin/wf/planScheme")
-public class WfPlanSchemeController {
+public class WfPlanSchemeController extends BaseController {
 
+    @Autowired
+    private IWfPlanSchemeService wfPlanSchemeService;
 
     /**
      * 
@@ -66,10 +74,15 @@ public class WfPlanSchemeController {
     @RequestMapping(value = "/toedit/{id}", method = {RequestMethod.GET})
     public String toEdit(Model model, @PathVariable("id") String id) {
         if (!"0".equals(id)) {
+            Map<String, Object> attributes = new HashMap<String, Object>();
             //修改
-
+            wfPlanSchemeService.queryPlanSchemeById(attributes, id);
+            /*if (Constants.AuditStatus.AUDITING.equals(tModel.getCticket().getAuditStatus())
+                || Constants.AuditStatus.AUDITED.equals(tModel.getCticket().getAuditStatus())) {
+                return "redirect:/admin/wf/ticket/toview/" + Constants.Operate.VIEW + "/" + tModel.getCticket().getId();
+            }*/
+            model.addAllAttributes(attributes);
         }
-
         return "/tjad/wf/planScheme/planScheme_edit";
     }
 
@@ -80,13 +93,22 @@ public class WfPlanSchemeController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/ext/ajax/asave", method = RequestMethod.POST)
-    public Map<String, String> aSave(@ModelAttribute WfPlanSchemeModel planSchemeModel) throws Exception {
+    @RequestMapping(value = "/ajax/esave", method = RequestMethod.POST)
+    public Map<String, String> aSave(@ModelAttribute WfPlanScheme planScheme,
+                                     @ModelAttribute WfPlanSchemeModel planSchemeModel) throws Exception {
         Map<String, String> mess = new HashMap<String, String>();
+        String msg = SAVE_SUCCESS;
         try {
-            
-        }catch (RuntimeException e) {
+            String procKey = "WfPlanScheme";
+            String userId = HttpUtil.getUser().getId();
+            ProcessArgs processArgs = new ProcessArgs(userId, procKey, "1");
+            wfPlanSchemeService.addOrModifyPlanScheme(planScheme, processArgs, planSchemeModel);
+            mess.put("msg", msg);
+            mess.put("flag", "true");
+        } catch (RuntimeException e) {
             mess.put("flag","false");
+            mess.put("msg", "保存失败");
+            logger.error("", e);
         }
         return mess;
     }

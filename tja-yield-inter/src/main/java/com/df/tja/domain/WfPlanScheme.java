@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -71,6 +72,9 @@ public class WfPlanScheme extends BaseDomain {
 
     /** 属性：备注 */
     private String remark;
+
+    /** 属性：部门名称 */
+    private String orgName;
 
     /**
      * <p> 属性：proId的Getter方法. </p>
@@ -262,6 +266,15 @@ public class WfPlanScheme extends BaseDomain {
     @Column(name = "MODIFY_DATE")
     public java.util.Date getModifyDate() {
         return modifyDate;
+    }
+
+    @Transient
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
     }
 
     public boolean equals(Object o) {
