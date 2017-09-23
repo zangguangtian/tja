@@ -209,12 +209,6 @@
 			  refYieldInput.val(new Number(refYield).toFixed(2));
 			  
 			  var flag = initTotal();
-			  if(!flag){
-				  _this.val(0.00);
-				  refYieldInput.val(0.00);
-				  initTotal();
-			  }
-			  
 			});
 		
 		jQuery("#secOrg").on("click",function(){
@@ -245,7 +239,7 @@
 			totalRefRate = new Number(totalRefRate) + new Number(refRate);
 			totalRefYield = new Number(totalRefYield) + new Number(refYield);
 		});
-		if(new Number(totalRefRate) >100){
+		if(new Number(totalRefRate) !=100){
 			flag = false;
 		}
 		$("#designTeam tr.total").find("td:eq(1)").text(new Number(totalRefRate).toFixed(2));
@@ -316,7 +310,7 @@
 	        data : {proId:proId},
 	        async : false,
 	        error : function(request) {
-	        	alert("Connection error");
+	        	$.jalert({"jatext":"Connection error"});
 	        },
 	        success : function(data) {
 	        	console.log(data);
@@ -338,14 +332,22 @@
 	function save(status) {
 		var flag = false;
 	    if(status == "9"){
-	        if(window.confirm("确认删除？\r\n\r点[确定]：执行删除操作\r\n\r点[取消]：放弃删除操作")){
+	        /* if(window.confirm("确认删除？\r\n\r点[确定]：执行删除操作\r\n\r点[取消]：放弃删除操作")){
 	            flag = true;
-	        }
+	        } */
+	        
+	        $.jalert({"jatext":"确认删除？\r\n\r点[确定]：执行删除操作\r\n\r点[取消]：放弃删除操作", "jatype":"confirm", "onConfirm":function(){
+	        	 flag = true;
+ 			}});
+	        
 	    }else{
 	    	if (jQuery("#saveForm").valid()) {
 	            flag = true;
+	        }else{
+	        	flag = false;
 	        }
 	    	if(!initTotal()){
+	    		$.jalert({"jatext":"比例合计必须为100"});
 	    		flag = false;
 	    	}else{
 	    		flag = true;
@@ -360,14 +362,15 @@
 	        data : jQuery('#saveForm').serialize(),
 	        async : false,
 	        error : function(request) {
-	        	alert("Connection error");
+	        	$.jalert({"jatext":"Connection error"});
 	        },
 	        success : function(data) {
 	        	if(data.flag == 'true'){
-	        	alert(data.msg);
-	        	window.location.href="${site}/admin/wf/planScheme/search";
+	        	$.jalert({"jatext":data.msg, "jatype":"refresh", "onConfirm":function(){
+			  		window.location.href="${site}/admin/wf/planScheme/search";
+	 			}});
 	        	}else{
-	        		alert(data.msg);
+	        		$.jalert({"jatext":data.msg});
 	        	}
 	        }
 	        });
