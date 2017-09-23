@@ -52,7 +52,7 @@ public class OcYieldScheme extends BaseDomain {
     private java.lang.String schemeNo;
 
     /** 属性：项目ID */
-    private java.lang.String itemId;
+    private java.lang.String proId;
 
     /** 属性：用地面积 */
     private BigDecimal landArea;
@@ -120,18 +120,18 @@ public class OcYieldScheme extends BaseDomain {
      * 
      * @return 返回项目ID属性的值
      */
-    @Column(name = "ITEM_ID")
-    public java.lang.String getItemId() {
-        return itemId;
+    @Column(name = "PRO_ID")
+    public java.lang.String getProId() {
+        return proId;
     }
 
     /**
      * <p> 属性项目ID的Setter方法. </p>
      * 
-     * @param itemId 为属性itemId设置的值
+     * @param proId 为属性itemId设置的值
      */
-    public void setItemId(java.lang.String itemId) {
-        this.itemId = itemId;
+    public void setProId(java.lang.String proId) {
+        this.proId = proId;
     }
 
     /**

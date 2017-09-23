@@ -11,6 +11,7 @@ package com.df.tja.domain;
 */
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,7 +23,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import com.df.framework.base.domain.BaseDomain;
+import com.df.activiti.domain.WfBaseDomain;
 
 /**
  * <p>WfPlanScheme </p>
@@ -43,7 +44,7 @@ import com.df.framework.base.domain.BaseDomain;
 @Table(name = "WF_PLAN_SCHEME")
 @DynamicInsert(true)
 @DynamicUpdate(true)
-public class WfPlanScheme extends BaseDomain {
+public class WfPlanScheme extends WfBaseDomain {
     /**
       * 属性： serialVersionUID 
       */
@@ -75,6 +76,8 @@ public class WfPlanScheme extends BaseDomain {
 
     /** 属性：部门名称 */
     private String orgName;
+
+    private List<WfShemeTeam> shemeTeams;
 
     /**
      * <p> 属性：proId的Getter方法. </p>
@@ -275,6 +278,25 @@ public class WfPlanScheme extends BaseDomain {
 
     public void setOrgName(String orgName) {
         this.orgName = orgName;
+    }
+
+    /**
+     * <p> 属性shemeTeams的Getter方法. </p>
+     * 
+     * @return 返回shemeTeams属性的值
+     */
+    @Transient
+    public List<WfShemeTeam> getShemeTeams() {
+        return shemeTeams;
+    }
+
+    /**
+     * <p> 属性shemeTeams的Setter方法. </p>
+     * 
+     * @param shemeTeams 为属性shemeTeams设置的值
+     */
+    public void setShemeTeams(List<WfShemeTeam> shemeTeams) {
+        this.shemeTeams = shemeTeams;
     }
 
     public boolean equals(Object o) {
