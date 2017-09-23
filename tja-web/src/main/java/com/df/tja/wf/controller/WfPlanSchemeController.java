@@ -77,9 +77,10 @@ public class WfPlanSchemeController extends BaseController {
             Map<String, Object> attributes = new HashMap<String, Object>();
             //修改
             wfPlanSchemeService.queryPlanSchemeById(attributes, id);
-            /*if (Constants.AuditStatus.AUDITING.equals(tModel.getCticket().getAuditStatus())
-                || Constants.AuditStatus.AUDITED.equals(tModel.getCticket().getAuditStatus())) {
-                return "redirect:/admin/wf/ticket/toview/" + Constants.Operate.VIEW + "/" + tModel.getCticket().getId();
+            WfPlanScheme scheme = (WfPlanScheme) attributes.get("planScheme");
+            /*if (Constants.AuditStatus.AUDITING.equals(scheme.getAuditStatus())
+                || Constants.AuditStatus.AUDITED.equals(scheme.getAuditStatus())) {
+                return "redirect:/admin/wf/ticket/toview/" + Constants.Operate.VIEW + "/" + scheme.getId();
             }*/
             model.addAllAttributes(attributes);
         }

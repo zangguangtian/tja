@@ -125,7 +125,7 @@
 					<h3 class="form-tit col-lg-12">设计团队</h3>
 					<div class="col-lg-5 ">
 						<div class="row clearfix">
-							<div class="col-lg-4 text-right col-md-4 col-sm-4 col-xs-4">
+							<div class="col-lg-12 text-right col-md-4 col-sm-4 col-xs-4">
 								<input type="button" class="btn blue btn_tj" value="添加"/> 
 							</div>
 						</div>
