@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.df.framework.base.controller.BaseController;
+import com.df.project.domain.cust.CustProject;
 import com.df.project.domain.more.ProjectMore;
 import com.df.project.service.IProjectService;
 
@@ -102,7 +103,8 @@ public class ProjectController extends BaseController {
     public Map<String, Object> proInfo(String proId) throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
         try {
-            projectService.queryProInfoById(proId, params);
+            CustProject custProject = projectService.queryProInfoById(proId);
+            params.put("project", custProject);
             params.put("flag", "true");
         } catch (Exception e) {
             params.put("flag", "false");
