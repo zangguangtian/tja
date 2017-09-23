@@ -22,8 +22,8 @@ import org.springframework.stereotype.Service;
 import com.df.activiti.constant.WfConstant;
 import com.df.activiti.domain.ProcessArgs;
 import com.df.framework.base.service.impl.BaseServiceImpl;
-import com.df.project.dao.IProjectDao;
 import com.df.project.domain.cust.CustProject;
+import com.df.project.service.IProjectService;
 import com.df.tja.dao.IWfPlanSchemeDao;
 import com.df.tja.domain.WfPlanScheme;
 import com.df.tja.domain.WfShemeTeam;
@@ -50,7 +50,7 @@ public class WfPlanSchemeServiceImpl extends BaseServiceImpl implements IWfPlanS
     private IWfPlanSchemeDao wfPlanSchemeDao;
 
     @Autowired
-    private IProjectDao projectDao;
+    private IProjectService projectService;
 
     /** 
      * @see com.df.tja.service.IWfPlanSchemeService#addOrModifyPlanScheme(com.df.tja.domain.WfPlanScheme, com.df.activiti.domain.ProcessArgs, com.df.tja.domain.cust.WfPlanSchemeModel)
@@ -101,7 +101,7 @@ public class WfPlanSchemeServiceImpl extends BaseServiceImpl implements IWfPlanS
             List<WfShemeTeam> shemeTeams = wfPlanSchemeDao.selectWfShemeTeamsByWfId(id);
             attributes.put("shemeTeams", shemeTeams);
             if (StringUtils.isNoneBlank(scheme.getProId())) {
-                CustProject custProject = projectDao.selectProInfoById(scheme.getProId());
+                CustProject custProject = projectService.queryProInfoById(scheme.getProId());
                 attributes.put("project", custProject);
             }
 
