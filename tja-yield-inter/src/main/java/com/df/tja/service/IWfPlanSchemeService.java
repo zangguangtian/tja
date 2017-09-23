@@ -16,7 +16,6 @@ import java.util.Map;
 
 import com.df.activiti.domain.ProcessArgs;
 import com.df.tja.domain.WfPlanScheme;
-import com.df.tja.domain.cust.WfPlanSchemeModel;
 
 /**
  * <p>IWfPlanSchemeService</p>
@@ -42,8 +41,7 @@ public interface IWfPlanSchemeService {
      * @param processArgs
      * @param planSchemeModel
      */
-    void addOrModifyPlanScheme(WfPlanScheme planScheme, ProcessArgs processArgs, WfPlanSchemeModel planSchemeModel)
-        throws RuntimeException;
+    void addOrModifyPlanScheme(WfPlanScheme planScheme, ProcessArgs processArgs) throws RuntimeException;
 
     /**
      * <p>描述 : </p>

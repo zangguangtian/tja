@@ -19,10 +19,10 @@
 	<div class="">
 		<div class="form">
             <div class="row">
-                <div class="col-lg-6">
-                                                 流水号
+                <div class="col-lg-3" style="text-align:center;margin-top:17px;padding-right:30px;">
+                                                     流水号:${planScheme.seqNo}
                 </div>
-                <div class="col-lg-6 text-right">
+                <div class="col-lg-9 text-right">
                     <button type="button" class="btn blue save" onclick="save(0)">保存</button>
                     <button type="button" class="btn blue submit" onclick="save(1)">提交</button>
                     <%-- <c:if test="${tModel.cticket.canDel }">
@@ -39,14 +39,14 @@
             </div>
 			<!-- BEGIN FORM-->
 			<form id="saveForm" action="#" class="row">
-			    <input type="hidden" value="" name="auditStatus"/>
+			    <input type="hidden" name="id" value="${planScheme.id}">
+			    <input type="hidden" name="auditStatus" value=""/>
 			    <input type="hidden" name="procId" value=""/>
+				<input type="hidden" name="proId" value="${planScheme.proId}">
 				<div class="form-body clearfix">
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目编号</label>
 						<div class="col-md-8">
-						    <input type="hidden" name="id" value="${planScheme.id}">
-							<input type="hidden" name="proId" value="${planScheme.proId}">
 							<input type="text" name="proCode" class="form-control col-md-3" readonly value="${project.proCode}">
 							<a id="selectPro" title="选择" href="javascript:void(0);" class="icon-select"></a>
 						</div>
@@ -72,13 +72,13 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目负责人</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control text-right" readonly name="pmLeaders" value="${project.pmLeaders}">
+							<input type="text" class="form-control" readonly name="pmLeaders" value="${project.pmLeaders}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目经理</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control text-right" readonly name="pManagers" value="${project.pManagers}">
+							<input type="text" class="form-control" readonly name="pManagers" value="${project.pManagers}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
@@ -97,7 +97,7 @@
 						<label class="control-label col-md-3">方案产值(¥)</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-							<input type="text" class="form-control" data-rule-number="true" name="schemeYield" data-rule-required="true" value="${planScheme.schemeYield}">
+							<input type="text" class="form-control text-right" data-rule-number="true" name="schemeYield" data-rule-required="true" value="${planScheme.schemeYield}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
@@ -112,13 +112,13 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">概况</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control text-right" name="schemeOverview" value="${planScheme.schemeOverview}">
+							<input type="text" class="form-control" name="schemeOverview" value="${planScheme.schemeOverview}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">备注</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control text-right" name="remark" value="${planScheme.remark}">
+							<input type="text" class="form-control" name="remark" value="${planScheme.remark}">
 						</div>
 					</div>
 

@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>系统配置</title>
+    <title>方案产值策划</title>
     <%--每个jsp页面所在菜单的treePath属性值 --%>
     <df:readProp var="menu-path" value="wf.planScheme.menu.path" scope="request"  />
 </head>
@@ -19,7 +19,7 @@ jQuery(function(){
     jQuery.ajax({
         type: "POST",
         url:sUrl,
-        data:{"NO":"SYS_ROLE" ,"MODEL":"SYS"},
+        data:{"NO":"PLAN_SCHEME_LIST", "MODEL":"WF", "qarg.userId":"${SysUser.id}"},
         async: false,
         error: function(request) {
             jQuery.jalert({"jatext":"Connection error"});
@@ -33,7 +33,7 @@ jQuery(function(){
 });
 
 function  toadd(){
-    window.location.href="${site}/admin/sys/role/edit/0";
+    window.location.href="${site}/admin/wf/planScheme/toedit/0";
 }
 
 </script>

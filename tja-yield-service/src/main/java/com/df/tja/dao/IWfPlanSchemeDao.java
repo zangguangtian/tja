@@ -14,6 +14,7 @@ package com.df.tja.dao;
 
 import java.util.List;
 
+import com.df.framework.base.dao.IBaseDao;
 import com.df.tja.domain.WfPlanScheme;
 import com.df.tja.domain.WfShemeTeam;
 
@@ -32,7 +33,7 @@ import com.df.tja.domain.WfShemeTeam;
  * 
  */
 
-public interface IWfPlanSchemeDao {
+public interface IWfPlanSchemeDao extends IBaseDao {
 
     /**
      * <p>描述 : </p>
