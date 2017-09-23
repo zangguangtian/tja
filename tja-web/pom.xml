@@ -35,6 +35,13 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.df</groupId>
+            <artifactId>df-activiti</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
 		<dependency>
 			<groupId>com.df</groupId>
 			<artifactId>df-sys-web</artifactId>
