@@ -111,6 +111,8 @@ public class WfPlanSchemeController extends WfBaseController {
 
             if (WfConstant.AuditStatus.AUDITING.equals(auditStatus)) {
                 //向processArgs中传流程参数
+                processArgs.addVariable("ocOrg", "1531142eb9222c639fae1344177ad9ea");
+                processArgs.addVariable("orgLeader", "1531142eb9222c639fae1344177ad9ea");
             }
 
             //提交或保存
@@ -150,6 +152,17 @@ public class WfPlanSchemeController extends WfBaseController {
     public ModelAndView toViewOrApprove(@PathVariable("operate") String operate, @PathVariable("id") String id)
         throws RuntimeException {
         Map<String, Object> modelMap = new HashMap<String, Object>();
+
+        wfPlanSchemeService.queryPlanSchemeById(modelMap, id);
+        WfPlanScheme scheme = (WfPlanScheme) modelMap.get("planScheme");
+
+        //检查操作
+        Map<String, String> ins = new HashMap<String, String>(0);
+        ins.put("operate", operate);
+        ins.put("procId", scheme.getProcId());
+        ins.put("applyer", scheme.getCreator());
+        ins.put("auditStatus", scheme.getAuditStatus());
+        checkOperate(ins, modelMap);
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addAllObjects(modelMap);

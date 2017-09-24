@@ -23,8 +23,8 @@
                                                      流水号:${planScheme.seqNo}
                 </div>
                 <div class="col-lg-9 text-right">
-                    <button type="button" class="btn blue save" onclick="save(0)">保存</button>
-                    <button type="button" class="btn blue submit" onclick="save(1)">提交</button>
+                    <input type="button" value="保存" class="btn blue save" onclick="save(0)">
+                    <input type="button" value="提交" class="btn blue submit" onclick="save(1)">
                     <%-- <c:if test="${tModel.cticket.canDel }">
 		                <input class="btn-save sub" type="button" value="删除" onclick="save(9)"/>
 		            </c:if>
@@ -209,7 +209,7 @@
 			  refYieldInput.val(new Number(refYield).toFixed(2));
 			  
 			  var flag = initTotal();
-			});
+		});
 		
 		jQuery("#secOrg").on("click",function(){
 			selectOrg(selectOrgCallback);
@@ -332,10 +332,6 @@
 	function save(status) {
 		var flag = false;
 	    if(status == "9"){
-	        /* if(window.confirm("确认删除？\r\n\r点[确定]：执行删除操作\r\n\r点[取消]：放弃删除操作")){
-	            flag = true;
-	        } */
-	        
 	        $.jalert({"jatext":"确认删除？\r\n\r点[确定]：执行删除操作\r\n\r点[取消]：放弃删除操作", "jatype":"confirm", "onConfirm":function(){
 	        	 flag = true;
  			}});
@@ -356,23 +352,23 @@
 		var url ="${site}/admin/wf/planScheme/ajax/esave";
 	    if (flag) {
 	    	$("input[name='auditStatus']").val(status);
-	        jQuery.ajax({
-	        type : "POST",
-	        url : url,
-	        data : jQuery('#saveForm').serialize(),
-	        async : false,
-	        error : function(request) {
-	        	$.jalert({"jatext":"Connection error"});
-	        },
-	        success : function(data) {
-	        	if(data.flag == 'true'){
-	        	$.jalert({"jatext":data.msg, "jatype":"refresh", "onConfirm":function(){
-			  		window.location.href="${site}/admin/wf/planScheme/search";
-	 			}});
-	        	}else{
-	        		$.jalert({"jatext":data.msg});
-	        	}
-	        }
+		        jQuery.ajax({
+		        type : "POST",
+		        url : url,
+		        data : jQuery('#saveForm').serialize(),
+		        async : false,
+		        error : function(request) {
+		        	$.jalert({"jatext":"Connection error"});
+		        },
+		        success : function(data) {
+		        	if(data.flag == 'true'){
+		        	$.jalert({"jatext":data.msg, "jatype":"refresh", "onConfirm":function(){
+				  		window.location.href="${site}/admin/wf/planScheme/search";
+		 			}});
+		        	}else{
+		        		$.jalert({"jatext":data.msg});
+		        	}
+		        }
 	        });
 	    }
 	}
