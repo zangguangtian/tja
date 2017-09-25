@@ -185,7 +185,7 @@
 				            	<div class="col-lg-5 ">
 									<table class="table table-bordered edit">
 										<thead>
-											<tr class="row">
+											<tr class="row form-group">
 												<th class="text-center col-lg-4">角色</th>
 												<th class="text-center">分配比例(%)<span class="required">※</span></th>
 											</tr>
@@ -219,7 +219,7 @@
 				       			<div class="col-lg-5 ">
 									<table class="table table-bordered edit">
 										<thead>
-											<tr class="row">
+											<tr class="row form-group">
 												<th class="text-center col-lg-4">角色</th>
 												<th class="text-center">分配比例(%)<span class="required">※</span></th>
 											</tr>
