@@ -193,11 +193,17 @@
 										<tbody>
 											<tr class="row">
 												<td class="text-center col-lg-4">项目负责人</td>
-												<td class="col-lg-8"><input name="projectExtend.principalRate" value="${project.projectExtend.principalRate}" onkeyup="rateAdd()" type="text" placeholder="0.00" data-rule-number="true" class="text-right"></td>
+												<td class="col-lg-8 input-icon right">
+													<i class="fa"></i>
+													<input name="projectExtend.principalRate" value="${project.projectExtend.principalRate}" onkeyup="rateAdd()" type="text" placeholder="0.00" data-rule-required="true" data-rule-number="true" class="text-right">
+												</td>
 											</tr>
 											<tr class="row">
 												<td class="text-center col-lg-4">项目经理</td>
-												<td class="col-lg-8"><input name="projectExtend.pmRate" value="${project.projectExtend.pmRate}" onkeyup="rateAdd()" type="text" placeholder="0.00" data-rule-number="true" class="text-right"></td>
+												<td class="col-lg-8 input-icon right">
+													<i class="fa"></i>
+													<input name="projectExtend.pmRate" value="${project.projectExtend.pmRate}" onkeyup="rateAdd()" type="text" placeholder="0.00" data-rule-required="true" data-rule-number="true" class="text-right">
+												</td>
 											</tr>
 											<tr class="row">
 												<td class="text-center col-lg-4">合计</td>
@@ -224,12 +230,13 @@
 											<c:if test="${rate.allotCategory eq '1000'}">
 												<tr class="row">
 													<td class="text-center col-lg-4">${rate.allotName }</td>
-													<td class="col-lg-8">
+													<td class="col-lg-8 input-icon right">
+														<i class="fa"></i>
 														<input name="majorRoleRateList[${rateIndex}].id" type="hidden" value="${rate.id }">
 														<input name="majorRoleRateList[${rateIndex}].proId" type="hidden" value="${project.id }">
 														<input name="majorRoleRateList[${rateIndex}].allotCategory" type="hidden" value="1000">
 														<input name="majorRoleRateList[${rateIndex}].allotCode" type="hidden" value="${rate.allotCode }">
-														<input name="majorRoleRateList[${rateIndex}].allotRate" value="${rate.allotRate }" type="text" placeholder="0.00" data-rule-number="true" class="text-right">
+														<input name="majorRoleRateList[${rateIndex}].allotRate" value="${rate.allotRate }" type="text" placeholder="0.00" data-rule-required="true" data-rule-number="true" class="text-right">
 													</td>
 												</tr>
 												<c:set var="rateIndex" value="${rateIndex+1}"/>
@@ -322,45 +329,46 @@ function selectStaffBack(data){
 }
 
 function save(){
-	
-	if (parseFloat($("#rateSum").text()) > 100) {
-		$.jalert({"jatext":"项目角色分配比例不能超过100"});
-		return;
-	}
-	
-	var allotCodeList = $("input[name$='.allotCode']");
-	var allotRateList = $("input[name$='.allotRate']");
-	var rateObj = {};
- 	for (var i = 0; i < allotCodeList.length; i++) {
- 		rateObj[allotCodeList[i].value] = parseFloat(allotRateList[i].value);
-	}
- 	if(rateObj["PM.MAJORROLE.LEADER"] > 100){
- 		$.jalert({"jatext":"专业负责人分配比例不能超过100"});
-		return;
- 	}
- 	if((rateObj["PM.MAJORROLE.CHECKER"]+rateObj["PM.MAJORROLE.APPROVER"]+rateObj["PM.MAJORROLE.DESIGNER"]) > 100){
- 		$.jalert({"jatext":"校对人+审核人+设计人/制图人 分配比例不能超过100"});
-		return;
- 	}
-
-	var url ="${site}/admin/pm/project/ajax/save";
-	$.ajax({
-		type : "post",
-	 	url : url,
-	 	data : $("#projectForm").serialize(),
-	 	error : function(request) {
-	 		$.jalert({"jatext":"Connection error"});
-	 	},
-	 	success : function(data) {
-	 		if(data.flag == "true"){
-	 			$.jalert({"jatext":data.msg, "jatype":"refresh", "onConfirm":function(){
-			  		window.location.href="${site}/admin/pm/project/edit/${project.id}";
-	 			}});
-	 		}else{
-	 			$.jalert({"jatext":data.msg});
-	 		}
+	if (jQuery("#periodForm").valid()) {
+		if (parseFloat($("#rateSum").text()) > 100) {
+			$.jalert({"jatext":"项目角色分配比例不能超过100"});
+			return;
+		}
+		
+		var allotCodeList = $("input[name$='.allotCode']");
+		var allotRateList = $("input[name$='.allotRate']");
+		var rateObj = {};
+	 	for (var i = 0; i < allotCodeList.length; i++) {
+	 		rateObj[allotCodeList[i].value] = parseFloat(allotRateList[i].value);
+		}
+	 	if(rateObj["PM.MAJORROLE.LEADER"] > 100){
+	 		$.jalert({"jatext":"专业负责人分配比例不能超过100"});
+			return;
 	 	}
-	});
+	 	if((rateObj["PM.MAJORROLE.CHECKER"]+rateObj["PM.MAJORROLE.APPROVER"]+rateObj["PM.MAJORROLE.DESIGNER"]) > 100){
+	 		$.jalert({"jatext":"校对人+审核人+设计人/制图人 分配比例不能超过100"});
+			return;
+	 	}
+	
+		var url ="${site}/admin/pm/project/ajax/save";
+		$.ajax({
+			type : "post",
+		 	url : url,
+		 	data : $("#projectForm").serialize(),
+		 	error : function(request) {
+		 		$.jalert({"jatext":"Connection error"});
+		 	},
+		 	success : function(data) {
+		 		if(data.flag == "true"){
+		 			$.jalert({"jatext":data.msg, "jatype":"refresh", "onConfirm":function(){
+				  		window.location.href="${site}/admin/pm/project/edit/${project.id}";
+		 			}});
+		 		}else{
+		 			$.jalert({"jatext":data.msg});
+		 		}
+		 	}
+		});
+	}
 }
 
 </script>
