@@ -172,3 +172,67 @@ input[type="button"],input[type="submit"],input[type="reset"]{ cursor:pointer; }
     line-height: 30px;
     text-align: center;
 }
+
+.page-info {
+    height: 30px;
+    line-height: 30px;
+    float: left;
+}
+
+.page-info span {
+    color: #4470AF;
+    font-weight: bolder;
+}
+
+.foot-page {
+    float: right;
+}
+.foot-page>li {
+    margin: 5px 5px;
+    cursor: pointer;
+    float: left;
+}
+.common-message .scrli, li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.foot-page li.page-first {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    display: inline-block;
+    background: url(../images/rs_first.png) no-repeat center center;
+}
+.foot-page>li {
+    margin: 5px 5px;
+    cursor: pointer;
+    float: left;
+}
+.foot-page li.page-prev {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    display: inline-block;
+    background: url(../images/rs_prev.png) no-repeat center center;
+}
+.foot-page li.page-go {
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    margin-top: 7px;
+}
+.foot-page li.page-next {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    display: inline-block;
+    background: url(../images/rs_next.png) no-repeat center center;
+}
+.foot-page li.page-last {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    display: inline-block;
+    background: url(../images/rs_last.png) no-repeat center center;
+}

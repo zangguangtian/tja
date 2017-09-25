@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -62,6 +63,17 @@ public class OcStandardPrice extends BaseDomain {
 
     /** 属性：备注 */
     private java.lang.String remark;
+
+    private java.lang.String codes;//xxx-xxx
+
+    private java.lang.String values;//xxx-xxx
+
+    private java.lang.Integer pageIndex;
+
+    private java.lang.Integer pageSize;
+
+    /** 属性：序号 */
+    private Integer number;
 
     /**
      * <p> 属性：categoryCode的Getter方法. </p>
@@ -196,6 +208,51 @@ public class OcStandardPrice extends BaseDomain {
     @Column(name = "MODIFY_DATE")
     public java.util.Date getModifyDate() {
         return modifyDate;
+    }
+
+    @Transient
+    public java.lang.String getCodes() {
+        return codes;
+    }
+
+    public void setCodes(java.lang.String codes) {
+        this.codes = codes;
+    }
+
+    @Transient
+    public java.lang.String getValues() {
+        return values;
+    }
+
+    public void setValues(java.lang.String values) {
+        this.values = values;
+    }
+
+    @Transient
+    public java.lang.Integer getPageIndex() {
+        return pageIndex;
+    }
+
+    public void setPageIndex(java.lang.Integer pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
+    @Transient
+    public java.lang.Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(java.lang.Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    @Transient
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
     }
 
     public boolean equals(Object o) {
