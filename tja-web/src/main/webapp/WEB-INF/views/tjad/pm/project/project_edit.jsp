@@ -191,16 +191,16 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr class="row">
+											<tr class="row form-group">
 												<td class="text-center col-lg-4">项目负责人</td>
-												<td class="col-lg-8 input-icon right">
+												<td class="col-lg-8 input-icon left">
 													<i class="fa"></i>
 													<input name="projectExtend.principalRate" value="${project.projectExtend.principalRate}" onkeyup="rateAdd()" type="text" placeholder="0.00" data-rule-required="true" data-rule-number="true" class="text-right">
 												</td>
 											</tr>
-											<tr class="row">
+											<tr class="row form-group">
 												<td class="text-center col-lg-4">项目经理</td>
-												<td class="col-lg-8 input-icon right">
+												<td class="col-lg-8 input-icon left">
 													<i class="fa"></i>
 													<input name="projectExtend.pmRate" value="${project.projectExtend.pmRate}" onkeyup="rateAdd()" type="text" placeholder="0.00" data-rule-required="true" data-rule-number="true" class="text-right">
 												</td>
@@ -228,9 +228,9 @@
 											<c:set var="rateIndex" value="0"/>
 											<c:forEach items="${project.majorRoleRateList }" var="rate" varStatus="s">
 											<c:if test="${rate.allotCategory eq '1000'}">
-												<tr class="row">
+												<tr class="row form-group">
 													<td class="text-center col-lg-4">${rate.allotName }</td>
-													<td class="col-lg-8 input-icon right">
+													<td class="col-lg-8 input-icon left">
 														<i class="fa"></i>
 														<input name="majorRoleRateList[${rateIndex}].id" type="hidden" value="${rate.id }">
 														<input name="majorRoleRateList[${rateIndex}].proId" type="hidden" value="${project.id }">
@@ -329,7 +329,7 @@ function selectStaffBack(data){
 }
 
 function save(){
-	if (jQuery("#periodForm").valid()) {
+	if (jQuery("#projectForm").valid()) {
 		if (parseFloat($("#rateSum").text()) > 100) {
 			$.jalert({"jatext":"项目角色分配比例不能超过100"});
 			return;
