@@ -15,6 +15,7 @@ package com.df.tja.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
@@ -52,16 +53,42 @@ public class StandardPriceDaoHbmImpl extends BaseDaoHbmImpl implements IStandard
         StringBuilder sqlFW = new StringBuilder();
         sql.append(" SELECT OS.ID As id, OS.CATEGORY_CODE AS categoryCode,OS.TYPE_CODE As typeCode, ");
         sql.append(" OS.TYPE_NAME AS typeName,OS.UNIT_PRICE AS unitPrice,OS.REMARK AS remark        ");
-        sqlFW.append(" FROM OC_STANDARD_PRICE OS                                                    ");
+        sqlFW.append(" FROM OC_STANDARD_PRICE OS WHERE 1=1                                          ");
+        List<String> param = new ArrayList<String>();
+        //分类
+        if (ocStandardPrice != null && StringUtils.isNotBlank(ocStandardPrice.getCategoryCode())) {
+            sqlFW.append(" AND OS.CATEGORY_CODE like ? ");
+            param.add(ocStandardPrice.getCategoryCode());
+        }
+
+        //类型
+        if (ocStandardPrice != null && StringUtils.isNotBlank(ocStandardPrice.getTypeCode())) {
+            sqlFW.append(" AND OS.TYPE_CODE like ? ");
+            param.add(ocStandardPrice.getTypeCode());
+        }
+
+        //类型名称
+        if (ocStandardPrice != null && StringUtils.isNotBlank(ocStandardPrice.getTypeName())) {
+            sqlFW.append(" AND OS.TYPE_NAME like ? ");
+            param.add(ocStandardPrice.getTypeName());
+        }
         sql.append(sqlFW);
         SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
         query.setResultTransformer(Transformers.aliasToBean(OcStandardPrice.class));
-
+        if (param != null && param.size() > 0) {
+            for (int i = 0; i < param.size(); i++) {
+                query.setString(i, "%" + param.get(i) + "%");
+            }
+        }
         list = query.list();
         if (pagination != null) {
             sqlFW.insert(0, "select count(*) as count ");
             query = getCurrentSession().createSQLQuery(sqlFW.toString());
-
+            if (param != null && param.size() > 0) {
+                for (int i = 0; i < param.size(); i++) {
+                    query.setString(i, "%" + param.get(i) + "%");
+                }
+            }
             int totalCount = new Integer(query.uniqueResult().toString());
             pagination.setTotalCount(totalCount);
             if (list != null && list.size() > 0) {

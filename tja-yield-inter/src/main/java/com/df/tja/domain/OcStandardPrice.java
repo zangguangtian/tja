@@ -68,6 +68,8 @@ public class OcStandardPrice extends BaseDomain {
 
     private java.lang.String values;//xxx-xxx
 
+    private java.lang.String keyValue;
+
     private java.lang.Integer pageIndex;
 
     private java.lang.Integer pageSize;
@@ -226,6 +228,15 @@ public class OcStandardPrice extends BaseDomain {
 
     public void setValues(java.lang.String values) {
         this.values = values;
+    }
+
+    @Transient
+    public java.lang.String getKeyValue() {
+        return keyValue;
+    }
+
+    public void setKeyValue(java.lang.String keyValue) {
+        this.keyValue = keyValue;
     }
 
     @Transient

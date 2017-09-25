@@ -44,16 +44,19 @@ public class OcJsGridModel implements Serializable {
 
     private String width;
 
+    private boolean filtering;
+
     public OcJsGridModel() {
         super();
     }
 
-    public OcJsGridModel(String name, String title, String type, String width) {
+    public OcJsGridModel(String name, String title, String type, String width, boolean filtering) {
         super();
         this.name = name;
         this.title = title;
         this.type = type;
         this.width = width;
+        this.filtering = filtering;
     }
 
     public String getName() {
@@ -86,6 +89,14 @@ public class OcJsGridModel implements Serializable {
 
     public void setWidth(String width) {
         this.width = width;
+    }
+
+    public boolean isFiltering() {
+        return filtering;
+    }
+
+    public void setFiltering(boolean filtering) {
+        this.filtering = filtering;
     }
 
     @Override

@@ -15,6 +15,7 @@ package com.df.tja.service;
 import java.util.List;
 import java.util.Map;
 
+import com.df.framework.exception.LogicalException;
 import com.df.framework.hibernate.persistence.Pagination;
 import com.df.tja.domain.OcStandardPrice;
 
@@ -56,6 +57,13 @@ public interface IStandardPriceService {
      *
      * @param ocStandardPrice
      */
-    void createOrModifyStandardPrice(OcStandardPrice ocStandardPrice) throws RuntimeException;
+    void createOrModifyStandardPrice(OcStandardPrice ocStandardPrice) throws RuntimeException, LogicalException;
+
+    /**
+     * <p>描述 : </p>
+     *
+     * @param ocStandardPrice
+     */
+    void deleteStandardPrice(OcStandardPrice ocStandardPrice) throws RuntimeException;
 
 }

@@ -12,6 +12,7 @@
 
 package com.df.tja.service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,9 +23,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.df.framework.base.service.impl.BaseServiceImpl;
+import com.df.framework.exception.LogicalException;
 import com.df.framework.hibernate.persistence.Pagination;
 import com.df.framework.sys.domain.SysConfig;
 import com.df.framework.sys.service.ISysConfigService;
+import com.df.framework.util.StringUtil;
 import com.df.tja.dao.IStandardPriceDao;
 import com.df.tja.domain.OcStandardPrice;
 import com.df.tja.domain.OcStandardRatio;
@@ -64,9 +67,10 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
 
         if (configs != null && configs.size() > 0) {
             for (SysConfig sysConfig : configs) {
-                OcJsGridModel gridModel = new OcJsGridModel(sysConfig.getConfigCode().replaceAll(".", "_"),
+                OcJsGridModel gridModel = new OcJsGridModel(sysConfig.getConfigCode().replaceAll("\\.", "_"),
                     sysConfig.getConfigName(),
-                    "number", "10%");
+                    "number", "10%",false);
+
                 gridModels.add(gridModel);
             }
         }
@@ -84,7 +88,6 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
         List<OcStandardPrice> prices = null;
         try {
             prices = standardPriceDao.selectStandardPrices(ocStandardPrice, page);
-            //prices = queryByCondition(OcStandardPrice.class, ocStandardPrice, page);
             if (prices != null && !prices.isEmpty()) {
                 int number = 0;
                 for (OcStandardPrice standardPrice : prices) {
@@ -94,7 +97,7 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
                     String code = "";
                     String value = "";
                     for (OcStandardRatio ratio : list) {
-                        code = code + "," + ratio.getMajorCode().replaceAll(".", "_");
+                        code = code + "," + ratio.getMajorCode().replaceAll("\\.", "_");
                         value = value + "," + ratio.getMajorRatio();
 
                     }
@@ -115,7 +118,92 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
      * @see com.df.tja.service.IStandardPriceService#createOrModifyStandardPrice(com.df.tja.domain.OcStandardPrice)
      */
     @Override
-    public void createOrModifyStandardPrice(OcStandardPrice ocStandardPrice) throws RuntimeException {
+    public void createOrModifyStandardPrice(OcStandardPrice ocStandardPrice) throws RuntimeException, LogicalException {
+        try {
+            if (StringUtil.isNotBlank(ocStandardPrice.getId())) {
+                modify(OcStandardPrice.class, ocStandardPrice);
+                String keyValue = ocStandardPrice.getKeyValue();
+                if (StringUtils.isNotBlank(keyValue) && keyValue.contains("&")) {
+                    String[] codeValues = keyValue.split("&");
+
+                    if (codeValues != null && codeValues.length > 0) {
+                        //先删除
+                        OcStandardRatio ocStandardRatio = new OcStandardRatio();
+                        ocStandardRatio.setStardandId(ocStandardPrice.getId());
+                        deleteByObject(OcStandardRatio.class, ocStandardRatio);
+
+                        //再添加
+                        for (String codeValue : codeValues) {
+                            if (StringUtils.isNotBlank(codeValue) && codeValue.contains("=")) {
+                                String[] code = codeValue.split("=");
+
+                                ocStandardRatio = new OcStandardRatio();
+                                ocStandardRatio.setMajorCode(code[0]);
+                                ocStandardRatio.setMajorRatio(new BigDecimal(code[1]));
+                                ocStandardRatio.setStardandId(ocStandardPrice.getId());
+                                addEntity(OcStandardRatio.class, ocStandardRatio);
+
+                            }else {
+                                //若没有添加  抛出 异常 回滚删除的  数据
+                                throw new LogicalException("数据有误!");
+                            }
+                        }
+
+                    }
+
+                }
+            } else {
+                if (StringUtil.isNotBlank(ocStandardPrice.getCategoryCode())
+                    || StringUtil.isNotBlank(ocStandardPrice.getTypeCode())) {
+                    addEntity(OcStandardPrice.class, ocStandardPrice);
+
+                    String keyValue = ocStandardPrice.getKeyValue();
+                    if (StringUtils.isNotBlank(keyValue) && keyValue.contains("&")) {
+                        String[] codeValues = keyValue.split("&");
+
+                        if (codeValues != null && codeValues.length > 0) {
+
+                            for (String codeValue : codeValues) {
+                                if (StringUtils.isNotBlank(codeValue) && codeValue.contains("=")) {
+                                    String[] code = codeValue.split("=");
+                                    OcStandardRatio ocStandardRatio = new OcStandardRatio();
+                                    ocStandardRatio.setMajorCode(code[0]);
+                                    ocStandardRatio.setMajorRatio(new BigDecimal(code[1]));
+                                    ocStandardRatio.setStardandId(ocStandardPrice.getId());
+                                    addEntity(OcStandardRatio.class, ocStandardRatio);
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        } catch (LogicalException ex) {
+            throw ex;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        
+
+    }
+
+    /** 
+     * @see com.df.tja.service.IStandardPriceService#deleteStandardPrice(com.df.tja.domain.OcStandardPrice)
+     */
+    @Override
+    public void deleteStandardPrice(OcStandardPrice ocStandardPrice) throws RuntimeException {
+        try {
+            if (ocStandardPrice != null && StringUtils.isNotBlank(ocStandardPrice.getId())) {
+                //删除主表
+                deleteByPrimaryKey(OcStandardPrice.class, ocStandardPrice.getId());
+                //删除子表
+                OcStandardRatio entity = new OcStandardRatio();
+                entity.setStardandId(ocStandardPrice.getId());
+                deleteByObject(OcStandardRatio.class, entity);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }

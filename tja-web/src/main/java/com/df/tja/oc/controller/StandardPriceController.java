@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.df.framework.base.controller.BaseController;
+import com.df.framework.exception.LogicalException;
 import com.df.framework.hibernate.persistence.Pagination;
 import com.df.tja.domain.OcStandardPrice;
 import com.df.tja.service.IStandardPriceService;
@@ -100,6 +101,10 @@ public class StandardPriceController extends BaseController {
             standardPriceService.createOrModifyStandardPrice(ocStandardPrice);
             mess.put("flag", "true");
             mess.put("msg", "保存成功!");
+        } catch (LogicalException ex) {
+            mess.put("flag", "false");
+            mess.put("msg", ex.getMess());
+            logger.error("", ex);
         } catch (Exception e) {
             mess.put("flag", "false");
             mess.put("msg", "保存失败!");
@@ -120,7 +125,7 @@ public class StandardPriceController extends BaseController {
     public Map<String, String> delete(OcStandardPrice ocStandardPrice) {
         Map<String, String> mess = new HashMap<String, String>();
         try {
-
+            standardPriceService.deleteStandardPrice(ocStandardPrice);
             mess.put("flag", "true");
             mess.put("msg", "删除成功");
         } catch (Exception e) {
