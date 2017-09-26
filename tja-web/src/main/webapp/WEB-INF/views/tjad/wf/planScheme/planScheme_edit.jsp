@@ -9,7 +9,7 @@
     <title>方案产值策划</title>
     <%--每个jsp页面所在菜单的treePath属性值 --%>
     <df:readProp var="menu-path" value="wf.planScheme.menu.path" scope="request"  />
-    <link href="${site }/resources/css/management.css" rel="Stylesheet" type="text/css">
+    <link href="${site }/resources/css/management.css?v=${buildVersion}" rel="Stylesheet" type="text/css">
 </head>
 <body>
  <div class="">
@@ -84,13 +84,13 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">设计启动时间</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control text-right datetimepicker" name="designStart" value='<fmt:formatDate value="${planScheme.designStart}" pattern="yyyy-MM-dd" />'>
+							<input type="text" class="form-control datetimepicker" name="designStart" value='<fmt:formatDate value="${planScheme.designStart}" pattern="yyyy-MM-dd" />'>
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">设计完成时间</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control text-right datetimepicker" name="designCompleted" value='<fmt:formatDate value="${planScheme.designCompleted}" pattern="yyyy-MM-dd" />'> 
+							<input type="text" class="form-control datetimepicker" name="designCompleted" value='<fmt:formatDate value="${planScheme.designCompleted}" pattern="yyyy-MM-dd" />'> 
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
@@ -182,8 +182,7 @@
 		</div>
 	</div>
 </div>
-<script type="text/javascript" src="${site}/resources/js/ztree/ztree-3.4-extend.js"></script>
-<script type="text/javascript" src="${site}/resources/js/common/common.js"></script>
+<script type="text/javascript" src="${site}/resources/js/ztree/ztree-3.4-extend.js?v=${buildVersion}"></script>
 <script type="text/javascript">
 	$(function(){
 		// 初始化时间控件
@@ -339,14 +338,12 @@
 	    }else{
 	    	if (jQuery("#saveForm").valid()) {
 	            flag = true;
-	        }else{
-	        	flag = false;
 	        }
-	    	if(!initTotal()){
-	    		$.jalert({"jatext":"比例合计必须为100"});
-	    		flag = false;
-	    	}else{
-	    		flag = true;
+	    	if(flag){
+	    		if(!initTotal()){
+	    			$.jalert({"jatext":"比例合计必须为100"});
+	                flag = false;
+	    		}
 	    	}
 	    }
 		var url ="${site}/admin/wf/planScheme/ajax/esave";

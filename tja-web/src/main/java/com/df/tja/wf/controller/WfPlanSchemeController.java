@@ -179,22 +179,22 @@ public class WfPlanSchemeController extends WfBaseController {
      */
     @RequestMapping(value = "/ajax/approve", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, String> wfSubmit(@ModelAttribute WfPlanScheme wfPlanScheme, Integer view) {
+    public Map<String, String> wfSubmit(@ModelAttribute WfPlanScheme wfPlanScheme) {
         Map<String, String> mess = new HashMap<String, String>();
         try {
             //如果不需要回写业务，可以直接调用processService的approveWf方法，
             //否则在Service中写接口方法，然后再调用processService中的approveWf方法
-
+            processService.approveWf(wfPlanScheme, null);
             mess.put("flag", "true");
             String msg = APPROVE_COMPLETE;
             if (WfConstant.AuditStatus.REVOKE.equals(wfPlanScheme.getApprove())) {
                 msg = "撤回成功";
             }
             mess.put("msg", msg);
-        }/* catch (LogicalException ex) {
+        } catch (LogicalException ex) {
             mess.put("flag", "false");
             mess.put("msg", ex.getMessage());
-         }*/catch (Exception e) {
+        } catch (Exception e) {
             mess.put("flag", "false");
             mess.put("msg", "审批失败");
             logger.error("", e);

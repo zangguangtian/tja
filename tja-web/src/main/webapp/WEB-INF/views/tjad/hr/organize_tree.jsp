@@ -15,9 +15,9 @@ if( StringUtils.isBlank(loadUser)){
 	<input type="hidden" id="node_orgName" value="" />
     <ul id="orgTree" class="ztree"></ul>
 </div>
-<link rel="stylesheet" href="${site}/resources/css/zTreeStyle/zTreeStyle.css" type="text/css">
-<script type="text/javascript" src="${site}/resources/js/plugins/ztree/jquery.ztree.all.js"></script>
-<script type="text/javascript" src="${site}/resources/js/ztree/ztree-3.4-extend.js"></script>
+<link rel="stylesheet" href="${site}/resources/css/zTreeStyle/zTreeStyle.css?v=${buildVersion}" type="text/css">
+<script type="text/javascript" src="${site}/resources/js/plugins/ztree/jquery.ztree.all.js?v=${buildVersion}"></script>
+<script type="text/javascript" src="${site}/resources/js/ztree/ztree-3.4-extend.js?v=${buildVersion}"></script>
 <script type="text/javascript">
 //<!--
 var rootId = "0";

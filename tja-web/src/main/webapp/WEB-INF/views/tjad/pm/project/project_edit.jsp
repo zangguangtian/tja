@@ -298,8 +298,8 @@
 </div>
 <div class="clearfix"></div>
 
-<script type="text/javascript" src="${site}/resources/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
-<script type="text/javascript" src="${site}/resources/js/ztree/ztree-3.4-extend.js"></script>
+<script type="text/javascript" src="${site}/resources/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v=${buildVersion}"></script>
+<script type="text/javascript" src="${site}/resources/js/ztree/ztree-3.4-extend.js?v=${buildVersion}"></script>
 <script type="text/javascript">
 $(function(){
 	// 初始化时间控件
