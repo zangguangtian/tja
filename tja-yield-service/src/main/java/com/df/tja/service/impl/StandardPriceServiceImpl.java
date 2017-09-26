@@ -67,10 +67,14 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
 
         if (configs != null && configs.size() > 0) {
             for (SysConfig sysConfig : configs) {
-                OcJsGridModel gridModel = new OcJsGridModel(sysConfig.getConfigCode().replaceAll("\\.", "_"),
-                    sysConfig.getConfigName(),
-                    "number", "10%",false);
-
+                OcJsGridModel gridModel = new OcJsGridModel();
+                gridModel.setCss("checkTotal");
+                gridModel.setName(sysConfig.getConfigCode().replaceAll("\\.", "_"));
+                gridModel.setTitle(sysConfig.getConfigName());
+                gridModel.setType("number");
+                gridModel.setValidate("checkTotal");
+                gridModel.setWidth("10%");
+                gridModel.setFiltering(false);
                 gridModels.add(gridModel);
             }
         }

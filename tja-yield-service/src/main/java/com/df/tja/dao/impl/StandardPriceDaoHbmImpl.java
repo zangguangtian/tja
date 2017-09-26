@@ -73,8 +73,13 @@ public class StandardPriceDaoHbmImpl extends BaseDaoHbmImpl implements IStandard
             param.add(ocStandardPrice.getTypeName());
         }
         sql.append(sqlFW);
+        sql.append("  ORDER BY OS.CATEGORY_CODE,OS.TYPE_CODE");
         SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
         query.setResultTransformer(Transformers.aliasToBean(OcStandardPrice.class));
+        if (pagination != null) {
+            query.setFirstResult(pagination.getStartPosition());
+            query.setMaxResults(pagination.getRowsPerPage());
+        }
         if (param != null && param.size() > 0) {
             for (int i = 0; i < param.size(); i++) {
                 query.setString(i, "%" + param.get(i) + "%");

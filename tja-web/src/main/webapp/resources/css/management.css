@@ -236,3 +236,7 @@ input[type="button"],input[type="submit"],input[type="reset"]{ cursor:pointer; }
     display: inline-block;
     background: url(../images/rs_last.png) no-repeat center center;
 }
+
+#goPage{
+	width: 25px;
+}

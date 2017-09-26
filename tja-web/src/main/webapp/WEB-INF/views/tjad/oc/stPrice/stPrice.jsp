@@ -32,6 +32,42 @@
 						return /^(?:-?\d+|-?\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test(value);
 					}
 			 }
+			
+			jsGrid.validators.checkTotal = 
+				{
+						message:function (value, item) {
+							return "各专业比例合计必须为100";
+						},
+						validator: function(value, item) {
+							var v =value;
+				    		var i = item;
+				    		
+				    	    var filter = jQuery(".jsgrid-grid-header tr.jsgrid-filter-row").css("display");
+				    	    if(filter == 'none'){
+				    	    	//插入时检查
+								row = jQuery(".jsgrid-insert-row");
+							}else{
+								//修改时检查
+								row =jQuery(".jsgrid-edit-row");
+							}
+				    	    var total = new Number(0);
+				    	    jQuery.each(row.find("td.checkTotal"),function(index,item){
+				    	    	
+				    	    	var _this = $(item);
+				    	    	var _val = _this.find("input").val();
+				    	    	if(isNaN(new Number(_val))){
+				    	    		_val = new Number(0);
+				    	    	}
+				    	    	total += new Number(_val);
+				    	    	
+				    	    });
+				    	    if(total != new Number(100)){
+				    	    	return false;
+				    	    }
+							return true;
+						}
+				 }
+			
 			 var Grid = jsGrid.Grid;
 			 awardsGrid = new Grid("#jsGrid", {
 					height : "auto",
@@ -43,6 +79,7 @@
 					paging : true,
 					autoload : true,
 					pageLoading : true,
+					insertcss:"checkTotal",
 					pagerRenderer : baseDb.pagerrenderer,
 					noDataContent : "",
 					deleteConfirm : "确认删除?",
@@ -62,7 +99,7 @@
 				            message: function(value, item) {
 				                return "分类是必填项!";
 				            }
-				        },
+				        }, 
 				        filtering:true
 					},{
 						name : "typeCode",
@@ -83,7 +120,18 @@
 					    	    var fag = true;
 					    		jQuery(".jsgrid-grid-body tr").not(".jsgrid-grid-body tr[style='display: none;']").not(".jsgrid-edit-row").each(function(){
 									var _this = $(this);
-					    			
+					    			var value = _this.find("td:eq(2)").text().trim();
+					    			var row = jQuery(".jsgrid-filter-row");
+									var filter = jQuery(".jsgrid-filter-row").css("display");
+									if(filter == 'none'){
+										row = jQuery(".jsgrid-insert-row");
+									}else{
+										row =jQuery(".jsgrid-edit-row");
+									}
+									var insertValue = row.find("td:eq(2) input").val();
+									if(insertValue == value){
+										fag = false;
+									}
 								});
 					    		return fag;
 							},
