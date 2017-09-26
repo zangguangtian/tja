@@ -9,8 +9,8 @@
     <title>土建基准单价及专业比例</title>
     <%--每个jsp页面所在菜单的treePath属性值 --%>
     <df:readProp var="menu-path" value="oc.standard.price.menu.path" scope="request"  />
-    <link rel="stylesheet" type="text/css" href="${site}/resources/css/jsgrid/jsgrid.css" />
-    <link rel="stylesheet" type="text/css" href="${site}/resources/css/jsgrid/theme.css" />
+    <link rel="stylesheet" type="text/css" href="${site}/resources/css/jsgrid/jsgrid.css?v=${buildVersion}" />
+    <link rel="stylesheet" type="text/css" href="${site}/resources/css/jsgrid/theme.css?v=${buildVersion}" />
     <link href="${site }/resources/css/management.css" rel="Stylesheet" type="text/css">
 </head>
 <body>
@@ -18,8 +18,8 @@
    <div id="jsGrid"></div>
  </div>
  <%-- <script src="${site}/resources/js/jsgrid/jquery-1.8.3.js"></script> --%>
- <script src="${site}/resources/js/jsgrid/jsgrid.js"></script>
- <script src="${site}/resources/js/jsgrid/db.js"></script>
+ <script src="${site}/resources/js/jsgrid/jsgrid.js?v=${buildVersion}"></script>
+ <script src="${site}/resources/js/jsgrid/db.js?v=${buildVersion}"></script>
 	<script type="text/javascript">
 		var awardsGrid = null;
 		var baseDb = new BaseDb();
@@ -68,7 +68,44 @@
 						}
 				 }
 			
-			 var Grid = jsGrid.Grid;
+			var Grid = jsGrid.Grid;
+			Grid.prototype.loadData = function(filter) {
+		            filter = filter || (this.filtering ? this.getFilter() : {});
+
+		            $.extend(filter, this._loadStrategy.loadParams(), this._sortingParams());
+
+		            var args = this._callEventHandler(this.onDataLoading, {
+		                filter: filter
+		            });
+
+		            return this._controllerCall("loadData", filter, args.cancel, function(loadedData) {
+		            	
+		            	if(loadedData.data != null && loadedData.data != 'undefined' && loadedData.data != ''){
+		            		var standardPriceData = loadedData.data;
+		            		for(var i =0;i<standardPriceData.length;i++){
+		            			var codes = standardPriceData[i].codes;
+		            			var values = standardPriceData[i].values;
+		            			var dataCodes = codes.split(",");
+		            			var dataValues = values.split(",");
+		            			for(var j = 0;j<dataCodes.length;j++){
+		            				var priceData = standardPriceData[i];
+		            				//standardPriceData[i].code = dataValues[j];
+		            				priceData[""+dataCodes[j]+""] = dataValues[j];
+		            			}
+		            		}
+		            	}
+		            	
+		                if(!loadedData)
+		                    return;
+
+		                this._loadStrategy.finishLoad(loadedData);
+
+		                this._callEventHandler(this.onDataLoaded, {
+		                    data: loadedData
+		                });
+		            });
+		        }
+			
 			 awardsGrid = new Grid("#jsGrid", {
 					height : "auto",
 					width : "100%",
