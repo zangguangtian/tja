@@ -109,7 +109,7 @@
 			            	<a id="secOrg" title="选择" href="javascript:void(0);" class="icon-select"></a>
 						</div>
 					</div>
-					<div class="form-group col-lg-6 ">
+					<%-- <div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">概况</label>
 						<div class="col-md-8">
 							<input type="text" class="form-control" name="schemeOverview" value="${planScheme.schemeOverview}">
@@ -120,7 +120,20 @@
 						<div class="col-md-8">
 							<input type="text" class="form-control" name="remark" value="${planScheme.remark}">
 						</div>
+					</div> --%>
+					
+					<div class="form-group col-lg-12 " style="margin-left: 4%">
+						<label class="control-label col-md-1">概况</label>
+						<div class="col-md-10">
+						    <textarea class="form-control" rows="3" name="schemeOverview">${planScheme.schemeOverview}</textarea>
+						</div>
 					</div>
+					<div class="form-group col-lg-12 " style="margin-left: 4%">
+						<label class="control-label col-md-1">备注</label>
+						<div class="col-md-10">
+							<textarea class="form-control" rows="3" name="remark">${planScheme.remark}</textarea>
+						</div>
+					</div> 
 
 					<h3 class="form-tit col-lg-12">设计团队</h3>
 					<div class="col-lg-5 ">
@@ -331,7 +344,7 @@
 	function save(status) {
 		var flag = false;
 	    if(status == "9"){
-	        $.jalert({"jatext":"确认删除？\r\n\r点[确定]：执行删除操作\r\n\r点[取消]：放弃删除操作", "jatype":"confirm", "onConfirm":function(){
+	        $.jalert({"jatext":"确认删除？<br>点[确定]：执行删除操作<br>点[取消]：放弃删除操作", "jatype":"confirm", "onConfirm":function(){
 	        	 flag = true;
  			}});
 	        

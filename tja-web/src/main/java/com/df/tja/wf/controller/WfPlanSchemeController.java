@@ -29,6 +29,8 @@ import com.df.activiti.constant.WfConstant;
 import com.df.activiti.controller.WfBaseController;
 import com.df.activiti.domain.ProcessArgs;
 import com.df.framework.exception.LogicalException;
+import com.df.framework.sys.domain.SysUser;
+import com.df.framework.sys.service.ISysUserService;
 import com.df.framework.util.HttpUtil;
 import com.df.tja.domain.WfPlanScheme;
 import com.df.tja.service.IWfPlanSchemeService;
@@ -53,6 +55,9 @@ public class WfPlanSchemeController extends WfBaseController {
 
     @Autowired
     private IWfPlanSchemeService wfPlanSchemeService;
+
+    @Autowired
+    private ISysUserService userService;
 
     /**
      * 
@@ -82,7 +87,7 @@ public class WfPlanSchemeController extends WfBaseController {
             WfPlanScheme scheme = (WfPlanScheme) attributes.get("planScheme");
             if (WfConstant.AuditStatus.AUDITING.equals(scheme.getAuditStatus())
                 || WfConstant.AuditStatus.AUDITED.equals(scheme.getAuditStatus())) {
-                return "redirect:/admin/wf/ticket/toview/" + WfConstant.Operate.VIEW + "/" + scheme.getId();
+                return "redirect:/admin/wf/planScheme/toview/" + WfConstant.Operate.VIEW + "/" + scheme.getId();
             }
             model.addAllAttributes(attributes);
         }
@@ -111,8 +116,11 @@ public class WfPlanSchemeController extends WfBaseController {
 
             if (WfConstant.AuditStatus.AUDITING.equals(auditStatus)) {
                 //向processArgs中传流程参数
-                processArgs.addVariable("ocOrg", "1531142eb9222c639fae1344177ad9ea");
-                processArgs.addVariable("orgLeader", "1531142eb9222c639fae1344177ad9ea");
+
+                SysUser ocSysUser = userService.queryRoleUser(WfConstant.FlowTaskRole.YUNYING, procKey);
+                SysUser orgleader = userService.queryOrgLeaderById(planScheme.getReceptDeptId());
+                processArgs.addVariable("ocOrg", ocSysUser.getId());
+                processArgs.addVariable("orgLeader", orgleader.getId());
             }
 
             //提交或保存
