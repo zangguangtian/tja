@@ -1059,27 +1059,6 @@
             return this.loadData(filter);
         },
 
-        /*loadData: function(filter) {
-            filter = filter || (this.filtering ? this.getFilter() : {});
-
-            $.extend(filter, this._loadStrategy.loadParams(), this._sortingParams());
-
-            var args = this._callEventHandler(this.onDataLoading, {
-                filter: filter
-            });
-
-            return this._controllerCall("loadData", filter, args.cancel, function(loadedData) {
-                if(!loadedData)
-                    return;
-
-                this._loadStrategy.finishLoad(loadedData);
-
-                this._callEventHandler(this.onDataLoaded, {
-                    data: loadedData
-                });
-            });
-        },*/
-
         loadData: function(filter) {
             filter = filter || (this.filtering ? this.getFilter() : {});
 
@@ -1090,22 +1069,6 @@
             });
 
             return this._controllerCall("loadData", filter, args.cancel, function(loadedData) {
-            	
-            	if(loadedData.data != null && loadedData.data != 'undefined' && loadedData.data != ''){
-            		var standardPriceData = loadedData.data;
-            		for(var i =0;i<standardPriceData.length;i++){
-            			var codes = standardPriceData[i].codes;
-            			var values = standardPriceData[i].values;
-            			var dataCodes = codes.split(",");
-            			var dataValues = values.split(",");
-            			for(var j = 0;j<dataCodes.length;j++){
-            				var priceData = standardPriceData[i];
-            				//standardPriceData[i].code = dataValues[j];
-            				priceData[""+dataCodes[j]+""] = dataValues[j];
-            			}
-            		}
-            	}
-            	
                 if(!loadedData)
                     return;
 
@@ -1116,7 +1079,7 @@
                 });
             });
         },
-        
+
         getFilter: function() {
             var result = {};
             this._eachField(function(field) {
