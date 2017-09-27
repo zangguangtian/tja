@@ -16,7 +16,7 @@
 	<center>
 		<h3>方案产值策划</h3>
 	</center>
-	<div class="">
+	<div class='<c:if test="${not empty print }">print</c:if>'>
 		<div class="form">
             <div class="row">
                 <div class="col-lg-3" style="text-align:center;margin-top:17px;padding-right:30px;">
@@ -92,7 +92,7 @@
 						<label class="control-label col-md-3">方案产值(¥)</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-							<input type="text" class="form-control text-right" data-rule-number="true" name="schemeYield" disabled data-rule-required="true" value="${planScheme.schemeYield}">
+							<input type="text" class="form-control" data-rule-number="true" name="schemeYield" disabled data-rule-required="true" value="${planScheme.schemeYield}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
@@ -177,6 +177,35 @@ $(document).on("click", "#reject-btn", function(){
         }});
     }
 });	
+
+$(function(){
+	initTotal();
+});
+
+function initTotal(){
+	var flag = true;
+	var totalRefRate = 0.00;
+	var totalRefYield = 0.00;
+	jQuery.each($("#designTeam tbody tr:not(:last)"),function(index,item){
+		var _this = $(item);
+		var refRate = _this.find("input[name$='refRate']").val();
+		var refYield = _this.find("input[name$='refYield']").val();
+		if(refYield == '' || typeof refYield == 'undefined' || isNaN(refYield)){
+			refYield = 0;
+		  }
+		  if(refRate == '' || typeof refRate == 'undefined' || isNaN(refRate)){
+			  refRate = 0;
+		  }
+		totalRefRate = new Number(totalRefRate) + new Number(refRate);
+		totalRefYield = new Number(totalRefYield) + new Number(refYield);
+	});
+	if(new Number(totalRefRate) !=100){
+		flag = false;
+	}
+	$("#designTeam tr.total").find("td:eq(1)").text(new Number(totalRefRate).toFixed(2));
+	$("#designTeam tr.total").find("td:eq(2)").text(new Number(totalRefYield).toFixed(2));
+	return flag;
+}
 
 /*打印预览*/
 jQuery("#printview-btn").dfprint({

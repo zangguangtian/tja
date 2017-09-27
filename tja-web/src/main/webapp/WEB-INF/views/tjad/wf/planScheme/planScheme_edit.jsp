@@ -23,18 +23,16 @@
                                                      流水号:${planScheme.seqNo}
                 </div>
                 <div class="col-lg-9 text-right">
-                    <input type="button" value="保存" class="btn blue save" onclick="save(0)">
-                    <input type="button" value="提交" class="btn blue submit" onclick="save(1)">
-                    <%-- <c:if test="${tModel.cticket.canDel }">
-		                <input class="btn-save sub" type="button" value="删除" onclick="save(9)"/>
-		            </c:if>
-					<c:if test="${empty tModel.cticket.procId }">
-						<input class="btn blue submit" type="button" value="提交"  onclick="save(1)"/>
-						<input class="btn blue save" type="button" value="保存" onclick="save(0)"/>
-					</c:if>
-				    <c:if test="${not empty tModel.cticket.procId }">
-						<input class="btn-save sub" type="button" value="重新提交" onclick="save(1)"/>
-		           	</c:if> --%>
+                    <c:if test="${wfFlowMain.canDel }">
+		                <input class="btn blue save" type="button" value="删除" onclick="save(9)"/>
+		            </c:if> 
+	                <c:if test="${empty wfFlowMain.procId }">
+	                    <input type="button" value="保存" class="btn blue save" onclick="save(0)">
+	                    <input type="button" value="提交" class="btn blue submit" onclick="save(1)">
+	                </c:if>
+	                <c:if test="${not empty wfFlowMain.procId }">
+						<input class="btn blue save" type="button" value="重新提交" onclick="save(1)"/>
+		           	</c:if>
                 </div>
             </div>
 			<!-- BEGIN FORM-->
@@ -97,7 +95,7 @@
 						<label class="control-label col-md-3">方案产值(¥)</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-							<input type="text" class="form-control text-right" data-rule-number="true" name="schemeYield" data-rule-required="true" value="${planScheme.schemeYield}">
+							<input type="text" class="form-control" data-rule-number="true" name="schemeYield" data-rule-required="true" value="${planScheme.schemeYield}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
@@ -109,18 +107,6 @@
 			            	<a id="secOrg" title="选择" href="javascript:void(0);" class="icon-select"></a>
 						</div>
 					</div>
-					<%-- <div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">概况</label>
-						<div class="col-md-8">
-							<input type="text" class="form-control" name="schemeOverview" value="${planScheme.schemeOverview}">
-						</div>
-					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">备注</label>
-						<div class="col-md-8">
-							<input type="text" class="form-control" name="remark" value="${planScheme.remark}">
-						</div>
-					</div> --%>
 					
 					<div class="form-group col-lg-12 " style="margin-left: 4%">
 						<label class="control-label col-md-1">概况</label>
@@ -345,8 +331,8 @@
 		var flag = false;
 	    if(status == "9"){
 	        $.jalert({"jatext":"确认删除？<br>点[确定]：执行删除操作<br>点[取消]：放弃删除操作", "jatype":"confirm", "onConfirm":function(){
-	        	 flag = true;
- 			}});
+	        	ajaxSave(true,status);
+	        }});
 	        
 	    }else{
 	    	if (jQuery("#saveForm").valid()) {
@@ -358,7 +344,11 @@
 	                flag = false;
 	    		}
 	    	}
+	    	ajaxSave(flag,status);
 	    }
+	}
+	
+	function ajaxSave(flag,status){
 		var url ="${site}/admin/wf/planScheme/ajax/esave";
 	    if (flag) {
 	    	$("input[name='auditStatus']").val(status);
@@ -382,7 +372,6 @@
 	        });
 	    }
 	}
-	
 </script>
 
 </body>

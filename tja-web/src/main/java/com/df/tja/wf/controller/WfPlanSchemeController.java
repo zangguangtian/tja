@@ -15,6 +15,8 @@ package com.df.tja.wf.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -171,6 +173,12 @@ public class WfPlanSchemeController extends WfBaseController {
         ins.put("applyer", scheme.getCreator());
         ins.put("auditStatus", scheme.getAuditStatus());
         checkOperate(ins, modelMap);
+
+        HttpServletRequest request = HttpUtil.getHttpServletRequest();
+        //打印预览
+        if (request.getRequestURI().contains("/toprint")) {
+            modelMap.put("print", "print");
+        }
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addAllObjects(modelMap);
