@@ -13,6 +13,7 @@ package com.df.tja.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -72,6 +73,12 @@ public class OcPeriodManage extends BaseDomain {
 
     /** 属性：备注 */
     private String remark;
+
+    /** ex：创建人 */
+    private String creatorName;
+
+    /** ex：创建人 */
+    private String modifierName;
 
     /**
      * <p> 属性：typeCode的Getter方法. </p>
@@ -282,6 +289,44 @@ public class OcPeriodManage extends BaseDomain {
     @Column(name = "MODIFY_DATE")
     public java.util.Date getModifyDate() {
         return modifyDate;
+    }
+
+    /**
+     * <p> 属性creatorName的Getter方法. </p>
+     * 
+     * @return 返回creatorName属性的值
+     */
+    @Transient
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    /**
+     * <p> 属性creatorName的Setter方法. </p>
+     * 
+     * @param creatorName 为属性creatorName设置的值
+     */
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
+
+    /**
+     * <p> 属性modifierName的Getter方法. </p>
+     * 
+     * @return 返回modifierName属性的值
+     */
+    @Transient
+    public String getModifierName() {
+        return modifierName;
+    }
+
+    /**
+     * <p> 属性modifierName的Setter方法. </p>
+     * 
+     * @param modifierName 为属性modifierName设置的值
+     */
+    public void setModifierName(String modifierName) {
+        this.modifierName = modifierName;
     }
 
     public boolean equals(Object o) {
