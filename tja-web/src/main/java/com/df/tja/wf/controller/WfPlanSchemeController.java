@@ -119,7 +119,7 @@ public class WfPlanSchemeController extends WfBaseController {
             if (WfConstant.AuditStatus.AUDITING.equals(auditStatus)) {
                 //向processArgs中传流程参数
 
-                SysUser ocSysUser = userService.queryRoleUser(WfConstant.FlowTaskRole.YUNYING, procKey);
+                SysUser ocSysUser = userService.queryRoleUser(WfConstant.FlowTaskRole.YUNYING);
                 SysUser orgleader = userService.queryOrgLeaderById(planScheme.getReceptDeptId());
                 processArgs.addVariable("ocOrg", ocSysUser.getId());
                 processArgs.addVariable("orgLeader", orgleader.getId());
