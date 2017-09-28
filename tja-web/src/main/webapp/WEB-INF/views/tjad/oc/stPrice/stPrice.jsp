@@ -137,6 +137,7 @@
 				                return "分类是必填项!";
 				            }
 				        }, 
+				        css: "jsgrid-form-control",
 				        filtering:true
 					},{
 						name : "typeCode",
@@ -144,6 +145,7 @@
 						type: "text",
 						width : "10%",
 						filtering:true,
+						css: "jsgrid-form-control",
 						validate: [  {
 				            validator: "required",
 				            message: function(value, item) {
@@ -182,6 +184,7 @@
 						title : "类型名称",
 						type : "text",
 						width : "20%",
+						css: "jsgrid-form-control",
 						filtering:true
 					}, {
 						name : "unitPrice",
@@ -189,6 +192,7 @@
 						type : "text",
 						validate:"number",
 						width : "10%",
+						css: "jsgrid-form-control",
 						filtering:false
 					}, 
 					${gridModel},
@@ -197,11 +201,13 @@
 						title : "备注",
 						type : "text",
 						width : "10%",
+						css: "jsgrid-form-control",
 						filtering:false
 					},{
 						type : "control"
 					}]
 				});
+			 $("input").addClass("form-control");
 		});
 		
 		//首页、上一页、下一页、尾页事件

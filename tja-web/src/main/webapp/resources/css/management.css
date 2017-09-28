@@ -240,3 +240,28 @@ input[type="button"],input[type="submit"],input[type="reset"]{ cursor:pointer; }
 #goPage{
 	width: 25px;
 }
+
+/*去掉数字框的上下箭头 开始*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0; 
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+/*去掉数字框的上下箭头 结束*/
+
+/*行编辑 输入框样式 开始*/
+.jsgrid-form-control input{
+    border-radius: 4px !important;
+    font-size: 12px;
+    height: 25px;
+}
+
+.jsgrid-form-control input:focus{
+    outline: none;
+    border: 1px solid #36c6d3 !important;
+}
+/*行编辑 输入框样式 结束*/
