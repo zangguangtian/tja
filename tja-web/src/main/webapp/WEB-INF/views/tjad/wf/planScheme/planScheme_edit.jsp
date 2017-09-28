@@ -123,14 +123,14 @@
 
 					<h3 class="form-tit col-lg-12">设计团队</h3>
 					<div class="col-lg-5 ">
-						<div class="row clearfix">
+						<div class="clearfix">
 							<div class="col-lg-12 text-right col-md-4 col-sm-4 col-xs-4">
 								<input type="button" class="btn blue btn_tj" value="添加"/> 
 							</div>
 						</div>
 						<table class="table table-bordered edit" id="designTeam">
 							<thead>
-								<tr class="row">
+								<tr>
 									<th  class="text-center col-lg-4">姓名</th>
 									<th class="text-center">比例(%)※</th>
 									<th class="text-center">产值</th>
@@ -139,7 +139,7 @@
 							<tbody>
 							    <c:if test="${not empty shemeTeams}">
 							      <c:forEach var="shemeTeam" items="${shemeTeams}" varStatus="st">
-							        <tr class="row">
+							        <tr>
 										<td  class="text-center col-lg-4">${shemeTeam.staffName }</td>
 										<td  class=" col-lg-4">
 										<input type="hidden" name="shemeTeams[${st.index}].id" class="text-right" value="${shemeTeam.id }">
@@ -152,7 +152,7 @@
 							      </c:forEach>
 							    </c:if>
 							
-								<tr class="row total">
+								<tr class="total">
 									<td  class="text-center col-lg-4">合计</td>
 									<td  class="col-lg-4 text-right"></td>
 									<td  class=" col-lg-4 text-right"></td>
@@ -167,7 +167,7 @@
 			</form>
 			<!-- END FORM-->
 			<table id="clone_text" style="display: none">
-				<tr class="row">
+				<tr>
 					<td  class="text-center col-lg-4"></td>
 					<td  class=" col-lg-4">
 					<input type="hidden" name="shemeTeams[{0}].id" class="text-right">

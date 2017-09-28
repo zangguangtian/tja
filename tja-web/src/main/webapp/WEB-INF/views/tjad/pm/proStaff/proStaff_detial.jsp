@@ -74,7 +74,7 @@
 		<h4>项目成员</h4>
 		<table class="table table-bordered edit">
 			<thead>
-				<tr class="row">
+				<tr>
 					<th class="text-center col-md-1">序号</th>
 					<th class="text-center col-md-1">专业</th>
 					<th class="text-center col-md-1">项目角色</th>
@@ -86,7 +86,7 @@
 			</thead>
 			<tbody>
 			<c:forEach items="${proStaffList }" var="staff" varStatus="s">
-				<tr class="row">
+				<tr>
 					<td class="text-center">
 						${s.index+1 }
 						<input name="proStaffList[${s.index}].id" value="${staff.id }" type="hidden">

@@ -185,27 +185,27 @@
 				            	<div class="col-lg-5 ">
 									<table class="table table-bordered edit">
 										<thead>
-											<tr class="row form-group">
+											<tr class="form-group">
 												<th class="text-center col-lg-4">角色</th>
 												<th class="text-center">分配比例(%)<span class="required">※</span></th>
 											</tr>
 										</thead>
 										<tbody>
-											<tr class="row form-group">
+											<tr class="form-group">
 												<td class="text-center col-lg-4">项目负责人</td>
 												<td class="col-lg-8 input-icon left">
 													<i class="fa"></i>
 													<input name="projectExtend.principalRate" value="${project.projectExtend.principalRate}" onkeyup="rateAdd()" type="text" placeholder="0.00" data-rule-required="true" data-rule-number="true" class="text-right">
 												</td>
 											</tr>
-											<tr class="row form-group">
+											<tr class="form-group">
 												<td class="text-center col-lg-4">项目经理</td>
 												<td class="col-lg-8 input-icon left">
 													<i class="fa"></i>
 													<input name="projectExtend.pmRate" value="${project.projectExtend.pmRate}" onkeyup="rateAdd()" type="text" placeholder="0.00" data-rule-required="true" data-rule-number="true" class="text-right">
 												</td>
 											</tr>
-											<tr class="row">
+											<tr>
 												<td class="text-center col-lg-4">合计</td>
 												<td class="col-lg-8 text-right" id="rateSum">${project.projectExtend.principalRate + project.projectExtend.pmRate}</td>
 											</tr>
@@ -219,7 +219,7 @@
 				       			<div class="col-lg-5 ">
 									<table class="table table-bordered edit">
 										<thead>
-											<tr class="row form-group">
+											<tr class="form-group">
 												<th class="text-center col-lg-4">角色</th>
 												<th class="text-center">分配比例(%)<span class="required">※</span></th>
 											</tr>
@@ -228,7 +228,7 @@
 											<c:set var="rateIndex" value="0"/>
 											<c:forEach items="${project.majorRoleRateList }" var="rate" varStatus="s">
 											<c:if test="${rate.allotCategory eq '1000'}">
-												<tr class="row form-group">
+												<tr class="form-group">
 													<td class="text-center col-lg-4">${rate.allotName }</td>
 													<td class="col-lg-8 input-icon left">
 														<i class="fa"></i>
@@ -252,7 +252,7 @@
 				       			<div class="col-lg-5 ">
 									<table class="table table-bordered edit">
 										<thead>
-											<tr class="row">
+											<tr>
 												<th class="text-center col-lg-4">专业</th>
 												<th class="text-center">分配比例(%)</th>
 											</tr>
@@ -261,14 +261,14 @@
 											<c:set var="rateSum" value="0"/>
 											<c:forEach items="${project.majorRoleRateList }" var="rate" varStatus="s">
 											<c:if test="${rate.allotCategory eq '2000'}">
-												<tr class="row">
+												<tr>
 													<td class="text-center col-lg-4">${rate.allotName }</td>
 													<td class="col-lg-8 text-right">${rate.allotRate }</td>
 												</tr>
 											<c:set var="rateSum" value="${rateSum + rate.allotRate }"/>
 											</c:if>
 											</c:forEach>
-												<tr class="row">
+												<tr>
 													<td class="text-center col-lg-4">合计</td>
 													<td class="col-lg-8 text-right">${rateSum }</td>
 												</tr>

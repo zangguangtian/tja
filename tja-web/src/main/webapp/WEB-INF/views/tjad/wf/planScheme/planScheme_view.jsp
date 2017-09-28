@@ -119,7 +119,7 @@
 					<div class="col-lg-5 ">
 						<table class="table table-bordered edit" id="designTeam">
 							<thead>
-								<tr class="row">
+								<tr>
 									<th  class="text-center col-lg-4">姓名</th>
 									<th class="text-center">比例(%)※</th>
 									<th class="text-center">产值</th>
@@ -128,7 +128,7 @@
 							<tbody>
 							    <c:if test="${not empty shemeTeams}">
 							      <c:forEach var="shemeTeam" items="${shemeTeams}" varStatus="st">
-							        <tr class="row">
+							        <tr>
 										<td  class="text-center col-lg-4">${shemeTeam.staffName }</td>
 										<td  class=" col-lg-4">
 										<input type="text" name="shemeTeams[${st.index}].refRate" data-rule-number="true" class="text-right" value="${shemeTeam.refRate }" disabled>
@@ -138,7 +138,7 @@
 							      </c:forEach>
 							    </c:if>
 							
-								<tr class="row total">
+								<tr class="total">
 									<td  class="text-center col-lg-4">合计</td>
 									<td  class="col-lg-4 text-right"></td>
 									<td  class=" col-lg-4 text-right"></td>

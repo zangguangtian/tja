@@ -98,24 +98,24 @@
                         </div>
                         <table class="table table-bordered">
                             <thead>
-                                <tr class="row">
+                                <tr >
                                     <th  class="text-center col-lg-4">姓名</th>
                                     <th class="text-center">工作量(%)※</th>
                                     <th class="text-center">产值</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="row">
+                                <tr >
                                     <td  class="text-center col-lg-4">张三</td>
                                     <td  class=" col-lg-4"><input type="text" placeholder="123" class="text-right"></td>
                                     <td  class=" col-lg-4 text-right">560001</td>
                                 </tr>
-                                <tr class="row">
+                                <tr >
                                     <td  class="text-center col-lg-4">李四四</td>
                                     <td  class=" col-lg-4"><input type="text" placeholder="123" class="text-right"></td>
                                     <td  class=" col-lg-4 text-right">400003</td>
                                 </tr>
-                                <tr class="row">
+                                <tr >
                                     <td  class="text-center col-lg-4">合计</td>
                                     <td  class="col-lg-4 text-right">00000</td>
                                     <td  class=" col-lg-4 text-right">411027</td>
