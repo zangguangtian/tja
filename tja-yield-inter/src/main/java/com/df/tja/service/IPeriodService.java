@@ -15,6 +15,7 @@ package com.df.tja.service;
 import java.util.List;
 
 import com.df.framework.base.service.IBaseService;
+import com.df.framework.exception.LogicalException;
 import com.df.framework.hibernate.persistence.Pagination;
 import com.df.tja.domain.OcPeriodAdvanceFill;
 import com.df.tja.domain.OcPeriodManage;
@@ -50,7 +51,7 @@ public interface IPeriodService extends IBaseService {
      * @param ocPeriodManage
      * @return 期间ID
      * */
-    String createOrModifyPeriod(OcPeriodManage ocPeriodManage) throws RuntimeException;
+    String createOrModifyPeriod(OcPeriodManage ocPeriodManage) throws RuntimeException, LogicalException;
 
     /**
      * <p>描述 :查询 期间提前上报 </p>

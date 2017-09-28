@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.df.framework.base.service.impl.BaseServiceImpl;
+import com.df.framework.exception.LogicalException;
 import com.df.framework.hibernate.persistence.Pagination;
 import com.df.framework.util.LoggerUtil;
 import com.df.framework.util.StringUtil;
@@ -56,7 +57,7 @@ public class PeriodServiceImpl extends BaseServiceImpl implements IPeriodService
     }
 
     @Override
-    public String createOrModifyPeriod(OcPeriodManage ocPeriodManage) throws RuntimeException {
+    public String createOrModifyPeriod(OcPeriodManage ocPeriodManage) throws RuntimeException, LogicalException {
         String id = ocPeriodManage.getId();
         try {
             // “类型”+“期间”在已保存的记录中不得重复，如果重复，提示“该类型的期间已经存在”
@@ -65,7 +66,7 @@ public class PeriodServiceImpl extends BaseServiceImpl implements IPeriodService
             opm.setPeriodName(ocPeriodManage.getPeriodName());
             List<OcPeriodManage> opmCheck = this.queryByCondition(OcPeriodManage.class, opm);
             if (opmCheck != null && !opmCheck.isEmpty() && !opmCheck.get(0).getId().equals(id)) {
-                throw new RuntimeException("该类型的期间已经存在");
+                throw new LogicalException("该类型的期间已经存在");
             }
 
             if (StringUtil.isBlank(id)) {
@@ -74,6 +75,8 @@ public class PeriodServiceImpl extends BaseServiceImpl implements IPeriodService
             } else {
                 this.modify(OcPeriodManage.class, ocPeriodManage);
             }
+        } catch (LogicalException e) {
+            throw e;
         } catch (Exception e) {
             LoggerUtil.error(PeriodServiceImpl.class, e.getMessage(), e);
             throw new RuntimeException(e);

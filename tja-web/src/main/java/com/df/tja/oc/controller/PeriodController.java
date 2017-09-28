@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.df.framework.base.controller.BaseController;
+import com.df.framework.exception.LogicalException;
 import com.df.framework.hibernate.persistence.Pagination;
 import com.df.framework.util.StringUtil;
 import com.df.tja.domain.OcPeriodAdvanceFill;
@@ -88,9 +89,13 @@ public class PeriodController extends BaseController {
             resultmap.put("periodId", periodId);
             resultmap.put("flag", "true");
             resultmap.put("msg", SAVE_SUCCESS);
+        } catch (LogicalException e) {
+            resultmap.put("flag", "false");
+            resultmap.put("msg", e.getMessage());
+            logger.error("", e);
         } catch (RuntimeException e) {
             resultmap.put("flag", "false");
-            resultmap.put("msg", "保存失败:" + e.getMessage());
+            resultmap.put("msg", "保存失败");
             logger.error("", e);
         }
         return resultmap;
