@@ -15,6 +15,7 @@ package com.df.tja.service;
 import java.util.List;
 import java.util.Map;
 
+import com.df.framework.base.service.IBaseService;
 import com.df.framework.exception.LogicalException;
 import com.df.framework.hibernate.persistence.Pagination;
 import com.df.tja.domain.OcStandardPrice;
@@ -34,7 +35,7 @@ import com.df.tja.domain.OcStandardPrice;
  * 
  */
 
-public interface IStandardPriceService {
+public interface IStandardPriceService extends IBaseService {
 
     /**
      * <p>描述 : </p>

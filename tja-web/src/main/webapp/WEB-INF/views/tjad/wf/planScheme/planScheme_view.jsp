@@ -10,6 +10,19 @@
     <%--每个jsp页面所在菜单的treePath属性值 --%>
     <df:readProp var="menu-path" value="wf.planScheme.menu.path" scope="request"  />
     <link href="${site }/resources/css/management.css?v=${buildVersion}" rel="Stylesheet" type="text/css">
+    <style type="text/css">
+       .printSeq{
+        text-align: left;
+	    margin-top: 17px;
+	    padding-right: 30px;
+	    margin-left: 6%;
+       }
+       .seq{
+        text-align:center;
+        margin-top:17px;
+        padding-right:30px;
+       }
+    </style>
 </head>
 <body>
  <div class="">
@@ -19,7 +32,7 @@
 	<div class='<c:if test="${not empty print }">print</c:if>'>
 		<div class="form">
             <div class="row">
-                <div class="col-lg-3" style="text-align:center;margin-top:17px;padding-right:30px;">
+                <div class='col-lg-3 <c:if test="${not empty print }">printSeq</c:if> <c:if test="${empty print }">seq</c:if>'>
                                                      流水号:${planScheme.seqNo}
                 </div>
                 <div class="col-lg-9 text-right">
@@ -89,7 +102,7 @@
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">方案产值(¥)</label>
+						<label class="control-label col-md-3">方案产值(￥)</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
 							<input type="text" class="form-control" data-rule-number="true" name="schemeYield" disabled data-rule-required="true" value="${planScheme.schemeYield}">
@@ -102,18 +115,18 @@
 			            	<input type="text" id="orgName" class="form-control col-md-3" value="${planScheme.orgName}" data-rule-required="true" disabled>
 						</div>
 					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">概况</label>
-						<div class="col-md-8">
-							<input type="text" class="form-control" name="schemeOverview" value="${planScheme.schemeOverview}" disabled>
+					<div class="form-group col-lg-12 " style="margin-left: 4%">
+						<label class="control-label col-md-1">概况</label>
+						<div class="col-md-10">
+						    <textarea class="form-control" rows="3" name="schemeOverview" disabled>${planScheme.schemeOverview}</textarea>
 						</div>
 					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">备注</label>
-						<div class="col-md-8">
-							<input type="text" class="form-control" name="remark" value="${planScheme.remark}" disabled>
+					<div class="form-group col-lg-12 " style="margin-left: 4%">
+						<label class="control-label col-md-1">备注</label>
+						<div class="col-md-10">
+							<textarea class="form-control" rows="3" name="remark" disabled>${planScheme.remark}</textarea>
 						</div>
-					</div>
+					</div> 
 
 					<h3 class="form-tit col-lg-12">设计团队</h3>
 					<div class="col-lg-5 ">

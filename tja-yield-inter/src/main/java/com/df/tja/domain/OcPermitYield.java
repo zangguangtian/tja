@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -62,6 +63,27 @@ public class OcPermitYield extends BaseDomain {
 
     /** 属性：备注 */
     private java.lang.String remark;
+
+    /** 以下是非持久性字段 */
+
+    private java.lang.Integer pageIndex;
+
+    private java.lang.Integer pageSize;
+
+    /** 属性：序号 */
+    private Integer number;
+
+    /** 属性：项目编号 */
+    private java.lang.String proCode;
+
+    /** 属性：项目名称 */
+    private java.lang.String proName;
+
+    /** 属性：期间名称 */
+    private java.lang.String periodName;
+
+    /** 属性：专业名称 */
+    private java.lang.String majorName;
 
     /**
      * <p> 属性：periodId的Getter方法. </p>
@@ -196,6 +218,69 @@ public class OcPermitYield extends BaseDomain {
     @Column(name = "MODIFY_DATE")
     public java.util.Date getModifyDate() {
         return modifyDate;
+    }
+
+    @Transient
+    public java.lang.Integer getPageIndex() {
+        return pageIndex;
+    }
+
+    public void setPageIndex(java.lang.Integer pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
+    @Transient
+    public java.lang.Integer getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(java.lang.Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    @Transient
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    @Transient
+    public java.lang.String getProCode() {
+        return proCode;
+    }
+
+    public void setProCode(java.lang.String proCode) {
+        this.proCode = proCode;
+    }
+
+    @Transient
+    public java.lang.String getProName() {
+        return proName;
+    }
+
+    public void setProName(java.lang.String proName) {
+        this.proName = proName;
+    }
+
+    @Transient
+    public java.lang.String getPeriodName() {
+        return periodName;
+    }
+
+    public void setPeriodName(java.lang.String periodName) {
+        this.periodName = periodName;
+    }
+
+    @Transient
+    public java.lang.String getMajorName() {
+        return majorName;
+    }
+
+    public void setMajorName(java.lang.String majorName) {
+        this.majorName = majorName;
     }
 
     public boolean equals(Object o) {

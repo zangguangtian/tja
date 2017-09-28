@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import com.df.activiti.constant.WfConstant;
 import com.df.activiti.domain.ProcessArgs;
-import com.df.activiti.domain.WfFlowMain;
 import com.df.framework.base.service.impl.BaseServiceImpl;
 import com.df.project.domain.cust.CustProject;
 import com.df.project.service.IProjectService;
@@ -105,9 +104,6 @@ public class WfPlanSchemeServiceImpl extends BaseServiceImpl implements IWfPlanS
                 CustProject custProject = projectService.queryProInfoById(scheme.getProId());
                 attributes.put("project", custProject);
             }
-
-            WfFlowMain wfFlowMain = queryByPrimaryKey(WfFlowMain.class, id);
-            attributes.put("wfFlowMain", wfFlowMain);
 
         } catch (Exception e) {
             throw new RuntimeException(e);

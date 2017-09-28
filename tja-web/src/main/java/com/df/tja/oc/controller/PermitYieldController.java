@@ -3,9 +3,9 @@
  *
  * com.df.tja.oc.controller
  *
- * StandardPriceController.java
+ * PermitYieldController.java
  * 
- * 2017年9月23日-上午11:00:16
+ * 2017年9月27日-下午4:35:40
  *
  * 2017 上海一勤-版权所有 
  */
@@ -24,19 +24,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.df.framework.base.controller.BaseController;
-import com.df.framework.exception.LogicalException;
 import com.df.framework.hibernate.persistence.Pagination;
-import com.df.tja.domain.OcStandardPrice;
-import com.df.tja.service.IStandardPriceService;
+import com.df.framework.sys.domain.SysConfig;
+import com.df.framework.sys.service.ISysConfigService;
+import com.df.tja.constant.TjaConstant;
+import com.df.tja.domain.OcPermitYield;
+import com.df.tja.service.IPermitYieldService;
 
 /**
- * <p>StandardPriceController</p>
+ * <p>PermitYieldController</p>
  * 
  * <p>描述：</p>
  *
  * <p>备注：</p>
  * 
- * <p>2017年9月23日 上午11:00:16</p>
+ * <p>2017年9月27日 下午4:35:40</p>
  *
  * @author wang.changjiu
  * 
@@ -44,15 +46,18 @@ import com.df.tja.service.IStandardPriceService;
  * 
  */
 @Controller
-@RequestMapping("/admin/oc/stPrice")
-public class StandardPriceController extends BaseController {
+@RequestMapping("/admin/oc/permitYield")
+public class PermitYieldController extends BaseController {
 
     @Autowired
-    private IStandardPriceService standardPriceService;
+    private IPermitYieldService permitYieldService;
+
+    @Autowired
+    private ISysConfigService configService;
 
     /**
      * 
-     * <p>描述 : 进入页面</p>
+     * <p>描述 :进入页面 </p>
      *
      * @param model
      * @return
@@ -60,32 +65,22 @@ public class StandardPriceController extends BaseController {
      */
     @RequestMapping(value = "/topage", method = {RequestMethod.GET, RequestMethod.POST})
     public String toPage(Model model) throws RuntimeException {
-        Map<String, Object> outparms = new HashMap<String, Object>();
-        standardPriceService.queryStandardPriceInfo(outparms);
-        model.addAllAttributes(outparms);
-        return "/tjad/oc/stPrice/stPrice";
+        return "/tjad/oc/ptYield/ptYield";
     }
 
-    /**
-     * 
-     * <p>描述 : </p>
-     *
-     * @param ocStandardPrice
-     * @return
-     * @throws RuntimeException
-     */
+
     @RequestMapping(value = "/ajax/search", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> search(OcStandardPrice ocStandardPrice) {
+    public Map<String, Object> search(OcPermitYield ocPermitYield) {
         Map<String, Object> mess = new HashMap<String, Object>();
         try {
             Pagination page = new Pagination();
-            page.setPageNo(ocStandardPrice.getPageIndex());
-            page.setRowsPerPage(ocStandardPrice.getPageSize());
-            ocStandardPrice.setPageIndex(null);
-            ocStandardPrice.setPageSize(null);
-            List<OcStandardPrice> ocStandardPrices = standardPriceService.queryStandardPrices(ocStandardPrice, page);
-            mess.put("data", ocStandardPrices);
+            page.setPageNo(ocPermitYield.getPageIndex());
+            page.setRowsPerPage(ocPermitYield.getPageSize());
+            ocPermitYield.setPageIndex(null);
+            ocPermitYield.setPageSize(null);
+            List<OcPermitYield> ocStandardPrices = permitYieldService.queryPermitYield(ocPermitYield, page);
+             mess.put("data", ocStandardPrices);
             mess.put("itemsCount", page.getTotalCount());
         } catch (RuntimeException e) {
             logger.error("", e);
@@ -95,16 +90,12 @@ public class StandardPriceController extends BaseController {
 
     @RequestMapping(value = "/ajax/asave", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, String> eSave(OcStandardPrice ocStandardPrice) {
+    public Map<String, String> eSave(OcPermitYield ocPermitYield) {
         Map<String, String> mess = new HashMap<String, String>();
         try {
-            standardPriceService.createOrModifyStandardPrice(ocStandardPrice);
+            permitYieldService.createOrModifyPermitYield(ocPermitYield);
             mess.put("flag", "true");
             mess.put("msg", "保存成功!");
-        } catch (LogicalException ex) {
-            mess.put("flag", "false");
-            mess.put("msg", ex.getMess());
-            logger.error("", ex);
         } catch (RuntimeException e) {
             mess.put("flag", "false");
             mess.put("msg", "保存失败!");
@@ -122,17 +113,38 @@ public class StandardPriceController extends BaseController {
      */
     @RequestMapping(value = "/ajax/delete", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
-    public Map<String, String> delete(OcStandardPrice ocStandardPrice) {
+    public Map<String, String> delete(OcPermitYield ocPermitYield) {
         Map<String, String> mess = new HashMap<String, String>();
         try {
-            standardPriceService.deleteStandardPrice(ocStandardPrice);
+            permitYieldService.deleteByIds(OcPermitYield.class, ocPermitYield.getId());
             mess.put("flag", "true");
             mess.put("msg", "删除成功");
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             mess.put("flag", "false");
             mess.put("msg", "删除失败");
             logger.error("", e);
         }
         return mess;
+    }
+
+    /**
+     * 
+     * <p>描述 : 专业下拉框</p>
+     *
+     * @return
+     */
+    @RequestMapping(value = "/ajax/major")
+    @ResponseBody
+    public Map<String, Object> seachMajor() {
+        Map<String, Object> resultmap = new HashMap<String, Object>();
+        try {
+            List<SysConfig> list = configService.querySysConfigsByParentCode(TjaConstant.SysCode.PM_MAJOR_PARENT_CODE);
+            resultmap.put("list", list);
+            resultmap.put("flag", "true");
+        } catch (Exception e) {
+            resultmap.put("flag", "false");
+            logger.error("", e);
+        }
+        return resultmap;
     }
 }

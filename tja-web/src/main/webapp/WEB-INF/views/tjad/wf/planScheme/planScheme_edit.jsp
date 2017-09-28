@@ -23,14 +23,14 @@
                                                      流水号:${planScheme.seqNo}
                 </div>
                 <div class="col-lg-9 text-right">
-                    <c:if test="${wfFlowMain.canDel }">
+                    <c:if test="${planScheme.canDel }">
 		                <input class="btn blue save" type="button" value="删除" onclick="save(9)"/>
 		            </c:if> 
-	                <c:if test="${empty wfFlowMain.procId }">
+	                <c:if test="${empty planScheme.procId }">
 	                    <input type="button" value="保存" class="btn blue save" onclick="save(0)">
 	                    <input type="button" value="提交" class="btn blue submit" onclick="save(1)">
 	                </c:if>
-	                <c:if test="${not empty wfFlowMain.procId }">
+	                <c:if test="${not empty planScheme.procId }">
 						<input class="btn blue save" type="button" value="重新提交" onclick="save(1)"/>
 		           	</c:if>
                 </div>

@@ -178,6 +178,8 @@ public class WfPlanSchemeController extends WfBaseController {
         //打印预览
         if (request.getRequestURI().contains("/toprint")) {
             modelMap.put("print", "print");
+            modelMap.put("definitionKey", "WfPlanScheme");
+            modelMap.put("executionId", scheme.getProcId());
         }
 
         ModelAndView modelAndView = new ModelAndView();

@@ -15,6 +15,7 @@ package com.df.tja.service;
 import java.util.Map;
 
 import com.df.activiti.domain.ProcessArgs;
+import com.df.framework.base.service.IBaseService;
 import com.df.tja.domain.WfPlanScheme;
 
 /**
@@ -32,7 +33,7 @@ import com.df.tja.domain.WfPlanScheme;
  * 
  */
 
-public interface IWfPlanSchemeService {
+public interface IWfPlanSchemeService extends IBaseService {
 
     /**
      * <p>描述 : </p>

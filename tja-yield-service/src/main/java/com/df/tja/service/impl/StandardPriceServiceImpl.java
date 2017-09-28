@@ -28,6 +28,7 @@ import com.df.framework.hibernate.persistence.Pagination;
 import com.df.framework.sys.domain.SysConfig;
 import com.df.framework.sys.service.ISysConfigService;
 import com.df.framework.util.StringUtil;
+import com.df.tja.constant.TjaConstant;
 import com.df.tja.dao.IStandardPriceDao;
 import com.df.tja.domain.OcStandardPrice;
 import com.df.tja.domain.OcStandardRatio;
@@ -63,12 +64,12 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
     @Override
     public void queryStandardPriceInfo(Map<String, Object> outparms) throws RuntimeException {
         List<OcJsGridModel> gridModels = new ArrayList<OcJsGridModel>();
-        List<SysConfig> configs = configService.querySysConfigsByParentCode("PM.MAJOR");
+        List<SysConfig> configs = configService.querySysConfigsByParentCode(TjaConstant.SysCode.PM_MAJOR_PARENT_CODE);
 
         if (configs != null && configs.size() > 0) {
             for (SysConfig sysConfig : configs) {
                 OcJsGridModel gridModel = new OcJsGridModel();
-                gridModel.setCss("checkTotal");
+                gridModel.setCss("checkTotal jsgrid-form-control");
                 gridModel.setName(sysConfig.getConfigCode().replaceAll("\\.", "_"));
                 gridModel.setTitle(sysConfig.getConfigName());
                 gridModel.setType("number");
