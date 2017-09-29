@@ -44,7 +44,7 @@ public class WfPlanSchemeDaoHbmImpl extends BaseDaoHbmImpl implements IWfPlanSch
      * @see com.df.tja.dao.IWfPlanSchemeDao#selectWfShemeTeamsByWfId(java.lang.String)
      */
     @Override
-    public List<WfShemeTeam> selectWfShemeTeamsByWfId(String id) throws Exception {
+    public List<WfShemeTeam> selectWfShemeTeamsByWfId(String id) {
         StringBuilder sql = new StringBuilder("");
         sql.append(" SELECT WS.ID AS id,WS.WF_ID AS wfId,WS.STAFF_ID AS staffId,WS.REF_RATE AS refRate,  ");
         sql.append(" WS.REF_YIELD AS refYield,WS.STAFF_SORT AS staffSort,HS.NAME As staffName            ");
@@ -60,7 +60,7 @@ public class WfPlanSchemeDaoHbmImpl extends BaseDaoHbmImpl implements IWfPlanSch
      * @see com.df.tja.dao.IWfPlanSchemeDao#selectWfPlanSchemeById(java.lang.String)
      */
     @Override
-    public WfPlanScheme selectWfPlanSchemeById(String id) throws Exception {
+    public WfPlanScheme selectWfPlanSchemeById(String id) {
         StringBuilder sql = new StringBuilder("");
         sql.append("SELECT WP.ID AS id, WP.PRO_ID AS proId, WP.ITEM_GRADE AS itemGrade,        ");
         sql.append("  WP.DESIGN_START AS designStart, WP.DESIGN_COMPLETED AS designCompleted,  ");

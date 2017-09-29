@@ -43,7 +43,8 @@ import com.df.tja.domain.OcPermitYield;
 public class PermitYieldDaoHbmImpl extends BaseDaoHbmImpl implements IPermitYieldDao {
 
     /** 
-     * @see com.df.tja.dao.IPermitYieldDao#selectPermitYield(com.df.tja.domain.OcPermitYield, com.df.framework.hibernate.persistence.Pagination)
+     * @see com.df.tja.dao.IPermitYieldDao#selectPermitYield
+     * (com.df.tja.domain.OcPermitYield, com.df.framework.hibernate.persistence.Pagination)
      */
     @Override
     public List<OcPermitYield> selectPermitYield(OcPermitYield ocPermitYield, Pagination pagination) {

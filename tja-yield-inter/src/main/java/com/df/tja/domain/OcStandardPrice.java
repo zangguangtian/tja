@@ -64,9 +64,9 @@ public class OcStandardPrice extends BaseDomain {
     /** 属性：备注 */
     private java.lang.String remark;
 
-    private java.lang.String codes;//xxx-xxx
+    private java.lang.String codes; //xxx-xxx
 
-    private java.lang.String values;//xxx-xxx
+    private java.lang.String values; //xxx-xxx
 
     private java.lang.String keyValue;
 

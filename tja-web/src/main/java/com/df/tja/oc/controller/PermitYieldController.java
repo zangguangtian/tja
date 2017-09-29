@@ -80,7 +80,7 @@ public class PermitYieldController extends BaseController {
             ocPermitYield.setPageIndex(null);
             ocPermitYield.setPageSize(null);
             List<OcPermitYield> ocStandardPrices = permitYieldService.queryPermitYield(ocPermitYield, page);
-             mess.put("data", ocStandardPrices);
+            mess.put("data", ocStandardPrices);
             mess.put("itemsCount", page.getTotalCount());
         } catch (RuntimeException e) {
             logger.error("", e);

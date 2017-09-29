@@ -85,7 +85,8 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
     }
 
     /** 
-     * @see com.df.tja.service.IStandardPriceService#queryStandardPrices(com.df.tja.domain.OcStandardPrice, com.df.framework.hibernate.persistence.Pagination)
+     * @see com.df.tja.service.IStandardPriceService#queryStandardPrices
+     * (com.df.tja.domain.OcStandardPrice, com.df.framework.hibernate.persistence.Pagination)
      */
     @Override
     public List<OcStandardPrice> queryStandardPrices(OcStandardPrice ocStandardPrice, Pagination page)
@@ -148,7 +149,7 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
                                 ocStandardRatio.setStardandId(ocStandardPrice.getId());
                                 addEntity(OcStandardRatio.class, ocStandardRatio);
 
-                            }else {
+                            } else {
                                 //若没有添加  抛出 异常 回滚删除的  数据
                                 throw new LogicalException("数据有误!");
                             }

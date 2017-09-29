@@ -100,7 +100,7 @@ public class ProjectController extends BaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/ajax/proinfo", method = RequestMethod.GET)
-    public Map<String, Object> proInfo(String proId) throws Exception {
+    public Map<String, Object> proInfo(String proId) throws RuntimeException {
         Map<String, Object> params = new HashMap<String, Object>();
         try {
             CustProject custProject = projectService.queryProInfoById(proId);
@@ -109,6 +109,7 @@ public class ProjectController extends BaseController {
         } catch (Exception e) {
             params.put("flag", "false");
             logger.error("", e);
+            throw new RuntimeException(e);
         }
         return params;
     }

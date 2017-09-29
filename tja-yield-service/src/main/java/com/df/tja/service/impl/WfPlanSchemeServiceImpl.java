@@ -19,7 +19,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.df.activiti.constant.WfConstant;
 import com.df.activiti.domain.ProcessArgs;
 import com.df.framework.base.service.impl.BaseServiceImpl;
 import com.df.project.domain.cust.CustProject;
@@ -53,7 +52,8 @@ public class WfPlanSchemeServiceImpl extends BaseServiceImpl implements IWfPlanS
     private IProjectService projectService;
 
     /** 
-     * @see com.df.tja.service.IWfPlanSchemeService#addOrModifyPlanScheme(com.df.tja.domain.WfPlanScheme, com.df.activiti.domain.ProcessArgs, com.df.tja.domain.cust.WfPlanSchemeModel)
+     * @see com.df.tja.service.IWfPlanSchemeService#addOrModifyPlanScheme
+     * (com.df.tja.domain.WfPlanScheme, com.df.activiti.domain.ProcessArgs, com.df.tja.domain.cust.WfPlanSchemeModel)
      */
     @Override
     public void addOrModifyPlanScheme(WfPlanScheme planScheme, ProcessArgs processArgs) throws RuntimeException {
@@ -78,11 +78,6 @@ public class WfPlanSchemeServiceImpl extends BaseServiceImpl implements IWfPlanS
                         addEntity(WfShemeTeam.class, wfShemeTeam);
                     }
                 }
-            }
-
-            //流程提交
-            if (WfConstant.AuditStatus.AUDITING.equals(planScheme.getAuditStatus())) {
-
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

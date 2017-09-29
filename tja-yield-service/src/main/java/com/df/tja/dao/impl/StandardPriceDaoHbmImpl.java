@@ -43,11 +43,11 @@ import com.df.tja.domain.OcStandardPrice;
 public class StandardPriceDaoHbmImpl extends BaseDaoHbmImpl implements IStandardPriceDao {
 
     /** 
-     * @see com.df.tja.dao.IStandardPriceDao#selectStandardPrices(com.df.tja.domain.OcStandardPrice, com.df.framework.hibernate.persistence.Pagination)
+     * @see com.df.tja.dao.IStandardPriceDao#selectStandardPrices
+     * (com.df.tja.domain.OcStandardPrice, com.df.framework.hibernate.persistence.Pagination)
      */
     @Override
-    public List<OcStandardPrice> selectStandardPrices(OcStandardPrice ocStandardPrice, Pagination pagination)
-        throws Exception {
+    public List<OcStandardPrice> selectStandardPrices(OcStandardPrice ocStandardPrice, Pagination pagination) {
         List<OcStandardPrice> list = new ArrayList<OcStandardPrice>();
         StringBuilder sql = new StringBuilder();
         StringBuilder sqlFW = new StringBuilder();

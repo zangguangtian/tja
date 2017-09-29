@@ -54,7 +54,7 @@ public class HrStaffController extends BaseController {
     @RequestMapping(value = "/staff/toselectstaff", method = {RequestMethod.GET, RequestMethod.POST})
     public String toselectstaff(HttpServletRequest request, Model model) throws RuntimeException {
         String callMethod = request.getParameter("callMethod");
-        String openType = request.getParameter("openType");//通用页面选择人员的类型，radio; checkbox; random 三种
+        String openType = request.getParameter("openType"); //通用页面选择人员的类型，radio; checkbox; random 三种
         String userJson = request.getParameter("user");
         OrgPeopleVO vo = new OrgPeopleVO();
         if (StringUtil.isNotBlank(userJson)) {

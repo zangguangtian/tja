@@ -45,7 +45,8 @@ public class PermitYieldServiceImpl extends BaseServiceImpl implements IPermitYi
     private IPermitYieldDao permitYieldDao;
 
     /** 
-     * @see com.df.tja.service.IPermitYieldService#queryPermitYield(com.df.tja.domain.OcPermitYield, com.df.framework.hibernate.persistence.Pagination)
+     * @see com.df.tja.service.IPermitYieldService#queryPermitYield
+     * (com.df.tja.domain.OcPermitYield, com.df.framework.hibernate.persistence.Pagination)
      */
     @Override
     public List<OcPermitYield> queryPermitYield(OcPermitYield ocPermitYield, Pagination page) throws RuntimeException {

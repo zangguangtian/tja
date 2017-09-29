@@ -42,6 +42,6 @@ public interface IStandardPriceDao extends IBaseDao {
      * @param page
      * @return
      */
-    List<OcStandardPrice> selectStandardPrices(OcStandardPrice ocStandardPrice, Pagination page) throws Exception;
+    List<OcStandardPrice> selectStandardPrices(OcStandardPrice ocStandardPrice, Pagination page);
 
 }

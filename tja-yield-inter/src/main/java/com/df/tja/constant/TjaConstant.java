@@ -46,7 +46,7 @@ public abstract class TjaConstant {
      */
     public static class SysCode {
 
-        public final static String PM_MAJOR_PARENT_CODE = "PM.MAJOR";
+        public static final String PM_MAJOR_PARENT_CODE = "PM.MAJOR";
     }
 
 }

@@ -41,7 +41,7 @@ public interface IWfPlanSchemeDao extends IBaseDao {
      * @param id
      * @return
      */
-    List<WfShemeTeam> selectWfShemeTeamsByWfId(String id) throws Exception;
+    List<WfShemeTeam> selectWfShemeTeamsByWfId(String id);
 
     /**
      * <p>描述 : </p>
@@ -49,6 +49,6 @@ public interface IWfPlanSchemeDao extends IBaseDao {
      * @param id
      * @return
      */
-    WfPlanScheme selectWfPlanSchemeById(String id) throws Exception;
+    WfPlanScheme selectWfPlanSchemeById(String id);
 
 }
