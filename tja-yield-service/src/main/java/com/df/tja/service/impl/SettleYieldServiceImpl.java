@@ -169,7 +169,7 @@ public class SettleYieldServiceImpl extends BaseServiceImpl implements ISettleYi
 
             if (validRecord == maxRowIx - 1) {
                 //本次导入无误  将临时表数据 插入到 正式表
-                ocSettleYieldDao.insertMegerSettleYield(date);
+                //ocSettleYieldDao.insertMegerSettleYield(date);
             }
 
         } catch (LogicalException ex) {
