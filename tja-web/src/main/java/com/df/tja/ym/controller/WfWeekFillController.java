@@ -1,0 +1,209 @@
+/**
+ * 项目名称:df-sys-web
+ *
+ * com.df.framework.weekFill.controller
+ *
+ * WfWfWeekFillFillController.java
+ * 
+ * 2017年9月18日-下午4:45:52
+ *
+ * 2017 上海一勤-版权所有 
+ */
+
+package com.df.tja.ym.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.df.activiti.constant.WfConstant;
+import com.df.activiti.controller.WfBaseController;
+import com.df.activiti.domain.ProcessArgs;
+import com.df.activiti.service.IProcessService;
+import com.df.framework.exception.LogicalException;
+import com.df.framework.sys.domain.SysUser;
+import com.df.framework.sys.service.ISysUserService;
+import com.df.framework.util.HttpUtil;
+import com.df.framework.util.StringUtil;
+import com.df.tja.domain.WfWeekFill;
+import com.df.tja.domain.cust.WfWeekFillMore;
+import com.df.tja.service.IWfWeekFillService;
+
+/**
+ * <p>WfWfWeekFillFillController</p>
+ * 
+ * <p>描述：项目周报上报</p>
+ *
+ * <p>备注：</p>
+ * 
+ * <p>2017年9月18日 下午4:45:52</p>
+ *
+ * @author tc
+ * 
+ * @version 1.0.0
+ * 
+ */
+@Controller
+@RequestMapping("/admin/ym/weekFill")
+public class WfWeekFillController extends WfBaseController {
+
+    @Autowired
+    private IWfWeekFillService weekFillService;
+
+    @Autowired
+    private IProcessService processService;
+
+    @Autowired
+    private ISysUserService userService;
+
+    /**
+     * <p>描述 : 列表</p>
+     */
+    @RequestMapping(value = "/list")
+    public String list() {
+        return "/tjad/ym/weekfill/weekfill_list";
+    }
+
+    /**
+     * <p>描述 : 编辑</p>
+     * @param proId 项目ID
+     * @param periodId 期间ID
+     */
+    @RequestMapping(value = "/{proId}")
+    public String edit(@PathVariable("proId") String proId, @RequestParam("periodId") String periodId, Model model)
+        throws RuntimeException {
+        if (!"0".equals(proId)) {
+            WfWeekFillMore weekFill = weekFillService.queryWfWeekFill(proId, periodId);
+            if (WfConstant.AuditStatus.AUDITING.equals(weekFill.getAuditStatus())
+                || WfConstant.AuditStatus.AUDITED.equals(weekFill.getAuditStatus())) {
+                return "redirect:/admin/ym/weekFill/toview/" + WfConstant.Operate.VIEW + "/" + proId + "?periodId="
+                       + periodId;
+            }
+            model.addAttribute("weekFill", weekFill);
+        }
+        return "/tjad/ym/weekfill/weekfill_edit";
+    }
+
+    /**
+     * <p>描述 : 保存</p>
+     * @param weekFill
+     */
+    @ResponseBody
+    @RequestMapping(value = "/ajax/save", method = RequestMethod.POST)
+    public Map<String, String> save(@ModelAttribute WfWeekFill weekFill) {
+        Map<String, String> resultmap = new HashMap<String, String>();
+        String msg = SAVE_SUCCESS;
+        String auditStatus = weekFill.getAuditStatus();
+        try {
+            String procKey = "WfWeekFill";
+            String userId = HttpUtil.getUser().getId();
+            ProcessArgs processArgs = new ProcessArgs(userId, procKey, auditStatus);
+
+            if (WfConstant.AuditStatus.AUDITING.equals(auditStatus)) {
+                // 运营部
+                SysUser ocSysUser = userService.queryRoleUser(WfConstant.FlowTaskRole.YUNYING);
+                processArgs.addVariable("ocOrg", ocSysUser.getId());
+
+                processArgs.addVariable("url", "/admin/ym/weekFill/{formId}");
+            }
+            // 提交或保存
+            if (!WfConstant.AuditStatus.ABANDON.equals(auditStatus)) {
+                weekFillService.addOrModifyWfWeekFill(weekFill, processArgs);
+                if ("1".equals(auditStatus)) {
+                    msg = SUBMIT_SUCCESS;
+                }
+                resultmap.put("msg", msg);
+            } else {
+                // 删除
+                processService.deleteProcessDefinitionByEntity(WfWeekFill.class, weekFill);
+                resultmap.put("msg", "删除成功");
+            }
+            resultmap.put("flag", "true");
+        } catch (LogicalException e) {
+            resultmap.put("flag", "false");
+            resultmap.put("msg", e.getMessage());
+            logger.error("", e);
+        } catch (RuntimeException e) {
+            resultmap.put("flag", "false");
+            resultmap.put("msg", "保存失败");
+            logger.error("", e);
+        }
+        return resultmap;
+    }
+
+    /**
+     * 
+     * <p>描述 :流程展现页面 </p>
+     *
+     * @param proId 项目ID
+     * @param periodId 期间ID
+     * @return
+     * @throws BusinessException
+     */
+    @RequestMapping(value = {"/toview/{operate}/{proId}", "/toprint/{operate}/{proId}"}, method = RequestMethod.GET)
+    public ModelAndView toViewOrApprove(@PathVariable("operate") String operate, @PathVariable("proId") String proId,
+                                        @RequestParam("periodId") String periodId, String view) throws RuntimeException {
+        Map<String, Object> modelMap = new HashMap<String, Object>();
+
+        WfWeekFillMore weekFill = weekFillService.queryWfWeekFill(proId, periodId);
+        modelMap.put("weekFill", weekFill);
+
+        //检查操作
+        Map<String, String> ins = new HashMap<String, String>(0);
+        ins.put("operate", operate);
+        ins.put("procId", weekFill.getProcId());
+        ins.put("applyer", weekFill.getCreator());
+        ins.put("auditStatus", weekFill.getAuditStatus());
+        checkOperate(ins, modelMap);
+
+        ModelAndView modelAndView = new ModelAndView();
+        Integer viewType = StringUtil.isNotBlank(view) ? Integer.valueOf(view) : 10;
+
+        modelAndView.addObject("view", viewType);
+        modelAndView.addAllObjects(modelMap);
+        modelAndView.setViewName("/tjad/ym/weekfill/weekfill_edit");
+        return modelAndView;
+    }
+
+    /**
+     * <p>描述 : 流程审批</p>
+     * 
+     * @param resumeMake
+     * @return
+     */
+    @RequestMapping(value = "/ajax/approve", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, String> wfSubmit(@ModelAttribute WfWeekFill weekFill, Integer view) {
+        Map<String, String> resultmap = new HashMap<String, String>();
+        try {
+            //如果不需要回写业务，可以直接调用processService的approveWf方法，
+            //否则在Service中写接口方法，然后再调用processService中的approveWf方法
+            processService.approveWf(weekFill, null);
+            resultmap.put("flag", "true");
+            String msg = APPROVE_COMPLETE;
+            if (WfConstant.AuditStatus.REVOKE.equals(weekFill.getApprove())) {
+                msg = "撤回成功";
+            }
+            resultmap.put("msg", msg);
+        } catch (LogicalException ex) {
+            resultmap.put("flag", "false");
+            resultmap.put("msg", ex.getMessage());
+        } catch (Exception e) {
+            resultmap.put("flag", "false");
+            resultmap.put("msg", "操作失败");
+            logger.error("", e);
+        }
+        return resultmap;
+    }
+
+}
