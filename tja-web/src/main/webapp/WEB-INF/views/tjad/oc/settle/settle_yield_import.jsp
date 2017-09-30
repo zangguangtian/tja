@@ -29,7 +29,7 @@
 				<div class="form-group col-xs-12 ">
 					<label class="control-label col-xs-2">项目编号</label>
 					<div class="col-xs-3">
-						<select class="form-control">
+						<select class="form-control" name="period">
 							<c:if test="${!empty periodSelect}">
 							<c:forEach items="${periodSelect}" var="period" varStatus="s">
 								<option value="${period.id}">${period.periodName}</option>
@@ -38,18 +38,11 @@
 						</select>
 					</div>
 					<div class="col-xs-4">
-						<!-- <span class="btn btn-success fileinput-button " style="top: -1px;">
-							<span id="fileSpan">选择文件</span>
-							<input id="input_file" type="file" name="file_execl" class="" fileTypes="xls|xlsx">
-					  	</span> --> 
 					  	<div class="uploader" id="uniform-undefined" >
-							<input type="file" name="attach" size="19" style="opacity: 0;width: 85px;" fileTypes="xls|xlsx" placeholder="倒入">
-							<span class="action" style="background-image:url(${site}/resources/images/sprite.png);background-position: center;position: absolute;left: 37%;top: 31%;">导入</span>
+					  	<span class="action" style="background-image:url(${site}/resources/images/sprite.png);background-position: center;position: absolute;left: 37%;top: 31%;">导入</span>
+							<input type="file" name="attach" size="19" style="opacity: 0;width: 85px; height: 100%;cursor:pointer;" fileTypes="xls|xlsx">
 						</div>
 					</div>
-					<!-- <div class="col-xs-1">
-						<input class="form-control" type="button" value="导入">
-					</div> -->
 				</div>
 			</div>
 			</form>
@@ -61,7 +54,7 @@
 </div>
             
 <div class="clearfix"></div>
-
+<script type="text/javascript" src="${site}/resources/js/fileupload/jquery.fileupload.js"></script>
 <script type="text/javascript">
 jQuery(document).on("click",jQuery(" input[type='file'][name='attach']"),function(){
 	$(this).fileupload({

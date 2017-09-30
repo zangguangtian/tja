@@ -12,6 +12,10 @@
 
 package com.df.tja.service;
 
+import java.util.Map;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.df.framework.base.service.IBaseService;
 import com.df.tja.domain.OcSettleYield;
 import com.df.tja.domain.cust.OcSettleYieldMore;
@@ -48,5 +52,14 @@ public interface ISettleYieldService extends IBaseService {
      * @return id
      * */
     String createOrModifySettleYield(OcSettleYield ocSettleYield) throws RuntimeException;
+
+    /**
+     * <p>描述 : 创建倒入文件</p>
+     *
+     * @param attach
+     * @param period
+     * @param results
+     */
+    void createImpSettleYield(MultipartFile attach, String period, Map<String, Object> results) throws RuntimeException;
 
 }

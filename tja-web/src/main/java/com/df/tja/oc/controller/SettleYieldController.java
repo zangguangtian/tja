@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.df.framework.base.controller.BaseController;
 import com.df.tja.domain.OcPeriodManage;
@@ -109,5 +111,32 @@ public class SettleYieldController extends BaseController {
         return "/tjad/oc/settle/settle_yield_import";
     }
 
+    /**
+     * 
+     * <p>描述 : </p>
+     *
+     * @param index
+     * @param attach
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/ajax/upload", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> multUpload(@ModelAttribute("attach") MultipartFile attach, String period) {
+        Map<String, Object> results = new HashMap<String, Object>(0);
+        try {
+            settleYieldService.createImpSettleYield(attach, period, results);
+            results.put("status", "true");
+            results.put("mess", "上传成功!");
+        } catch (RuntimeException ex) {
+            results.put("status", "false");
+            results.put("mess", "上传失败!");
+            if (logger.isEnabledFor(Level.ERROR)) {
+                logger.error("upload failure!", ex);
+            }
+            throw ex;
+        }
+        return results;
+    }
 
 }
