@@ -128,6 +128,7 @@ $(function() {
         	name : "remark",
         	title : "备注",
         	type : "text",
+        	css: "jsgrid-form-control",
         	width : "30%"
         }, {
             type : "control",
