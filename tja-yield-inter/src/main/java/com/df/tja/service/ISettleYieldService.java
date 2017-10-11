@@ -12,11 +12,13 @@
 
 package com.df.tja.service;
 
+import java.util.Date;
 import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import com.df.framework.base.service.IBaseService;
+import com.df.framework.exception.LogicalException;
 import com.df.tja.domain.OcSettleYield;
 import com.df.tja.domain.cust.OcSettleYieldMore;
 
@@ -60,6 +62,15 @@ public interface ISettleYieldService extends IBaseService {
      * @param period
      * @param results
      */
-    void createImpSettleYield(MultipartFile attach, String period, Map<String, Object> results) throws RuntimeException;
+    void createImpSettleYield(MultipartFile attach, String period, Map<String, Object> results)
+        throws RuntimeException, LogicalException;
 
+    /**
+     * 
+     * <p>描述 : </p>
+     *
+     * @param date
+     * @throws RuntimeException
+     */
+    void mergeSettleYield(Date date) throws LogicalException;
 }

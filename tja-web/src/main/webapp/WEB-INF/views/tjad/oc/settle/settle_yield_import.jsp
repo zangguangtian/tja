@@ -47,8 +47,31 @@
 			</div>
 			</form>
 			<!-- END FORM-->
+			 <div class="form-body clearfix showResult" style="display: none">
+			 <div class="form-group col-lg-12 ">
+                 <label class="control-label col-md-3">数据检查结果</label>
+                 <div class="col-md-8">
+                   <span>总记录数：</span>
+                   <span class="total"></span>
+                   <span>正常数据：</span>
+                   <span class="normal"></span>
+                   <span>异常数据：</span>
+                   <span class="error"></span>
+                 </div>
+             </div>
+			</div>
+			<div class="wrapBox ">
+			    <div id="content">
+			    </div>
+			</div>
 			
-            
+			<div style="position: absolute;bottom: 8%;right: 5%;">
+			   	<div class="row">
+			        <div class="col-md-offset-3 col-md-9">
+			            <button type="button" class="btn blue" onclick="save()">确定</button>
+			        </div>
+			   	</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -66,7 +89,7 @@ jQuery(document).on("click",jQuery(" input[type='file'][name='attach']"),functio
 	  	  var goUpload = true;
 	  	  var uploadFile = data.files[0];
 	  	  if (!(/\.(xls|xlsx)$/i).test(uploadFile.name)) {
-	  		  alert('文件类型错误。请上传xls类型文件！');
+	  		jQuery.jalert({"jatext":"文件类型错误。请上传xls类型文件！"});
 	  		  goUpload = false;
 	  	  }
 	  	  if (goUpload == true) {
@@ -78,24 +101,51 @@ jQuery(document).on("click",jQuery(" input[type='file'][name='attach']"),functio
 	    },
 		done: function (e, data) {
 			layer.closeAll('loading');
-			if(!data.result.flag){
+			if(!data.result.status){
 			  if(typeof (data.result.mess.message) == 'undefined'){
-				  alert(data.result.mess);
+				  jQuery.jalert({"jatext":data.result.mess});
 			  }else{
-				  alert(data.result.mess.message); 
+				  jQuery.jalert({"jatext":data.result.mess.message});
 			  }
 			}else{
-			  window.location.href = "${site}imp/expense/toPageCurr.action";
+			 //导入成功  加载通用查询 
+			 jQuery(".showResult").removeAttr("style");
+			 $(".showResult").find("span.total").text(data.result.totalRecord);
+			 $(".showResult").find("span.normal").text(data.result.validRecord);
+			 $(".showResult").find("span.error").text(data.result.errorRecord);
+			 
+			 ajaxImpInfo(data.result.dateFormat);
+			 
 			}
         },
         fail : function(e, data){
         	layer.closeAll('loading');
-    		alert("上传失败");
+    		jQuery.jalert({"jatext":"上传失败"});
         }
  	});
 });
 
+function ajaxImpInfo(date){
+	var sUrl ="${site}/config/ajax/query";
+	jQuery.ajax({
+		type: "POST",
+		url:sUrl,
+		data:{"NO":"OC_SETTLEYIELD_IMP" ,"MODEL":"OC","qarg.date" : date},
+		async: false,
+	    error: function(request) {
+	    	jQuery.jalert({"jatext":"Connection error"});
+	    },
+	    success: function(data) {
+	    	$("#content").empty();
+			$("#content").append(data); 
+	    }
+	});
+}
 
+function save(){
+	window.opener.location.reload(); //刷新父窗口中的网页
+	window.close();//关闭当前窗窗口
+}
 </script>
 </body>
 </html>

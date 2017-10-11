@@ -12,6 +12,7 @@
 
 package com.df.tja.oc.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.df.framework.base.controller.BaseController;
+import com.df.framework.exception.LogicalException;
+import com.df.framework.util.DateUtil;
 import com.df.tja.domain.OcPeriodManage;
 import com.df.tja.domain.OcSettleYield;
 import com.df.tja.service.IPeriodService;
@@ -125,9 +128,25 @@ public class SettleYieldController extends BaseController {
     public Map<String, Object> multUpload(@ModelAttribute("attach") MultipartFile attach, String period) {
         Map<String, Object> results = new HashMap<String, Object>(0);
         try {
+            Date date = new Date(); // 一次导入的统一导入时间
+            results.put("date", date);
+            //写导入表
             settleYieldService.createImpSettleYield(attach, period, results);
+            int validRecord = (int) results.get("validRecord");
+            int maxRowIx = (int) results.get("totalRecord");
+            //导入无误 写入正式表
+            if (validRecord == maxRowIx) {
+                settleYieldService.mergeSettleYield(date);
+            }
+            results.put("dateFormat", DateUtil.format(date, "yyyy-MM-dd HH:mm:ss"));
             results.put("status", "true");
             results.put("mess", "上传成功!");
+        } catch (LogicalException e) {
+            results.put("status", "false");
+            results.put("mess", e.getMessage());
+            if (logger.isEnabledFor(Level.ERROR)) {
+                logger.error("upload failure!", e);
+            }
         } catch (RuntimeException ex) {
             results.put("status", "false");
             results.put("mess", "上传失败!");

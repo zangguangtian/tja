@@ -12,6 +12,8 @@
 
 package com.df.tja.dao;
 
+import java.util.Date;
+
 import com.df.framework.base.dao.IBaseDao;
 import com.df.tja.domain.cust.OcSettleYieldMore;
 
@@ -40,5 +42,12 @@ public interface IOcSettleYieldDao extends IBaseDao {
      * @return
      */
     OcSettleYieldMore querySettleYield(String id);
+
+    /**
+     * <p>描述 : </p>
+     *
+     * @param date
+     */
+    void insertMegerSettleYield(Date date);
 
 }

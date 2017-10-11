@@ -80,12 +80,12 @@ public class SettleYieldServiceImpl extends BaseServiceImpl implements ISettleYi
 
     /** 
      * @see com.df.tja.service.ISettleYieldService#createImpSettleYield
-     * (org.springframework.web.multipart.MultipartFile, java.lang.String, java.util.Map)
+     * (org.springframework.web.multipart.MultipartFile,
+     *  java.lang.String, java.util.Map)
      */
     @Override
     public void createImpSettleYield(MultipartFile attach, String period, Map<String, Object> results)
-        throws RuntimeException {
-
+        throws RuntimeException, LogicalException {
         try {
             InputStream inputStream = attach.getInputStream();
             Sheet sheet;
@@ -103,10 +103,8 @@ public class SettleYieldServiceImpl extends BaseServiceImpl implements ISettleYi
             }
             assert sheet != null;
             int maxRowIx = sheet.getLastRowNum();
-
-            Date date = new Date(); // 一次导入的统一导入时间
-            StringBuffer log = new StringBuffer("");
-
+            Date date = (Date) results.get("date");
+            StringBuffer log;
             int validRecord = 0;
             for (int rowIx = 1; rowIx <= maxRowIx; rowIx++) {
                 boolean flag = true;
@@ -114,21 +112,17 @@ public class SettleYieldServiceImpl extends BaseServiceImpl implements ISettleYi
                 if (row == null) {
                     continue;
                 }
-
-                //项目编号在项目信息表中是否存在（异常信息：项目不存在）；
-                Cell cell = row.getCell(0);
+                log = new StringBuffer("");
+                Cell cell = row.getCell(0); //项目编号在项目信息表中是否存在（异常信息：项目不存在）；
                 String proCode = ExcelHelper.getCellFormatValue(cell);
                 Project entity = new Project();
                 entity.setProCode(proCode);
                 List<Project> list = queryByCondition(Project.class, entity);
                 if (list.size() == 0) {
-                    // 该项目不存在
-                    log.append("项目不存在\n");
+                    log.append("项目不存在\n"); // 该项目不存在
                     flag = false;
                 }
-
-                //预估产值是否为>0的有效数值（异常信息：预估产值无效）；
-                cell = row.getCell(2);
+                cell = row.getCell(2); //预估产值是否为>0的有效数值（异常信息：预估产值无效）；
                 String estimateYield = ExcelHelper.getCellFormatValue(cell);
                 if (StringUtils.isBlank(estimateYield)) {
                     estimateYield = "0";
@@ -137,9 +131,7 @@ public class SettleYieldServiceImpl extends BaseServiceImpl implements ISettleYi
                     log.append("预估产值无效\n");
                     flag = false;
                 }
-
-                //可结算产值是否为>0的有效数值（异常信息：预估产值无效）；
-                cell = row.getCell(3);
+                cell = row.getCell(3); //可结算产值是否为>0的有效数值（异常信息：预估产值无效）；
                 String settleYield = ExcelHelper.getCellFormatValue(cell);
                 if (StringUtils.isBlank(settleYield)) {
                     settleYield = "0";
@@ -148,11 +140,9 @@ public class SettleYieldServiceImpl extends BaseServiceImpl implements ISettleYi
                     log.append("可结算产值无效\n");
                     flag = false;
                 }
-
                 if (flag) {
                     validRecord++; //有效记录数
                 }
-
                 OcSettleYieldImp settleYieldImp = new OcSettleYieldImp();
                 settleYieldImp.setErrorInfo(log.toString());
                 settleYieldImp.setCreateDate(date);
@@ -160,24 +150,39 @@ public class SettleYieldServiceImpl extends BaseServiceImpl implements ISettleYi
                 settleYieldImp.setModifyDate(date);
                 settleYieldImp.setPeriodId(period);
                 settleYieldImp.setSettleYield(new BigDecimal(settleYield));
-                if (list.get(0) != null) {
+                if (list != null && list.size() > 0 && list.get(0) != null) {
                     settleYieldImp.setProId(list.get(0).getId());
                 }
-
                 ocSettleYieldDao.insert(OcSettleYieldImp.class, settleYieldImp);
             }
-
-            if (validRecord == maxRowIx - 1) {
-                //本次导入无误  将临时表数据 插入到 正式表
-                //ocSettleYieldDao.insertMegerSettleYield(date);
-            }
-
+            results.put("totalRecord", maxRowIx);
+            results.put("validRecord", validRecord);
+            results.put("errorRecord", (maxRowIx - validRecord));
         } catch (LogicalException ex) {
-
+            throw ex;
         } catch (Exception e) {
-
+            throw new RuntimeException(e);
         }
+    }
 
+    /**
+     * 
+     * <p>描述 : </p>
+     *
+     * @param date
+     */
+    @Override
+    public void mergeSettleYield(Date date) throws LogicalException {
+        try {
+            ocSettleYieldDao.insertMegerSettleYield(date); //本次导入无误  将临时表数据 插入到 正式表
+        } catch (Exception e) {
+            //将本次导入导入表异常信息改为 导入失败
+            OcSettleYieldImp settleYieldImp = new OcSettleYieldImp();
+            settleYieldImp.setErrorInfo("导入失败");
+            settleYieldImp.setCreateDate(date);
+            ocSettleYieldDao.update(OcSettleYieldImp.class, settleYieldImp);
+            throw new LogicalException("导入失败");
+        }
     }
 
 }
