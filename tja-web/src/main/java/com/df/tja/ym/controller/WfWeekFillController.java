@@ -15,6 +15,8 @@ package com.df.tja.ym.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -80,16 +82,18 @@ public class WfWeekFillController extends WfBaseController {
      * @param periodId 期间ID
      */
     @RequestMapping(value = "/{proId}")
-    public String edit(@PathVariable("proId") String proId, @RequestParam("periodId") String periodId, Model model)
+    public String toEdit(@PathVariable("proId") String proId, @RequestParam("periodId") String periodId, Model model)
         throws RuntimeException {
         if (!"0".equals(proId)) {
             WfWeekFillMore weekFill = weekFillService.queryWfWeekFill(proId, periodId);
             if (WfConstant.AuditStatus.AUDITING.equals(weekFill.getAuditStatus())
                 || WfConstant.AuditStatus.AUDITED.equals(weekFill.getAuditStatus())) {
-                return "redirect:/admin/ym/weekFill/toview/" + WfConstant.Operate.VIEW + "/" + proId + "?periodId="
-                       + periodId;
+                return "redirect:/admin/ym/weekFill/toview/" + WfConstant.Operate.VIEW + "/" + weekFill.getId();
             }
             model.addAttribute("weekFill", weekFill);
+
+            double weekYieldCoe = 0.9; // 当周产值计算系数
+            model.addAttribute("weekYieldCoe", weekYieldCoe);
         }
         return "/tjad/ym/weekfill/weekfill_edit";
     }
@@ -114,7 +118,8 @@ public class WfWeekFillController extends WfBaseController {
                 SysUser ocSysUser = userService.queryRoleUser(WfConstant.FlowTaskRole.YUNYING);
                 processArgs.addVariable("ocOrg", ocSysUser.getId());
 
-                processArgs.addVariable("url", "/admin/ym/weekFill/{formId}");
+                processArgs.addVariable("url",
+                    "/admin/ym/weekFill/" + weekFill.getProId() + "?periodId=" + weekFill.getPeriodId());
             }
             // 提交或保存
             if (!WfConstant.AuditStatus.ABANDON.equals(auditStatus)) {
@@ -145,17 +150,17 @@ public class WfWeekFillController extends WfBaseController {
      * 
      * <p>描述 :流程展现页面 </p>
      *
-     * @param proId 项目ID
-     * @param periodId 期间ID
+     * @param id 流程id
      * @return
      * @throws BusinessException
      */
-    @RequestMapping(value = {"/toview/{operate}/{proId}", "/toprint/{operate}/{proId}"}, method = RequestMethod.GET)
-    public ModelAndView toViewOrApprove(@PathVariable("operate") String operate, @PathVariable("proId") String proId,
-                                        @RequestParam("periodId") String periodId, String view) throws RuntimeException {
+    @RequestMapping(value = {"/toview/{operate}/{id}", "/toprint/{operate}/{id}"}, method = RequestMethod.GET)
+    public ModelAndView toViewOrApprove(@PathVariable("operate") String operate, @PathVariable("id") String id,
+                                        String view) throws RuntimeException {
         Map<String, Object> modelMap = new HashMap<String, Object>();
 
-        WfWeekFillMore weekFill = weekFillService.queryWfWeekFill(proId, periodId);
+        WfWeekFill week = weekFillService.queryByPrimaryKey(WfWeekFill.class, id);
+        WfWeekFillMore weekFill = weekFillService.queryWfWeekFill(week.getProId(), week.getPeriodId());
         modelMap.put("weekFill", weekFill);
 
         //检查操作
@@ -166,12 +171,20 @@ public class WfWeekFillController extends WfBaseController {
         ins.put("auditStatus", weekFill.getAuditStatus());
         checkOperate(ins, modelMap);
 
+        HttpServletRequest request = HttpUtil.getHttpServletRequest();
+        //打印预览
+        if (request.getRequestURI().contains("/toprint")) {
+            modelMap.put("print", "print");
+        }
+        modelMap.put("definitionKey", "WfWeekFill");
+        modelMap.put("executionId", weekFill.getProcId());
+
         ModelAndView modelAndView = new ModelAndView();
         Integer viewType = StringUtil.isNotBlank(view) ? Integer.valueOf(view) : 10;
 
         modelAndView.addObject("view", viewType);
         modelAndView.addAllObjects(modelMap);
-        modelAndView.setViewName("/tjad/ym/weekfill/weekfill_edit");
+        modelAndView.setViewName("/tjad/ym/weekfill/weekfill_view");
         return modelAndView;
     }
 
@@ -188,6 +201,7 @@ public class WfWeekFillController extends WfBaseController {
         try {
             //如果不需要回写业务，可以直接调用processService的approveWf方法，
             //否则在Service中写接口方法，然后再调用processService中的approveWf方法
+            weekFillService.modifySimple(WfWeekFill.class, weekFill);
             processService.approveWf(weekFill, null);
             resultmap.put("flag", "true");
             String msg = APPROVE_COMPLETE;

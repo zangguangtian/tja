@@ -13,18 +13,19 @@
 <body>
 <div class="">
 	<center>
-		<h3>项目周报-2017-35</h3><h6>7月17日 ~ 7月23日</h6>
+		<h3>项目周报-${weekFill.periodName}</h3>
+		<h6><fmt:formatDate pattern="yyyy/MM/dd" value="${weekFill.rangeStart}"/> ~ <fmt:formatDate pattern="yyyy/MM/dd" value="${weekFill.rangeEnd}"/></h6>
 	</center>
 	<div class=" ">
 		<div class="form">
 			<!-- BEGIN FORM-->
-			<form id="weekFillForm" action="${site}/admin/ym/weekFill/ajax/approve" method="post">
+			<form id="saveForm">
 			
 			<input type="hidden" name="id" value="${weekFill.id}">
 			<input type="hidden" name="proId" value="${weekFill.proId}">
 			<input type="hidden" name="periodId" value="${weekFill.periodId}">
 			<input type="hidden" name="view" value="${view}">
-			<input type="hidden" name="approve" value="2">
+			<input type="hidden" name="approve" value="">
 			<input type="hidden" name="auditStatus" value="${!empty weekFill.auditStatus ? weekFill.auditStatus : '0'}">
 			<input type="hidden" name="procId" value="${weekFill.procId }">
 			
@@ -39,7 +40,6 @@
 				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4"></label>
 					<div class="col-md-7 text-right">
-					
 						<c:if test="${weekFill.canDel}">
 			                <input type="button" class="btn blue save" value="删除" onclick="save(9)">
 			            </c:if> 
@@ -50,16 +50,6 @@
 		                <c:if test="${not empty weekFill.procId and weekFill.auditStatus!='1' and weekFill.auditStatus!='2'}">
 							<input type="button" class="btn blue save" value="重新提交" onclick="save(1)">
 			           	</c:if>
-			           	
-						<c:if test="${not empty canRevoke}">
-							<input type="button" id="reject-btn" value="撤回" class="btn blue">
-						</c:if>
-			           	<c:if test="${not empty canPrintView}">
-							<input type="button" id="printview-btn" value="打印预览" class="btn blue">
-						</c:if>
-						<c:if test="${not empty canPrint}">
-							<input type="button" id="print-btn" value="打印" class="btn blue">
-						</c:if>
 					</div>
 				</div>
 			</div>
@@ -209,47 +199,6 @@
 					</div>
 				</div>
 				
-				<c:if test="${view == '2'}">
-				<h5>运营评定</h5>
-				<div class="form-group col-lg-4 ">
-					<label class="control-label col-md-4">备案情况<span class="required">※</span></label>
-					<div class="col-md-7 input-icon right">
-						<i class="fa"></i>
-						<select name="" data-rule-required="true" class="form-control">
-							<option>A</option>
-							<option>B</option>
-							<option>C</option>
-						</select>
-					</div>
-				</div>
-				<div class="form-group col-lg-4 ">
-					<label class="control-label col-md-4">合同收费<span class="required">※</span></label>
-					<div class="col-md-7 input-icon right">
-						<i class="fa"></i>
-						<select name="" data-rule-required="true" class="form-control">
-							<option>A</option>
-							<option>B</option>
-							<option>C</option>
-						</select>
-					</div>
-				</div>
-				<div class="form-group col-lg-4 ">
-					<label class="control-label col-md-4">运营评定<span class="required">※</span></label>
-					<div class="col-md-7 input-icon right">
-						<i class="fa"></i>
-						<select name="" data-rule-required="true" class="form-control">
-							<option>A</option>
-							<option>B</option>
-							<option>C</option>
-						</select>
-					</div>
-				</div>
-				</c:if>
-				
-				<c:if test="${weekFill.auditStatus=='1' or weekFill.auditStatus=='2'}">
-					<jsp:include page="../../../framework/activiti/wf_approve.jsp" flush="true"/>
-		            <tags:histask procId="${weekFill.procId }"/>
-	            </c:if>
     		</div>
 			</form>
 			<!-- END FORM-->
@@ -270,6 +219,16 @@ $(function(){
 	}).on("changeDate",function(ev){
 		getDuration();
 	});
+	
+	var auditStatus = "${weekFill.auditStatus}";
+	if(auditStatus=='1'||auditStatus=='2'||auditStatus=='9'){
+		$("input[name='phaseCode']").attr("disabled","disabled");
+		$("input[name='phaseStart']").attr("disabled","disabled");
+		$("input[name='weekProgress']").attr("disabled","disabled");
+		$("textarea[name='weekEvolve']").attr("disabled","disabled");
+		$("textarea[name='workPlan']").attr("disabled","disabled");
+		$("textarea[name='filing']").attr("disabled","disabled");
+	}
 });
 
 Date.prototype.diff = function(date){
@@ -296,7 +255,8 @@ function getWeekYield(){
 	var schemeAmount = parseFloat($("input[name='schemeAmount']").val())||0.00;
 	var rebateAmount = parseFloat($("input[name='rebateAmount']").val())||0.00;
 	
-	var weekYield = ((contractAmount-pkgAmount-schemeAmount-rebateAmount)*0.9*weekProgress/100).toFixed(2);
+	var weekYieldCoe = "${weekYieldCoe}";
+	var weekYield = ((contractAmount-pkgAmount-schemeAmount-rebateAmount)*weekYieldCoe*weekProgress/100).toFixed(2);
 	$("input[name='weekYield']").val(weekYield);
 }
 
@@ -306,7 +266,7 @@ function save(status){
         	ajaxSava(status);
         }});
     }else{
-    	if($("#weekFillForm").valid()){
+    	if($("#saveForm").valid()){
     		ajaxSava(status);
         }
     }
@@ -320,7 +280,7 @@ function ajaxSava(status){
 		type : "post",
 	 	url : url,
 	 	async : false,
-	 	data : $("#weekFillForm").serialize(),
+	 	data : $("#saveForm").serialize(),
 	 	error : function(request) {
 	 		$.jalert({"jatext":"Connection error"});
 	 	},
@@ -335,7 +295,6 @@ function ajaxSava(status){
 	 	}
 	});
 }
-
 </script>
 </body>
 </html>
