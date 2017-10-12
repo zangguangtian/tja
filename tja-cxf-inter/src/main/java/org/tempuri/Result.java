@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Result", propOrder = {"isSucc", "errorInfo", "value"})
+@XmlType(name = "Result", propOrder = { "isSucc", "errorInfo", "value" })
 public class Result {
 
     @XmlElement(name = "IsSucc")
@@ -99,6 +99,15 @@ public class Result {
      */
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String toString() {
+        StringBuffer str = new StringBuffer("{");
+        str.append("isSucc:").append(isIsSucc());
+        str.append(",errorInfo:").append(getErrorInfo());
+        str.append(",value:").append(getValue());
+        str.append("}");
+        return str.toString();
     }
 
 }

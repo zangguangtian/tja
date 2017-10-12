@@ -9,6 +9,7 @@ import javax.xml.ws.WebEndpoint;
 import javax.xml.ws.WebServiceClient;
 import javax.xml.ws.WebServiceFeature;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -111,14 +112,123 @@ public class Service1 extends Service {
 
     public static void main(String[] args) {
         Service1 service1 = new Service1();
-        String value = service1.getService1Soap().getAccounts().value;
-        JSONArray jsonArray = new JSONArray(value);
-        JSONObject jsonObj = null;
-        for (int i = 0; i < jsonArray.length(); i++) {
-            jsonObj = (JSONObject) jsonArray.get(i);
-            System.out.println(jsonObj.get("AccountName"));
+        Result result = null;
+        System.out.println("+++++++++++++++++getDept+++++++++++++++++");
+        result = service1.getService1Soap().getDepts();
+        if (result != null && result.isIsSucc()) {
+            JSONArray jsonArray = new JSONArray(result.getValue());
+            JSONObject jsonObj = null;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                jsonObj = (JSONObject) jsonArray.get(i);
+                System.out.println(ToStringBuilder.reflectionToString(jsonObj));
+            }
         }
-        /*System.out.println(value);
-        System.out.println(ToStringBuilder.reflectionToString(jsonArray));*/
+
+        System.out.println("+++++++++++++++++getEmployees+++++++++++++++++");
+        result = service1.getService1Soap().getEmployees();
+        if (result != null && result.isIsSucc()) {
+            JSONArray jsonArray = new JSONArray(result.getValue());
+            JSONObject jsonObj = null;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                jsonObj = (JSONObject) jsonArray.get(i);
+                System.out.println(ToStringBuilder.reflectionToString(jsonObj));
+            }
+        }
+
+        System.out.println("+++++++++++++++++getAccounts+++++++++++++++++");
+        result = service1.getService1Soap().getAccounts();
+        if (result != null && result.isIsSucc()) {
+            JSONArray jsonArray = new JSONArray(result.getValue());
+            JSONObject jsonObj = null;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                jsonObj = (JSONObject) jsonArray.get(i);
+                System.out.println(ToStringBuilder.reflectionToString(jsonObj));
+            }
+        }
+
+        System.out.println("+++++++++++++++++getItems+++++++++++++++++");
+        result = service1.getService1Soap().getItems();
+        if (result != null && result.isIsSucc()) {
+            JSONArray jsonArray = new JSONArray(result.getValue());
+            JSONObject jsonObj = null;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                jsonObj = (JSONObject) jsonArray.get(i);
+                System.out.println(ToStringBuilder.reflectionToString(jsonObj));
+            }
+        }
+
+        //
+        String itemId = "ITM100E0";
+        System.out.println("+++++++++++++++++GetContractOfItem+++++++++++++++++");
+        result = service1.getService1Soap().getContractOfItem(itemId);
+        if (result != null && result.isIsSucc()) {
+            JSONArray jsonArray = new JSONArray(result.getValue());
+            JSONObject jsonObj = null;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                jsonObj = (JSONObject) jsonArray.get(i);
+                System.out.println(ToStringBuilder.reflectionToString(jsonObj));
+            }
+        }
+
+        System.out.println("+++++++++++++++++getEpibolyContractOfItem+++++++++++++++++");
+        result = service1.getService1Soap().getEpibolyContractOfItem(itemId);
+        if (result != null && result.isIsSucc()) {
+            JSONArray jsonArray = new JSONArray(result.getValue());
+            JSONObject jsonObj = null;
+            for (int i = 0; i < jsonArray.length(); i++) {
+                jsonObj = (JSONObject) jsonArray.get(i);
+                System.out.println(ToStringBuilder.reflectionToString(jsonObj));
+            }
+        }
+
+        System.out.println("+++++++++++++++++getCostOfItem+++++++++++++++++");
+        result = service1.getService1Soap().getCostOfItem(itemId);
+        if (result != null && result.isIsSucc()) {
+            System.out.println(result.getValue());
+        }
+
+        System.out.println("+++++++++++++++++getItemWbsInfo+++++++++++++++++");
+        itemId = "ITM100SF";
+        result = service1.getService1Soap().getItemWbsInfo(itemId);
+        if (result != null && result.isIsSucc()) {
+            JSONObject jsonObj = null;
+            JSONObject jsonObject = new JSONObject(result.getValue());
+            JSONArray jsonArray = jsonObject.getJSONArray("PrjPhases");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                jsonObj = (JSONObject) jsonArray.get(i);
+                System.out.println(ToStringBuilder.reflectionToString(jsonObj));
+            }
+
+            jsonArray = jsonObject.getJSONArray("SubEntrys");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                jsonObj = (JSONObject) jsonArray.get(i);
+                System.out.println(ToStringBuilder.reflectionToString(jsonObj));
+            }
+
+            jsonArray = jsonObject.getJSONArray("Majors");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                jsonObj = (JSONObject) jsonArray.get(i);
+                System.out.println(ToStringBuilder.reflectionToString(jsonObj));
+            }
+
+            jsonArray = jsonObject.getJSONArray("Users");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                jsonObj = (JSONObject) jsonArray.get(i);
+                System.out.println(ToStringBuilder.reflectionToString(jsonObj));
+            }
+        }
+
+        System.out.println("+++++++++++++++++userLogin+++++++++++++++++");
+        result = service1.getService1Soap().userLogin("abc", "123");
+        if (result == null || !new Boolean(result.getValue())) {
+            System.out.println("登录失败！");
+        }
+
+        System.out.println("+++++++++++++++++sendMessage+++++++++++++++++");
+        result = service1.getService1Soap().sendMessage("测试发送消息接口", "1", "谢保平");
+        if (result != null && result.isIsSucc()) {
+            System.out.println("发送成功！");
+        }
+
     }
 }

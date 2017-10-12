@@ -6,6 +6,6 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
         http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd" >
 
-    <jaxws:client id="tjaWsClient" serviceClass="org.tempuri.Service1Soap"
+    <jaxws:client id="tjaWsClient" name="tjaWsClient" serviceClass="org.tempuri.Service1Soap"
         address="http://110.110.0.8:8001/Service1.asmx" />
 </beans>
