@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd"
+        default-lazy-init="true">
+    
+    <context:annotation-config />
+    
+    <!-- 打开aop 注解 -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+    
+    <!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
+    <context:component-scan
+        base-package="com.df.**.service,com.df.**.dao,com.df.framework.**">
+        <context:exclude-filter type="annotation"
+            expression="org.springframework.stereotype.Controller" />
+        <context:exclude-filter type="annotation"
+            expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+    </context:component-scan>
+    
+    <!-- 加载资源文件 其中包含变量信息，必须在Spring配置文件的最前面加载，即第一个加载 -->
+    <context:property-placeholder location="classpath:data-config-test.properties" />
+
+    <!-- 数据库映射 -->
+    <bean id="dataSource"
+         class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <!-- 基本属性 url、user、password -->
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.user}" />
+        <property name="password" value="${jdbc.pass}" />
+
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="1" />
+        <property name="minIdle" value="1" /> 
+        <property name="maxActive" value="20" />
+        
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="60000" />
+        
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+        
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        
+        <property name="validationQuery" value="SELECT 'x'" />
+        <property name="testWhileIdle" value="true" />
+        <property name="testOnBorrow" value="false" />
+        <property name="testOnReturn" value="false" />
+        
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <property name="poolPreparedStatements" value="true" />
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+        
+        <!-- 配置监控统计拦截的filters -->
+        <property name="filters" value="stat" /> 
+    </bean>
+
+    <bean id="sessionFactory"
+        class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="packagesToScan" value="com.df.**.domain" />
+        <property name="hibernateProperties">
+            <props>
+                <!-- <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop> -->
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- 配置事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">  
+        <property name="sessionFactory" ref="sessionFactory" />
+        <property name="nestedTransactionAllowed" value="true" />
+    </bean>
+    
+    <!--配置声明式事务-->  
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">  
+        <tx:attributes>  
+            <!-- 读取数据方法，一般采用只读事务-->  
+            <tx:method name="query*" propagation="REQUIRED" read-only="true"/>  
+            <tx:method name="search*" propagation="REQUIRED" read-only="true"/>  
+            <tx:method name="find*" propagation="REQUIRED" read-only="true"/>  
+            <tx:method name="exist*" propagation="REQUIRED" read-only="true"/>  
+            <tx:method name="isCounterSignTask" propagation="REQUIRED" read-only="true"/>  
+            <tx:method name="getCurrentTask" propagation="REQUIRED" read-only="true"/>  
+            <tx:method name="getFormDateFormTask" propagation="REQUIRED" read-only="true"/>  
+            <tx:method name="getVariables" propagation="REQUIRED" read-only="true"/>  
+            <tx:method name="getHistoricTask" propagation="REQUIRED" read-only="true"/>  
+            <tx:method name="add*" propagation="REQUIRES_NEW" rollback-for="LogicalException,RuntimeException"/>  
+            <tx:method name="create*" propagation="REQUIRES_NEW" rollback-for="LogicalException,RuntimeException"/>  
+            <tx:method name="upload*" propagation="REQUIRES_NEW" rollback-for="LogicalException,RuntimeException"/>  
+            <tx:method name="modify*" propagation="REQUIRES_NEW" rollback-for="LogicalException,RuntimeException"/>  
+            <tx:method name="merge*" propagation="REQUIRES_NEW" rollback-for="LogicalException,RuntimeException"/>  
+            <tx:method name="delete*" propagation="REQUIRES_NEW" rollback-for="LogicalException,RuntimeException"/>  
+            <tx:method name="remove*" propagation="REQUIRES_NEW" rollback-for="LogicalException,RuntimeException"/>  
+            <tx:method name="extend*" propagation="REQUIRES_NEW" rollback-for="LogicalException,RuntimeException"/>  
+            <tx:method name="submit*" propagation="REQUIRES_NEW" rollback-for="LogicalException,RuntimeException"/>
+            <tx:method name="completeFlow" propagation="REQUIRES_NEW" rollback-for="LogicalException,RuntimeException"/>
+            <tx:method name="deployWf" propagation="REQUIRES_NEW" rollback-for="LogicalException,RuntimeException"/>
+            <tx:method name="startWf" propagation="NESTED" isolation="READ_COMMITTED" rollback-for="LogicalException,RuntimeException"/> 
+            <tx:method name="completeTask" propagation="REQUIRES_NEW" rollback-for="LogicalException,RuntimeException"/>  
+            <tx:method name="ultraCompleteTask" propagation="REQUIRES_NEW" rollback-for="LogicalException,RuntimeException"/>
+            <tx:method name="refound*" propagation="REQUIRES_NEW" rollback-for="LogicalException,RuntimeException"/>
+            <tx:method name="complete*" propagation="REQUIRES_NEW" rollback-for="LogicalException,RuntimeException"/>
+            <tx:method name="approve*" propagation="REQUIRES_NEW" rollback-for="LogicalException,RuntimeException"/> 
+            <tx:method name="writeBack*" propagation="REQUIRES_NEW" rollback-for="LogicalException,RuntimeException"/>
+            <tx:method name="sync*" propagation="REQUIRES_NEW" rollback-for="LogicalException,RuntimeException"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!-- 指定事务切入点 -->  
+    <aop:config proxy-target-class="true">  
+        <aop:pointcut id="servicePointcut" expression="execution(* com.df..service.**.*(..)) or execution(* com.df.framework.wf.*.completeFlow(..))" />
+        <aop:advisor pointcut-ref="servicePointcut" advice-ref="txAdvice" />  
+    </aop:config>
+    
+    <import resource="classpath*:security-config.xml"/>
+    <import resource="classpath*:spring-activiti.xml"/>
+    <import resource="classpath*:spring-cxf.xml"/>
+    
+</beans>
