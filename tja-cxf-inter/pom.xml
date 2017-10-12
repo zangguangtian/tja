@@ -17,6 +17,12 @@
 	</properties>
 
 	<dependencies>
+        <dependency>
+            <groupId>com.df</groupId>
+            <artifactId>df-hbm-base</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+        </dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxws</artifactId>
