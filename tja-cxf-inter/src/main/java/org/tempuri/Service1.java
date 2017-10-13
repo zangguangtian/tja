@@ -113,82 +113,9 @@ public class Service1 extends Service {
     public static void main(String[] args) {
         Service1 service1 = new Service1();
         Result result = null;
-        System.out.println("+++++++++++++++++getDept+++++++++++++++++");
-        result = service1.getService1Soap().getDepts();
-        if (result != null && result.isIsSucc()) {
-            JSONArray jsonArray = new JSONArray(result.getValue());
-            JSONObject jsonObj = null;
-            for (int i = 0; i < jsonArray.length(); i++) {
-                jsonObj = (JSONObject) jsonArray.get(i);
-                System.out.println(ToStringBuilder.reflectionToString(jsonObj));
-            }
-        }
-
-        System.out.println("+++++++++++++++++getEmployees+++++++++++++++++");
-        result = service1.getService1Soap().getEmployees();
-        if (result != null && result.isIsSucc()) {
-            JSONArray jsonArray = new JSONArray(result.getValue());
-            JSONObject jsonObj = null;
-            for (int i = 0; i < jsonArray.length(); i++) {
-                jsonObj = (JSONObject) jsonArray.get(i);
-                System.out.println(ToStringBuilder.reflectionToString(jsonObj));
-            }
-        }
-
-        System.out.println("+++++++++++++++++getAccounts+++++++++++++++++");
-        result = service1.getService1Soap().getAccounts();
-        if (result != null && result.isIsSucc()) {
-            JSONArray jsonArray = new JSONArray(result.getValue());
-            JSONObject jsonObj = null;
-            for (int i = 0; i < jsonArray.length(); i++) {
-                jsonObj = (JSONObject) jsonArray.get(i);
-                System.out.println(ToStringBuilder.reflectionToString(jsonObj));
-            }
-        }
-
-        System.out.println("+++++++++++++++++getItems+++++++++++++++++");
-        result = service1.getService1Soap().getItems();
-        if (result != null && result.isIsSucc()) {
-            JSONArray jsonArray = new JSONArray(result.getValue());
-            JSONObject jsonObj = null;
-            for (int i = 0; i < jsonArray.length(); i++) {
-                jsonObj = (JSONObject) jsonArray.get(i);
-                System.out.println(ToStringBuilder.reflectionToString(jsonObj));
-            }
-        }
-
-        //
-        String itemId = "ITM100E0";
-        System.out.println("+++++++++++++++++GetContractOfItem+++++++++++++++++");
-        result = service1.getService1Soap().getContractOfItem(itemId);
-        if (result != null && result.isIsSucc()) {
-            JSONArray jsonArray = new JSONArray(result.getValue());
-            JSONObject jsonObj = null;
-            for (int i = 0; i < jsonArray.length(); i++) {
-                jsonObj = (JSONObject) jsonArray.get(i);
-                System.out.println(ToStringBuilder.reflectionToString(jsonObj));
-            }
-        }
-
-        System.out.println("+++++++++++++++++getEpibolyContractOfItem+++++++++++++++++");
-        result = service1.getService1Soap().getEpibolyContractOfItem(itemId);
-        if (result != null && result.isIsSucc()) {
-            JSONArray jsonArray = new JSONArray(result.getValue());
-            JSONObject jsonObj = null;
-            for (int i = 0; i < jsonArray.length(); i++) {
-                jsonObj = (JSONObject) jsonArray.get(i);
-                System.out.println(ToStringBuilder.reflectionToString(jsonObj));
-            }
-        }
-
-        System.out.println("+++++++++++++++++getCostOfItem+++++++++++++++++");
-        result = service1.getService1Soap().getCostOfItem(itemId);
-        if (result != null && result.isIsSucc()) {
-            System.out.println(result.getValue());
-        }
 
         System.out.println("+++++++++++++++++getItemWbsInfo+++++++++++++++++");
-        itemId = "ITM100SF";
+        String itemId = "ITM100SF";
         result = service1.getService1Soap().getItemWbsInfo(itemId);
         if (result != null && result.isIsSucc()) {
             JSONObject jsonObj = null;
