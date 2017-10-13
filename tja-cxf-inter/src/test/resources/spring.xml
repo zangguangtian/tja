@@ -25,7 +25,7 @@
     </context:component-scan>
     
     <!-- 加载资源文件 其中包含变量信息，必须在Spring配置文件的最前面加载，即第一个加载 -->
-    <context:property-placeholder location="classpath:data-config-test.properties" />
+    <context:property-placeholder location="classpath:data-config-dev.properties" />
 
     <!-- 数据库映射 -->
     <bean id="dataSource"

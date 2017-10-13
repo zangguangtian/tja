@@ -24,7 +24,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
-import com.df.framework.base.domain.BaseDomain;
+import com.df.framework.base.domain.SuperDomain;
 
 /**
  * <p>ItProPhasesInfo </p>
@@ -45,7 +45,7 @@ import com.df.framework.base.domain.BaseDomain;
 @Table(name = "IT_PRO_PHASES_INFO")
 @DynamicInsert(true)
 @DynamicUpdate(true)
-public class ItProPhasesInfo extends BaseDomain {
+public class ItProPhasesInfo extends SuperDomain {
     /**
      * 属性： serialVersionUID 
      */
@@ -71,6 +71,15 @@ public class ItProPhasesInfo extends BaseDomain {
     @Column(name = "ID", unique = true, nullable = false)
     public java.lang.String getId() {
         return id;
+    }
+
+    /**
+     * <p> 属性主键ID的Setter方法. </p>
+     * 
+     * @param id 为属性id设置的值
+     */
+    public void setId(java.lang.String id) {
+        this.id = id;
     }
 
     /**

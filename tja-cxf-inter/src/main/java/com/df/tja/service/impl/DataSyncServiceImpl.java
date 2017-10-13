@@ -12,6 +12,7 @@
 
 package com.df.tja.service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +32,10 @@ import com.df.tja.dao.IDataSyncDao;
 import com.df.tja.domain.ItAccountInfo;
 import com.df.tja.domain.ItCallRecord;
 import com.df.tja.domain.ItDeptInfo;
+import com.df.tja.domain.ItProContractInfo;
+import com.df.tja.domain.ItProPhasesInfo;
+import com.df.tja.domain.ItProPhasesMajor;
+import com.df.tja.domain.ItProPhasesUser;
 import com.df.tja.domain.ItProjectInfo;
 import com.df.tja.domain.ItStaffInfo;
 import com.df.tja.service.IDataSyncService;
@@ -80,15 +85,19 @@ public class DataSyncServiceImpl extends BaseServiceImpl implements IDataSyncSer
                     result = tjaWsClient.getItems();
                     break;
                 case "getContractOfItem":
+                    itCallRecord.setReqArgs(itArgs[0]);
                     result = tjaWsClient.getContractOfItem(itArgs[0]);
                     break;
                 case "getEpibolyContractOfItem":
+                    itCallRecord.setReqArgs(itArgs[0]);
                     result = tjaWsClient.getEpibolyContractOfItem(itArgs[0]);
                     break;
                 case "getCostOfItem":
-                    result = tjaWsClient.getEpibolyContractOfItem(itArgs[0]);
+                    itCallRecord.setReqArgs(itArgs[0]);
+                    result = tjaWsClient.getCostOfItem(itArgs[0]);
                     break;
                 case "getItemWbsInfo":
+                    itCallRecord.setReqArgs(itArgs[0]);
                     result = tjaWsClient.getItemWbsInfo(itArgs[0]);
                     break;
                 default:
@@ -193,6 +202,8 @@ public class DataSyncServiceImpl extends BaseServiceImpl implements IDataSyncSer
                     itAccountInfo = new ItAccountInfo();
                     itAccountInfo.setId(jsonObj.getString("Id"));
                     itAccountInfo.setAccountName(jsonObj.getString("AccountName"));
+                    itAccountInfo.setWorkNo(jsonObj.getString("WorkNo"));
+                    itAccountInfo.setUserName(jsonObj.getString("UserName"));
                     itAccountInfo.setCreateDate(syncDate);
                     accounts.add(itAccountInfo);
                 }
@@ -233,7 +244,6 @@ public class DataSyncServiceImpl extends BaseServiceImpl implements IDataSyncSer
                     projects.add(itProjectInfo);
                 }
                 dataSyncDao.batchInsert(ItProjectInfo.class, projects);
-                dataSyncDao.writeBackSyncData("syncItem");
             }
         } catch (Exception ex) {
             LoggerUtil.error(DataSyncServiceImpl.class, ex.getMessage());
@@ -242,23 +252,158 @@ public class DataSyncServiceImpl extends BaseServiceImpl implements IDataSyncSer
     }
 
     public void syncContractOfItem(String value) throws RuntimeException {
-        // TODO 自动生成的方法存根
-
+        try {
+            if (StringUtil.isNotBlank(value)) {
+                ItProContractInfo itProContractInfo = null;
+                JSONObject jsonObj = null;
+                Date syncDate = new Date();
+                List<ItProContractInfo> list = new ArrayList<ItProContractInfo>(0);
+                JSONArray jsonArray = new JSONArray(value);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    jsonObj = (JSONObject) jsonArray.get(i);
+                    itProContractInfo = new ItProContractInfo();
+                    itProContractInfo.setContractId(jsonObj.getString("Id"));
+                    itProContractInfo.setContractType("1000");
+                    itProContractInfo.setContractCode(jsonObj.getString("ContractCode"));
+                    itProContractInfo.setContractName(jsonObj.getString("ContractName"));
+                    itProContractInfo.setContractMoney(BigDecimal.valueOf(jsonObj.getDouble("ContractMoney")));
+                    itProContractInfo.setItemId(jsonObj.getString("ItemId"));
+                    itProContractInfo.setCreateDate(syncDate);
+                    list.add(itProContractInfo);
+                }
+                dataSyncDao.batchInsert(ItProContractInfo.class, list);
+                dataSyncDao.writeBackSyncData("syncContractOfItem");
+            }
+        } catch (Exception ex) {
+            System.out.println(value);
+            LoggerUtil.error(DataSyncServiceImpl.class, ex.getMessage());
+            throw new RuntimeException(ex);
+        }
     }
 
     public void syncEpibolyContractOfItem(String value) throws RuntimeException {
-        // TODO 自动生成的方法存根
-
+        try {
+            if (StringUtil.isNotBlank(value)) {
+                ItProContractInfo itProContractInfo = null;
+                JSONObject jsonObj = null;
+                Date syncDate = new Date();
+                List<ItProContractInfo> list = new ArrayList<ItProContractInfo>(0);
+                JSONArray jsonArray = new JSONArray(value);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    jsonObj = (JSONObject) jsonArray.get(i);
+                    itProContractInfo = new ItProContractInfo();
+                    itProContractInfo.setContractId(jsonObj.getString("Id"));
+                    itProContractInfo.setContractType("2000");
+                    itProContractInfo.setContractCode(jsonObj.getString("ContractCode"));
+                    itProContractInfo.setContractName(jsonObj.getString("ContractName"));
+                    itProContractInfo.setContractMoney(BigDecimal.valueOf(jsonObj.getDouble("ContractMoney")));
+                    itProContractInfo.setItemId(jsonObj.getString("ItemId"));
+                    itProContractInfo.setCreateDate(syncDate);
+                    list.add(itProContractInfo);
+                }
+                dataSyncDao.batchInsert(ItProContractInfo.class, list);
+                dataSyncDao.writeBackSyncData("syncEpibolyContractOfItem");
+            }
+        } catch (Exception ex) {
+            System.out.println(value);
+            LoggerUtil.error(DataSyncServiceImpl.class, ex.getMessage());
+            throw new RuntimeException(ex);
+        }
     }
 
-    public void syncCostOfItem(String value) throws RuntimeException {
-        // TODO 自动生成的方法存根
-
+    public void syncCostOfItem(String value, String itemId, Date createDate) throws RuntimeException {
+        try {
+            if (StringUtil.isNotBlank(value)) {
+                Date syncDate = new Date();
+                ItProjectInfo itProjectInfo = new ItProjectInfo();
+                itProjectInfo.setId(itemId);
+                itProjectInfo.setWorkCost(new BigDecimal(value));
+                itProjectInfo.setWcCreateDate(syncDate);
+                itProjectInfo.setCreateDate(createDate);
+                dataSyncDao.update(ItProjectInfo.class, itProjectInfo);
+                dataSyncDao.writeBackSyncData("syncItem");
+            }
+        } catch (Exception ex) {
+            LoggerUtil.error(DataSyncServiceImpl.class, ex.getMessage());
+            throw new RuntimeException(ex);
+        }
     }
 
-    public void syncItemWbsInfo(String value) throws RuntimeException {
-        // TODO 自动生成的方法存根
+    public void syncItemWbsInfo(String value, String itemId) throws RuntimeException {
+        try {
+            if (StringUtil.isNotBlank(value)) {
+                ItProPhasesInfo itProPhasesInfo = null;
+                ItProPhasesMajor itProPhasesMajor = null;
+                ItProPhasesUser itProPhasesUser = null;
+                Date syncDate = new Date();
+                JSONObject jsonObj = null;
+                JSONObject jsonObject = new JSONObject(value);
 
+                JSONArray jsonArray = jsonObject.getJSONArray("PrjPhases");
+                List<ItProPhasesInfo> prjPhases = new ArrayList<ItProPhasesInfo>(0);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    jsonObj = (JSONObject) jsonArray.get(i);
+                    itProPhasesInfo = new ItProPhasesInfo();
+                    itProPhasesInfo.setId(jsonObj.getString("Id"));
+                    itProPhasesInfo.setName(jsonObj.getString("Name"));
+                    itProPhasesInfo.setItemId(itemId);
+                    itProPhasesInfo.setCreateDate(syncDate);
+                    prjPhases.add(itProPhasesInfo);
+                }
+                dataSyncDao.batchInsert(ItProPhasesInfo.class, prjPhases);
+
+                jsonArray = jsonObject.getJSONArray("SubEntrys");
+                List<ItProPhasesInfo> subEntrys = new ArrayList<ItProPhasesInfo>(0);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    jsonObj = (JSONObject) jsonArray.get(i);
+                    itProPhasesInfo = new ItProPhasesInfo();
+                    itProPhasesInfo.setId(jsonObj.getString("Id"));
+                    itProPhasesInfo.setName(jsonObj.getString("Name"));
+                    itProPhasesInfo.setPrjPhaseId(jsonObj.getString("PrjPhaseId"));
+                    itProPhasesInfo.setItemId(itemId);
+                    itProPhasesInfo.setCreateDate(syncDate);
+                    subEntrys.add(itProPhasesInfo);
+                }
+                dataSyncDao.batchInsert(ItProPhasesInfo.class, subEntrys);
+
+                jsonArray = jsonObject.getJSONArray("Majors");
+                List<ItProPhasesMajor> majors = new ArrayList<ItProPhasesMajor>(0);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    jsonObj = (JSONObject) jsonArray.get(i);
+                    itProPhasesMajor = new ItProPhasesMajor();
+                    itProPhasesMajor.setMajorCode(jsonObj.getString("MajorCode"));
+                    itProPhasesMajor.setMajorName(jsonObj.getString("MajorName"));
+                    itProPhasesMajor.setPrjPhaseId(jsonObj.getString("PrjPhaseId"));
+                    itProPhasesMajor.setItemId(itemId);
+                    itProPhasesMajor.setCreateDate(syncDate);
+                    majors.add(itProPhasesMajor);
+                }
+                dataSyncDao.batchInsert(ItProPhasesMajor.class, majors);
+
+                jsonArray = jsonObject.getJSONArray("Users");
+                List<ItProPhasesUser> users = new ArrayList<ItProPhasesUser>(0);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    jsonObj = (JSONObject) jsonArray.get(i);
+                    itProPhasesUser = new ItProPhasesUser();
+                    itProPhasesUser.setUserId(jsonObj.getString("Id"));
+                    itProPhasesUser.setName(jsonObj.getString("Name"));
+                    itProPhasesUser.setPrjPhaseId(jsonObj.getString("PrjPhaseId"));
+                    itProPhasesUser.setSubEntryId(jsonObj.getString("SubEntryId"));
+                    itProPhasesUser.setItemId(itemId);
+                    itProPhasesUser.setMajorCode(jsonObj.getString("MajorCode"));
+                    itProPhasesUser.setMajorName(jsonObj.getString("MajorName"));
+                    itProPhasesUser.setRoleKey(jsonObj.getString("RoleKey"));
+                    itProPhasesUser.setRoleName(jsonObj.getString("RoleName"));
+                    itProPhasesUser.setCreateDate(syncDate);
+                    users.add(itProPhasesUser);
+                }
+                dataSyncDao.batchInsert(ItProPhasesUser.class, users);
+
+                dataSyncDao.writeBackSyncData("syncItemWbsInfo");
+            }
+        } catch (Exception ex) {
+            LoggerUtil.error(DataSyncServiceImpl.class, ex.getMessage());
+            throw new RuntimeException(ex);
+        }
     }
-
 }

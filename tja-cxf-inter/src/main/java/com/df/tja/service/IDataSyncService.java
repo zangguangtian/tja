@@ -12,6 +12,8 @@
 
 package com.df.tja.service;
 
+import java.util.Date;
+
 import com.df.framework.base.service.IBaseService;
 
 /**
@@ -106,7 +108,7 @@ public interface IDataSyncService extends IBaseService {
      * @param value
      * @throws RuntimeException
      */
-    void syncCostOfItem(String value) throws RuntimeException;
+    void syncCostOfItem(String value, String itemId, Date createDate) throws RuntimeException;
 
     /**
      * 
@@ -115,5 +117,5 @@ public interface IDataSyncService extends IBaseService {
      * @param value
      * @throws RuntimeException
      */
-    void syncItemWbsInfo(String value) throws RuntimeException;
+    void syncItemWbsInfo(String value, String itemId) throws RuntimeException;
 }
