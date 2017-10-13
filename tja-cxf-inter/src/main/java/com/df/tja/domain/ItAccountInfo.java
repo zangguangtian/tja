@@ -54,6 +54,12 @@ public class ItAccountInfo extends SuperDomain {
     /** 属性：账号 */
     private java.lang.String accountName;
 
+    /** 属性：账号 */
+    private java.lang.String workNo;
+
+    /** 属性：姓名 */
+    private java.lang.String userName;
+
     /**
      * <p> 属性：id的Getter方法. </p>
      * 
@@ -84,6 +90,44 @@ public class ItAccountInfo extends SuperDomain {
      */
     public void setAccountName(java.lang.String accountName) {
         this.accountName = accountName;
+    }
+
+    /**
+     * <p> 属性workNo的Getter方法. </p>
+     * 
+     * @return 返回workNo属性的值
+     */
+    @Column(name = "WORK_NO")
+    public java.lang.String getWorkNo() {
+        return workNo;
+    }
+
+    /**
+     * <p> 属性workNo的Setter方法. </p>
+     * 
+     * @param workNo 为属性workNo设置的值
+     */
+    public void setWorkNo(java.lang.String workNo) {
+        this.workNo = workNo;
+    }
+
+    /**
+     * <p> 属性userName的Getter方法. </p>
+     * 
+     * @return 返回userName属性的值
+     */
+    @Column(name = "USER_NAME")
+    public java.lang.String getUserName() {
+        return userName;
+    }
+
+    /**
+     * <p> 属性userName的Setter方法. </p>
+     * 
+     * @param userName 为属性userName设置的值
+     */
+    public void setUserName(java.lang.String userName) {
+        this.userName = userName;
     }
 
     /**
