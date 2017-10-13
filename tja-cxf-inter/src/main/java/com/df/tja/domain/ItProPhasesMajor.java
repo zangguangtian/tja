@@ -14,17 +14,14 @@ package com.df.tja.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.GenericGenerator;
 
-import com.df.framework.base.domain.SuperDomain;
+import com.df.framework.base.domain.BaseDomain;
 
 /**
  * <p>ItProPhasesMajor </p>
@@ -45,15 +42,18 @@ import com.df.framework.base.domain.SuperDomain;
 @Table(name = "IT_PRO_PHASES_MAJOR")
 @DynamicInsert(true)
 @DynamicUpdate(true)
-public class ItProPhasesMajor extends SuperDomain {
+public class ItProPhasesMajor extends BaseDomain {
 
     /**
      * 属性： serialVersionUID 
      */
     private static final long serialVersionUID = 979792651478296543L;
 
+    /** 属性：专业代码 */
+    private java.lang.String majorCode;
+
     /** 属性：专业名称 */
-    private java.lang.String name;
+    private java.lang.String majorName;
 
     /** 属性：关联阶段ID */
     private java.lang.String prjPhaseId;
@@ -62,35 +62,41 @@ public class ItProPhasesMajor extends SuperDomain {
     private java.lang.String itemId;
 
     /**
-     * <p> 属性：id的Getter方法. </p>
+     * <p> 属性：majorCode的Getter方法. </p>
      * 
-     * @return 返回主键ID属性的值
+     * @return 返回专业代码属性的值
      */
-    @Id
-    @GenericGenerator(name = "idGenerator", strategy = "assigned")
-    @GeneratedValue(generator = "idGenerator")
-    @Column(name = "ID", unique = true, nullable = false)
-    public java.lang.String getId() {
-        return id;
+    @Column(name = "MAJOR_CODE")
+    public java.lang.String getMajorCode() {
+        return majorCode;
     }
 
     /**
-     * <p> 属性：name的Getter方法. </p>
+     * <p> 属性专业代码的Setter方法. </p>
+     * 
+     * @param majorCode 为属性majorCode设置的值
+     */
+    public void setMajorCode(java.lang.String majorCode) {
+        this.majorCode = majorCode;
+    }
+
+    /**
+     * <p> 属性：majorName的Getter方法. </p>
      * 
      * @return 返回专业名称属性的值
      */
-    @Column(name = "NAME")
-    public java.lang.String getName() {
-        return name;
+    @Column(name = "MAJOR_NAME")
+    public java.lang.String getMajorName() {
+        return majorName;
     }
 
     /**
      * <p> 属性专业名称的Setter方法. </p>
      * 
-     * @param name 为属性name设置的值
+     * @param majorName 为属性majorName设置的值
      */
-    public void setName(java.lang.String name) {
-        this.name = name;
+    public void setMajorName(java.lang.String majorName) {
+        this.majorName = majorName;
     }
 
     /**
@@ -113,9 +119,9 @@ public class ItProPhasesMajor extends SuperDomain {
     }
 
     /**
-     * <p> 属性itemId的Getter方法. </p>
+     * <p> 属性：itemId的Getter方法. </p>
      * 
-     * @return 返回itemId属性的值
+     * @return 返回关联项目ID属性的值
      */
     @Column(name = "ITEM_ID")
     public java.lang.String getItemId() {
@@ -123,7 +129,7 @@ public class ItProPhasesMajor extends SuperDomain {
     }
 
     /**
-     * <p> 属性itemId的Setter方法. </p>
+     * <p> 属性关联项目ID的Setter方法. </p>
      * 
      * @param itemId 为属性itemId设置的值
      */

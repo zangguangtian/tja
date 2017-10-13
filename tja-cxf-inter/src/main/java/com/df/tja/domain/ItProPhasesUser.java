@@ -14,17 +14,14 @@ package com.df.tja.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.GenericGenerator;
 
-import com.df.framework.base.domain.SuperDomain;
+import com.df.framework.base.domain.BaseDomain;
 
 /**
  * <p>ItProPhasesUser </p>
@@ -45,7 +42,7 @@ import com.df.framework.base.domain.SuperDomain;
 @Table(name = "IT_PRO_PHASES_USER")
 @DynamicInsert(true)
 @DynamicUpdate(true)
-public class ItProPhasesUser extends SuperDomain {
+public class ItProPhasesUser extends BaseDomain {
     /**
      * 属性： serialVersionUID 
      */
@@ -66,24 +63,17 @@ public class ItProPhasesUser extends SuperDomain {
     /** 属性：关联项目ID */
     private java.lang.String itemId;
 
-    /** 属性：专业 */
-    private java.lang.String major;
+    /** 属性：专业代码 */
+    private java.lang.String majorCode;
 
-    /** 属性：角色 */
-    private java.lang.String role;
+    /** 属性：专业名称 */
+    private java.lang.String majorName;
 
-    /**
-     * <p> 属性：id的Getter方法. </p>
-     * 
-     * @return 返回主键ID属性的值
-     */
-    @Id
-    @GenericGenerator(name = "idGenerator", strategy = "assigned")
-    @GeneratedValue(generator = "idGenerator")
-    @Column(name = "ID", unique = true, nullable = false)
-    public java.lang.String getId() {
-        return id;
-    }
+    /** 属性：角色代码 */
+    private java.lang.String roleKey;
+
+    /** 属性：角色名称 */
+    private java.lang.String roleName;
 
     /**
      * <p> 属性：userId的Getter方法. </p>
@@ -162,9 +152,9 @@ public class ItProPhasesUser extends SuperDomain {
     }
 
     /**
-     * <p> 属性itemId的Getter方法. </p>
+     * <p> 属性：itemId的Getter方法. </p>
      * 
-     * @return 返回itemId属性的值
+     * @return 返回关联项目ID属性的值
      */
     @Column(name = "ITEM_ID")
     public java.lang.String getItemId() {
@@ -172,7 +162,7 @@ public class ItProPhasesUser extends SuperDomain {
     }
 
     /**
-     * <p> 属性itemId的Setter方法. </p>
+     * <p> 属性关联项目ID的Setter方法. </p>
      * 
      * @param itemId 为属性itemId设置的值
      */
@@ -181,41 +171,79 @@ public class ItProPhasesUser extends SuperDomain {
     }
 
     /**
-     * <p> 属性：major的Getter方法. </p>
+     * <p> 属性：majorCode的Getter方法. </p>
      * 
-     * @return 返回专业属性的值
+     * @return 返回专业代码属性的值
      */
-    @Column(name = "MAJOR")
-    public java.lang.String getMajor() {
-        return major;
+    @Column(name = "MAJOR_CODE")
+    public java.lang.String getMajorCode() {
+        return majorCode;
     }
 
     /**
-     * <p> 属性专业的Setter方法. </p>
+     * <p> 属性专业代码的Setter方法. </p>
      * 
-     * @param major 为属性major设置的值
+     * @param majorCode 为属性majorCode设置的值
      */
-    public void setMajor(java.lang.String major) {
-        this.major = major;
+    public void setMajorCode(java.lang.String majorCode) {
+        this.majorCode = majorCode;
     }
 
     /**
-     * <p> 属性：role的Getter方法. </p>
+     * <p> 属性：majorName的Getter方法. </p>
      * 
-     * @return 返回角色属性的值
+     * @return 返回专业名称属性的值
      */
-    @Column(name = "ROLE")
-    public java.lang.String getRole() {
-        return role;
+    @Column(name = "MAJOR_NAME")
+    public java.lang.String getMajorName() {
+        return majorName;
     }
 
     /**
-     * <p> 属性角色的Setter方法. </p>
+     * <p> 属性专业名称的Setter方法. </p>
      * 
-     * @param role 为属性role设置的值
+     * @param majorName 为属性majorName设置的值
      */
-    public void setRole(java.lang.String role) {
-        this.role = role;
+    public void setMajorName(java.lang.String majorName) {
+        this.majorName = majorName;
+    }
+
+    /**
+     * <p> 属性：roleKey的Getter方法. </p>
+     * 
+     * @return 返回角色代码属性的值
+     */
+    @Column(name = "ROLE_KEY")
+    public java.lang.String getRoleKey() {
+        return roleKey;
+    }
+
+    /**
+     * <p> 属性角色代码的Setter方法. </p>
+     * 
+     * @param roleKey 为属性roleKey设置的值
+     */
+    public void setRoleKey(java.lang.String roleKey) {
+        this.roleKey = roleKey;
+    }
+
+    /**
+     * <p> 属性：roleName的Getter方法. </p>
+     * 
+     * @return 返回角色名称属性的值
+     */
+    @Column(name = "ROLE_NAME")
+    public java.lang.String getRoleName() {
+        return roleName;
+    }
+
+    /**
+     * <p> 属性角色名称的Setter方法. </p>
+     * 
+     * @param roleName 为属性roleName设置的值
+     */
+    public void setRoleName(java.lang.String roleName) {
+        this.roleName = roleName;
     }
 
     /**
