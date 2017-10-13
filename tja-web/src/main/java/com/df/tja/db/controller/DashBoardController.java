@@ -26,6 +26,7 @@ import com.df.activiti.service.IProcessApproveService;
 import com.df.framework.base.controller.BaseController;
 import com.df.framework.hibernate.persistence.Pagination;
 import com.df.framework.util.HttpUtil;
+import com.df.tja.service.IWfWeekFillService;
 
 /**
  * <p>DashBoardController</p>
@@ -48,6 +49,9 @@ public class DashBoardController extends BaseController {
     @Autowired
     private IProcessApproveService processApproveService;
 
+    @Autowired
+    private IWfWeekFillService weekFillService;
+
     @RequestMapping(method = RequestMethod.GET)
     public String index(Model model) throws RuntimeException {
         //待审事务列表
@@ -61,6 +65,12 @@ public class DashBoardController extends BaseController {
         List<CustSysMessage> messes = processApproveService.queryReadingTask(HttpUtil.getUser().getId(), readPage);
         model.addAttribute("messes", messes);
         model.addAttribute("readPage", readPage);
+
+        //项目周报列表
+        String userId = HttpUtil.getUser().getId();
+        model.addAttribute("weeks", weekFillService.queryWeekList(userId));
+        model.addAttribute("weeksCount", weekFillService.queryWeekListCount(userId));
+
         return "/tjad/dashboard/dashboard";
     }
 }

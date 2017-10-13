@@ -68,28 +68,20 @@
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 bg-red-pink ">
             <div class="col-lg-3">
-                <a href="javascript:;" class="icon-btn">
+                <a href="${site}/admin/ym/weekFill/list" class="icon-btn">
                     <img src="../assets/pages/img/u629.png" alt="" />
                     <div> 项目周报</div>
-                    <span class="badge badge-danger"> 2 </span>
+                    <span class="badge badge-danger"> ${weeksCount} </span>
                 </a>
             </div>
             <div class="col-lg-9">
-                <p>
-                    <a href="#">项目周报：16-BJ-006海口龙华区……</a>
-                </p>
-                <p>
-                    <a href="#">项目周报：16-BJ-006海口龙华区……</a>
-                </p>
-                <p>
-                    <a href="#">项目周报：16-BJ-006海口龙华区……</a>
-                </p>
-                <p>
-                    <a href="#">项目周报：16-BJ-006海口龙华区……</a>
-                </p>
-                <p>
-                    <a href="#">项目周报：16-BJ-006海口龙华区……</a>
-                </p>
+            <c:if test="${not empty weeks}">
+            	<c:forEach items="${weeks}" var="week">
+                	<p>
+	                	<a href="${site}/admin/ym/weekFill/${week.proId}?periodId=${week.periodId}">项目周报：${week.proCode}${week.proName}</a>
+                    </p>
+                </c:forEach>
+            </c:if>
             </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 bg-purple-plum">

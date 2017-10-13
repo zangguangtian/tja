@@ -12,6 +12,8 @@
 
 package com.df.tja.service;
 
+import java.util.List;
+
 import com.df.activiti.domain.ProcessArgs;
 import com.df.framework.base.service.IBaseService;
 import com.df.framework.exception.LogicalException;
@@ -51,5 +53,22 @@ public interface IWfWeekFillService extends IBaseService {
      * */
     String addOrModifyWfWeekFill(WfWeekFill wfWeekFill, ProcessArgs processArgs) throws RuntimeException,
         LogicalException;
+
+    /**
+     * <p>描述 :首页-周报 </p>
+     * 
+     * @param 
+     * @return list
+     * */
+    List<WfWeekFillMore> queryWeekList(String userId) throws RuntimeException;
+
+    /**
+     * 
+     * <p>描述 : </p>
+     *
+     * @param 
+     * @return 当前用户相关的周报总数
+     */
+    int queryWeekListCount(String userId) throws RuntimeException;
 
 }

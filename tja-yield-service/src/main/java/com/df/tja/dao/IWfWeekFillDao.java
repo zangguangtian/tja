@@ -12,8 +12,11 @@
 
 package com.df.tja.dao;
 
+import java.util.List;
+
 import com.df.framework.base.dao.IBaseDao;
 import com.df.tja.domain.WfWeekFill;
+import com.df.tja.domain.cust.WfWeekFillMore;
 
 /**
  * <p>IWfWeekFillDao</p>
@@ -41,5 +44,23 @@ public interface IWfWeekFillDao extends IBaseDao {
      * @return
      */
     WfWeekFill queryWfWeekFill(String proId, String periodId);
+
+    /**
+     * 
+     * <p>描述 : </p>
+     *
+     * @param 
+     * @return
+     */
+    List<WfWeekFillMore> queryWeekList(String userId);
+
+    /**
+     * 
+     * <p>描述 : </p>
+     *
+     * @param 
+     * @return 当前用户相关的周报总数
+     */
+    int queryWeekListCount(String userId);
 
 }

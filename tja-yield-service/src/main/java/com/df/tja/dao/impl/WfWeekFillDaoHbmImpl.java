@@ -12,6 +12,8 @@
 
 package com.df.tja.dao.impl;
 
+import java.util.List;
+
 import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Repository;
 import com.df.framework.base.dao.impl.BaseDaoHbmImpl;
 import com.df.tja.dao.IWfWeekFillDao;
 import com.df.tja.domain.WfWeekFill;
+import com.df.tja.domain.cust.WfWeekFillMore;
 
 /**
  * <p>WfWeekFillDaoHbmImpl</p>
@@ -79,6 +82,103 @@ public class WfWeekFillDaoHbmImpl extends BaseDaoHbmImpl implements IWfWeekFillD
         query.setParameter(1, periodId);
         query.setResultTransformer(Transformers.aliasToBean(WfWeekFill.class));
         return (WfWeekFill) query.uniqueResult();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<WfWeekFillMore> queryWeekList(String userId) {
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("  SELECT TOP 5                                              ");
+        sql.append("      t2.ID AS proId,                                       ");
+        sql.append("      t2.PRO_CODE AS proCode,                               ");
+        sql.append("      t2.PRO_NAME AS proName,                               ");
+        sql.append("      t3.ID AS periodId                                     ");
+        sql.append("  FROM                                                      ");
+        sql.append("      OC_PERIOD_ADVANCE_FILL t1                             ");
+        sql.append("  INNER JOIN PM_PROJECT_TM t2 ON t1.PRO_ID = t2.ID          ");
+        sql.append("  INNER JOIN OC_PERIOD_MANAGE t3 ON t1.PERIOD_ID = t3.ID    ");
+        sql.append("  LEFT JOIN PM_PRO_TEAM_TM t4 ON t2.ID = t4.PRO_ID          ");
+        sql.append("  AND t4.MAIN_FLAG = 1                                      ");
+        sql.append("  AND t4.TEAM_ROLE = 'PM.TEAM.ROLE.LEADER'                  ");
+        sql.append("  LEFT JOIN PM_PRO_TEAM_TM t5 ON t2.ID = t5.PRO_ID          ");
+        sql.append("  AND t5.MAIN_FLAG = 1                                      ");
+        sql.append("  AND t5.TEAM_ROLE = 'PM.TEAM.ROLE.PM'                      ");
+        sql.append("  WHERE                                                     ");
+        sql.append("      t3.START_DATE < GETDATE()                             ");
+        sql.append("  AND t3.END_DATE > GETDATE()                               ");
+        sql.append("  AND t3.STATUS_CODE = 'OC.PERIOD.STATUS.JXZ'               ");
+        sql.append("  AND t2.PRO_STATUS = 'PM.STATUS.SGT'                       ");
+        sql.append("  AND (                                                     ");
+        sql.append("      t4.STAFF_ID = (select STAFF_ID from SYS_USER where ID = ?)    ");
+        sql.append("      OR t5.STAFF_ID = (select STAFF_ID from SYS_USER where ID = ?) ");
+        sql.append("  )                                                         ");
+        sql.append("  AND NOT EXISTS (                                          ");
+        sql.append("      SELECT                                                ");
+        sql.append("          1                                                 ");
+        sql.append("      FROM                                                  ");
+        sql.append("          WF_WEEK_FILL t6                                   ");
+        sql.append("      WHERE                                                 ");
+        sql.append("          t6.PRO_ID = t2.ID                                 ");
+        sql.append("      AND t6.PERIOD_ID = t3.ID                              ");
+        sql.append("  )                                                         ");
+        sql.append("  ORDER BY                                                  ");
+        sql.append("      t2.PRO_CODE ASC                                       ");
+
+        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setParameter(0, userId);
+        query.setParameter(1, userId);
+        query.setResultTransformer(Transformers.aliasToBean(WfWeekFillMore.class));
+        return query.list();
+    }
+
+    @Override
+    public int queryWeekListCount(String userId) {
+        StringBuilder sql = new StringBuilder();
+
+        sql.append("  SELECT                                                               ");
+        sql.append("      COUNT (*) AS weeksCount                                          ");
+        sql.append("  FROM                                                                 ");
+        sql.append("      (                                                                ");
+        sql.append("          SELECT                                                       ");
+        sql.append("              t2.ID AS proId,                                          ");
+        sql.append("              t2.PRO_CODE AS proCode,                                  ");
+        sql.append("              t2.PRO_NAME AS proName,                                  ");
+        sql.append("              t3.ID AS periodId                                        ");
+        sql.append("          FROM                                                         ");
+        sql.append("              OC_PERIOD_ADVANCE_FILL t1                                ");
+        sql.append("          INNER JOIN PM_PROJECT_TM t2 ON t1.PRO_ID = t2.ID             ");
+        sql.append("          INNER JOIN OC_PERIOD_MANAGE t3 ON t1.PERIOD_ID = t3.ID       ");
+        sql.append("          LEFT JOIN PM_PRO_TEAM_TM t4 ON t2.ID = t4.PRO_ID             ");
+        sql.append("          AND t4.MAIN_FLAG = 1                                         ");
+        sql.append("          AND t4.TEAM_ROLE = 'PM.TEAM.ROLE.LEADER'                     ");
+        sql.append("          LEFT JOIN PM_PRO_TEAM_TM t5 ON t2.ID = t5.PRO_ID             ");
+        sql.append("          AND t5.MAIN_FLAG = 1                                         ");
+        sql.append("          AND t5.TEAM_ROLE = 'PM.TEAM.ROLE.PM'                         ");
+        sql.append("          WHERE                                                        ");
+        sql.append("              t3.START_DATE < GETDATE()                                ");
+        sql.append("          AND t3.END_DATE > GETDATE()                                  ");
+        sql.append("          AND t3.STATUS_CODE = 'OC.PERIOD.STATUS.JXZ'                  ");
+        sql.append("          AND t2.PRO_STATUS = 'PM.STATUS.SGT'                          ");
+        sql.append("          AND (                                                        ");
+        sql.append("              t4.STAFF_ID = (select STAFF_ID from SYS_USER where ID = ?)    ");
+        sql.append("              OR t5.STAFF_ID = (select STAFF_ID from SYS_USER where ID = ?) ");
+        sql.append("          )                                                            ");
+        sql.append("          AND NOT EXISTS (                                             ");
+        sql.append("              SELECT                                                   ");
+        sql.append("                  1                                                    ");
+        sql.append("              FROM                                                     ");
+        sql.append("                  WF_WEEK_FILL t6                                      ");
+        sql.append("              WHERE                                                    ");
+        sql.append("                  t6.PRO_ID = t2.ID                                    ");
+        sql.append("              AND t6.PERIOD_ID = t3.ID                                 ");
+        sql.append("          )                                                            ");
+        sql.append("      ) t                                                              ");
+
+        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setParameter(0, userId);
+        query.setParameter(1, userId);
+        return (int) query.uniqueResult();
     }
 
 }

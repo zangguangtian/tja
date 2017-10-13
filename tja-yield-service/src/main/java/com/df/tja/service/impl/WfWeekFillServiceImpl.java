@@ -12,6 +12,8 @@
 
 package com.df.tja.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -92,6 +94,16 @@ public class WfWeekFillServiceImpl extends BaseServiceImpl implements IWfWeekFil
             throw new RuntimeException(e);
         }
         return id;
+    }
+
+    @Override
+    public List<WfWeekFillMore> queryWeekList(String userId) throws RuntimeException {
+        return wfWeekFillDao.queryWeekList(userId);
+    }
+
+    @Override
+    public int queryWeekListCount(String userId) throws RuntimeException {
+        return wfWeekFillDao.queryWeekListCount(userId);
     }
 
 }
