@@ -16,17 +16,14 @@ import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.GenericGenerator;
 
-import com.df.framework.base.domain.SuperDomain;
+import com.df.framework.base.domain.BaseDomain;
 
 /**
  * <p>ItProContractInfo </p>
@@ -47,12 +44,15 @@ import com.df.framework.base.domain.SuperDomain;
 @Table(name = "IT_PRO_CONTRACT_INFO")
 @DynamicInsert(true)
 @DynamicUpdate(true)
-public class ItProContractInfo extends SuperDomain {
+public class ItProContractInfo extends BaseDomain {
 
     /**
      * 属性： serialVersionUID 
      */
     private static final long serialVersionUID = 197425977581555900L;
+
+    /** 属性：合同ID */
+    private java.lang.String contractId;
 
     /** 属性：合同类型。1000：项目合同；2000：项目分包合同 */
     private java.lang.String contractType;
@@ -70,16 +70,22 @@ public class ItProContractInfo extends SuperDomain {
     private java.lang.String itemId;
 
     /**
-     * <p> 属性：id的Getter方法. </p>
+     * <p> 属性contractId的Getter方法. </p>
      * 
-     * @return 返回主键ID属性的值
+     * @return 返回contractId属性的值
      */
-    @Id
-    @GenericGenerator(name = "idGenerator", strategy = "assigned")
-    @GeneratedValue(generator = "idGenerator")
-    @Column(name = "ID", unique = true, nullable = false)
-    public java.lang.String getId() {
-        return id;
+    @Column(name = "CONTRACT_ID")
+    public java.lang.String getContractId() {
+        return contractId;
+    }
+
+    /**
+     * <p> 属性contractId的Setter方法. </p>
+     * 
+     * @param contractId 为属性contractId设置的值
+     */
+    public void setContractId(java.lang.String contractId) {
+        this.contractId = contractId;
     }
 
     /**
