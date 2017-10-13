@@ -58,6 +58,9 @@ public class ItProPhasesMajor extends SuperDomain {
     /** 属性：关联阶段ID */
     private java.lang.String prjPhaseId;
 
+    /** 属性：关联项目ID */
+    private java.lang.String itemId;
+
     /**
      * <p> 属性：id的Getter方法. </p>
      * 
@@ -107,6 +110,25 @@ public class ItProPhasesMajor extends SuperDomain {
      */
     public void setPrjPhaseId(java.lang.String prjPhaseId) {
         this.prjPhaseId = prjPhaseId;
+    }
+
+    /**
+     * <p> 属性itemId的Getter方法. </p>
+     * 
+     * @return 返回itemId属性的值
+     */
+    @Column(name = "ITEM_ID")
+    public java.lang.String getItemId() {
+        return itemId;
+    }
+
+    /**
+     * <p> 属性itemId的Setter方法. </p>
+     * 
+     * @param itemId 为属性itemId设置的值
+     */
+    public void setItemId(java.lang.String itemId) {
+        this.itemId = itemId;
     }
 
     /**
