@@ -55,11 +55,18 @@ public class WfWeekFillServiceImpl extends BaseServiceImpl implements IWfWeekFil
     IProjectService projectService;
 
     @Override
-    public WfWeekFillMore queryWfWeekFill(String proId, String periodId) throws RuntimeException {
+    public WfWeekFillMore queryWfWeekFill(String id, String proId, String periodId) throws RuntimeException {
         WfWeekFillMore wfWeekFillMore = new WfWeekFillMore();
-        wfWeekFillMore.setProId(proId);
-        wfWeekFillMore.setPeriodId(periodId);
+        WfWeekFill weekFill = null;
         try {
+            if (!"0".equals(id)) {
+                weekFill = wfWeekFillDao.queryWfWeekFill(id);
+                proId = weekFill.getProId();
+                periodId = weekFill.getPeriodId();
+            }
+            wfWeekFillMore.setProId(proId);
+            wfWeekFillMore.setPeriodId(periodId);
+
             ProjectMore projectMore = projectService.queryByProId(proId);
             BeanUtils.copyProperties(projectMore, wfWeekFillMore, "id");
 
@@ -68,7 +75,6 @@ public class WfWeekFillServiceImpl extends BaseServiceImpl implements IWfWeekFil
             wfWeekFillMore.setRangeStart(period.getRangeStart());
             wfWeekFillMore.setRangeEnd(period.getRangeEnd());
 
-            WfWeekFill weekFill = wfWeekFillDao.queryWfWeekFill(proId, periodId);
             if (weekFill != null) {
                 BeanUtils.copyProperties(weekFill, wfWeekFillMore);
             }

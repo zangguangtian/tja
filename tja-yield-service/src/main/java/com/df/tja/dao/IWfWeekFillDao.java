@@ -43,7 +43,7 @@ public interface IWfWeekFillDao extends IBaseDao {
      * @param periodId
      * @return
      */
-    WfWeekFill queryWfWeekFill(String proId, String periodId);
+    WfWeekFill queryWfWeekFill(String id);
 
     /**
      * 

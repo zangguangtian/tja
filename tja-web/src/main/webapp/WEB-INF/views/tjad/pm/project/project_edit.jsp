@@ -158,13 +158,6 @@
 						<input type="text" class="form-control" value="${project.projectExtend.timeCost}" disabled="disabled"> 
 					</div>
 				</div>
-				
-				<div class="form-group col-lg-6 " style="display: none">
-					<label class="control-label col-md-4">提交人</label>
-					<div class="col-md-7">
-						<input type="text" class="form-control" name="modifier" value="${SysUser.id}"> 
-					</div>
-				</div>
 
 				<div class="col-md-12">
 					<div class="tabbable-line boxless tabbable-reversed">

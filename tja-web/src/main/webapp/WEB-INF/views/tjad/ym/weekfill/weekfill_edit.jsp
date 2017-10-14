@@ -130,7 +130,7 @@
 					<label class="control-label col-md-4">所处阶段<span class="required">※</span></label>
 					<div class="col-md-7 input-icon right">
 						<i class="fa"></i>
-						<input name="phaseCode" type="text" data-rule-required="true" class="form-control" value="${weekFill.phaseCode}">
+						<tags:config type="select" name="phaseCode" otherAttr='data-rule-required="true"' cssClass="form-control" parentCode="YM.PHASESTATUS" selectCode="${weekFill.phaseCode}"/>
 					</div>
 				</div>
 				<div class="form-group col-lg-6 ">
@@ -275,7 +275,6 @@ function save(status){
 function ajaxSava(status){
 	$("input[name='auditStatus']").val(status);
 	var url ="${site}/admin/ym/weekFill/ajax/save";
-	var backUrl = (status == "9" ? "${site}/admin/ym/weekFill/list" : "${site}/admin/ym/weekFill/${weekFill.proId}?periodId=${weekFill.periodId}");
 	$.ajax({
 		type : "post",
 	 	url : url,
@@ -287,6 +286,7 @@ function ajaxSava(status){
 	 	success : function(data) {
 	 		if(data.flag == "true"){
 	 			$.jalert({"jatext":data.msg, "jatype":"refresh", "onConfirm":function(){
+	 				var backUrl = (status == "9" ? "${site}/admin/ym/weekFill/list" : "${site}/admin/ym/weekFill/toedit/"+data.id+"?proId=${weekFill.proId}&periodId=${weekFill.periodId}");
 			  		window.location.href = backUrl;
 	 			}});
 	 		}else{

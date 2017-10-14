@@ -41,7 +41,7 @@ import com.df.tja.domain.cust.WfWeekFillMore;
 public class WfWeekFillDaoHbmImpl extends BaseDaoHbmImpl implements IWfWeekFillDao {
 
     @Override
-    public WfWeekFill queryWfWeekFill(String proId, String periodId) {
+    public WfWeekFill queryWfWeekFill(String id) {
         StringBuilder sql = new StringBuilder();
 
         sql.append(" SELECT                                                 ");
@@ -74,12 +74,10 @@ public class WfWeekFillDaoHbmImpl extends BaseDaoHbmImpl implements IWfWeekFillD
         sql.append(" INNER JOIN WF_FLOW_MAIN t2 ON t1.ID = t2.ID            ");
         sql.append(" LEFT JOIN SYS_USER t3 ON t1.CREATOR = t3.ID            ");
         sql.append(" WHERE                                                  ");
-        sql.append("     PRO_ID = ?                                         ");
-        sql.append(" AND PERIOD_ID = ?                                      ");
+        sql.append("     t1.ID = ?                                          ");
 
         SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
-        query.setParameter(0, proId);
-        query.setParameter(1, periodId);
+        query.setParameter(0, id);
         query.setResultTransformer(Transformers.aliasToBean(WfWeekFill.class));
         return (WfWeekFill) query.uniqueResult();
     }

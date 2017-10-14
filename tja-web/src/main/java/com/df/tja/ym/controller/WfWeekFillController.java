@@ -12,6 +12,7 @@
 
 package com.df.tja.ym.controller;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +40,7 @@ import com.df.framework.util.StringUtil;
 import com.df.tja.domain.WfWeekFill;
 import com.df.tja.domain.cust.WfWeekFillMore;
 import com.df.tja.service.IWfWeekFillService;
+import com.df.tja.service.IYmConfigService;
 
 /**
  * <p>WfWfWeekFillFillController</p>
@@ -67,6 +69,9 @@ public class WfWeekFillController extends WfBaseController {
     @Autowired
     private ISysUserService userService;
 
+    @Autowired
+    private IYmConfigService ymConfigService;
+
     /**
      * <p>描述 : 列表</p>
      */
@@ -82,22 +87,21 @@ public class WfWeekFillController extends WfBaseController {
      */
     @RequestMapping(value = "/toedit/{id}")
     public String toEdit(@PathVariable("id") String id, Model model) throws RuntimeException {
-        if (!"0".equals(id)) { //编辑
-            WfWeekFillMore weekFill = weekFillService.queryWfWeekFill(proId, periodId);
-            if (WfConstant.AuditStatus.AUDITING.equals(weekFill.getAuditStatus())
-                || WfConstant.AuditStatus.AUDITED.equals(weekFill.getAuditStatus())) {
-                return "redirect:/admin/ym/weekFill/toview/" + WfConstant.Operate.VIEW + "/" + weekFill.getId();
-            }
-            model.addAttribute("weekFill", weekFill);
+        HttpServletRequest request = HttpUtil.getHttpServletRequest();
+        String proId = request.getParameter("proId");
+        String periodId = request.getParameter("periodId");
 
-            double weekYieldCoe = 0.9; // 当周产值计算系数
-            model.addAttribute("weekYieldCoe", weekYieldCoe);
-        } else { //新建
-            HttpServletRequest request = HttpUtil.getHttpServletRequest();
-            String proId = request.getParameter("proId");
-            String periodId = request.getParameter("periodId");
-            WfWeekFillMore weekFill = weekFillService.queryWfWeekFill(proId, periodId);
+        WfWeekFillMore weekFill = weekFillService.queryWfWeekFill(id, proId, periodId);
+
+        if (WfConstant.AuditStatus.AUDITING.equals(weekFill.getAuditStatus())
+            || WfConstant.AuditStatus.AUDITED.equals(weekFill.getAuditStatus())) {
+            return "redirect:/admin/ym/weekFill/toview/" + WfConstant.Operate.VIEW + "/" + weekFill.getId();
         }
+
+        model.addAttribute("weekFill", weekFill);
+        BigDecimal weekYieldCoe = ymConfigService.queryOcRebateParam(); // 当周产值计算系数
+
+        model.addAttribute("weekYieldCoe", weekYieldCoe);
         return "/tjad/ym/weekfill/weekfill_edit";
     }
 
@@ -121,15 +125,15 @@ public class WfWeekFillController extends WfBaseController {
                 SysUser ocSysUser = userService.queryRoleUser(WfConstant.FlowTaskRole.YUNYING);
                 processArgs.addVariable("ocOrg", ocSysUser.getId());
 
-                processArgs.addVariable("url",
-                    "/admin/ym/weekFill/" + weekFill.getProId() + "?periodId=" + weekFill.getPeriodId());
+                processArgs.addVariable("url", "/admin/ym/weekFill/toedit/" + weekFill.getId());
             }
             // 提交或保存
             if (!WfConstant.AuditStatus.ABANDON.equals(auditStatus)) {
-                weekFillService.addOrModifyWfWeekFill(weekFill, processArgs);
+                String id = weekFillService.addOrModifyWfWeekFill(weekFill, processArgs);
                 if ("1".equals(auditStatus)) {
                     msg = SUBMIT_SUCCESS;
                 }
+                resultmap.put("id", id);
                 resultmap.put("msg", msg);
             } else {
                 // 删除
@@ -157,13 +161,13 @@ public class WfWeekFillController extends WfBaseController {
      * @return
      * @throws BusinessException
      */
-    @RequestMapping(value = { "/toview/{operate}/{id}", "/toprint/{operate}/{id}" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/toview/{operate}/{id}", "/toprint/{operate}/{id}"}, method = RequestMethod.GET)
     public ModelAndView toViewOrApprove(@PathVariable("operate") String operate, @PathVariable("id") String id,
                                         String view) throws RuntimeException {
         Map<String, Object> modelMap = new HashMap<String, Object>();
 
         WfWeekFill week = weekFillService.queryByPrimaryKey(WfWeekFill.class, id);
-        WfWeekFillMore weekFill = weekFillService.queryWfWeekFill(week.getProId(), week.getPeriodId());
+        WfWeekFillMore weekFill = weekFillService.queryWfWeekFill(week.getId(), week.getProId(), week.getPeriodId());
         modelMap.put("weekFill", weekFill);
 
         //检查操作

@@ -43,7 +43,7 @@ public interface IWfWeekFillService extends IBaseService {
      * @param id 
      * @return 
      * */
-    WfWeekFillMore queryWfWeekFill(String proId, String periodId) throws RuntimeException;
+    WfWeekFillMore queryWfWeekFill(String id, String proId, String periodId) throws RuntimeException;
 
     /**
      * <p>描述 :保存/修改 周报 </p>

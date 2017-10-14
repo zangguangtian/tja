@@ -14,7 +14,7 @@
 <div class="">
 	<center>
 		<h3>项目周报-${weekFill.periodName}</h3>
-		<h6><fmt:formatDate pattern="yyyy/MM/dd" value="${weekFill.rangeStart}"/> ~ <fmt:formatDate pattern="yyyy/MM/dd" value="${weekFill.rangeEnd}"/></h6>
+		<h6><fmt:formatDate pattern="yyyy年MM月dd日" value="${weekFill.rangeStart}"/> ~ <fmt:formatDate pattern="yyyy年MM月dd日" value="${weekFill.rangeEnd}"/></h6>
 	</center>
 	<div class=" ">
 		<div class="form">
@@ -122,7 +122,7 @@
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-md-4">所处阶段</label>
 					<div class="col-md-7">
-						<label class="control-label">${weekFill.phaseCode}</label>
+						<tags:config type="label" code="${weekFill.phaseCode}"/>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
@@ -153,19 +153,19 @@
 				<div class="form-group col-xs-12 ">
 					<label class="control-label col-md-2" style="margin-left: -0.6%;">当周工作及进展情况</label>
 					<div class="col-md-9" style="width: 78%;">
-						<textarea rows="3" class="form-control" readonly>${weekFill.weekEvolve}</textarea>
+						<textarea rows="3" class="form-control" disabled>${weekFill.weekEvolve}</textarea>
 					</div>
 				</div>
 				<div class="form-group col-xs-12 ">
 					<label class="control-label col-md-2" style="margin-left: -0.6%;">下阶段工作计划</label>
 					<div class="col-md-9" style="width: 78%;">
-						<textarea rows="3" class="form-control" readonly>${weekFill.workPlan}</textarea>
+						<textarea rows="3" class="form-control" disabled>${weekFill.workPlan}</textarea>
 					</div>
 				</div>
 				<div class="form-group col-xs-12 ">
 					<label class="control-label col-md-2" style="margin-left: -0.6%;">备案情况</label>
 					<div class="col-md-9" style="width: 78%;">
-						<textarea rows="3" class="form-control" readonly>${weekFill.filing}</textarea>
+						<textarea rows="3" class="form-control" disabled>${weekFill.filing}</textarea>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">

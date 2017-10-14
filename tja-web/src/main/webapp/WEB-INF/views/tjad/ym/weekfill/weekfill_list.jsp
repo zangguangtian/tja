@@ -10,26 +10,62 @@
 </head>
 <body>
 <div class="wrapBox ">
-    <div id="content">
-    </div>
+    
+    
+	<div class="col-md-12">
+		<div class="tabbable-line boxless tabbable-reversed">
+	    	<ul class="nav nav-tabs">
+	        	<li class="active">
+	            	<a href="#tab_0" data-toggle="tab" aria-expanded="true">当期</a>
+	            </li>
+	            <li class="">
+	                <a href="#tab_1" data-toggle="tab" aria-expanded="false">历史</a>
+	            </li>
+	        </ul>
+	       	<div class="tab-content">
+	       		<!-- 当期 -->
+	            <div class="tab-pane active" id="tab_0">
+	            	<div class="col-lg-12" id="content">
+
+					</div>
+				</div>
+	       		<!-- 历史 -->
+	       		<div class="tab-pane" id="tab_1">
+	       			<div class="col-lg-12" id="content2">
+	
+					</div>
+				</div>
+			</div>
+	  		</div>
+	</div>
 </div>
 <script type="text/javascript">
 jQuery(function(){
+	loadList("WEEKFILL_LIST", $("#content"));
+	$("a[href='#tab_0']").on("click", function(){
+		loadList("WEEKFILL_LIST", $("#content"));
+	});
+	$("a[href='#tab_1']").on("click", function(){
+		loadList("WEEKFILL_HIS_LIST", $("#content2"));
+	});
+});
+
+function loadList(NO, content_div){
 	var sUrl ="${site}/config/ajax/query";
 	jQuery.ajax({
 		type: "POST",
 		url:sUrl,
-		data:{"NO":"WEEKFILL_LIST", "MODEL":"YM"},
+		data:{"NO":NO, "MODEL":"YM", "qarg.userId":"${SysUser.id}"},
 		async: false,
 	    error: function(request) {
 	    	jQuery.jalert({"jatext":"Connection error"});
 	    },
 	    success: function(data) {
-	    	$("#content").empty();
-			$("#content").append(data); 
+	    	content_div.empty();
+	    	content_div.append(data); 
 	    }
 	});
-});
+}
 
 </script>
 </body>
