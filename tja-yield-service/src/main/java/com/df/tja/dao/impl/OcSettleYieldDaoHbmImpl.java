@@ -102,7 +102,6 @@ public class OcSettleYieldDaoHbmImpl extends BaseDaoHbmImpl implements IOcSettle
         sql.append(" MERGE INTO OC_SETTLE_YIELD AS T USING                              ");
         sql.append(" OC_SETTLE_YIELD_IMP AS S ON T.PRO_ID = S.PRO_ID                    ");
         sql.append(" AND T.PERIOD_ID = S.PERIOD_ID                                      ");
-        sql.append(" AND T.CREATE_DATE = S.CREATE_DATE                                  ");
         sql.append(" WHEN MATCHED THEN UPDATE SET                                       ");
         sql.append("  T.CREATE_DATE = S.CREATE_DATE,                                    ");
         sql.append("  T.CREATOR = S.CREATOR,                                            ");

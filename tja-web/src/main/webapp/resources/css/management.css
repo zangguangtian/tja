@@ -69,6 +69,11 @@ input[type="button"],input[type="submit"],input[type="reset"]{ cursor:pointer; }
 .fl-l {
     float: left;
 }
+
+.fl-l-mr1 {
+    float: left;
+    margin-right: 1%;
+}
 .cl {
     clear: both;
 }
@@ -265,3 +270,7 @@ input[type="number"] {
     border: 1px solid #36c6d3 !important;
 }
 /*行编辑 输入框样式 结束*/
+
+.input-xxsmall-custom {
+    width: 40px !important;
+}
