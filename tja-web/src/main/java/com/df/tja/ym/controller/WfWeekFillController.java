@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -81,10 +80,9 @@ public class WfWeekFillController extends WfBaseController {
      * @param proId 项目ID
      * @param periodId 期间ID
      */
-    @RequestMapping(value = "/{proId}")
-    public String toEdit(@PathVariable("proId") String proId, @RequestParam("periodId") String periodId, Model model)
-        throws RuntimeException {
-        if (!"0".equals(proId)) {
+    @RequestMapping(value = "/toedit/{id}")
+    public String toEdit(@PathVariable("id") String id, Model model) throws RuntimeException {
+        if (!"0".equals(id)) { //编辑
             WfWeekFillMore weekFill = weekFillService.queryWfWeekFill(proId, periodId);
             if (WfConstant.AuditStatus.AUDITING.equals(weekFill.getAuditStatus())
                 || WfConstant.AuditStatus.AUDITED.equals(weekFill.getAuditStatus())) {
@@ -94,6 +92,11 @@ public class WfWeekFillController extends WfBaseController {
 
             double weekYieldCoe = 0.9; // 当周产值计算系数
             model.addAttribute("weekYieldCoe", weekYieldCoe);
+        } else { //新建
+            HttpServletRequest request = HttpUtil.getHttpServletRequest();
+            String proId = request.getParameter("proId");
+            String periodId = request.getParameter("periodId");
+            WfWeekFillMore weekFill = weekFillService.queryWfWeekFill(proId, periodId);
         }
         return "/tjad/ym/weekfill/weekfill_edit";
     }
@@ -154,7 +157,7 @@ public class WfWeekFillController extends WfBaseController {
      * @return
      * @throws BusinessException
      */
-    @RequestMapping(value = {"/toview/{operate}/{id}", "/toprint/{operate}/{id}"}, method = RequestMethod.GET)
+    @RequestMapping(value = { "/toview/{operate}/{id}", "/toprint/{operate}/{id}" }, method = RequestMethod.GET)
     public ModelAndView toViewOrApprove(@PathVariable("operate") String operate, @PathVariable("id") String id,
                                         String view) throws RuntimeException {
         Map<String, Object> modelMap = new HashMap<String, Object>();
