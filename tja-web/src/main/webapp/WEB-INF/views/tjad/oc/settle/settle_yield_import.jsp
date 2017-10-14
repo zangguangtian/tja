@@ -47,7 +47,7 @@
 			</div>
 			</form>
 			<!-- END FORM-->
-			 <div class="form-body clearfix showResult" style="display: none">
+			 <div class="form-body clearfix showResult">
 			 <div class="form-group col-lg-12 ">
                  <label class="control-label col-md-3">数据检查结果</label>
                  <div class="col-md-8">
@@ -79,54 +79,59 @@
 <div class="clearfix"></div>
 <script type="text/javascript" src="${site}/resources/js/fileupload/jquery.fileupload.js"></script>
 <script type="text/javascript">
-jQuery(document).on("click",jQuery(" input[type='file'][name='attach']"),function(){
-	$(this).fileupload({
-		form: "impForm",
-  		url: "${site}/admin/oc/settle/ajax/upload",
-	    type : "POST",
-	    dataType: 'json',
-	    add: function (e, data) {
-	  	  var goUpload = true;
-	  	  var uploadFile = data.files[0];
-	  	  if (!(/\.(xls|xlsx)$/i).test(uploadFile.name)) {
-	  		jQuery.jalert({"jatext":"文件类型错误。请上传xls类型文件！"});
-	  		  goUpload = false;
-	  	  }
-	  	  if (goUpload == true) {
-	  		  layer.load(1, {
-	  			  shade: [0.3,'#fff'] //0.1透明度的白色背景
-	  		  });
-	  		  data.submit();
-	  	  }
-	    },
-		done: function (e, data) {
-			layer.closeAll('loading');
-			if(!data.result.status){
-			  if(typeof (data.result.mess.message) == 'undefined'){
-				  jQuery.jalert({"jatext":data.result.mess});
-			  }else{
-				  jQuery.jalert({"jatext":data.result.mess.message});
-			  }
-			}else{
-			 //导入成功  加载通用查询 
-			 jQuery(".showResult").removeAttr("style");
-			 $(".showResult").find("span.total").text(data.result.totalRecord);
-			 $(".showResult").find("span.normal").text(data.result.validRecord);
-			 $(".showResult").find("span.error").text(data.result.errorRecord);
-			 
-			 ajaxImpInfo(data.result.dateFormat);
-			 
-			}
-        },
-        fail : function(e, data){
-        	layer.closeAll('loading');
-    		jQuery.jalert({"jatext":"上传失败"});
-        }
- 	});
+jQuery(document).ready(function(){
+	ajaxImpInfo("");
+	
+	jQuery("input[type='file'][name='attach']").on("click", function(){
+		$(this).fileupload({
+			form: "impForm",
+	  		url: "${site}/admin/oc/settle/ajax/upload",
+		    type : "POST",
+		    dataType: 'json',
+		    add: function (e, data) {
+		  	  var goUpload = true;
+		  	  var uploadFile = data.files[0];
+		  	  if (!(/\.(xls|xlsx)$/i).test(uploadFile.name)) {
+		  		jQuery.jalert({"jatext":"文件类型错误。请上传xls类型文件！"});
+		  		  goUpload = false;
+		  	  }
+		  	  if (goUpload == true) {
+		  		  layer.load(1, {
+		  			  shade: [0.3,'#fff'] //0.1透明度的白色背景
+		  		  });
+		  		  data.submit();
+		  	  }
+		    },
+			done: function (e, data) {
+				layer.closeAll('loading');
+				if(!data.result.status){
+				  if(typeof (data.result.mess.message) == 'undefined'){
+					  jQuery.jalert({"jatext":data.result.mess});
+				  }else{
+					  jQuery.jalert({"jatext":data.result.mess.message});
+				  }
+				}else{
+				 //导入成功  加载通用查询 
+				 //jQuery(".showResult").removeAttr("style");
+				 $(".showResult").find("span.total").text(data.result.totalRecord);
+				 $(".showResult").find("span.normal").text(data.result.validRecord);
+				 $(".showResult").find("span.error").text(data.result.errorRecord);
+				 
+				 ajaxImpInfo(data.result.dateFormat);
+				 
+				}
+	        },
+	        fail : function(e, data){
+	        	layer.closeAll('loading');
+	    		jQuery.jalert({"jatext":"上传失败"});
+	        }
+	 	});
+	});
 });
 
+
 function ajaxImpInfo(date){
-	var sUrl ="${site}/config/ajax/query";
+	var sUrl ="${site}/config/query";
 	jQuery.ajax({
 		type: "POST",
 		url:sUrl,
