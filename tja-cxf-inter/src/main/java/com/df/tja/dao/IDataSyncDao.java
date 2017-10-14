@@ -12,6 +12,8 @@
 
 package com.df.tja.dao;
 
+import java.math.BigDecimal;
+
 import com.df.framework.base.dao.IBaseDao;
 
 /**
@@ -39,5 +41,15 @@ public interface IDataSyncDao extends IBaseDao {
      * @return
      */
     void writeBackSyncData(String dataType);
+
+    /**
+     * 
+     * <p>描述 : </p>
+     *
+     * @param value
+     * @param itemId
+     * @param createDate
+     */
+    void updateCostOfItem(BigDecimal value, String itemId);
 
 }

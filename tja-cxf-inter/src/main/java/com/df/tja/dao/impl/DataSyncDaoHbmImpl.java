@@ -12,10 +12,13 @@
 
 package com.df.tja.dao.impl;
 
+import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 
+import org.hibernate.SQLQuery;
 import org.hibernate.jdbc.Work;
 import org.springframework.stereotype.Repository;
 
@@ -56,5 +59,14 @@ public class DataSyncDaoHbmImpl extends BaseDaoHbmImpl implements IDataSyncDao {
                 }
             }
         });
+    }
+
+    public void updateCostOfItem(BigDecimal value, String itemId) {
+        String sql = "update it_project_info set work_cost = ?, wc_create_date = ? where id = ?";
+        SQLQuery query = getCurrentSession().createSQLQuery(sql);
+        query.setBigDecimal(0, value);
+        query.setDate(1, new Date());
+        query.setString(2, itemId);
+        query.executeUpdate();
     }
 }

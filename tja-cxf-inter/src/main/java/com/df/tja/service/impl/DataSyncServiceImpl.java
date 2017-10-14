@@ -305,7 +305,6 @@ public class DataSyncServiceImpl extends BaseServiceImpl implements IDataSyncSer
                 dataSyncDao.writeBackSyncData("syncEpibolyContractOfItem");
             }
         } catch (Exception ex) {
-            System.out.println(value);
             LoggerUtil.error(DataSyncServiceImpl.class, ex.getMessage());
             throw new RuntimeException(ex);
         }
@@ -314,13 +313,7 @@ public class DataSyncServiceImpl extends BaseServiceImpl implements IDataSyncSer
     public void syncCostOfItem(String value, String itemId, Date createDate) throws RuntimeException {
         try {
             if (StringUtil.isNotBlank(value)) {
-                Date syncDate = new Date();
-                ItProjectInfo itProjectInfo = new ItProjectInfo();
-                itProjectInfo.setId(itemId);
-                itProjectInfo.setWorkCost(new BigDecimal(value));
-                itProjectInfo.setWcCreateDate(syncDate);
-                itProjectInfo.setCreateDate(createDate);
-                dataSyncDao.update(ItProjectInfo.class, itProjectInfo);
+                dataSyncDao.updateCostOfItem(new BigDecimal(value), itemId);
                 dataSyncDao.writeBackSyncData("syncItem");
             }
         } catch (Exception ex) {
