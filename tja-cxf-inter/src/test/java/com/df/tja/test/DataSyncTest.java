@@ -14,7 +14,6 @@ package com.df.tja.test;
 
 import java.util.List;
 
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -43,38 +42,38 @@ import com.df.tja.service.IDataSyncService;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 //使用junit4进行测试  
-@ContextConfiguration(locations = {"classpath:/spring.xml"})
+@ContextConfiguration(locations = { "classpath:/spring.xml" })
 //加载配置文件 
 public class DataSyncTest {
 
     @Autowired
     private IDataSyncService dataSyncService;
 
-    @Test
+    //@Test
     public void testSyncDept() {
         String value = dataSyncService.createAndQuerySyncData("getDepts", "");
         dataSyncService.syncDepts(value);
     }
 
-    @Test
+    //@Test
     public void testSyncEmployee() {
         String value = dataSyncService.createAndQuerySyncData("getEmployees", "");
         dataSyncService.syncEmployees(value);
     }
 
-    @Test
+    //@Test
     public void testSyncAccounts() {
         String value = dataSyncService.createAndQuerySyncData("getAccounts", "");
         dataSyncService.syncAccounts(value);
     }
 
-    @Test
+    //@Test
     public void testSyncItems() {
         String value = dataSyncService.createAndQuerySyncData("getItems", "");
         dataSyncService.syncItems(value);
     }
 
-    @Test
+    //@Test
     public void testSyncContractOfItem() {
         List<ItProjectInfo> projects = dataSyncService.queryByCondition(ItProjectInfo.class, null);
         if (projects != null && !projects.isEmpty()) {
@@ -89,7 +88,7 @@ public class DataSyncTest {
         }
     }
 
-    @Test
+    //@Test
     public void testSyncEpibolyContractOfItem() {
         List<ItProjectInfo> projects = dataSyncService.queryByCondition(ItProjectInfo.class, null);
         if (projects != null && !projects.isEmpty()) {
@@ -104,7 +103,7 @@ public class DataSyncTest {
         }
     }
 
-    @Test
+    //@Test
     public void testSyncCostOfItem() {
         List<ItProjectInfo> projects = dataSyncService.queryByCondition(ItProjectInfo.class, null);
         if (projects != null && !projects.isEmpty()) {
@@ -115,7 +114,7 @@ public class DataSyncTest {
         }
     }
 
-    @Test
+    //@Test
     public void testSyncItemWbsInfo() {
         List<ItProjectInfo> projects = dataSyncService.queryByCondition(ItProjectInfo.class, null);
         if (projects != null && !projects.isEmpty()) {
