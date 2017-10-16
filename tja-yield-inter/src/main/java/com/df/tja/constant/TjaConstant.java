@@ -49,4 +49,22 @@ public abstract class TjaConstant {
         public static final String PM_MAJOR_PARENT_CODE = "PM.MAJOR";
     }
 
+    public static class WriteStoreProce {
+
+        public static final String USP_SYS_SCHEDULED_TASK_01 = "usp_SYS_Scheduled_Task_01";
+
+        public static final String USP_SYS_SCHEDULED_TASK_02 = "usp_SYS_Scheduled_Task_02";
+
+        public static final String USP_SYS_SCHEDULED_TASK_03 = "usp_SYS_Scheduled_Task_03";
+
+        public static final String USP_SYS_DB_FULLBACKUP = "usp_SYS_DB_FullBackup";
+
+        public static final String USP_SYS_DB_DIFFBACKUP = "usp_SYS_DB_DiffBackup";
+
+        public static final String USP_SYS_DATA_UPDATE = "usp_SYS_Data_Update";
+
+        public static final String USP_SYS_DATA_CORRECT = "usp_SYS_Data_Correct";
+
+        public static final String USP_SYS_DATA_ALERT = "usp_SYS_Data_Alert";
+    }
 }
