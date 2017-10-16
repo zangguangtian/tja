@@ -25,10 +25,10 @@
 		<div class="form">
 			<!-- BEGIN FORM-->
 			<form id="impForm">
-			<div class="form-body clearfix">
+			<div class="clearfix">
 				<div class="form-group col-xs-12 ">
-					<label class="control-label col-xs-2">项目编号</label>
-					<div class="col-xs-3">
+					<label class="control-label col-xs-2" style="margin-top:5px;">期间</label>
+					<div class="col-xs-3" style="margin:5px 0px;">
 						<select class="form-control" name="period">
 							<c:if test="${!empty periodSelect}">
 							<c:forEach items="${periodSelect}" var="period" varStatus="s">
@@ -47,7 +47,7 @@
 			</div>
 			</form>
 			<!-- END FORM-->
-			 <div class="form-body clearfix showResult">
+			 <div class="clearfix showResult">
 			 <div class="form-group col-lg-12 ">
                  <label class="control-label col-md-3">数据检查结果</label>
                  <div class="col-md-8">
