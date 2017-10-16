@@ -64,7 +64,7 @@ public class ProjectController extends BaseController {
      */
     @RequestMapping(value = "/edit/{proId}")
     public String edit(@PathVariable("proId") String proId, Model model) throws RuntimeException {
-        ProjectMore projectMore = projectService.queryByProId(proId);
+        CustProject projectMore = projectService.queryByProId(proId);
         model.addAttribute("project", projectMore);
         return "/tjad/pm/project/project_edit";
     }
