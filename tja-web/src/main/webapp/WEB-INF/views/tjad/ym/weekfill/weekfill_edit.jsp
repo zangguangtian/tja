@@ -219,16 +219,6 @@ $(function(){
 	}).on("changeDate",function(ev){
 		getDuration();
 	});
-	
-	var auditStatus = "${weekFill.auditStatus}";
-	if(auditStatus=='1'||auditStatus=='2'||auditStatus=='9'){
-		$("input[name='phaseCode']").attr("disabled","disabled");
-		$("input[name='phaseStart']").attr("disabled","disabled");
-		$("input[name='weekProgress']").attr("disabled","disabled");
-		$("textarea[name='weekEvolve']").attr("disabled","disabled");
-		$("textarea[name='workPlan']").attr("disabled","disabled");
-		$("textarea[name='filing']").attr("disabled","disabled");
-	}
 });
 
 Date.prototype.diff = function(date){
