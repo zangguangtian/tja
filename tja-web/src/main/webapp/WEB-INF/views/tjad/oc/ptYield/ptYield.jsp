@@ -79,7 +79,7 @@
 			        	},
 			        	editTemplate: function(value, item) {
 			        		var _proselect = $("<div class='col-md-10'></div>");
-			        		$(_proselect).append('<input type="text" name="proCode" class="form-control col-md-3" disabled="disabled" value='+value+'>')
+			        		$(_proselect).append('<input type="text" name="proCode" class="form-control col-md-3" disabled="disabled" value='+(value==null?"":value)+'>')
 			        					 .append('<input type="hidden" name="proId" value='+item.proId+'>')
 			        					 .append('<a id="selectPro" title="选择" href="javascript:void(0);" class="icon-select"></a>');
 
@@ -97,7 +97,7 @@
 			        		return "<input type='text' name='proName' class='form-control' disabled='disabled'>";
 			        	},
 			        	editTemplate : function(value, item) {
-			        		return "<input type='text' name='proName' class='form-control' disabled='disabled' value="+value+">";
+			        		return "<input type='text' name='proName' class='form-control' disabled='disabled' value="+(value==null?"":value)+">";
 			        	}
 			        },{
 			        	name : "majorName",
@@ -223,6 +223,19 @@
 		  	  
 		  	var proName = $(".jsgrid-edit-row input[type='text'][name='proName']").val();
 		  	var proCode = $(".jsgrid-edit-row input[type='text'][name='proCode']").val();
+		  	
+			if(periodId.length == 0) {
+	  			$.jalert({"jatext":"请选择期间"});
+	  			return;
+	  		}
+	  		if(proId.length == 0 || proCode.length == 0 ) {
+	  			$.jalert({"jatext":"请选择项目"});
+	  			return;
+	  		}
+	  		if(majorCode.length == 0 || majorName.length == 0) {
+	  			$.jalert({"jatext":"请选择专业"});
+	  			return;
+	  		}
 		  	
 		  		updatingClient.periodId = periodId;
 		  		updatingClient.proId = proId;
