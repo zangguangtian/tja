@@ -34,7 +34,7 @@ import com.df.tja.service.IExecScheduleJobService;
  * @version 1.0.0
  * 
  */
-@Service("scheduleJobService")
+@Service("execScheduleJobService")
 public class ExecScheduleJobServiceImpl extends BaseServiceImpl implements IExecScheduleJobService {
 
     @Autowired
