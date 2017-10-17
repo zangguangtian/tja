@@ -67,4 +67,26 @@ public abstract class TjaConstant {
 
         public static final String USP_SYS_DATA_ALERT = "usp_SYS_Data_Alert";
     }
+
+    public static class WriteBackOpType {
+
+        /**
+         * 运营相关回写类型
+         */
+        public static final String[] OCWRITEBACKTYPE = {"方案产值策划"};
+
+    }
+
+    /**
+     *业务回写函数  
+     */
+    public static class WriteBackFunc {
+
+        /**
+         * 流程回写函数
+         */
+        public static final String WF_FUNC = "usp_WF_WriteBack";
+
+    }
+
 }

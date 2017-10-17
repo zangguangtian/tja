@@ -160,8 +160,11 @@
 							</tbody>
 						</table>
 					</div>
-					<div class="col-lg-1">
-						
+					<div class="col-lg-12">
+						<p>注：</p> 
+						<p>1、特级项目需明确设计总监并全面负责，Ⅰ级项目根据具体情况确定设计总监。       </p>
+						<p>2、项目进度计划需严格执行。若有更改需升版方案项目进度计划表，并重新签署生效。 </p>
+						<p>3、产值包括标书制作与方案设计两个部分。                                       </p>
 					</div>
 				</div>
 			</form>
@@ -208,6 +211,25 @@
 			  refYieldInput.val(new Number(refYield).toFixed(2));
 			  
 			  var flag = initTotal();
+		});
+		
+		jQuery(document).on("keyup","input[name='schemeYield']",function(){
+			var schemeYield = $(this).val();
+			if(schemeYield == '' || typeof schemeYield == 'undefined' || isNaN(schemeYield)){
+				  schemeYield = 0;
+			  }
+			$("#designTeam tbody tr").each(function(){
+				var _this = $(this);
+				var refRate = _this.find("input[name$='refRate']").val();
+				if(refRate == '' || typeof refRate == 'undefined' || isNaN(refRate)){
+					  refRate = 0;
+				}
+				var refYieldInput = _this.find("td:last").find("input");
+				var refYield = new Number(schemeYield) * new Number(refRate)/100;
+				  refYieldInput.val(new Number(refYield).toFixed(2));
+				  var flag = initTotal();
+			});
+			
 		});
 		
 		jQuery("#secOrg").on("click",function(){

@@ -23,6 +23,7 @@ import com.df.activiti.domain.ProcessArgs;
 import com.df.framework.base.service.impl.BaseServiceImpl;
 import com.df.project.domain.cust.CustProject;
 import com.df.project.service.IProjectService;
+import com.df.tja.constant.TjaConstant;
 import com.df.tja.dao.IWfPlanSchemeDao;
 import com.df.tja.domain.WfPlanScheme;
 import com.df.tja.domain.WfShemeTeam;
@@ -105,4 +106,12 @@ public class WfPlanSchemeServiceImpl extends BaseServiceImpl implements IWfPlanS
         }
     }
 
+    public void writeBackPlanScheme(String id) throws RuntimeException {
+        try {
+            wfPlanSchemeDao.writeBack(id, TjaConstant.WriteBackOpType.OCWRITEBACKTYPE[0],
+                TjaConstant.WriteBackFunc.WF_FUNC);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

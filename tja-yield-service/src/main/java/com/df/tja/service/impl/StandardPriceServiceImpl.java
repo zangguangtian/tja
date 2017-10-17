@@ -74,8 +74,8 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
                 gridModel.setCss("checkTotal jsgrid-form-control");
                 gridModel.setName(MAJOR + sysConfig.getConfigCode());
                 gridModel.setTitle(sysConfig.getConfigName());
-                gridModel.setType("number");
-                // gridModel.setValidate("checkTotal");
+                gridModel.setType("text");
+                gridModel.setValidate("number");
                 gridModel.setWidth("10%");
                 gridModel.setFiltering(false);
                 gridModels.add(gridModel);
