@@ -132,12 +132,7 @@ public class SettleYieldController extends BaseController {
             results.put("date", date);
             //写导入表
             settleYieldService.createImpSettleYield(attach, period, results);
-            int validRecord = (int) results.get("validRecord");
-            int maxRowIx = (int) results.get("totalRecord");
-            //导入无误 写入正式表
-            if (validRecord == maxRowIx) {
-                settleYieldService.mergeSettleYield(date);
-            }
+
             results.put("dateFormat", DateUtil.format(date, "yyyy-MM-dd HH:mm:ss"));
             results.put("status", "true");
             results.put("mess", "上传成功!");

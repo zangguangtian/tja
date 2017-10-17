@@ -89,19 +89,16 @@ public class SettleYieldServiceImpl extends BaseServiceImpl implements ISettleYi
         try {
             InputStream inputStream = attach.getInputStream();
             Sheet sheet;
-            HSSFWorkbook hworkBook;
-            XSSFWorkbook xworkBook;
             String format = FileUtil.getFileExtName(attach.getOriginalFilename());
             if (format.equals("xls")) {
-                hworkBook = new HSSFWorkbook(new BufferedInputStream(inputStream));
+                HSSFWorkbook hworkBook = new HSSFWorkbook(new BufferedInputStream(inputStream));
                 sheet = hworkBook.getSheetAt(0);
             } else if ("xlsx".equals(format)) {
-                xworkBook = new XSSFWorkbook(new BufferedInputStream(inputStream));
+                XSSFWorkbook xworkBook = new XSSFWorkbook(new BufferedInputStream(inputStream));
                 sheet = xworkBook.getSheetAt(0);
             } else {
                 throw new LogicalException("无效的excel文件");
             }
-            assert sheet != null;
             int maxRowIx = sheet.getLastRowNum();
             Date date = (Date) results.get("date");
             StringBuffer log;
@@ -155,6 +152,10 @@ public class SettleYieldServiceImpl extends BaseServiceImpl implements ISettleYi
                 }
                 ocSettleYieldDao.insert(OcSettleYieldImp.class, settleYieldImp);
             }
+            //导入无误 写入正式表
+            if (validRecord == maxRowIx) {
+                ocSettleYieldDao.insertMegerSettleYield(date);
+            }
             results.put("totalRecord", maxRowIx);
             results.put("validRecord", validRecord);
             results.put("errorRecord", (maxRowIx - validRecord));
@@ -162,26 +163,6 @@ public class SettleYieldServiceImpl extends BaseServiceImpl implements ISettleYi
             throw ex;
         } catch (Exception e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * 
-     * <p>描述 : </p>
-     *
-     * @param date
-     */
-    @Override
-    public void mergeSettleYield(Date date) throws LogicalException {
-        try {
-            ocSettleYieldDao.insertMegerSettleYield(date); //本次导入无误  将临时表数据 插入到 正式表
-        } catch (Exception e) {
-            //将本次导入导入表异常信息改为 导入失败
-            OcSettleYieldImp settleYieldImp = new OcSettleYieldImp();
-            settleYieldImp.setErrorInfo("导入失败");
-            settleYieldImp.setCreateDate(date);
-            ocSettleYieldDao.update(OcSettleYieldImp.class, settleYieldImp);
-            throw new LogicalException("导入失败");
         }
     }
 

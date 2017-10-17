@@ -68,7 +68,7 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目类型</label>
 						<div class="col-md-8">
-							<input type="text" name="proType" class="form-control" disabled value="${project.proCategoryName}">
+							<input type="text" name="proType" class="form-control" disabled value="${project.proType}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
@@ -134,7 +134,7 @@
 							<thead>
 								<tr>
 									<th  class="text-center col-lg-4">姓名</th>
-									<th class="text-center">比例(%)※</th>
+									<th class="text-center">比例(%)</th>
 									<th class="text-center">产值</th>
 								</tr>
 							</thead>

@@ -23,9 +23,6 @@
                                                      流水号:${planScheme.seqNo}
                 </div>
                 <div class="col-lg-9 text-right">
-                    <c:if test="${planScheme.canDel }">
-		                <input class="btn blue save" type="button" value="删除" onclick="save(9)"/>
-		            </c:if> 
 	                <c:if test="${empty planScheme.procId }">
 	                    <input type="button" value="保存" class="btn blue save" onclick="save(0)">
 	                    <input type="button" value="提交" class="btn blue submit" onclick="save(1)">
@@ -33,6 +30,9 @@
 	                <c:if test="${not empty planScheme.procId }">
 						<input class="btn blue save" type="button" value="重新提交" onclick="save(1)"/>
 		           	</c:if>
+                    <c:if test="${planScheme.canDel }">
+                        <input class="btn blue save" type="button" value="删除" onclick="save(9)"/>
+                    </c:if> 
                 </div>
             </div>
 			<!-- BEGIN FORM-->
@@ -58,7 +58,7 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目类型</label>
 						<div class="col-md-8">
-							<input type="text" name="proType" class="form-control" readonly value="${project.proCategoryName}">
+							<input type="text" name="proType" class="form-control" readonly value="${project.proType}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
@@ -92,14 +92,14 @@
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">方案产值(¥)</label>
+						<label class="control-label col-md-3">方案产值(¥)<span class="required">※</span></label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
 							<input type="text" class="form-control" data-rule-number="true" name="schemeYield" data-rule-required="true" value="${planScheme.schemeYield}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">承接部门</label>
+						<label class="control-label col-md-3">承接部门<span class="required">※</span></label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
 							<input type="hidden" id="orgId" name="receptDeptId" value="${planScheme.receptDeptId}">
@@ -132,7 +132,7 @@
 							<thead>
 								<tr>
 									<th  class="text-center col-lg-4">姓名</th>
-									<th class="text-center">比例(%)※</th>
+									<th class="text-center form-group">比例(%)<span class="required">※</span></th>
 									<th class="text-center">产值</th>
 								</tr>
 							</thead>
@@ -181,6 +181,7 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript" src="${site}/resources/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v=${buildVersion}"></script>
 <script type="text/javascript" src="${site}/resources/js/ztree/ztree-3.4-extend.js?v=${buildVersion}"></script>
 <script type="text/javascript">
 	$(function(){
@@ -313,10 +314,10 @@
 	        success : function(data) {
 	        	console.log(data);
 	        	if(data.flag == 'true'){
-	        		$("input[name='proType']").val(data.project.proCategoryName == null?'':data.project.proCategoryName );
+	        		$("input[name='proType']").val(data.project.proType == null?'':data.project.proType );
 	        		$("input[name='pmLeaders']").val(data.project.pmLeaders == null?'':data.project.pmLeaders);
 	        		$("input[name='pManagers']").val(data.project.pManagers == null?'':data.project.pManagers);
-	        		$("#orgName").val(data.project.orgName == null?'':data.project.orgName);
+	        		$("#orgName").val(data.project.dutyDeptName == null?'':data.project.dutyDeptName);
 	        		$("#orgId").val(data.project.dutyDeptId == null?'':data.project.dutyDeptId);
 	        		if(data.project.proGrade != null && data.project.proGrade != ''){
 	        			$("select[name='itemGrade']").val(data.project.proGrade);	

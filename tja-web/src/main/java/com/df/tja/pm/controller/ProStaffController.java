@@ -27,8 +27,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.df.framework.base.controller.BaseController;
 import com.df.project.domain.ProBudgetStaff;
+import com.df.project.domain.cust.CustProject;
 import com.df.project.domain.more.ProBudgetStaffMore;
-import com.df.project.domain.more.ProjectMore;
 import com.df.project.service.IProStaffService;
 import com.df.project.service.IProjectService;
 
@@ -70,7 +70,7 @@ public class ProStaffController extends BaseController {
      */
     @RequestMapping(value = "/{proId}")
     public String detial(@PathVariable("proId") String proId, Model model) throws RuntimeException {
-        ProjectMore projectMore = projectService.queryByProId(proId);
+        CustProject projectMore = projectService.queryByProId(proId);
         List<ProBudgetStaff> proStaffList = proStaffService.queryBudgetStaffList(proId);
         model.addAttribute("project", projectMore);
         model.addAttribute("proStaffList", proStaffList);

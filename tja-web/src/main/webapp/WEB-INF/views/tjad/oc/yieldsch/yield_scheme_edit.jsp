@@ -78,59 +78,91 @@
                             <input type="text" name="schemeBasis" class="form-control">
                         </div>
                     </div>
+                    <h3 class="form-tit col-lg-12">专业比例<span class="control-label" style="font-size:12px;">（比例：%  产值：元）</span></h3>
 
-                    <h3 class="form-tit col-lg-12">产值分配</h3>
-                    <div class="col-lg-5 ">
-                        <div class="row clearfix">
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                                                                                                 项目负责人
-                            </div>
-                            <div class="col-lg-4 text-right col-md-4 col-sm-4 col-xs-4">
-                                                                                                比例：
-                                <input type="text" class="ta_input">
-                            </div>
-                            <div class="col-lg-4 text-right col-md-4 col-sm-4 col-xs-4">
-                                <button class="btn green btn_tj"> 
-                                                                                                                 添加
-                                     <i class="fa fa-plus"></i>
-                                </button>
-                            </div>
+
+                    <h3 class="form-tit col-lg-12">土建产值<span class="control-label" style="font-size:12px;">（元）</span></h3>
+                    <div class="form-group col-lg-6 ">
+                        <label class="control-label col-md-3">实际合同额</label>
+                        <div class="col-md-8">
+                            <input type="text" name="" class="form-control">
                         </div>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr >
-                                    <th  class="text-center col-lg-4">姓名</th>
-                                    <th class="text-center">工作量(%)※</th>
-                                    <th class="text-center">产值</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr >
-                                    <td  class="text-center col-lg-4">张三</td>
-                                    <td  class=" col-lg-4"><input type="text" placeholder="123" class="text-right"></td>
-                                    <td  class=" col-lg-4 text-right">560001</td>
-                                </tr>
-                                <tr >
-                                    <td  class="text-center col-lg-4">李四四</td>
-                                    <td  class=" col-lg-4"><input type="text" placeholder="123" class="text-right"></td>
-                                    <td  class=" col-lg-4 text-right">400003</td>
-                                </tr>
-                                <tr >
-                                    <td  class="text-center col-lg-4">合计</td>
-                                    <td  class="col-lg-4 text-right">00000</td>
-                                    <td  class=" col-lg-4 text-right">411027</td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
-                   <div class="">
+                    <div class="form-group col-lg-6 ">
+                        <label class="control-label col-md-3">分包扣减</label>
+                        <div class="col-md-8">
+                            <input type="text" name="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6 ">
+                        <label class="control-label col-md-3">方案扣减</label>
+                        <div class="col-md-8">
+                            <input type="text" name="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6 ">
+                        <label class="control-label col-md-3">其他扣减</label>
+                        <div class="col-md-8">
+                            <input type="text" name="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6 ">
+                        <label class="control-label col-md-3">土建总产值</label>
+                        <div class="col-md-8">
+                            <input type="text" name="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6 ">
+                        <label class="control-label col-md-3">各专业产值</label>
+                        <div class="col-md-8">
+                            <input type="text" name="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6 ">
+                        <label class="control-label col-md-3">项目负责人（%）</label>
+                        <div class="col-md-8">
+                            <input type="text" name="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6 ">
+                        <label class="control-label col-md-3">项目负责人（产值）</label>
+                        <div class="col-md-8">
+                            <input type="text" name="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6 ">
+                        <label class="control-label col-md-3">项目经理（%）</label>
+                        <div class="col-md-8">
+                            <input type="text" name="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6 ">
+                        <label class="control-label col-md-3">项目经理（产值）</label>
+                        <div class="col-md-8">
+                            <input type="text" name="" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <h3 class="form-tit col-lg-12">各专业产值<span class="control-label" style="font-size:12px;">（比例：%  产值：元）</span></h3>
+
+                    <h3 class="form-tit col-lg-12">各专业部门负责人会签</h3>
+                    <div class="form-group col-lg-6 ">
+                        <label class="control-label col-md-3">设计负责人</label>
+                        <div class="col-md-8">
+                            <input type="text" name="" class="form-control">
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    
+                    <div class="">
                        <div class="row">
                            <div class="col-md-offset-3 col-md-9">
-                               <button type="submit" class="btn blue">Submit</button>
-                               <button type="button" class="btn default">Cancel</button>
+                               <button type="button" class="btn blue">保存</button>
                            </div>
                        </div>
-                   </div>
+                    </div>
                 </div>
             </form>
             <!-- END FORM-->

@@ -73,7 +73,7 @@ $(function() {
             visible: false
         }, {
         	name : "periodName",
-        	title : "期间<font class=require>※</font>",
+        	title : "期间<font class=required>※</font>",
         	type : "text",
         	width : "15%",
         	inserting: false,
@@ -88,7 +88,7 @@ $(function() {
         	}
         }, {
         	name : "proCode",
-        	title : "项目编号<font class=require>※</font>",
+        	title : "项目编号<font class=required>※</font>",
         	type : "text",
         	width : "15%",
         	inserting: false,

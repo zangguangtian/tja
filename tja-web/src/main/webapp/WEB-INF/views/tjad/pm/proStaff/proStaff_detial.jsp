@@ -33,7 +33,7 @@
 			<div class="form-group col-lg-6 ">
 				<label class="control-label col-md-4">项目类型</label>
 				<div class="col-md-7">
-					<tags:config type="label" code="${project.proType}" />
+					<input type="text" class="form-control" value="${project.proType}" disabled="disabled">
 				</div>
 			</div>
 			<div class="form-group col-lg-6 ">
@@ -57,13 +57,13 @@
 			<div class="form-group col-lg-6 ">
 				<label class="control-label col-md-4">项目负责人</label>
 				<div class="col-md-7">
-					<input type="text" class="form-control" value="${project.proFzrName}" disabled="disabled">
+					<input type="text" class="form-control" value="${project.pmLeaders}" disabled="disabled">
 				</div>
 			</div>
 			<div class="form-group col-lg-6 ">
 				<label class="control-label col-md-4">项目经理</label>
 				<div class="col-md-7">
-					<input type="text" class="form-control" value="${project.proJlName}" disabled="disabled">
+					<input type="text" class="form-control" value="${project.pManagers}" disabled="disabled">
 				</div>
 			</div>
    		</div>

@@ -49,7 +49,7 @@
 						width : "5%"
 					}, {
 			        	name : "periodName",
-			        	title : "期间<font class=require>※</font>",
+			        	title : "期间<font class=required>※</font>",
 			        	type : "text",
 			        	width : "15%",
 			        	inserting: false,
@@ -64,7 +64,7 @@
 			        	}
 			        }, {
 			        	name : "proCode",
-			        	title : "项目编号<font class=require>※</font>",
+			        	title : "项目编号<font class=required>※</font>",
 			        	type : "text",
 			        	width : "15%",
 			        	inserting: false,
@@ -101,7 +101,7 @@
 			        	}
 			        },{
 			        	name : "majorName",
-			        	title : "专业<font class=require>※</font>",
+			        	title : "专业<font class=required>※</font>",
 			        	type : "text",
 			        	css: "jsgrid-form-control",
 			        	width : "15%",

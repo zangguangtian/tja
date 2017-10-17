@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
+import org.hibernate.type.StandardBasicTypes;
 import org.springframework.stereotype.Repository;
 
 import com.df.framework.base.dao.impl.BaseDaoHbmImpl;
@@ -51,16 +52,20 @@ public class OcPeriodAdvanceFillDaoHbmImpl extends BaseDaoHbmImpl implements IOc
 
         StringBuilder sqlWhere = new StringBuilder(100);
         if (StringUtil.isNotBlank(advanceFill.getPeriodName())) {
-            sqlWhere.append(" AND t2.PERIOD_NAME like '%").append(advanceFill.getPeriodName()).append("%' ");
+            sqlWhere.append(" AND t2.PERIOD_NAME like ?");
+            params.add(new Param("%" + advanceFill.getPeriodName() + "%", StandardBasicTypes.STRING));
         }
         if (StringUtil.isNotBlank(advanceFill.getProCode())) {
-            sqlWhere.append(" AND t3.PRO_CODE like '%").append(advanceFill.getProCode()).append("%' ");
+            sqlWhere.append(" AND t3.PRO_CODE like ? ");
+            params.add(new Param("%" + advanceFill.getProCode() + "%", StandardBasicTypes.STRING));
         }
         if (StringUtil.isNotBlank(advanceFill.getProName())) {
-            sqlWhere.append(" AND t3.PRO_NAME like '%").append(advanceFill.getProName()).append("%' ");
+            sqlWhere.append(" AND t3.PRO_NAME like ?");
+            params.add(new Param("%" + advanceFill.getProName() + "%", StandardBasicTypes.STRING));
         }
         if (StringUtil.isNotBlank(advanceFill.getRemark())) {
-            sqlWhere.append(" AND t1.REMARK like '%").append(advanceFill.getRemark()).append("%' ");
+            sqlWhere.append(" AND t1.REMARK like ? ");
+            params.add(new Param("%" + advanceFill.getRemark() + "%", StandardBasicTypes.STRING));
         }
 
         StringBuilder sqlFrom = new StringBuilder(100);

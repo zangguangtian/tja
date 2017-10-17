@@ -23,7 +23,7 @@ import com.df.framework.base.service.impl.BaseServiceImpl;
 import com.df.framework.exception.LogicalException;
 import com.df.framework.util.LoggerUtil;
 import com.df.framework.util.StringUtil;
-import com.df.project.domain.more.ProjectMore;
+import com.df.project.domain.cust.CustProject;
 import com.df.project.service.IProjectService;
 import com.df.tja.dao.IWfWeekFillDao;
 import com.df.tja.domain.OcPeriodManage;
@@ -67,7 +67,7 @@ public class WfWeekFillServiceImpl extends BaseServiceImpl implements IWfWeekFil
             wfWeekFillMore.setProId(proId);
             wfWeekFillMore.setPeriodId(periodId);
 
-            ProjectMore projectMore = projectService.queryByProId(proId);
+            CustProject projectMore = projectService.queryByProId(proId);
             BeanUtils.copyProperties(projectMore, wfWeekFillMore, "id");
 
             OcPeriodManage period = this.queryByPrimaryKey(OcPeriodManage.class, periodId);

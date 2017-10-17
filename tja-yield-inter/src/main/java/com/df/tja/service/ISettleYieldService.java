@@ -12,7 +12,6 @@
 
 package com.df.tja.service;
 
-import java.util.Date;
 import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -64,13 +63,4 @@ public interface ISettleYieldService extends IBaseService {
      */
     void createImpSettleYield(MultipartFile attach, String period, Map<String, Object> results)
         throws RuntimeException, LogicalException;
-
-    /**
-     * 
-     * <p>描述 : </p>
-     *
-     * @param date
-     * @throws RuntimeException
-     */
-    void mergeSettleYield(Date date) throws LogicalException;
 }
