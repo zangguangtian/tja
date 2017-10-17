@@ -397,5 +397,6 @@
 		<module>tja-web</module>
 		<module>tja-yield-inter</module>
 		<module>tja-yield-service</module>
-  </modules>
+		<module>tja-cxf-inter</module>
+	</modules>
 </project>
