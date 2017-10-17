@@ -32,6 +32,7 @@ import com.df.tja.dao.IDataSyncDao;
 import com.df.tja.domain.ItAccountInfo;
 import com.df.tja.domain.ItCallRecord;
 import com.df.tja.domain.ItDeptInfo;
+import com.df.tja.domain.ItDeptLeader;
 import com.df.tja.domain.ItProContractInfo;
 import com.df.tja.domain.ItProPhasesInfo;
 import com.df.tja.domain.ItProPhasesMajor;
@@ -124,12 +125,14 @@ public class DataSyncServiceImpl extends BaseServiceImpl implements IDataSyncSer
         try {
             if (StringUtil.isNotBlank(value)) {
                 //同步前先将接口表中的数据清空
+                dataSyncDao.deleteByObject(ItDeptLeader.class, null);
                 dataSyncDao.deleteByObject(ItDeptInfo.class, null);
 
                 ItDeptInfo itDeptInfo = null;
                 JSONObject jsonObj = null;
                 Date syncDate = new Date();
                 List<ItDeptInfo> depts = new ArrayList<ItDeptInfo>(0);
+                List<ItDeptLeader> deptLeaders = new ArrayList<ItDeptLeader>(0);
                 JSONArray jsonArray = new JSONArray(value);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     jsonObj = (JSONObject) jsonArray.get(i);
@@ -141,8 +144,24 @@ public class DataSyncServiceImpl extends BaseServiceImpl implements IDataSyncSer
                     itDeptInfo.setSortIndex(jsonObj.getInt("SortIndex"));
                     itDeptInfo.setCreateDate(syncDate);
                     depts.add(itDeptInfo);
+
+                    JSONArray jsonArr = jsonObj.getJSONArray("DeptLeader");
+                    for (int j = 0; j < jsonArr.length(); j++) {
+                        JSONObject jsonLeader = (JSONObject) jsonArr.get(j);
+                        ItDeptLeader itDeptLeader = new ItDeptLeader();
+                        itDeptLeader.setDeptId(jsonObj.getString("Id"));
+                        itDeptLeader.setAccountId(jsonLeader.getString("Id"));
+                        if (jsonLeader.get("AccountName") instanceof String) {
+                            itDeptLeader.setAccountName(jsonLeader.getString("AccountName"));
+                        }
+                        itDeptLeader.setWorkNo(jsonLeader.getString("WorkNo"));
+                        itDeptLeader.setUserName(jsonLeader.getString("UserName"));
+                        itDeptLeader.setCreateDate(syncDate);
+                        deptLeaders.add(itDeptLeader);
+                    }
                 }
                 dataSyncDao.batchInsert(ItDeptInfo.class, depts);
+                dataSyncDao.batchInsert(ItDeptLeader.class, deptLeaders);
                 dataSyncDao.writeBackSyncData("syncDept");
             }
         } catch (Exception ex) {
