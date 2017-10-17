@@ -58,6 +58,8 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
     @Autowired
     private IStandardPriceDao standardPriceDao;
 
+    private static final String MAJOR = "major_";
+
     /** 
      * @see com.df.tja.service.IStandardPriceService#queryStandardPriceInfo(java.util.Map)
      */
@@ -70,10 +72,10 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
             for (SysConfig sysConfig : configs) {
                 OcJsGridModel gridModel = new OcJsGridModel();
                 gridModel.setCss("checkTotal jsgrid-form-control");
-                gridModel.setName(sysConfig.getConfigCode().replaceAll("\\.", "_"));
+                gridModel.setName(MAJOR + sysConfig.getConfigCode());
                 gridModel.setTitle(sysConfig.getConfigName());
                 gridModel.setType("number");
-                gridModel.setValidate("checkTotal");
+                // gridModel.setValidate("checkTotal");
                 gridModel.setWidth("10%");
                 gridModel.setFiltering(false);
                 gridModels.add(gridModel);
@@ -103,7 +105,7 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
                     String code = "";
                     String value = "";
                     for (OcStandardRatio ratio : list) {
-                        code = code + "," + ratio.getMajorCode().replaceAll("\\.", "_");
+                        code = code + "," + MAJOR + ratio.getMajorCode();
                         value = value + "," + ratio.getMajorRatio();
 
                     }
@@ -143,8 +145,14 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
                             if (StringUtils.isNotBlank(codeValue) && codeValue.contains("=")) {
                                 String[] code = codeValue.split("=");
 
+                                String majorCode = code[0];
+
+                                if (majorCode.contains("_")) {
+                                    majorCode = majorCode.split("_")[1];
+                                }
+
                                 ocStandardRatio = new OcStandardRatio();
-                                ocStandardRatio.setMajorCode(code[0]);
+                                ocStandardRatio.setMajorCode(majorCode);
                                 ocStandardRatio.setMajorRatio(new BigDecimal(code[1]));
                                 ocStandardRatio.setStardandId(ocStandardPrice.getId());
                                 addEntity(OcStandardRatio.class, ocStandardRatio);
@@ -172,8 +180,12 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
                             for (String codeValue : codeValues) {
                                 if (StringUtils.isNotBlank(codeValue) && codeValue.contains("=")) {
                                     String[] code = codeValue.split("=");
+                                    String majorCode = code[0];
+                                    if (majorCode.contains("_")) {
+                                        majorCode = majorCode.split("_")[1];
+                                    }
                                     OcStandardRatio ocStandardRatio = new OcStandardRatio();
-                                    ocStandardRatio.setMajorCode(code[0]);
+                                    ocStandardRatio.setMajorCode(majorCode);
                                     ocStandardRatio.setMajorRatio(new BigDecimal(code[1]));
                                     ocStandardRatio.setStardandId(ocStandardPrice.getId());
                                     addEntity(OcStandardRatio.class, ocStandardRatio);

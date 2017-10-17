@@ -33,41 +33,6 @@
 					}
 			 }
 			
-			jsGrid.validators.checkTotal = 
-				{
-						message:function (value, item) {
-							return "各专业比例合计必须为100";
-						},
-						validator: function(value, item) {
-							var v =value;
-				    		var i = item;
-				    		
-				    	    var filter = jQuery(".jsgrid-grid-header tr.jsgrid-filter-row").css("display");
-				    	    if(filter == 'none'){
-				    	    	//插入时检查
-								row = jQuery(".jsgrid-insert-row");
-							}else{
-								//修改时检查
-								row =jQuery(".jsgrid-edit-row");
-							}
-				    	    var total = new Number(0);
-				    	    jQuery.each(row.find("td.checkTotal"),function(index,item){
-				    	    	
-				    	    	var _this = $(item);
-				    	    	var _val = _this.find("input").val();
-				    	    	if(isNaN(new Number(_val))){
-				    	    		_val = new Number(0);
-				    	    	}
-				    	    	total += new Number(_val);
-				    	    	
-				    	    });
-				    	    if(total != new Number(100)){
-				    	    	return false;
-				    	    }
-							return true;
-						}
-				 }
-			
 			var Grid = jsGrid.Grid;
 			Grid.prototype.loadData = function(filter) {
 		            filter = filter || (this.filtering ? this.getFilter() : {});
@@ -85,12 +50,13 @@
 		            		for(var i =0;i<standardPriceData.length;i++){
 		            			var codes = standardPriceData[i].codes;
 		            			var values = standardPriceData[i].values;
-		            			var dataCodes = codes.split(",");
-		            			var dataValues = values.split(",");
-		            			for(var j = 0;j<dataCodes.length;j++){
-		            				var priceData = standardPriceData[i];
-		            				//standardPriceData[i].code = dataValues[j];
-		            				priceData[""+dataCodes[j]+""] = dataValues[j];
+		            			if(values != null){
+			            			var dataCodes = codes.split(",");
+			            			var dataValues = values.split(",");
+			            			for(var j = 0;j<dataCodes.length;j++){
+			            				var priceData = standardPriceData[i];
+			            				priceData[""+dataCodes[j]+""] = dataValues[j];
+			            			}
 		            			}
 		            		}
 		            	}
@@ -104,6 +70,15 @@
 		                    data: loadedData
 		                });
 		            });
+		        }
+			
+			    Grid.prototype.clearInsert = function() {
+		            if(window.totalValidate != false){
+		            	var insertRow = this._createInsertRow();
+		                this._insertRow.replaceWith(insertRow);
+		                this._insertRow = insertRow;
+		                this.refresh();
+		            }
 		        }
 			
 			 awardsGrid = new Grid("#jsGrid", {
@@ -128,7 +103,7 @@
 						width : "5%"
 					},{
 						name : "categoryCode",
-						title : "分类",
+						title : "分类<font class=required>※</font>",
 						type : "text",
 						width : "10%",
 						validate: {
@@ -141,7 +116,7 @@
 				        filtering:true
 					},{
 						name : "typeCode",
-						title : "类型",
+						title : "类型<font class=required>※</font>",
 						type: "text",
 						width : "10%",
 						filtering:true,
@@ -260,6 +235,7 @@
 			  } 
 			  insertingClient.keyValue = props.substring(0,props.length-1);
 			  if(totalScale != new Number(100)){
+				  window.totalValidate = false;
 				  $.jalert({"jatext":"各专业比例合计必须为100"});
 				  return;
 			  }
@@ -277,6 +253,7 @@
 									"div.jsgrid-grid-body table.jsgrid-table tr").size();
 							//改变编号，修改时间，修改人
 							insertingClient.number = length + 1;
+							window.totalValidate = true;
 						}
 					}
 				});
