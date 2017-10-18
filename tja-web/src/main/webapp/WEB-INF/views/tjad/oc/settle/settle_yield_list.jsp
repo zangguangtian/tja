@@ -29,7 +29,7 @@ jQuery(function(){
 			$("#content").append(data); 
 	    }
 	});
-	$("ul[name='rul']").after('<span class="o-btn"><input type=button value="导入" style="margin-right: 10%;" onclick="toImport();" ></span>');
+	$("ul[name='rul']").after('<span class="o-btn" style="margin-right: 10%;"><input type=button value="导入" onclick="toImport();" ></span>');
 	$("ul[name='rul']").after('<span class="o-btn"><input type=button value="模板下载" onclick="download();" ></span>');
 });
 
