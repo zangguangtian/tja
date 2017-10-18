@@ -78,6 +78,9 @@
 		                this._insertRow.replaceWith(insertRow);
 		                this._insertRow = insertRow;
 		                this.refresh();
+		            }else{
+		            	jQuery("tr.jsgrid-insert-row").find("td.checkTotal").addClass("jsgrid-invalid");
+		            	jQuery("tr.jsgrid-insert-row").find("td.checkTotal").attr("title","各专业比例合计必须为100");
 		            }
 		        }
 			
