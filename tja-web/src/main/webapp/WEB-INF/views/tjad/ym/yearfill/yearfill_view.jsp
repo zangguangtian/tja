@@ -8,38 +8,38 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<df:readProp var="menu-path" value="ym.month.menu.path" scope="request" />
-	<title>项目月报-审核</title>
+	<df:readProp var="menu-path" value="ym.year.menu.path" scope="request" />
+	<title>项目年报-审核</title>
 </head>
 <body>
 <div class="">
 	<center>
-		<h3>项目预估进度月报-${monthFill.periodName}</h3>
+		<h3>项目实际进度年报-${yearFill.periodName}</h3>
 	</center>
 	<div class=" ">
 		<div class="form">
 			<!-- BEGIN FORM-->
-			<form id="approveForm" action="${site}/admin/ym/monthFill/ajax/approve" method="post">
+			<form id="approveForm" action="${site}/admin/ym/yearFill/ajax/approve" method="post">
 			
-			<input type="hidden" name="id" value="${monthFill.id}">
-			<input type="hidden" name="pgCategory" value="1000">
-			<input type="hidden" name="proId" value="${monthFill.proId}">
-			<input type="hidden" name="periodId" value="${monthFill.periodId}">
+			<input type="hidden" name="id" value="${yearFill.id}">
+			<input type="hidden" name="pgCategory" value="2000">
+			<input type="hidden" name="proId" value="${yearFill.proId}">
+			<input type="hidden" name="periodId" value="${yearFill.periodId}">
 			<input type="hidden" name="view" value="${view}">
 			<input type="hidden" name="approve" value="2">
-			<input type="hidden" name="auditStatus" value="${!empty monthFill.auditStatus ? monthFill.auditStatus : '0'}">
-			<input type="hidden" name="procId" value="${monthFill.procId }">
+			<input type="hidden" name="auditStatus" value="${!empty yearFill.auditStatus ? yearFill.auditStatus : '0'}">
+			<input type="hidden" name="procId" value="${yearFill.procId }">
 			
 			<div class="form-body clearfix" style="padding-bottom: 0">
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">流水号</label>
-					<div class="col-md-7">
-						<label class="control-label">${monthFill.seqNo}</label>
+					<label class="control-label col-xs-4">流水号</label>
+					<div class="col-xs-7">
+						<label class="control-label">${yearFill.seqNo}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4"></label>
-					<div class="col-md-7 text-right">
+					<label class="control-label col-xs-4"></label>
+					<div class="col-xs-7 text-right">
 						<c:if test="${canRevoke}">
 							<input type="button" id="reject-btn" value="撤回" class="btn blue">
 						</c:if>
@@ -55,115 +55,103 @@
 			
 			<div class="form-body clearfix">
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">项目编号</label>
-					<div class="col-md-7">
-						<label class="control-label">${monthFill.proCode}</label>
+					<label class="control-label col-xs-4">项目编号</label>
+					<div class="col-xs-7">
+						<label class="control-label">${yearFill.proCode}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">项目名称</label>
-					<div class="col-md-7">
-						<label class="control-label">${monthFill.proName}</label>
+					<label class="control-label col-xs-4">项目名称</label>
+					<div class="col-xs-7">
+						<label class="control-label">${yearFill.proName}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">项目类型</label>
-					<div class="col-md-7">
-						<label class="control-label">${monthFill.proType}</label>
+					<label class="control-label col-xs-4">项目类型</label>
+					<div class="col-xs-7">
+						<label class="control-label">${yearFill.proType}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">项目级别</label>
-					<div class="col-md-7">
-						<tags:config type="label" code="${monthFill.proGrade}"/>
+					<label class="control-label col-xs-4">项目级别</label>
+					<div class="col-xs-7">
+						<tags:config type="label" code="${yearFill.proGrade}"/>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">实际合同额(¥)</label>
-					<div class="col-md-7">
-						<label class="control-label">${monthFill.contractAmount}</label>
+					<label class="control-label col-xs-4">实际合同额(¥)</label>
+					<div class="col-xs-7">
+						<label class="control-label">${yearFill.contractAmount}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">分包扣减(¥)</label>
-					<div class="col-md-7">
-						<label class="control-label">${monthFill.pkgAmount}</label>
+					<label class="control-label col-xs-4">分包扣减(¥)</label>
+					<div class="col-xs-7">
+						<label class="control-label">${yearFill.pkgAmount}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">方案扣减(¥)</label>
-					<div class="col-md-7">
-						<label class="control-label">${monthFill.schemeAmount}</label>
+					<label class="control-label col-xs-4">方案扣减(¥)</label>
+					<div class="col-xs-7">
+						<label class="control-label">${yearFill.schemeAmount}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">其他扣减(¥)</label>
-					<div class="col-md-7">
-						<label class="control-label">${monthFill.rebateAmount}</label>
+					<label class="control-label col-xs-4">其他扣减(¥)</label>
+					<div class="col-xs-7">
+						<label class="control-label">${yearFill.rebateAmount}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">项目负责人</label>
-					<div class="col-md-7">
-						<label class="control-label">${monthFill.pmLeaders}</label>
+					<label class="control-label col-xs-4">项目负责人</label>
+					<div class="col-xs-7">
+						<label class="control-label">${yearFill.pmLeaders}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">项目经理</label>
-					<div class="col-md-7">
-						<label class="control-label">${monthFill.pManagers}</label>
+					<label class="control-label col-xs-4">项目经理</label>
+					<div class="col-xs-7">
+						<label class="control-label">${yearFill.pManagers}</label>
+					</div>
+				</div>
+
+				<div class="form-group col-xs-12 ">
+					<label class="control-label col-xs-2" style="margin-left: -0.6%;">备注</label>
+					<div class="col-xs-9" style="width: 78%;">
+						<textarea rows="3" class="form-control" disabled>${yearFill.remark}</textarea>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">所处状态</label>
-					<div class="col-md-7">
-						<tags:config type="label" code="${monthFill.itemStatus}"/>
+					<label class="control-label col-xs-4">创建人</label>
+					<div class="col-xs-7">
+						<label class="control-label">${yearFill.creator}</label>
+					</div>
+				</div>
+				<div class="form-group col-xs-6 ">
+					<label class="control-label col-xs-4">创建时间</label>
+					<div class="col-xs-7">
+						<label class="control-label"><fmt:formatDate pattern="yyyy-MM-dd" value="${yearFill.createDate}"/></label>
 					</div>
 				</div>
 				
-				<div class="form-group col-xs-12 ">
-					<label class="control-label col-md-2" style="margin-left: -0.6%;">施工进度描述</label>
-					<div class="col-md-9" style="width: 78%;">
-						<textarea rows="3" class="form-control" disabled>${monthFill.progressExplain}</textarea>
-					</div>
-				</div>
-				<div class="form-group col-xs-12 ">
-					<label class="control-label col-md-2" style="margin-left: -0.6%;">备注</label>
-					<div class="col-md-9" style="width: 78%;">
-						<textarea rows="3" class="form-control" disabled>${monthFill.remark}</textarea>
-					</div>
-				</div>
-				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">创建人</label>
-					<div class="col-md-7">
-						<label class="control-label">${monthFill.creator}</label>
-					</div>
-				</div>
-				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">创建时间</label>
-					<div class="col-md-7">
-						<label class="control-label"><fmt:formatDate pattern="yyyy-MM-dd" value="${monthFill.createDate}"/></label>
-					</div>
-				</div>
-				
-				<h5 class="form-tit col-xs-12">专业进度</h5>
+				<h5 class="form-tit col-xs-12">专业实际完成进度</h5>
 				<div class="col-xs-12">
 					<table id="majorTable" class="table table-bordered edit">
 						<thead>
 							<tr>
-								<th class="text-center col-md-2">专业</th>
-								<th class="text-center col-md-1">当月完成进度比例(%)</th>
-								<th class="text-center col-md-1">专业分配比例(%)</th>
-								<th class="text-center col-md-2">对应产值(¥)</th>
-								<th class="text-center col-md-1">累计进度比例(%)</th>
-								<th class="text-center col-md-2">累计产值(¥)</th>
-								<th class="text-center col-md-2">剩余产值(¥)</th>
-								<th class="text-center col-md-1">历史进度</th>
+								<th class="text-center col-xs-2">专业</th>
+								<th class="text-center col-xs-1">当年完成进度比例(%)</th>
+								<th class="text-center col-xs-1">专业分配比例(%)</th>
+								<th class="text-center col-xs-2">对应产值(¥)</th>
+								<th class="text-center col-xs-1">累计进度比例(%)</th>
+								<th class="text-center col-xs-2">累计产值(¥)</th>
+								<th class="text-center col-xs-2">剩余产值(¥)</th>
+								<th class="text-center col-xs-1">历史进度</th>
 							</tr>
 						</thead>
 						<tbody>
-						<c:if test="${fn:length(monthFill.majorProgressList) > 0}">
-						<c:forEach items="${monthFill.majorProgressList}" var="o" varStatus="s">
+						<c:if test="${fn:length(yearFill.majorProgressList) > 0}">
+						<c:forEach items="${yearFill.majorProgressList}" var="o" varStatus="s">
 							<tr>
 								<td class="text-center">
 									<input type="hidden" value="${o.id}">
@@ -206,7 +194,7 @@
 				</div>
 
 				<jsp:include page="../../../framework/activiti/wf_approve.jsp" flush="true"/>
-		        <tags:histask procId="${monthFill.procId}"/>
+		        <tags:histask procId="${yearFill.procId}"/>
     		</div>
 			</form>
 			<!-- END FORM-->
@@ -248,7 +236,7 @@ function getSum(){
 }
 
 function majorHistory(majorCode){
-	var url = "${site}/admin/ym/monthFill/majorhis?proId=${monthFill.proId}&majorCode="+majorCode;
+	var url = "${site}/admin/ym/yearFill/majorhis?proId=${yearFill.proId}&majorCode="+majorCode;
     openWindow(url, "实际进度-历史", "800", "600", true, false);
 }
 
@@ -267,7 +255,7 @@ $(document).on("click", "#reject-btn", function(){
                 },
                 success : function(data) {
                 	$.jalert({"jatext":data.msg});
-                    window.location.href = "${site}/admin/ym/monthFill/list";
+                    window.location.href = "${site}/admin/ym/yearFill/list";
                 }
             });
         }});
@@ -277,7 +265,7 @@ $(document).on("click", "#reject-btn", function(){
 /*打印预览*/
 $("#printview-btn").dfprint({
     action : "printview",
-    url : "${site}/admin/ym/monthFill/toprint/v/${monthFill.id}"
+    url : "${site}/admin/ym/yearFill/toprint/v/${yearFill.id}"
 });
 
 /*打印*/

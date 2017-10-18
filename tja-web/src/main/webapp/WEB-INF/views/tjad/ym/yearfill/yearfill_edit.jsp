@@ -8,47 +8,47 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<df:readProp var="menu-path" value="ym.month.menu.path" scope="request" />
-	<title>项目月报-填报</title>
+	<df:readProp var="menu-path" value="ym.year.menu.path" scope="request" />
+	<title>项目年报-填报</title>
 </head>
 <body>
 <div class="">
 	<center>
-		<h3>项目预估进度月报-${monthFill.periodName}</h3>
+		<h3>项目实际进度年报-${yearFill.periodName}</h3>
 	</center>
 	<div class=" ">
 		<div class="form">
 			<!-- BEGIN FORM-->
 			<form id="saveForm">
 			
-			<input type="hidden" name="id" value="${monthFill.id}">
-			<input type="hidden" name="pgCategory" value="1000">
-			<input type="hidden" name="proId" value="${monthFill.proId}">
-			<input type="hidden" name="periodId" value="${monthFill.periodId}">
+			<input type="hidden" name="id" value="${yearFill.id}">
+			<input type="hidden" name="pgCategory" value="2000">
+			<input type="hidden" name="proId" value="${yearFill.proId}">
+			<input type="hidden" name="periodId" value="${yearFill.periodId}">
 			<input type="hidden" name="view" value="${view}">
 			<input type="hidden" name="approve" value="">
-			<input type="hidden" name="auditStatus" value="${!empty monthFill.auditStatus ? monthFill.auditStatus : '0'}">
-			<input type="hidden" name="procId" value="${monthFill.procId }">
+			<input type="hidden" name="auditStatus" value="${!empty yearFill.auditStatus ? yearFill.auditStatus : '0'}">
+			<input type="hidden" name="procId" value="${yearFill.procId }">
 			
 			<div class="form-body clearfix" style="padding-bottom: 0">
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">流水号</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">流水号</label>
+					<div class="col-xs-7">
 						<c:set var="seqTip" value="(保存后自动生成)"></c:set>
-						<input type="text" class="form-control" value="${empty monthFill.id ? seqTip : monthFill.seqNo}" disabled="disabled">
+						<input type="text" class="form-control" value="${empty yearFill.id ? seqTip : yearFill.seqNo}" disabled="disabled">
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4"></label>
-					<div class="col-md-7 text-right">
-						<c:if test="${monthFill.canDel}">
+					<label class="control-label col-xs-4"></label>
+					<div class="col-xs-7 text-right">
+						<c:if test="${yearFill.canDel}">
 			                <input type="button" class="btn blue save" value="删除" onclick="save(9)">
 			            </c:if> 
-		                <c:if test="${empty monthFill.procId}">
+		                <c:if test="${empty yearFill.procId}">
 		                    <input type="button" class="btn blue save" value="保存" onclick="save(0)">
 		                    <input type="button" class="btn blue submit" value="提交" onclick="save(1)">
 		                </c:if>
-		                <c:if test="${not empty monthFill.procId and monthFill.auditStatus!='1' and monthFill.auditStatus!='2'}">
+		                <c:if test="${not empty yearFill.procId and yearFill.auditStatus!='1' and yearFill.auditStatus!='2'}">
 							<input type="button" class="btn blue save" value="重新提交" onclick="save(1)">
 			           	</c:if>
 					</div>
@@ -57,124 +57,111 @@
 			
 			<div class="form-body clearfix">
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">项目编号</label>
-					<div class="col-md-7">
-						<input type="text" class="form-control" value="${monthFill.proCode}" disabled="disabled">
+					<label class="control-label col-xs-4">项目编号</label>
+					<div class="col-xs-7">
+						<input type="text" class="form-control" value="${yearFill.proCode}" disabled="disabled">
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">项目名称</label>
-					<div class="col-md-7">
-						<input type="text" class="form-control" value="${monthFill.proName}" disabled="disabled">
+					<label class="control-label col-xs-4">项目名称</label>
+					<div class="col-xs-7">
+						<input type="text" class="form-control" value="${yearFill.proName}" disabled="disabled">
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">项目类型</label>
-					<div class="col-md-7">
-						<input type="text" class="form-control" value="${monthFill.proType}" disabled="disabled">
+					<label class="control-label col-xs-4">项目类型</label>
+					<div class="col-xs-7">
+						<input type="text" class="form-control" value="${yearFill.proType}" disabled="disabled">
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">项目级别</label>
-					<div class="col-md-7">
-						<tags:config type="label" code="${monthFill.proGrade}"/>
+					<label class="control-label col-xs-4">项目级别</label>
+					<div class="col-xs-7">
+						<tags:config type="label" code="${yearFill.proGrade}"/>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">实际合同额(¥)</label>
-					<div class="col-md-7">
-						<input name="contractAmount" type="hidden" value="${monthFill.contractAmount}">
-						<input type="text" class="form-control" value="${monthFill.contractAmount}" disabled="disabled">
+					<label class="control-label col-xs-4">实际合同额(¥)</label>
+					<div class="col-xs-7">
+						<input name="contractAmount" type="hidden" value="${yearFill.contractAmount}">
+						<input type="text" class="form-control" value="${yearFill.contractAmount}" disabled="disabled">
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">分包扣减(¥)</label>
-					<div class="col-md-7">
-						<input name="pkgAmount" type="hidden" value="${monthFill.pkgAmount}">
-						<input type="text" class="form-control" value="${monthFill.pkgAmount}" disabled="disabled">
+					<label class="control-label col-xs-4">分包扣减(¥)</label>
+					<div class="col-xs-7">
+						<input name="pkgAmount" type="hidden" value="${yearFill.pkgAmount}">
+						<input type="text" class="form-control" value="${yearFill.pkgAmount}" disabled="disabled">
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">方案扣减(¥)</label>
-					<div class="col-md-7">
-						<input name="schemeAmount" type="hidden" value="${monthFill.schemeAmount}">
-						<input type="text" class="form-control" value="${monthFill.schemeAmount}" disabled="disabled">
+					<label class="control-label col-xs-4">方案扣减(¥)</label>
+					<div class="col-xs-7">
+						<input name="schemeAmount" type="hidden" value="${yearFill.schemeAmount}">
+						<input type="text" class="form-control" value="${yearFill.schemeAmount}" disabled="disabled">
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">其他扣减(¥)</label>
-					<div class="col-md-7">
-						<input name="rebateAmount" type="hidden" value="${monthFill.rebateAmount}">
-						<input type="text" class="form-control" value="${monthFill.rebateAmount}" disabled="disabled">
+					<label class="control-label col-xs-4">其他扣减(¥)</label>
+					<div class="col-xs-7">
+						<input name="rebateAmount" type="hidden" value="${yearFill.rebateAmount}">
+						<input type="text" class="form-control" value="${yearFill.rebateAmount}" disabled="disabled">
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">项目负责人</label>
-					<div class="col-md-7">
-						<input type="text" class="form-control" value="${monthFill.pmLeaders}" disabled="disabled">
+					<label class="control-label col-xs-4">项目负责人</label>
+					<div class="col-xs-7">
+						<input type="text" class="form-control" value="${yearFill.pmLeaders}" disabled="disabled">
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">项目经理</label>
-					<div class="col-md-7">
-						<input type="text" class="form-control" value="${monthFill.pManagers}" disabled="disabled">
+					<label class="control-label col-xs-4">项目经理</label>
+					<div class="col-xs-7">
+						<input type="text" class="form-control" value="${yearFill.pManagers}" disabled="disabled">
 					</div>
 				</div>
-				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">所处状态<span class="required">※</span></label>
-					<div class="col-md-7 input-icon right">
-						<i class="fa"></i>
-						<tags:config type="select" name="itemStatus" otherAttr='data-rule-required="true"' cssClass="form-control" parentCode="PM.STATUS" selectCode="${monthFill.itemStatus}"/>
-					</div>
-				</div>
-				
+
 				<div class="form-group col-xs-12 ">
-					<label class="control-label col-md-2" style="margin-left: -0.6%;">施工进度描述</label>
-					<div class="col-md-9" style="width: 78%;">
-						<textarea name="progressExplain" rows="3" class="form-control">${monthFill.progressExplain}</textarea>
-					</div>
-				</div>
-				<div class="form-group col-xs-12 ">
-					<label class="control-label col-md-2" style="margin-left: -0.6%;">备注</label>
-					<div class="col-md-9" style="width: 78%;">
-						<textarea name="remark" rows="3" class="form-control">${monthFill.remark}</textarea>
+					<label class="control-label col-xs-2" style="margin-left: -0.6%;">备注</label>
+					<div class="col-xs-9" style="width: 78%;">
+						<textarea name="remark" rows="3" class="form-control">${yearFill.remark}</textarea>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">创建人</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">创建人</label>
+					<div class="col-xs-7">
 						<input type="text" class="form-control" 
-						       value="${empty monthFill.creator ? SysUser.realName : monthFill.creator}" 
+						       value="${empty yearFill.creator ? SysUser.realName : yearFill.creator}" 
 						       disabled="disabled"> 
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">创建时间</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">创建时间</label>
+					<div class="col-xs-7">
 						<input type="text" class="form-control" 
-							   value='<fmt:formatDate pattern="yyyy-MM-dd" value="${empty monthFill.createDate ? currentDate : monthFill.createDate}" />'
+							   value='<fmt:formatDate pattern="yyyy-MM-dd" value="${empty yearFill.createDate ? currentDate : yearFill.createDate}" />'
 							   disabled="disabled"> 
 					</div>
 				</div>
 				
-				<h5 class="form-tit col-xs-12">专业进度</h5>
+				<h5 class="form-tit col-xs-12">专业实际完成进度</h5>
 				<div class="col-xs-12">
 					<table id="majorTable" class="table table-bordered edit">
 						<thead>
 							<tr>
-								<th class="text-center col-md-2">专业</th>
-								<th class="text-center col-md-1">当月完成进度比例(%)</th>
-								<th class="text-center col-md-1">专业分配比例(%)</th>
-								<th class="text-center col-md-2">对应产值(¥)</th>
-								<th class="text-center col-md-1">累计进度比例(%)</th>
-								<th class="text-center col-md-2">累计产值(¥)</th>
-								<th class="text-center col-md-2">剩余产值(¥)</th>
-								<th class="text-center col-md-1">历史进度</th>
+								<th class="text-center col-xs-2">专业</th>
+								<th class="text-center col-xs-1">当年完成进度比例(%)</th>
+								<th class="text-center col-xs-1">专业分配比例(%)</th>
+								<th class="text-center col-xs-2">对应产值(¥)</th>
+								<th class="text-center col-xs-1">累计进度比例(%)</th>
+								<th class="text-center col-xs-2">累计产值(¥)</th>
+								<th class="text-center col-xs-2">剩余产值(¥)</th>
+								<th class="text-center col-xs-1">历史进度</th>
 							</tr>
 						</thead>
 						<tbody>
-						<c:if test="${fn:length(monthFill.majorProgressList) > 0}">
-						<c:forEach items="${monthFill.majorProgressList}" var="o" varStatus="s">
+						<c:if test="${fn:length(yearFill.majorProgressList) > 0}">
+						<c:forEach items="${yearFill.majorProgressList}" var="o" varStatus="s">
 							<tr>
 								<td class="text-center">
 									<input name="majorProgressList[${s.index}].id" type="hidden" value="${o.id}">
@@ -239,7 +226,7 @@ var schemeAmount = parseFloat($("input[name='schemeAmount']").val())||0; //方�
 var rebateAmount = parseFloat($("input[name='rebateAmount']").val())||0; //其他扣减
 
 var YIELDCAL = ((contractAmount-pkgAmount-schemeAmount-rebateAmount)*ocRebate*(100-principalRate-pmRate)/100).toFixed(2);
-//对应产值(¥) = YIELDCAL*专业分配比例/100*当月完成进度比例/100
+//对应产值(¥) = YIELDCAL*专业分配比例/100*当年完成进度比例/100
 //剩余产值(¥) = YIELDCAL*专业分配比例/100-累计产值
 
 $(function(){
@@ -286,7 +273,7 @@ function inCompleteRate(){
 }
 
 function majorHistory(majorCode){
-	var url = "${site}/admin/ym/monthFill/majorhis?proId=${monthFill.proId}&majorCode="+majorCode;
+	var url = "${site}/admin/ym/yearFill/majorhis?proId=${yearFill.proId}&majorCode="+majorCode;
     openWindow(url, "实际进度-历史", "800", "600", true, false);
 }
 
@@ -304,7 +291,7 @@ function save(status){
 
 function ajaxSava(status){
 	$("input[name='auditStatus']").val(status);
-	var url ="${site}/admin/ym/monthFill/ajax/save";
+	var url ="${site}/admin/ym/yearFill/ajax/save";
 	$.ajax({
 		type : "post",
 	 	url : url,
@@ -316,7 +303,7 @@ function ajaxSava(status){
 	 	success : function(data) {
 	 		if(data.flag == "true"){
 	 			$.jalert({"jatext":data.msg, "jatype":"refresh", "onConfirm":function(){
-	 				var backUrl = (status == "9" ? "${site}/admin/ym/monthFill/list" : "${site}/admin/ym/monthFill/toedit/"+data.id+"?proId=${monthFill.proId}&periodId=${monthFill.periodId}");
+	 				var backUrl = (status == "9" ? "${site}/admin/ym/yearFill/list" : "${site}/admin/ym/yearFill/toedit/"+data.id+"?proId=${yearFill.proId}&periodId=${yearFill.periodId}");
 			  		window.location.href = backUrl;
 	 			}});
 	 		}else{

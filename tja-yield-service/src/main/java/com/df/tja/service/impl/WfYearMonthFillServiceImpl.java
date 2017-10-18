@@ -135,10 +135,12 @@ public class WfYearMonthFillServiceImpl extends BaseServiceImpl implements IWfYe
             }
 
             // 项目状态
-            Project project = new Project();
-            project.setId(ymFill.getProId());
-            project.setProStatus(ymFill.getItemStatus());
-            this.modify(Project.class, project);
+            if (StringUtil.isNotBlank(ymFill.getItemStatus())) {
+                Project project = new Project();
+                project.setId(ymFill.getProId());
+                project.setProStatus(ymFill.getItemStatus());
+                this.modify(Project.class, project);
+            }
         } catch (Exception e) {
             LoggerUtil.error(WfYearMonthFillServiceImpl.class, e.getMessage(), e);
             throw new RuntimeException(e);
