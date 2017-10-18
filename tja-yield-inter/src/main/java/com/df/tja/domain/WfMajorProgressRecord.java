@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -71,6 +72,9 @@ public class WfMajorProgressRecord extends BaseDomain {
 
     /** 属性：累计产值 */
     private BigDecimal accYield;
+
+    /** ex：专业名称 */
+    private String majorName;
 
     /**
      * <p> 属性：wfId的Getter方法. </p>
@@ -262,6 +266,25 @@ public class WfMajorProgressRecord extends BaseDomain {
     @Column(name = "MODIFY_DATE")
     public java.util.Date getModifyDate() {
         return modifyDate;
+    }
+
+    /**
+     * <p> 属性majorName的Getter方法. </p>
+     * 
+     * @return 返回majorName属性的值
+     */
+    @Transient
+    public String getMajorName() {
+        return majorName;
+    }
+
+    /**
+     * <p> 属性majorName的Setter方法. </p>
+     * 
+     * @param majorName 为属性majorName设置的值
+     */
+    public void setMajorName(String majorName) {
+        this.majorName = majorName;
     }
 
     public boolean equals(Object o) {

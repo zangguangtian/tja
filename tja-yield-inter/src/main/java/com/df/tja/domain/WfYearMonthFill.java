@@ -21,7 +21,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import com.df.framework.base.domain.BaseDomain;
+import com.df.activiti.domain.WfBaseDomain;
 
 /**
  * <p>WfYearMonthFill </p>
@@ -42,7 +42,7 @@ import com.df.framework.base.domain.BaseDomain;
 @Table(name = "WF_YEAR_MONTH_FILL")
 @DynamicInsert(true)
 @DynamicUpdate(true)
-public class WfYearMonthFill extends BaseDomain {
+public class WfYearMonthFill extends WfBaseDomain {
     /**
      * 属性： serialVersionUID 
      */
