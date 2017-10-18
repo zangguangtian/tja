@@ -232,7 +232,7 @@
 	  			$.jalert({"jatext":"请选择项目"});
 	  			return;
 	  		}
-	  		if(majorCode.length == 0 || majorName.length == 0) {
+	  		if(majorName.length == 0) {
 	  			$.jalert({"jatext":"请选择专业"});
 	  			return;
 	  		}
