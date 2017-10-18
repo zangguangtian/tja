@@ -43,7 +43,7 @@ import com.df.tja.service.IWfPlanSchemeService;
  * @version 1.0.0
  * 
  */
-@Service
+@Service("wfPlanSchemeService")
 public class WfPlanSchemeServiceImpl extends BaseServiceImpl implements IWfPlanSchemeService {
 
     @Autowired
@@ -106,7 +106,8 @@ public class WfPlanSchemeServiceImpl extends BaseServiceImpl implements IWfPlanS
         }
     }
 
-    public void writeBackPlanScheme(String id) throws RuntimeException {
+    @Override
+    public void addWriteBackPlanScheme(String id) throws RuntimeException {
         try {
             wfPlanSchemeDao.writeBack(id, TjaConstant.WriteBackOpType.OCWRITEBACKTYPE[0],
                 TjaConstant.WriteBackFunc.WF_FUNC);

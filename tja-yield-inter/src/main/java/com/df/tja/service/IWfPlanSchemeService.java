@@ -52,4 +52,6 @@ public interface IWfPlanSchemeService extends IBaseService {
      */
     void queryPlanSchemeById(Map<String, Object> attributes, String id) throws RuntimeException;
 
+    void addWriteBackPlanScheme(String id) throws RuntimeException;
+
 }
