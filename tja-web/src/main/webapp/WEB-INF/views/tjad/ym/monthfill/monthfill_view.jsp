@@ -81,25 +81,25 @@
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-md-4">实际合同额(¥)</label>
 					<div class="col-md-7">
-						<label class="control-label">${monthFill.contractAmount}</label>
+						<label name="contractAmount" class="control-label">${monthFill.contractAmount}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-md-4">分包扣减(¥)</label>
 					<div class="col-md-7">
-						<label class="control-label">${monthFill.pkgAmount}</label>
+						<label name="pkgAmount" class="control-label">${monthFill.pkgAmount}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-md-4">方案扣减(¥)</label>
 					<div class="col-md-7">
-						<label class="control-label">${monthFill.schemeAmount}</label>
+						<label name="schemeAmount" class="control-label">${monthFill.schemeAmount}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-md-4">其他扣减(¥)</label>
 					<div class="col-md-7">
-						<label class="control-label">${monthFill.rebateAmount}</label>
+						<label name="rebateAmount" class="control-label">${monthFill.rebateAmount}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
@@ -221,10 +221,10 @@ var ocRebate = "${ocRebate}"; //产值计算系数
 var principalRate = "${principalRate}"||0; //项目负责人分配比例
 var pmRate = "${pmRate}"||0; //项目经理分配比例
 
-var contractAmount = parseFloat($("input[name='contractAmount']").val())||0; //实际合同额
-var pkgAmount = parseFloat($("input[name='pkgAmount']").val())||0; //分包扣减
-var schemeAmount = parseFloat($("input[name='schemeAmount']").val())||0; //方案扣减
-var rebateAmount = parseFloat($("input[name='rebateAmount']").val())||0; //其他扣减
+var contractAmount = parseFloat($("label[name='contractAmount']").text())||0; //实际合同额
+var pkgAmount = parseFloat($("label[name='pkgAmount']").text())||0; //分包扣减
+var schemeAmount = parseFloat($("label[name='schemeAmount']").text())||0; //方案扣减
+var rebateAmount = parseFloat($("label[name='rebateAmount']").text())||0; //其他扣减
 
 var YIELDCAL = ((contractAmount-pkgAmount-schemeAmount-rebateAmount)*ocRebate*(100-principalRate-pmRate)/100).toFixed(2);
 //对应产值(¥) = YIELDCAL*专业分配比例/100*当月完成进度比例/100
@@ -241,9 +241,9 @@ function getSum(){
 		sum_otherYield = 0;
 	
 	$("#majorTable").find("tbody tr").each(function(index,element){
-		var alloteRate = parseFloat($(element).find("input[name$='.alloteRate']").val())||0; //专业分配比例
-		var refYield = parseFloat($(element).find("input[name$='.refYield']").val())||0; //对应产值
-		var accYield = parseFloat($(element).find("input[name$='.accYield']").val())||0; //累计产值
+		var alloteRate = parseFloat($(element).find("td:eq(2)").text())||0; //专业分配比例
+		var refYield = parseFloat($(element).find("td:eq(3)").text())||0; //对应产值
+		var accYield = parseFloat($(element).find("td:eq(5)").text())||0; //累计产值
 		var otherYield = YIELDCAL*alloteRate/100-accYield; //剩余产值(¥) = YIELDCAL*专业分配比例/100-累计产值
 		
 		$(element).find("input[name$='.otherYield']").val(otherYield.toFixed(2));
