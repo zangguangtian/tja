@@ -19,6 +19,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.df.activiti.constant.WfConstant;
 import com.df.activiti.domain.ProcessArgs;
 import com.df.framework.base.service.impl.BaseServiceImpl;
 import com.df.framework.exception.LogicalException;
@@ -126,7 +127,8 @@ public class WfYearMonthFillServiceImpl extends BaseServiceImpl implements IWfYe
             }
 
             // 项目状态
-            if (StringUtil.isNotBlank(ymFill.getItemStatus())) {
+            if (WfConstant.AuditStatus.AUDITING.equals(ymFill.getAuditStatus())
+                && StringUtil.isNotBlank(ymFill.getItemStatus())) {
                 Project project = new Project();
                 project.setId(ymFill.getProId());
                 project.setProStatus(ymFill.getItemStatus());
