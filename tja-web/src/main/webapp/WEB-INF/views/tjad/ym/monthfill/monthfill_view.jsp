@@ -186,6 +186,7 @@
 									${o.accYield}
 								</td>
 								<td class="text-right">
+									<input name=".otherYield" type="text" class="text-right" value="" disabled>
 								</td>
 								<td class="text-center"><a href="javascript:void(0)" onclick="majorHistory('${o.majorCode}')">查看</a></td>
 							</tr>
@@ -216,6 +217,19 @@
 <div class="clearfix"></div>
 
 <script type="text/javascript">
+var ocRebate = "${ocRebate}"; //产值计算系数
+var principalRate = "${principalRate}"||0; //项目负责人分配比例
+var pmRate = "${pmRate}"||0; //项目经理分配比例
+
+var contractAmount = parseFloat($("input[name='contractAmount']").val())||0; //实际合同额
+var pkgAmount = parseFloat($("input[name='pkgAmount']").val())||0; //分包扣减
+var schemeAmount = parseFloat($("input[name='schemeAmount']").val())||0; //方案扣减
+var rebateAmount = parseFloat($("input[name='rebateAmount']").val())||0; //其他扣减
+
+var YIELDCAL = ((contractAmount-pkgAmount-schemeAmount-rebateAmount)*ocRebate*(100-principalRate-pmRate)/100).toFixed(2);
+//对应产值(¥) = YIELDCAL*专业分配比例/100*当月完成进度比例/100
+//剩余产值(¥) = YIELDCAL*专业分配比例/100-累计产值
+
 $(function(){
 	getSum();
 });
@@ -223,26 +237,25 @@ $(function(){
 function getSum(){
 	var sum_alloteRate = 0,
 		sum_refYield = 0,
-		sum_accRate = 0,
 		sum_accYield = 0,
 		sum_otherYield = 0;
 	
 	$("#majorTable").find("tbody tr").each(function(index,element){
-		var alloteRate = parseFloat($(element).find("input[name$='.alloteRate']").val())||0;
-		var refYield = parseFloat($(element).find("input[name$='.refYield']").val())||0;
-		var accRate = parseFloat($(element).find("input[name$='.accRate']").val())||0;
-		var accYield = parseFloat($(element).find("input[name$='.accYield']").val())||0;
-		var otherYield = parseFloat($(element).find("input[name$='.otherYield']").val())||0;
+		var alloteRate = parseFloat($(element).find("input[name$='.alloteRate']").val())||0; //专业分配比例
+		var refYield = parseFloat($(element).find("input[name$='.refYield']").val())||0; //对应产值
+		var accYield = parseFloat($(element).find("input[name$='.accYield']").val())||0; //累计产值
+		var otherYield = YIELDCAL*alloteRate/100-accYield; //剩余产值(¥) = YIELDCAL*专业分配比例/100-累计产值
+		
+		$(element).find("input[name$='.otherYield']").val(otherYield.toFixed(2));
+		
 		sum_alloteRate += alloteRate;
 		sum_refYield += refYield;
-		sum_accRate += accRate;
 		sum_accYield += accYield;
 		sum_otherYield += otherYield;
 	});
 	
 	$("#majorTable tr:last").find("td:eq(2)").text(sum_alloteRate.toFixed(2));
 	$("#majorTable tr:last").find("td:eq(3)").text(sum_refYield.toFixed(2));
-	$("#majorTable tr:last").find("td:eq(4)").text(sum_accRate.toFixed(2));
 	$("#majorTable tr:last").find("td:eq(5)").text(sum_accYield.toFixed(2));
 	$("#majorTable tr:last").find("td:eq(6)").text(sum_otherYield.toFixed(2));
 }

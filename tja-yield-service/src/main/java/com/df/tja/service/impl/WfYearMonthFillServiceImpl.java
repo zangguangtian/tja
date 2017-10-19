@@ -25,7 +25,6 @@ import com.df.framework.exception.LogicalException;
 import com.df.framework.util.LoggerUtil;
 import com.df.framework.util.StringUtil;
 import com.df.project.dao.IProMajorRoleRateDao;
-import com.df.project.domain.ProMajorRoleRate;
 import com.df.project.domain.Project;
 import com.df.project.domain.cust.CustProject;
 import com.df.project.service.IProjectService;
@@ -63,7 +62,8 @@ public class WfYearMonthFillServiceImpl extends BaseServiceImpl implements IWfYe
     private IProMajorRoleRateDao proMajorRoleRateDao;
 
     @Override
-    public WfYearMonthFillMore queryWfYearMonthFill(String id, String proId, String periodId) throws RuntimeException {
+    public WfYearMonthFillMore queryWfYearMonthFill(String id, String proId, String periodId, String category)
+        throws RuntimeException {
         WfYearMonthFillMore yearMonthFillMore = new WfYearMonthFillMore();
         WfYearMonthFill yearMonthFill = null;
         List<WfMajorProgressRecord> majorProgressList = new ArrayList<WfMajorProgressRecord>(0);
@@ -78,16 +78,7 @@ public class WfYearMonthFillServiceImpl extends BaseServiceImpl implements IWfYe
                 mprSerch.setWfId(id);
                 majorProgressList = this.queryByCondition(WfMajorProgressRecord.class, mprSerch);
             } else {
-                List<ProMajorRoleRate> majorRoleRateList = proMajorRoleRateDao.queryProMajorRoleRate(proId, "PM.MAJOR");
-                if (majorRoleRateList != null && !majorRoleRateList.isEmpty()) {
-                    for (ProMajorRoleRate o : majorRoleRateList) {
-                        WfMajorProgressRecord mpr = new WfMajorProgressRecord();
-                        mpr.setMajorCode(o.getAllotCode());
-                        mpr.setAlloteRate(o.getAllotRate());
-                        mpr.setMajorName(o.getAllotName());
-                        majorProgressList.add(mpr);
-                    }
-                }
+                majorProgressList = wfYearMonthFillDao.queryMajorProgress(proId, category);
             }
             yearMonthFillMore.setProId(proId);
             yearMonthFillMore.setPeriodId(periodId);

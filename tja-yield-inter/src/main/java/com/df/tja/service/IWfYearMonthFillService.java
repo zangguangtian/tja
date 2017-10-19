@@ -42,9 +42,13 @@ public interface IWfYearMonthFillService extends IBaseService {
      * <p>描述 :查询 月/年报详情 </p>
      * 
      * @param id 
+     * @param proId 
+     * @param periodId 
+     * @param category 月:"1000", 年:"2000"
      * @return 
      * */
-    WfYearMonthFillMore queryWfYearMonthFill(String id, String proId, String periodId) throws RuntimeException;
+    WfYearMonthFillMore queryWfYearMonthFill(String id, String proId, String periodId, String category)
+        throws RuntimeException;
 
     /**
      * <p>描述 :保存/修改 月报 </p>

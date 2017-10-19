@@ -15,6 +15,7 @@ package com.df.tja.dao;
 import java.util.List;
 
 import com.df.framework.base.dao.IBaseDao;
+import com.df.tja.domain.WfMajorProgressRecord;
 import com.df.tja.domain.WfYearMonthFill;
 import com.df.tja.domain.cust.WfYearMonthFillMore;
 
@@ -44,6 +45,16 @@ public interface IWfYearMonthFillDao extends IBaseDao {
      * @return
      */
     WfYearMonthFill queryWfYearMonthFill(String id);
+
+    /**
+     * 
+     * <p>描述 :专业进度 </p>
+     *
+     * @param proId
+     * @param category
+     * @return
+     */
+    List<WfMajorProgressRecord> queryMajorProgress(String proId, String category);
 
     /**
      * 

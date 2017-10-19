@@ -95,7 +95,7 @@ public class WfYearFillController extends WfBaseController {
         String proId = request.getParameter("proId");
         String periodId = request.getParameter("periodId");
 
-        WfYearMonthFillMore yearFill = yearMonthFillService.queryWfYearMonthFill(id, proId, periodId);
+        WfYearMonthFillMore yearFill = yearMonthFillService.queryWfYearMonthFill(id, proId, periodId, "2000");
 
         if (WfConstant.AuditStatus.AUDITING.equals(yearFill.getAuditStatus())
             || WfConstant.AuditStatus.AUDITED.equals(yearFill.getAuditStatus())) {
@@ -181,7 +181,7 @@ public class WfYearFillController extends WfBaseController {
                                         String view) throws RuntimeException {
         Map<String, Object> modelMap = new HashMap<String, Object>();
 
-        WfYearMonthFillMore yearFill = yearMonthFillService.queryWfYearMonthFill(id, null, null);
+        WfYearMonthFillMore yearFill = yearMonthFillService.queryWfYearMonthFill(id, null, null, "2000");
         modelMap.put("yearFill", yearFill);
 
         //检查操作
@@ -201,8 +201,17 @@ public class WfYearFillController extends WfBaseController {
         modelMap.put("executionId", yearFill.getProcId());
 
         ModelAndView modelAndView = new ModelAndView();
-        Integer viewType = StringUtil.isNotBlank(view) ? Integer.valueOf(view) : 10;
 
+        BigDecimal ocRebate = ymConfigService.queryOcRebateParam();
+        modelAndView.addObject("ocRebate", ocRebate); // 产值计算系数
+
+        ProjectExtend projectExtend = yearMonthFillService.queryByPrimaryKey(ProjectExtend.class, yearFill.getProId());
+        if (projectExtend != null) {
+            modelAndView.addObject("principalRate", projectExtend.getPrincipalRate()); // 项目负责人分配比例
+            modelAndView.addObject("pmRate", projectExtend.getPmRate()); // 项目经理分配比例
+        }
+
+        Integer viewType = StringUtil.isNotBlank(view) ? Integer.valueOf(view) : 10;
         modelAndView.addObject("view", viewType);
         modelAndView.addAllObjects(modelMap);
         modelAndView.setViewName("/tjad/ym/yearfill/yearfill_view");

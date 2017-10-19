@@ -189,18 +189,19 @@
 									<input name="majorProgressList[${s.index}].alloteRate" type="hidden" value="${o.alloteRate}">
 								</td>
 								<td class="text-right">
-									${o.refYield}
+									<input name=".refYield" type="text" class="text-right" value="${o.refYield}" disabled>
 									<input name="majorProgressList[${s.index}].refYield" type="hidden" value="${o.refYield}">
 								</td>
 								<td class="text-right">
-									${o.accRate}
+									<input name=".accRate" type="text" class="text-right" value="${o.accRate}" title="${o.accRate}" disabled>
 									<input name="majorProgressList[${s.index}].accRate" type="hidden" value="${o.accRate}">
 								</td>
 								<td class="text-right">
-									${o.accYield}
+									<input name=".accYield" type="text" class="text-right" value="${o.accYield}" title="${o.accYield}" disabled>
 									<input name="majorProgressList[${s.index}].accYield" type="hidden" value="${o.accYield}">
 								</td>
 								<td class="text-right">
+									<input name=".otherYield" type="text" class="text-right" value="" disabled>
 								</td>
 								<td class="text-center"><a href="javascript:void(0)" onclick="majorHistory('${o.majorCode}')">查看</a></td>
 							</tr>
@@ -246,10 +247,7 @@ $(function(){
 	getSum();
 	$("#majorTable").find("input[name$='.completeRate']").each(function(index,element){
 		$(element).on("keyup", function(){
-			var completeRate = parseFloat($(element).val())||0.00;
-			if(completeRate < 0) $(element).val(0.00);
-			if(completeRate > 100) $(element).val(100.00);
-			inCompleteRate();
+			inCompleteRate(element);
 		});
 	});
 });
@@ -257,32 +255,49 @@ $(function(){
 function getSum(){
 	var sum_alloteRate = 0,
 		sum_refYield = 0,
-		sum_accRate = 0,
 		sum_accYield = 0,
 		sum_otherYield = 0;
 	
 	$("#majorTable").find("tbody tr").each(function(index,element){
-		var alloteRate = parseFloat($(element).find("input[name$='.alloteRate']").val())||0;
-		var refYield = parseFloat($(element).find("input[name$='.refYield']").val())||0;
-		var accRate = parseFloat($(element).find("input[name$='.accRate']").val())||0;
-		var accYield = parseFloat($(element).find("input[name$='.accYield']").val())||0;
-		var otherYield = parseFloat($(element).find("input[name$='.otherYield']").val())||0;
+		var alloteRate = parseFloat($(element).find("input[name$='.alloteRate']").val())||0; //专业分配比例
+		var refYield = parseFloat($(element).find("input[name$='.refYield']").val())||0; //对应产值
+		var accYield = parseFloat($(element).find("input[name$='.accYield']").val())||0; //累计产值
+		var otherYield = YIELDCAL*alloteRate/100-accYield; //剩余产值(¥) = YIELDCAL*专业分配比例/100-累计产值
+		
+		$(element).find("input[name$='.otherYield']").val(otherYield.toFixed(2));
+		
 		sum_alloteRate += alloteRate;
 		sum_refYield += refYield;
-		sum_accRate += accRate;
 		sum_accYield += accYield;
 		sum_otherYield += otherYield;
 	});
 	
 	$("#majorTable tr:last").find("td:eq(2)").text(sum_alloteRate.toFixed(2));
 	$("#majorTable tr:last").find("td:eq(3)").text(sum_refYield.toFixed(2));
-	$("#majorTable tr:last").find("td:eq(4)").text(sum_accRate.toFixed(2));
 	$("#majorTable tr:last").find("td:eq(5)").text(sum_accYield.toFixed(2));
 	$("#majorTable tr:last").find("td:eq(6)").text(sum_otherYield.toFixed(2));
 }
 
-function inCompleteRate(){
-	//...
+function inCompleteRate(element){
+	var completeRate = parseFloat($(element).val())||0; //当月完成进度比例
+	var alloteRate = parseFloat($(element).closest("tr").find("input[name$='.alloteRate']").val())||0; //专业分配比例
+	var accRate = parseFloat($(element).closest("tr").find("input[name$='.accRate']").attr("title"))||0; //累计进度比例
+	var accYield = parseFloat($(element).closest("tr").find("input[name$='.accYield']").attr("title"))||0; //累计产值
+	var theRestRate = (10000-accRate*100)/100; //剩余比例
+	
+	if(completeRate < 0) $(element).val(0.00);
+	if(completeRate > theRestRate) $(element).val(theRestRate);
+	completeRate = parseFloat($(element).val())||0;
+	
+	var refYield = YIELDCAL*alloteRate/100*completeRate/100; //对应产值(¥) = YIELDCAL*专业分配比例/100*当月完成进度比例/100
+	accRate += completeRate;
+	accYield += refYield;
+	
+	$(element).closest("tr").find("input[name$='.refYield']").val(refYield.toFixed(2));
+	$(element).closest("tr").find("input[name$='.accRate']").val(accRate.toFixed(2));
+	$(element).closest("tr").find("input[name$='.accYield']").val(accYield.toFixed(2));
+	
+	getSum();
 }
 
 function majorHistory(majorCode){
