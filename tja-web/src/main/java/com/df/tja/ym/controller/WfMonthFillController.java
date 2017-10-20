@@ -237,6 +237,15 @@ public class WfMonthFillController extends WfBaseController {
     }
 
     /**
+     * <p>描述 : 历史</p>
+     */
+    @RequestMapping(value = "/history")
+    public String history(Model model, HttpServletRequest request) {
+        model.addAttribute("proId", request.getParameter("proId"));
+        return "/tjad/ym/monthfill/history";
+    }
+
+    /**
      * <p>描述 : 专业进度-历史</p>
      */
     @RequestMapping(value = "/majorhis")
