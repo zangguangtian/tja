@@ -12,9 +12,10 @@
 
 package com.df.tja.service;
 
-import java.util.Date;
+import java.util.List;
 
 import com.df.framework.base.service.IBaseService;
+import com.df.tja.domain.ItProjectInfo;
 
 /**
  * <p>IDataSyncService</p>
@@ -81,7 +82,7 @@ public interface IDataSyncService extends IBaseService {
      * @param value
      * @throws RuntimeException
      */
-    void syncItems(String value) throws RuntimeException;
+    List<ItProjectInfo> syncItems(String value) throws RuntimeException;
 
     /**
      * 
@@ -99,23 +100,5 @@ public interface IDataSyncService extends IBaseService {
      * @param value
      * @throws RuntimeException
      */
-    void syncEpibolyContractOfItem(String value) throws RuntimeException;
-
-    /**
-     * 
-     * <p>描述 : 同步项目工时成本</p>
-     *
-     * @param value
-     * @throws RuntimeException
-     */
-    void syncCostOfItem(String value, String itemId, Date createDate) throws RuntimeException;
-
-    /**
-     * 
-     * <p>描述 : 同步项目策划信息</p>
-     *
-     * @param value
-     * @throws RuntimeException
-     */
-    void syncItemWbsInfo(String value, String itemId) throws RuntimeException;
+    void syncEpibolyContractOfItem(String value, boolean isLastRow) throws RuntimeException;
 }

@@ -162,6 +162,7 @@ public class DataSyncServiceImpl extends BaseServiceImpl implements IDataSyncSer
                 }
                 dataSyncDao.batchInsert(ItDeptInfo.class, depts);
                 dataSyncDao.batchInsert(ItDeptLeader.class, deptLeaders);
+                //此存储过程只会先处理部门数据
                 dataSyncDao.writeBackSyncData("syncDept");
             }
         } catch (Exception ex) {
@@ -235,7 +236,8 @@ public class DataSyncServiceImpl extends BaseServiceImpl implements IDataSyncSer
         }
     }
 
-    public void syncItems(String value) throws RuntimeException {
+    public List<ItProjectInfo> syncItems(String value) throws RuntimeException {
+        List<ItProjectInfo> projects = new ArrayList<ItProjectInfo>(0);
         try {
             if (StringUtil.isNotBlank(value)) {
                 //同步前先将接口表中的数据清空
@@ -244,7 +246,7 @@ public class DataSyncServiceImpl extends BaseServiceImpl implements IDataSyncSer
                 ItProjectInfo itProjectInfo = null;
                 JSONObject jsonObj = null;
                 Date syncDate = new Date();
-                List<ItProjectInfo> projects = new ArrayList<ItProjectInfo>(0);
+
                 JSONArray jsonArray = new JSONArray(value);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     jsonObj = (JSONObject) jsonArray.get(i);
@@ -260,14 +262,25 @@ public class DataSyncServiceImpl extends BaseServiceImpl implements IDataSyncSer
                     itProjectInfo.setPrjmanagerId(jsonObj.getString("PrjManagerId"));
                     itProjectInfo.setPrjmanagerName(jsonObj.getString("PrjManagerName"));
                     itProjectInfo.setCreateDate(syncDate);
+
+                    value = createAndQuerySyncData("getCostOfItem", jsonObj.getString("Id"));
+                    if (StringUtil.isNotBlank(value)) {
+                        itProjectInfo.setWorkCost(new BigDecimal(value));
+                    }
                     projects.add(itProjectInfo);
+
+                    //同步项目策划信息
+                    value = createAndQuerySyncData("getItemWbsInfo", jsonObj.getString("Id"));
+                    syncItemWbsInfo(value, jsonObj.getString("Id"));
                 }
                 dataSyncDao.batchInsert(ItProjectInfo.class, projects);
+                dataSyncDao.writeBackSyncData("syncProject");
             }
         } catch (Exception ex) {
             LoggerUtil.error(DataSyncServiceImpl.class, ex.getMessage());
             throw new RuntimeException(ex);
         }
+        return projects;
     }
 
     public void syncContractOfItem(String value) throws RuntimeException {
@@ -291,7 +304,6 @@ public class DataSyncServiceImpl extends BaseServiceImpl implements IDataSyncSer
                     list.add(itProContractInfo);
                 }
                 dataSyncDao.batchInsert(ItProContractInfo.class, list);
-                dataSyncDao.writeBackSyncData("syncContractOfItem");
             }
         } catch (Exception ex) {
             System.out.println(value);
@@ -300,7 +312,7 @@ public class DataSyncServiceImpl extends BaseServiceImpl implements IDataSyncSer
         }
     }
 
-    public void syncEpibolyContractOfItem(String value) throws RuntimeException {
+    public void syncEpibolyContractOfItem(String value, boolean isLastRow) throws RuntimeException {
         try {
             if (StringUtil.isNotBlank(value)) {
                 ItProContractInfo itProContractInfo = null;
@@ -321,7 +333,10 @@ public class DataSyncServiceImpl extends BaseServiceImpl implements IDataSyncSer
                     list.add(itProContractInfo);
                 }
                 dataSyncDao.batchInsert(ItProContractInfo.class, list);
-                dataSyncDao.writeBackSyncData("syncEpibolyContractOfItem");
+            }
+            //如果为最后一个项目
+            if (isLastRow) {
+                dataSyncDao.writeBackSyncData("syncContract");
             }
         } catch (Exception ex) {
             LoggerUtil.error(DataSyncServiceImpl.class, ex.getMessage());
@@ -329,19 +344,7 @@ public class DataSyncServiceImpl extends BaseServiceImpl implements IDataSyncSer
         }
     }
 
-    public void syncCostOfItem(String value, String itemId, Date createDate) throws RuntimeException {
-        try {
-            if (StringUtil.isNotBlank(value)) {
-                dataSyncDao.updateCostOfItem(new BigDecimal(value), itemId);
-                dataSyncDao.writeBackSyncData("syncItem");
-            }
-        } catch (Exception ex) {
-            LoggerUtil.error(DataSyncServiceImpl.class, ex.getMessage());
-            throw new RuntimeException(ex);
-        }
-    }
-
-    public void syncItemWbsInfo(String value, String itemId) throws RuntimeException {
+    private void syncItemWbsInfo(String value, String itemId) throws RuntimeException {
         try {
             if (StringUtil.isNotBlank(value)) {
                 ItProPhasesInfo itProPhasesInfo = null;
@@ -410,8 +413,6 @@ public class DataSyncServiceImpl extends BaseServiceImpl implements IDataSyncSer
                     users.add(itProPhasesUser);
                 }
                 dataSyncDao.batchInsert(ItProPhasesUser.class, users);
-
-                dataSyncDao.writeBackSyncData("syncItemWbsInfo");
             }
         } catch (Exception ex) {
             LoggerUtil.error(DataSyncServiceImpl.class, ex.getMessage());
