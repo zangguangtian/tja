@@ -99,7 +99,7 @@
 					<td class="text-center">${staff.name }</td>
 					<td class="text-center">${staff.orgName }</td>
 					<td class="text-center">
-						<input type="checkbox" name="proStaffList[${s.index}].mainFlag" data-group="${staff.majorCode }.${staff.memberRole }" value="1" onchange="setMainFlag(this)" <c:if test="${staff.mainFlag }">checked="checked"</c:if> >
+						<input type="checkbox" name="proStaffList[${s.index}].mainFlag" data-group='${staff.majorCode}<c:if test="${staff.memberType eq '1000'}">.${staff.memberRole}</c:if>' value="1" onchange="setMainFlag(this)" <c:if test="${staff.mainFlag }">checked="checked"</c:if> >
 					</td>
 					<td class="">
 						<input name="proStaffList[${s.index}].remark" value="${staff.remark }" type="text" class="form-control">
