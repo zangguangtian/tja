@@ -12,12 +12,20 @@
 
 package com.df.tja.oc.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.df.framework.base.controller.BaseController;
+import com.df.framework.sys.domain.SysConfig;
+import com.df.framework.sys.service.ISysConfigService;
+import com.df.project.domain.cust.CustProject;
+import com.df.project.service.IProjectService;
 
 /**
  * <p>YieldSchemeController</p>
@@ -36,6 +44,12 @@ import com.df.framework.base.controller.BaseController;
 @Controller
 @RequestMapping("/admin/yield/scheme")
 public class YieldSchemeController extends BaseController {
+
+    @Autowired
+    private IProjectService projectService;
+
+    @Autowired
+    private ISysConfigService sysConfigService;
 
     /**
      * 
@@ -56,9 +70,20 @@ public class YieldSchemeController extends BaseController {
      * @param proId
      * @return
      */
-    @RequestMapping(value = "/edit/{proId}", method = RequestMethod.GET)
-    public String toedit(@PathVariable("proId") String proId) throws RuntimeException {
+    @RequestMapping(value = "/edit/{proId}/{id}", method = RequestMethod.GET)
+    public String toedit(@PathVariable("proId") String proId, @PathVariable("id") String id, Model model)
+        throws RuntimeException {
+        //取项目
+        CustProject project = projectService.queryByProId(proId);
+        model.addAttribute("project", project);
 
+        //取专业
+        List<SysConfig> majors = sysConfigService.querySysConfigsByParentCode("PM.MAJOR");
+        model.addAttribute("majors", majors);
+
+        if (!"0".equals(id)) {
+
+        }
         return "/tjad/oc/yieldsch/yield_scheme_edit";
     }
 }
