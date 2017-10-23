@@ -108,7 +108,7 @@ public class SettleYieldController extends BaseController {
     @RequestMapping(value = "/import")
     public String toImport(Model model) {
         OcPeriodManage period = new OcPeriodManage();
-        period.setTypeCode("OC.PERIOD.TYPE.YEAR");
+        period.setTypeCode("OC.PERIOD.TYPE.SETTLE");
         List<OcPeriodManage> periodSelect = periodService.queryByCondition(OcPeriodManage.class, period);
         model.addAttribute("periodSelect", periodSelect);
         return "/tjad/oc/settle/settle_yield_import";

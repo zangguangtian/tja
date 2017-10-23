@@ -15,13 +15,14 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import com.df.framework.base.domain.BaseDomain;
+import com.df.activiti.domain.WfBaseDomain;
 
 /**
  * <p>WfYieldSettle </p>
@@ -42,7 +43,7 @@ import com.df.framework.base.domain.BaseDomain;
 @Table(name = "WF_YIELD_SETTLE")
 @DynamicInsert(true)
 @DynamicUpdate(true)
-public class WfYieldSettle extends BaseDomain {
+public class WfYieldSettle extends WfBaseDomain {
     /**
      * 属性： serialVersionUID 
      */
@@ -90,6 +91,8 @@ public class WfYieldSettle extends BaseDomain {
     /** 属性：备注 */
     private String remark;
 
+    private String creatorName;
+    
     /**
      * <p> 属性：wfCategory的Getter方法. </p>
      * 
@@ -394,6 +397,15 @@ public class WfYieldSettle extends BaseDomain {
     @Column(name = "MODIFY_DATE")
     public java.util.Date getModifyDate() {
         return modifyDate;
+    }
+
+    @Transient
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
     }
 
     public boolean equals(Object o) {

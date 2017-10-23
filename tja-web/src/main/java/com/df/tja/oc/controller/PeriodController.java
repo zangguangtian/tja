@@ -17,6 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -184,11 +187,16 @@ public class PeriodController extends BaseController {
      */
     @RequestMapping(value = "/ajax/select")
     @ResponseBody
-    public Map<String, Object> periodSelect() {
+    public Map<String, Object> periodSelect(HttpServletRequest request) {
         Map<String, Object> resultmap = new HashMap<String, Object>();
         List<OcPeriodManage> periodSelect = new ArrayList<OcPeriodManage>(0);
         try {
-            periodSelect = periodService.queryByCondition(OcPeriodManage.class, null);
+            String parameter = request.getParameter("type");
+            OcPeriodManage ocPeriodManage = new OcPeriodManage();
+            if (StringUtils.isNotBlank(parameter)) {
+                ocPeriodManage.setTypeCode(parameter);
+            }
+            periodSelect = periodService.queryByCondition(OcPeriodManage.class, ocPeriodManage);
             resultmap.put("periodSelect", periodSelect);
             resultmap.put("flag", "true");
         } catch (Exception e) {

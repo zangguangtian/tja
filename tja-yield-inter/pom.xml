@@ -31,6 +31,13 @@
         </dependency>
         <dependency>
             <groupId>com.df</groupId>
+            <artifactId>df-hr-inter</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.df</groupId>
             <artifactId>tja-cxf-inter</artifactId>
             <version>1.0</version>
             <type>jar</type>

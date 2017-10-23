@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -74,6 +75,10 @@ public class WfYieldMajorRoleAllot extends BaseDomain {
 
     /** 属性：产值 */
     private BigDecimal staffYield;
+
+    /** 以下是非 持久性 字段  **/
+    /** 属性：员工名称*/
+    private java.lang.String staffName;
 
     /**
      * <p> 属性：wfId的Getter方法. </p>
@@ -264,6 +269,15 @@ public class WfYieldMajorRoleAllot extends BaseDomain {
     @Column(name = "CREATE_DATE")
     public java.util.Date getCreateDate() {
         return createDate;
+    }
+
+    @Transient
+    public java.lang.String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(java.lang.String staffName) {
+        this.staffName = staffName;
     }
 
     public boolean equals(Object o) {
