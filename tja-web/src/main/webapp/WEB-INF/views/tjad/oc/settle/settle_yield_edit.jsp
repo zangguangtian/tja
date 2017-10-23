@@ -114,7 +114,7 @@
 			   	<div class="row">
 			        <div class="col-md-offset-3 col-md-9">
 			            <button type="button" class="btn blue" onclick="save()">保存</button>
-			            <button type="button" class="btn default" onclick=" window.location.href='${site}/admin/oc/settleYield/list' ">取消</button>
+			            <button type="button" class="btn default" onclick=" window.location.href='${site}/admin/oc/settle/list' ">取消</button>
 			        </div>
 			   	</div>
 			</div>
