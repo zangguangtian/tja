@@ -81,7 +81,7 @@ public class WfYearMonthFillDaoHbmImpl extends BaseDaoHbmImpl implements IWfYear
         StringBuilder sql = new StringBuilder();
 
         sql.append("  SELECT                                                                         ");
-        sql.append("      r2.MAJOR_CODE AS majorCode,                                                ");
+        sql.append("      r1.allotCode AS majorCode,                                                ");
         sql.append("      r1.allotName AS majorName,                                                 ");
         sql.append("      r1.alloteRate,                                                              ");
         sql.append("      r2.accRate,                                                                ");

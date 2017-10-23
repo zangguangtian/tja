@@ -16,9 +16,10 @@
 <script type="text/javascript">
 var proId = "${proId}";
 var majorCode = "${majorCode}";
+var category = "${category}";
 
 $(function(){
-	loadList("Y_MAJOR_HIS", $("#content"));
+	loadList("YM_MAJOR_HIS", $("#content"));
 });
 
 function loadList(NO, content_div){
@@ -26,7 +27,7 @@ function loadList(NO, content_div){
 	$.ajax({
 		type: "POST",
 		url:sUrl,
-		data:{"NO":NO, "MODEL":"YM", "qarg.proId":proId, "qarg.majorCode":majorCode},
+		data:{"NO":NO, "MODEL":"YM", "qarg.proId":proId, "qarg.majorCode":majorCode, "qarg.category":category},
 		async: false,
 	    error: function(request) {
 	    	$.jalert({"jatext":"Connection error"});

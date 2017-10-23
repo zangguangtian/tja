@@ -252,6 +252,7 @@ public class WfMonthFillController extends WfBaseController {
     public String majorProgressHistory(Model model, HttpServletRequest request) {
         model.addAttribute("proId", request.getParameter("proId"));
         model.addAttribute("majorCode", request.getParameter("majorCode"));
+        model.addAttribute("category", "1000");
         return "/tjad/ym/major_his";
     }
 
