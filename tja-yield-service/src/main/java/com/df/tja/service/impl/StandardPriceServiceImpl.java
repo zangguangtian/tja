@@ -14,11 +14,13 @@ package com.df.tja.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -98,12 +100,14 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
             prices = standardPriceDao.selectStandardPrices(ocStandardPrice, page);
             if (prices != null && !prices.isEmpty()) {
                 int number = 0;
+                String code = null;
+                String value = null;
                 for (OcStandardPrice standardPrice : prices) {
                     OcStandardRatio ocStandardRatio = new OcStandardRatio();
                     ocStandardRatio.setStardandId(standardPrice.getId());
                     List<OcStandardRatio> list = queryByCondition(OcStandardRatio.class, ocStandardRatio);
-                    String code = "";
-                    String value = "";
+                    code = "";
+                    value = "";
                     for (OcStandardRatio ratio : list) {
                         code = code + "," + MAJOR + ratio.getMajorCode();
                         value = value + "," + ratio.getMajorRatio();
@@ -114,6 +118,35 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
                         standardPrice.setValues(value.substring(1));
                     }
                     standardPrice.setNumber((page.getPageNo() - 1) * page.getRowsPerPage() + (++number));
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return prices;
+    }
+
+    public List<OcStandardPrice> queryAllStandardPrices() throws RuntimeException {
+        List<OcStandardPrice> prices = null;
+        try {
+            prices = standardPriceDao.selectBySQLCondition(OcStandardPrice.class, null, null);
+            if (prices != null && !prices.isEmpty()) {
+                JSONObject jsonObject = null;
+                OcStandardRatio ocStandardRatio = null;
+                Map<String, BigDecimal> ratioMap = new HashMap<String, BigDecimal>(0);
+                for (OcStandardPrice standardPrice : prices) {
+                    ratioMap.clear();
+
+                    ocStandardRatio = new OcStandardRatio();
+                    ocStandardRatio.setStardandId(standardPrice.getId());
+                    List<OcStandardRatio> ratios = queryByCondition(OcStandardRatio.class, ocStandardRatio);
+                    if (ratios != null && !ratios.isEmpty()) {
+                        for (OcStandardRatio ratio : ratios) {
+                            ratioMap.put(ratio.getMajorCode(), ratio.getMajorRatio());
+                        }
+                    }
+                    jsonObject = new JSONObject(ratioMap);
+                    standardPrice.setRatioJson(jsonObject.toString());
                 }
             }
         } catch (Exception e) {
@@ -201,7 +234,6 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        
 
     }
 

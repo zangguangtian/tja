@@ -12,6 +12,7 @@
 
 package com.df.tja.oc.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ import com.df.framework.sys.domain.SysConfig;
 import com.df.framework.sys.service.ISysConfigService;
 import com.df.project.domain.cust.CustProject;
 import com.df.project.service.IProjectService;
+import com.df.tja.domain.OcStandardPrice;
+import com.df.tja.service.IStandardPriceService;
+import com.df.tja.service.IYmConfigService;
 
 /**
  * <p>YieldSchemeController</p>
@@ -47,6 +51,12 @@ public class YieldSchemeController extends BaseController {
 
     @Autowired
     private IProjectService projectService;
+
+    @Autowired
+    private IStandardPriceService standardPriceService;
+
+    @Autowired
+    private IYmConfigService ymConfigService;
 
     @Autowired
     private ISysConfigService sysConfigService;
@@ -80,6 +90,16 @@ public class YieldSchemeController extends BaseController {
         //取专业
         List<SysConfig> majors = sysConfigService.querySysConfigsByParentCode("PM.MAJOR");
         model.addAttribute("majors", majors);
+
+        //查询所有土建基准单价及专业比例 
+        List<OcStandardPrice> prices = standardPriceService.queryAllStandardPrices();
+        model.addAttribute("prices", prices);
+
+        BigDecimal ratioParam = ymConfigService.queryOcRebateParam();
+        if (ratioParam == null) {
+            ratioParam = new BigDecimal("0");
+        }
+        model.addAttribute("ratioParam", ratioParam);
 
         if (!"0".equals(id)) {
 
