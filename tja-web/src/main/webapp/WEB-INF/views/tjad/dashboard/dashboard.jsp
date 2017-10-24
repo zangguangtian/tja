@@ -21,6 +21,7 @@
 <!-- BEGIN DASHBOARD STATS 1-->
 <div class="row">
     <div class="index_con clearfix">
+    
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 bg-blue">
             <div class="col-lg-3">
                 <a href="${site }/admin/wf/process/approve/search" class="icon-btn">
@@ -40,6 +41,7 @@
             </c:if>
             </div>
         </div>
+        
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 bg-green-seagreen">
             <div class="col-lg-3">
                 <a href="javascript:;" class="icon-btn">
@@ -52,62 +54,63 @@
                 <p>
                     <a href="#">项目周报：16-BJ-006海口龙华区……</a>
                 </p>
-                <p>
-                    <a href="#">项目周报：16-BJ-006海口龙华区……</a>
-                </p>
-                <p>
-                    <a href="#">项目周报：16-BJ-006海口龙华区……</a>
-                </p>
-                <p>
-                    <a href="#">项目周报：16-BJ-006海口龙华区……</a>
-                </p>
-                <p>
-                    <a href="#">项目周报：16-BJ-006海口龙华区……</a>
-                </p>
             </div>
         </div>
+        
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 bg-red-pink ">
             <div class="col-lg-3">
                 <a href="${site}/admin/ym/weekFill/list" class="icon-btn">
                     <img src="../assets/pages/img/u629.png" alt="" />
-                    <div> 项目周报</div>
-                    <span class="badge badge-danger"> ${weeksCount} </span>
+                    <div>项目周报</div>
+                    <span class="badge badge-danger"> ${weekCount} </span>
                 </a>
             </div>
             <div class="col-lg-9">
             <c:if test="${not empty weeks}">
             	<c:forEach items="${weeks}" var="week">
                 	<p>
-	                	<a href="${site}/admin/ym/weekFill/${week.proId}?periodId=${week.periodId}">项目周报：${week.proCode}${week.proName}</a>
+	                	<a href="${site}/admin/ym/weekFill/toedit/${week.id}?proId=${week.proId}&periodId=${week.periodId}">项目周报：${week.proCode}${week.proName}</a>
                     </p>
                 </c:forEach>
             </c:if>
             </div>
         </div>
+        
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 bg-purple-plum">
             <div class="col-lg-3">
-                <a href="javascript:;" class="icon-btn">
+                <a href="${site}/admin/ym/monthFill/list" class="icon-btn">
                     <img src="../assets/pages/img/u629.png" alt="" />
-                    <div>预计月表 </div>
-                    <span class="badge badge-danger"> 2 </span>
+                    <div>预估进度月报</div>
+                    <span class="badge badge-danger"> ${monthCount} </span>
                 </a>
             </div>
             <div class="col-lg-9">
-                <p>
-                    <a href="#">项目周报：16-BJ-006海口龙华区……</a>
-                </p>
-                <p>
-                    <a href="#">项目周报：16-BJ-006海口龙华区……</a>
-                </p>
-                <p>
-                    <a href="#">项目周报：16-BJ-006海口龙华区……</a>
-                </p>
-                <p>
-                    <a href="#">项目周报：16-BJ-006海口龙华区……</a>
-                </p>
-                <p>
-                    <a href="#">项目周报：16-BJ-006海口龙华区……</a>
-                </p>
+			<c:if test="${not empty months}">
+            	<c:forEach items="${months}" var="month">
+                	<p>
+	                	<a href="${site}/admin/ym/monthFill/toedit/${month.id}?proId=${month.proId}&periodId=${month.periodId}">项目月报：${month.proCode}${month.proName}</a>
+                    </p>
+                </c:forEach>
+            </c:if>
+            </div>
+        </div>
+        
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 bg-blue">
+            <div class="col-lg-3">
+                <a href="${site}/admin/ym/yearFill/list" class="icon-btn">
+                    <img src="../assets/pages/img/u629.png" alt="" />
+                    <div>实际进度年报</div>
+                    <span class="badge badge-danger"> ${yearCount} </span>
+                </a>
+            </div>
+            <div class="col-lg-9">
+			<c:if test="${not empty years}">
+            	<c:forEach items="${years}" var="year">
+                	<p>
+	                	<a href="${site}/admin/ym/yearFill/toedit/${year.id}?proId=${year.proId}&periodId=${year.periodId}">项目周报：${year.proCode}${year.proName}</a>
+                    </p>
+                </c:forEach>
+            </c:if>
             </div>
         </div>
 

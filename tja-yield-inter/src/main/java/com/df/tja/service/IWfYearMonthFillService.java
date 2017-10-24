@@ -63,20 +63,20 @@ public interface IWfYearMonthFillService extends IBaseService {
         LogicalException;
 
     /**
-     * <p>描述 :首页-月报 </p>
+     * <p>描述 :首页-月/年报 </p>
      * 
      * @param 
      * @return list
      * */
-    List<WfYearMonthFillMore> queryMonthList(String userId) throws RuntimeException;
+    List<WfYearMonthFillMore> queryYmList(String userId, String category) throws RuntimeException;
 
     /**
      * 
      * <p>描述 : </p>
      *
      * @param 
-     * @return 当前用户相关的月报总数
+     * @return 当前用户相关的月/年报总数
      */
-    int queryMonthListCount(String userId) throws RuntimeException;
+    int queryYmListCount(String userId, String category) throws RuntimeException;
 
 }

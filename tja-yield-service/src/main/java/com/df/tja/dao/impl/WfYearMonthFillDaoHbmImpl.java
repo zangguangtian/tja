@@ -129,21 +129,120 @@ public class WfYearMonthFillDaoHbmImpl extends BaseDaoHbmImpl implements IWfYear
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<WfYearMonthFillMore> queryMonthList(String userId) {
+    public List<WfYearMonthFillMore> queryYmList(String userId, String category) {
         StringBuilder sql = new StringBuilder();
+        String typeCode = null;
+        if ("1000".equals(category)) {
+            typeCode = "OC.PERIOD.TYPE.MONTH";
+        }
+        if ("2000".equals(category)) {
+            typeCode = "OC.PERIOD.TYPE.YEAR";
+        }
+
+        sql.append("  SELECT TOP 5                                              ");
+        sql.append("      ISNULL(WF.ID, 0) AS id,                               ");
+        sql.append("      PT.ID AS proId,                                       ");
+        sql.append("      PT.PRO_CODE AS proCode,                               ");
+        sql.append("      PT.PRO_NAME AS proName,                               ");
+        sql.append("      OPM.ID AS periodId                                    ");
+        sql.append("  FROM                                                      ");
+        sql.append("      (                                                     ");
+        sql.append("          SELECT                                            ");
+        sql.append("              *                                             ");
+        sql.append("          FROM                                              ");
+        sql.append("              OC_PERIOD_MANAGE OPM                          ");
+        sql.append("          WHERE                                             ");
+        sql.append("              TYPE_CODE = ?                                 ");
+        sql.append("          AND STATUS_CODE = 'OC.PERIOD.STATUS.JXZ'          ");
+        sql.append("          AND START_DATE <= GETDATE()                       ");
+        sql.append("          AND GETDATE() <= END_DATE                         ");
+        sql.append("      ) OPM                                                 ");
+        sql.append("  INNER JOIN PM_PROJECT_TM PT ON 1 = 1                      ");
+        sql.append("  LEFT JOIN WF_YEAR_MONTH_FILL WF ON WF.PRO_ID = PT.ID      ");
+        sql.append("  AND OPM.ID = WF.PERIOD_ID                                 ");
+        sql.append("  AND WF.PG_CATEGORY = ?                                    ");
+        sql.append("  LEFT JOIN WF_FLOW_MAIN WFM ON WF.ID = WFM.ID              ");
+        sql.append("  WHERE                                                     ");
+        sql.append("      1 = 1 /*AND PT.PRO_STATUS = 'PM.STATUS.SGT'*/         ");
+        sql.append("  AND EXISTS (                                              ");
+        sql.append("      SELECT                                                ");
+        sql.append("          'X'                                               ");
+        sql.append("      FROM                                                  ");
+        sql.append("          V_PM_MANAGER_TEAM PPT                             ");
+        sql.append("      INNER JOIN V_HR_STAFF_ALL HS ON PPT.STAFF_ID = HS.ID  ");
+        sql.append("      WHERE                                                 ");
+        sql.append("          PPT.PRO_ID = PT.ID                                ");
+        sql.append("      AND HS.U_ID = ?                                       ");
+        sql.append("  )                                                         ");
+        sql.append("  AND ISNULL(WFM.AUDIT_STATUS, 0) = 0                       ");
+        sql.append("  ORDER BY                                                  ");
+        sql.append("      PT.PRO_CODE ASC                                       ");
 
         SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
-        query.setParameter(0, userId);
+        query.setParameter(0, typeCode);
+        query.setParameter(1, category);
+        query.setParameter(2, userId);
         query.setResultTransformer(Transformers.aliasToBean(WfYearMonthFillMore.class));
         return query.list();
     }
 
     @Override
-    public int queryMonthListCount(String userId) {
+    public int queryYmListCount(String userId, String category) {
         StringBuilder sql = new StringBuilder();
+        String typeCode = null;
+        if ("1000".equals(category)) {
+            typeCode = "OC.PERIOD.TYPE.MONTH";
+        }
+        if ("2000".equals(category)) {
+            typeCode = "OC.PERIOD.TYPE.YEAR";
+        }
+
+        sql.append(" SELECT                                                             ");
+        sql.append("     COUNT (*) AS ymCount                                           ");
+        sql.append(" FROM                                                               ");
+        sql.append("     (                                                              ");
+        sql.append("         SELECT                                                     ");
+        sql.append("             ISNULL(WF.ID, 0) AS id,                                ");
+        sql.append("             PT.ID AS proId,                                        ");
+        sql.append("             PT.PRO_CODE AS proCode,                                ");
+        sql.append("             PT.PRO_NAME AS proName,                                ");
+        sql.append("             OPM.ID AS periodId                                     ");
+        sql.append("         FROM                                                       ");
+        sql.append("             (                                                      ");
+        sql.append("                 SELECT                                             ");
+        sql.append("                     *                                              ");
+        sql.append("                 FROM                                               ");
+        sql.append("                     OC_PERIOD_MANAGE OPM                           ");
+        sql.append("                 WHERE                                              ");
+        sql.append("                     TYPE_CODE = ?                                  ");
+        sql.append("                 AND STATUS_CODE = 'OC.PERIOD.STATUS.JXZ'           ");
+        sql.append("                 AND START_DATE <= GETDATE()                        ");
+        sql.append("                 AND GETDATE() <= END_DATE                          ");
+        sql.append("             ) OPM                                                  ");
+        sql.append("         INNER JOIN PM_PROJECT_TM PT ON 1 = 1                       ");
+        sql.append("         LEFT JOIN WF_YEAR_MONTH_FILL WF ON WF.PRO_ID = PT.ID       ");
+        sql.append("         AND OPM.ID = WF.PERIOD_ID                                  ");
+        sql.append("         AND WF.PG_CATEGORY = ?                                     ");
+        sql.append("         LEFT JOIN WF_FLOW_MAIN WFM ON WF.ID = WFM.ID               ");
+        sql.append("         WHERE                                                      ");
+        sql.append("             1 = 1 /*AND PT.PRO_STATUS = 'PM.STATUS.SGT'*/          ");
+        sql.append("         AND EXISTS (                                               ");
+        sql.append("             SELECT                                                 ");
+        sql.append("                 'X'                                                ");
+        sql.append("             FROM                                                   ");
+        sql.append("                 V_PM_MANAGER_TEAM PPT                              ");
+        sql.append("             INNER JOIN V_HR_STAFF_ALL HS ON PPT.STAFF_ID = HS.ID   ");
+        sql.append("             WHERE                                                  ");
+        sql.append("                 PPT.PRO_ID = PT.ID                                 ");
+        sql.append("             AND HS.U_ID = ?                                        ");
+        sql.append("         )                                                          ");
+        sql.append("         AND ISNULL(WFM.AUDIT_STATUS, 0) = 0                        ");
+        sql.append("     ) r                                                            ");
 
         SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
-        query.setParameter(0, userId);
+        query.setParameter(0, typeCode);
+        query.setParameter(1, category);
+        query.setParameter(2, userId);
         return (int) query.uniqueResult();
     }
 

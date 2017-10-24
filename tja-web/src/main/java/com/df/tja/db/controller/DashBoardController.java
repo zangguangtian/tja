@@ -27,6 +27,7 @@ import com.df.framework.base.controller.BaseController;
 import com.df.framework.hibernate.persistence.Pagination;
 import com.df.framework.util.HttpUtil;
 import com.df.tja.service.IWfWeekFillService;
+import com.df.tja.service.IWfYearMonthFillService;
 
 /**
  * <p>DashBoardController</p>
@@ -52,24 +53,36 @@ public class DashBoardController extends BaseController {
     @Autowired
     private IWfWeekFillService weekFillService;
 
+    @Autowired
+    private IWfYearMonthFillService yearMonthFillService;
+
     @RequestMapping(method = RequestMethod.GET)
     public String index(Model model) throws RuntimeException {
+        String userId = HttpUtil.getUser().getId();
+
         //待审事务列表
         Pagination approvePage = new Pagination(1, 5);
-        List<CustTask> tasks = processApproveService.queryApprovingTask(HttpUtil.getUser().getId(), approvePage);
+        List<CustTask> tasks = processApproveService.queryApprovingTask(userId, approvePage);
         model.addAttribute("tasks", tasks);
         model.addAttribute("approvePage", approvePage);
 
         //待阅事务列表
         Pagination readPage = new Pagination(1, 5);
-        List<CustSysMessage> messes = processApproveService.queryReadingTask(HttpUtil.getUser().getId(), readPage);
+        List<CustSysMessage> messes = processApproveService.queryReadingTask(userId, readPage);
         model.addAttribute("messes", messes);
         model.addAttribute("readPage", readPage);
 
         //项目周报列表
-        String userId = HttpUtil.getUser().getId();
         model.addAttribute("weeks", weekFillService.queryWeekList(userId));
-        model.addAttribute("weeksCount", weekFillService.queryWeekListCount(userId));
+        model.addAttribute("weekCount", weekFillService.queryWeekListCount(userId));
+
+        //项目月报列表
+        model.addAttribute("months", yearMonthFillService.queryYmList(userId, "1000"));
+        model.addAttribute("monthCount", yearMonthFillService.queryYmListCount(userId, "1000"));
+
+        //项目年报列表
+        model.addAttribute("years", yearMonthFillService.queryYmList(userId, "2000"));
+        model.addAttribute("yearCount", yearMonthFillService.queryYmListCount(userId, "2000"));
 
         return "/tjad/dashboard/dashboard";
     }

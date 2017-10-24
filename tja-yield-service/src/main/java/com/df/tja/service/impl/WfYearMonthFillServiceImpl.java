@@ -142,13 +142,13 @@ public class WfYearMonthFillServiceImpl extends BaseServiceImpl implements IWfYe
     }
 
     @Override
-    public List<WfYearMonthFillMore> queryMonthList(String userId) throws RuntimeException {
-        return wfYearMonthFillDao.queryMonthList(userId);
+    public List<WfYearMonthFillMore> queryYmList(String userId, String category) throws RuntimeException {
+        return wfYearMonthFillDao.queryYmList(userId, category);
     }
 
     @Override
-    public int queryMonthListCount(String userId) throws RuntimeException {
-        return wfYearMonthFillDao.queryMonthListCount(userId);
+    public int queryYmListCount(String userId, String category) throws RuntimeException {
+        return wfYearMonthFillDao.queryYmListCount(userId, category);
     }
 
 }

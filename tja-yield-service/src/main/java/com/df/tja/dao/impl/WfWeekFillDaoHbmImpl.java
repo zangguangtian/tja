@@ -88,6 +88,7 @@ public class WfWeekFillDaoHbmImpl extends BaseDaoHbmImpl implements IWfWeekFillD
         StringBuilder sql = new StringBuilder();
 
         sql.append("  SELECT TOP 5                                                ");
+        sql.append("      ISNULL(WF.ID, 0) AS id,                                 ");
         sql.append("      PT.ID AS proId,                                         ");
         sql.append("      PT.PRO_CODE AS proCode,                                 ");
         sql.append("      PT.PRO_NAME AS proName,                                 ");
@@ -138,6 +139,7 @@ public class WfWeekFillDaoHbmImpl extends BaseDaoHbmImpl implements IWfWeekFillD
         sql.append("  FROM                                                                ");
         sql.append("      (                                                               ");
         sql.append("          SELECT                                                      ");
+        sql.append("              ISNULL(WF.ID, 0) AS id,                                 ");
         sql.append("              PT.ID AS proId,                                         ");
         sql.append("              PT.PRO_CODE AS proCode,                                 ");
         sql.append("              PT.PRO_NAME AS proName,                                 ");

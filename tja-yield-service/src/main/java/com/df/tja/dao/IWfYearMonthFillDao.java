@@ -63,7 +63,7 @@ public interface IWfYearMonthFillDao extends IBaseDao {
      * @param 
      * @return
      */
-    List<WfYearMonthFillMore> queryMonthList(String userId);
+    List<WfYearMonthFillMore> queryYmList(String userId, String category);
 
     /**
      * 
@@ -72,6 +72,6 @@ public interface IWfYearMonthFillDao extends IBaseDao {
      * @param 
      * @return 当前用户相关的月报总数
      */
-    int queryMonthListCount(String userId);
+    int queryYmListCount(String userId, String category);
 
 }
