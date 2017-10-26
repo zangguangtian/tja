@@ -11,7 +11,7 @@
     <df:readProp var="menu-path" value="ym.week.menu.path" scope="request"  />
   	<style type="text/css">
   	.common-message {
-	    width: 100%;
+	    width: 98%;
 	    height: 50px;
 	    position: relative;
 	}
