@@ -20,7 +20,8 @@
 	    bottom: 0px;
 	    position: absolute;
 	}
-	.tip h3{
+	.tip h4{
+		font-weight:bolder;
 		line-height:50px;
 		margin:0;
 	}
@@ -44,7 +45,7 @@
 <body>
 <!-- BEGIN PAGE TITLE-->
 <div class="page-title common-message"> 
-	<div class="tip"><h3>公告</h3></div>
+	<div class="tip"><h4>公告</h4></div>
 	<div class="scroll">
 		<ul class="scrli">  
 			<c:forEach items="${sysNoticeList}" var="sysNotice">
