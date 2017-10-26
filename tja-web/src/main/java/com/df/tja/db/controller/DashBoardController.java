@@ -25,6 +25,8 @@ import com.df.activiti.domain.cust.CustTask;
 import com.df.activiti.service.IProcessApproveService;
 import com.df.framework.base.controller.BaseController;
 import com.df.framework.hibernate.persistence.Pagination;
+import com.df.framework.sys.domain.SysNotice;
+import com.df.framework.sys.service.ISysNoticeService;
 import com.df.framework.util.HttpUtil;
 import com.df.tja.service.IWfWeekFillService;
 import com.df.tja.service.IWfYearMonthFillService;
@@ -56,9 +58,16 @@ public class DashBoardController extends BaseController {
     @Autowired
     private IWfYearMonthFillService yearMonthFillService;
 
+    @Autowired
+    private ISysNoticeService sysNoticeService;
+
     @RequestMapping(method = RequestMethod.GET)
     public String index(Model model) throws RuntimeException {
         String userId = HttpUtil.getUser().getId();
+
+        //公告
+        List<SysNotice> sysNoticeList = sysNoticeService.queryHomeSysNoticeList();
+        model.addAttribute("sysNoticeList", sysNoticeList);
 
         //待审事务列表
         Pagination approvePage = new Pagination(1, 5);

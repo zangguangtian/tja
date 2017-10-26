@@ -9,13 +9,50 @@
     <title>首页</title>
     <%--每个jsp页面所在菜单的treePath属性值 --%>
     <df:readProp var="menu-path" value="ym.week.menu.path" scope="request"  />
+  	<style type="text/css">
+  	.common-message {
+	    width: 100%;
+	    height: 50px;
+	    position: relative;
+	}
+	.tip {
+	    display: inline-block;
+	    bottom: 0px;
+	    position: absolute;
+	}
+	.tip h3{
+		line-height:50px;
+		margin:0;
+	}
+	.scroll {
+	    width: 93%;
+	    height: 50px;
+	    margin: -10px 0px;
+	    position: absolute;
+	    overflow: hidden;
+	    right: 0px;
+	}
+	.scrli, .scrli li{
+		line-height:50px;
+	    list-style: none;
+	    margin: 0;
+	    padding: 0;
+	}
+  	</style>
   </head>
   
 <body>
 <!-- BEGIN PAGE TITLE-->
-<h1 class="page-title"> 
-    公告：<small class="">请各位项目负责人/项目经理在11月16日前完成2017年第45周的周报上报！</small>
-</h1>
+<div class="page-title common-message"> 
+	<div class="tip"><h3>公告</h3></div>
+	<div class="scroll">
+		<ul class="scrli">  
+			<c:forEach items="${sysNoticeList}" var="sysNotice">
+			<li>${sysNotice.noticeContent}</li>
+			</c:forEach>
+		</ul>
+	</div>
+</div>
 <!-- END PAGE TITLE-->
 <!-- END PAGE HEADER-->
 <!-- BEGIN DASHBOARD STATS 1-->
@@ -118,5 +155,17 @@
 </div>
 <div class="clearfix"></div>
 <!-- END DASHBOARD STATS 1-->
+<script type="text/javascript">
+$(function(){ 
+    setInterval('autoScroll(".scroll")', 5000);
+});
+
+function autoScroll(obj){  
+	$(obj).find(".scrli")
+		  .animate({marginTop: "-50px"}, 1000, function(){
+			  $(this).css({marginTop: "0px"}).find("li:first").appendTo(this);
+		  });
+}
+</script>
 </body>
 </html>
