@@ -36,7 +36,6 @@ import com.df.activiti.domain.ProcessArgs;
 import com.df.activiti.service.IProcessService;
 import com.df.framework.exception.LogicalException;
 import com.df.framework.util.HttpUtil;
-import com.df.framework.util.StringUtil;
 import com.df.project.domain.ProjectExtend;
 import com.df.tja.domain.WfMajorProgressRecord;
 import com.df.tja.domain.WfYearMonthFill;
@@ -164,8 +163,8 @@ public class WfMonthFillController extends WfBaseController {
      * @throws BusinessException
      */
     @RequestMapping(value = {"/toview/{operate}/{id}", "/toprint/{operate}/{id}"}, method = RequestMethod.GET)
-    public ModelAndView toViewOrApprove(@PathVariable("operate") String operate, @PathVariable("id") String id,
-                                        String view) throws RuntimeException {
+    public ModelAndView toViewOrApprove(@PathVariable("operate") String operate, @PathVariable("id") String id)
+        throws RuntimeException {
         Map<String, Object> modelMap = new HashMap<String, Object>();
 
         WfYearMonthFillMore monthFill = yearMonthFillService.queryWfYearMonthFill(id, null, null, "1000");
@@ -198,8 +197,7 @@ public class WfMonthFillController extends WfBaseController {
             modelAndView.addObject("pmRate", projectExtend.getPmRate()); // 项目经理分配比例
         }
 
-        Integer viewType = StringUtil.isNotBlank(view) ? Integer.valueOf(view) : 10;
-        modelAndView.addObject("view", viewType);
+        modelAndView.addObject("view", 10);
         modelAndView.addAllObjects(modelMap);
         modelAndView.setViewName("/tjad/ym/monthfill/monthfill_view");
         return modelAndView;

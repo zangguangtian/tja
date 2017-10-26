@@ -19,8 +19,9 @@
 	    display: inline-block;
 	    bottom: 0px;
 	    position: absolute;
+	    margin-left: 5px;
 	}
-	.tip h4{
+	.tip h5{
 		font-weight:bolder;
 		line-height:50px;
 		margin:0;
@@ -38,6 +39,15 @@
 	    list-style: none;
 	    margin: 0;
 	    padding: 0;
+	    font-size: 14px;
+	}
+	.icon-btn{
+		height: 110px;
+	}
+	.page-content .icon-btn div {
+	    font-size: 14px;
+	    margin: 15px 0 10px 0;
+	    font-weight: 500;
 	}
   	</style>
   </head>
@@ -45,7 +55,7 @@
 <body>
 <!-- BEGIN PAGE TITLE-->
 <div class="page-title common-message"> 
-	<div class="tip"><h4>公告</h4></div>
+	<div class="tip"><h5>公告</h5></div>
 	<div class="scroll">
 		<ul class="scrli">  
 			<c:forEach items="${sysNoticeList}" var="sysNotice">
@@ -63,7 +73,7 @@
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 bg-blue">
             <div class="col-lg-3">
                 <a href="${site }/admin/wf/process/approve/search" class="icon-btn">
-                    <img src="../assets/pages/img/u629.png" alt="" />
+                    <img src="${site}/resources/pages/img/u629.png" alt="" />
                     <div> 待审事务 </div>
                     <span class="badge badge-danger"> ${approvePage.totalCount } </span>
                 </a>
@@ -83,7 +93,7 @@
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 bg-green-seagreen">
             <div class="col-lg-3">
                 <a href="javascript:;" class="icon-btn">
-                    <img src="../assets/pages/img/u629.png" alt="" />
+                    <img src="${site}/resources/pages/img/u629.png" alt="" />
                     <div>待阅事务</div>
                     <span class="badge badge-danger"> 2 </span>
                 </a>
@@ -98,7 +108,7 @@
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 bg-red-pink ">
             <div class="col-lg-3">
                 <a href="${site}/admin/ym/weekFill/list" class="icon-btn">
-                    <img src="../assets/pages/img/u629.png" alt="" />
+                    <img src="${site}/resources/pages/img/u629.png" alt="" />
                     <div>项目周报</div>
                     <span class="badge badge-danger"> ${weekCount} </span>
                 </a>
@@ -117,7 +127,7 @@
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 bg-purple-plum">
             <div class="col-lg-3">
                 <a href="${site}/admin/ym/monthFill/list" class="icon-btn">
-                    <img src="../assets/pages/img/u629.png" alt="" />
+                    <img src="${site}/resources/pages/img/u629.png" alt="" />
                     <div>预估进度月报</div>
                     <span class="badge badge-danger"> ${monthCount} </span>
                 </a>
@@ -136,7 +146,7 @@
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 bg-blue">
             <div class="col-lg-3">
                 <a href="${site}/admin/ym/yearFill/list" class="icon-btn">
-                    <img src="../assets/pages/img/u629.png" alt="" />
+                    <img src="${site}/resources/pages/img/u629.png" alt="" />
                     <div>实际进度年报</div>
                     <span class="badge badge-danger"> ${yearCount} </span>
                 </a>
