@@ -185,14 +185,32 @@
 												<td class="text-center col-lg-4">项目负责人</td>
 												<td class="col-lg-8 input-icon left">
 													<i class="fa"></i>
-													<input name="projectExtend.principalRate" value="${project.projectExtend.principalRate}" onkeyup="rateAdd()" type="text" placeholder="0.00" data-rule-required="true" data-rule-number="true" class="text-right">
+													<input name="projectExtend.principalRate" 
+														   value="${project.projectExtend.principalRate}" 
+														   onkeyup="rateAdd()" 
+														   type="text" 
+														   placeholder="0.00" 
+														   data-rule-required="true" 
+														   data-rule-number="true" 
+														   data-rule-max="100" 
+														   data-rule-min="0" 
+														   class="text-right">
 												</td>
 											</tr>
 											<tr class="form-group">
 												<td class="text-center col-lg-4">项目经理</td>
 												<td class="col-lg-8 input-icon left">
 													<i class="fa"></i>
-													<input name="projectExtend.pmRate" value="${project.projectExtend.pmRate}" onkeyup="rateAdd()" type="text" placeholder="0.00" data-rule-required="true" data-rule-number="true" class="text-right">
+													<input name="projectExtend.pmRate" 
+														   value="${project.projectExtend.pmRate}" 
+														   onkeyup="rateAdd()" 
+														   type="text" 
+														   placeholder="0.00" 
+														   data-rule-required="true" 
+														   data-rule-number="true" 
+														   data-rule-max="100" 
+														   data-rule-min="0" 
+														   class="text-right">
 												</td>
 											</tr>
 											<tr>
@@ -226,7 +244,15 @@
 														<input name="majorRoleRateList[${rateIndex}].proId" type="hidden" value="${project.id }">
 														<input name="majorRoleRateList[${rateIndex}].allotCategory" type="hidden" value="1000">
 														<input name="majorRoleRateList[${rateIndex}].allotCode" type="hidden" value="${rate.allotCode }">
-														<input name="majorRoleRateList[${rateIndex}].allotRate" value="${rate.allotRate }" type="text" placeholder="0.00" data-rule-required="true" data-rule-number="true" class="text-right">
+														<input name="majorRoleRateList[${rateIndex}].allotRate" 
+															   value="${rate.allotRate }" 
+															   type="text" 
+															   placeholder="0.00" 
+															   data-rule-required="true" 
+															   data-rule-number="true" 
+															   data-rule-max="100" 
+														   	   data-rule-min="0" 
+															   class="text-right">
 													</td>
 												</tr>
 												<c:set var="rateIndex" value="${rateIndex+1}"/>
