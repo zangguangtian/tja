@@ -9,6 +9,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<df:readProp var="menu-path" value="pm.project.menu.path" scope="request" />
 	<title>项目信息管理-编辑</title>
+	<link href="/tja-web/resources/css/management.css?v=1509003163334" rel="Stylesheet" type="text/css">
 </head>
 <body>
 <div class="">
@@ -103,13 +104,9 @@
 				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">负责建筑师</label>
 					<div class="col-md-7">
-						<div class="input-group">
-							<input name="projectExtend.builderId" type="hidden" value="${project.projectExtend.builderId}">
-							<input name="projectExtend.builderName" type="text" class="form-control" value="${project.projectExtend.builderName}" disabled="disabled" style="border: 1px solid #ccc">
-					    	<span class="input-group-btn">
-					        	<button id="selectBuilder" class="btn btn-default" type="button" style="margin-left: -2px;font-size: 12px;height: 25px;padding: 2px 15px;border-top-right-radius: 4px;border-bottom-right-radius: 4px;">选择</button>
-					      	</span>
-					    </div>
+						<input name="projectExtend.builderId" type="hidden" value="${project.projectExtend.builderId}">
+						<input name="projectExtend.builderName" type="text" class="form-control" value="${project.projectExtend.builderName}" style="float:left;" readonly>
+				      	<a id="selectBuilder" title="选择" href="javascript:void(0);" class="icon-select"></a>
 					</div>
 				</div>
 				<div class="form-group col-lg-6 ">
