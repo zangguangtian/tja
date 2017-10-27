@@ -179,7 +179,6 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
                                 String[] code = codeValue.split("=");
 
                                 String majorCode = code[0];
-
                                 if (majorCode.contains("_")) {
                                     majorCode = majorCode.split("_")[1];
                                 }
@@ -209,7 +208,7 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
                         String[] codeValues = keyValue.split("&");
 
                         if (codeValues != null && codeValues.length > 0) {
-
+                            BigDecimal majorRatio = null;
                             for (String codeValue : codeValues) {
                                 if (StringUtils.isNotBlank(codeValue) && codeValue.contains("=")) {
                                     String[] code = codeValue.split("=");
@@ -217,9 +216,13 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
                                     if (majorCode.contains("_")) {
                                         majorCode = majorCode.split("_")[1];
                                     }
+                                    majorRatio = new BigDecimal(0);
+                                    if (code.length > 1) {
+                                        majorRatio = new BigDecimal(code[1]);
+                                    }
                                     OcStandardRatio ocStandardRatio = new OcStandardRatio();
                                     ocStandardRatio.setMajorCode(majorCode);
-                                    ocStandardRatio.setMajorRatio(new BigDecimal(code[1]));
+                                    ocStandardRatio.setMajorRatio(majorRatio);
                                     ocStandardRatio.setStardandId(ocStandardPrice.getId());
                                     addEntity(OcStandardRatio.class, ocStandardRatio);
                                 }
