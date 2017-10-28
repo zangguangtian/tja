@@ -218,7 +218,7 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
                     majorRatio.setMajorYield(
                         ArithmeticUtil.div(ArithmeticUtil.mul(majorRatio.getMajorRate(), ocYieldMajor.getMajorYield()),
                             new BigDecimal(100), 2));
-                    ratios.add(majorRatio);
+                    addEntity(OcYieldMajorRatio.class, majorRatio);
 
                     tempYield = new BigDecimal(0);
                     wlYieldTotal = ArithmeticUtil.add(wlYieldTotal, majorRatio.getMajorYield());
@@ -230,8 +230,6 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
                         majorYieldTotal.put(major.getConfigCode(), majorRatio.getMajorYield());
                     }
                 }
-                //施工图产值专业比例
-                ocYieldSchemeDao.batchInsert(OcYieldMajorRatio.class, ratios);
 
                 //计算院内合计
                 if (!majorYieldTotal.isEmpty()) {

@@ -34,7 +34,7 @@
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">更新日期</label>
                         <div class="col-md-8">
-                            <input type="text" name="modifyDate" class="form-control datetimepicker">
+                            <input type="text" name="lastUpdate" class="form-control datetimepicker">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">

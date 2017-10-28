@@ -52,6 +52,9 @@ public class OcYieldScheme extends BaseDomain {
     /** 属性：策划编号 */
     private java.lang.String schemeNo;
 
+    /** 属性：更新日期 */
+    private java.util.Date lastUpdate;
+
     /** 属性：项目ID */
     private java.lang.String proId;
 
@@ -114,6 +117,21 @@ public class OcYieldScheme extends BaseDomain {
      */
     public void setSchemeNo(java.lang.String schemeNo) {
         this.schemeNo = schemeNo;
+    }
+
+    /**
+     * @return lastUpdate
+     */
+    @Column(name = "LAST_UPDATE")
+    public java.util.Date getLastUpdate() {
+        return lastUpdate;
+    }
+
+    /**
+     * @param lastUpdate 要设置的 lastUpdate
+     */
+    public void setLastUpdate(java.util.Date lastUpdate) {
+        this.lastUpdate = lastUpdate;
     }
 
     /**
