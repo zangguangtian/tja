@@ -37,6 +37,7 @@ import com.df.framework.sys.domain.SysUser;
 import com.df.framework.sys.service.ISysUserService;
 import com.df.framework.util.HttpUtil;
 import com.df.framework.util.StringUtil;
+import com.df.tja.constant.TjaConstant;
 import com.df.tja.domain.WfWeekFill;
 import com.df.tja.domain.cust.WfWeekFillMore;
 import com.df.tja.service.IWfWeekFillService;
@@ -122,7 +123,7 @@ public class WfWeekFillController extends WfBaseController {
 
             if (WfConstant.AuditStatus.AUDITING.equals(auditStatus)) {
                 // 运营部
-                SysUser ocSysUser = userService.queryRoleUser(WfConstant.FlowTaskRole.YUNYING);
+                SysUser ocSysUser = userService.queryRoleUser(TjaConstant.FlowTaskRole.YUNYING);
                 processArgs.addVariable("ocOrg", ocSysUser.getId());
 
                 processArgs.addVariable("url", "/admin/ym/weekFill/toedit/" + weekFill.getId());
@@ -163,7 +164,8 @@ public class WfWeekFillController extends WfBaseController {
      */
     @RequestMapping(value = {"/toview/{operate}/{id}", "/toprint/{operate}/{id}"}, method = RequestMethod.GET)
     public ModelAndView toViewOrApprove(@PathVariable("operate") String operate, @PathVariable("id") String id,
-                                        String view) throws RuntimeException {
+                                        String view)
+        throws RuntimeException {
         Map<String, Object> modelMap = new HashMap<String, Object>();
 
         WfWeekFill week = weekFillService.queryByPrimaryKey(WfWeekFill.class, id);

@@ -49,12 +49,33 @@ public abstract class TjaConstant {
         public static final String PM_MAJOR_PARENT_CODE = "PM.MAJOR";
     }
 
+    /**
+     * 
+     * <p>FlowTaskRole</p>
+     * 
+     * <p>描述：</p>
+     *
+     * <p>备注：</p>
+     * 
+     * <p>2017年9月26日 下午4:49:23</p>
+     *
+     * @author wang.changjiu
+     * 
+     * @version 1.0.0
+     *
+     */
+    public static class FlowTaskRole {
+        /**运营部角色代码 */
+        public static final String YUNYING = "ROLE_YunYingApprove";
+
+    }
+
     public static class WriteBackOpType {
 
         /**
          * 运营相关回写类型
          */
-        public static final String[] OCWRITEBACKTYPE = { "方案产值策划" };
+        public static final String[] OCWRITEBACKTYPE = {"方案产值策划"};
 
     }
 

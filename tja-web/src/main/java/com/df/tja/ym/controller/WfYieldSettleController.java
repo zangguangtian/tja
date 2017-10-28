@@ -34,6 +34,7 @@ import com.df.framework.exception.LogicalException;
 import com.df.framework.sys.domain.SysUser;
 import com.df.framework.sys.service.ISysUserService;
 import com.df.framework.util.HttpUtil;
+import com.df.tja.constant.TjaConstant;
 import com.df.tja.domain.WfYieldSettle;
 import com.df.tja.domain.cust.WfYieldSettleModel;
 import com.df.tja.service.IWfYieldSettleService;
@@ -69,7 +70,6 @@ public class WfYieldSettleController extends WfBaseController {
     public String list() {
         return "/tjad/ym/yieldSettle/yieldSettle_list";
     }
-
 
     /**
      * <p>描述 : 编辑</p>
@@ -138,12 +138,9 @@ public class WfYieldSettleController extends WfBaseController {
 
             if (WfConstant.AuditStatus.AUDITING.equals(auditStatus)) {
 
-                if ("1000".equals(yieldSettle.getWfCategory().trim())) {
-
-
-                } else if ("2000".equals(yieldSettle.getWfCategory().trim())) {
+                if ("2000".equals(yieldSettle.getWfCategory().trim())) {
                     // 运营部
-                    SysUser ocSysUser = userService.queryRoleUser(WfConstant.FlowTaskRole.YUNYING);
+                    SysUser ocSysUser = userService.queryRoleUser(TjaConstant.FlowTaskRole.YUNYING);
                     processArgs.addVariable("ocOrg", ocSysUser.getId());
                     processArgs.addVariable("url", "/admin/ym/yieldSettle/toedit/" + yieldSettle.getId() + "/1000");
                 }
@@ -217,14 +214,14 @@ public class WfYieldSettleController extends WfBaseController {
             // 特批年度产值结算流程
             url = "/tjad/ym/yieldSettle/specSettle_view";
         }
-        
+
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addAllObjects(modelMap);
         modelAndView.setViewName(url);
         return modelAndView;
     }
 
-        /**
+    /**
     * <p>描述 : 流程审批</p>
     * 
     * @author DQ.zhou
@@ -232,7 +229,7 @@ public class WfYieldSettleController extends WfBaseController {
     * @return
     */
     @RequestMapping(value = "/ajax/approve", method = RequestMethod.POST)
-     @ResponseBody
+    @ResponseBody
     public Map<String, String> wfSubmit(@ModelAttribute WfYieldSettle yieldSettle,
                                         @ModelAttribute WfYieldSettleModel settleModel, Integer view) {
         Map<String, String> mess = new HashMap<String, String>();

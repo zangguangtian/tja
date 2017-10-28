@@ -39,6 +39,7 @@ import com.df.framework.sys.domain.SysUser;
 import com.df.framework.sys.service.ISysUserService;
 import com.df.framework.util.HttpUtil;
 import com.df.project.domain.ProjectExtend;
+import com.df.tja.constant.TjaConstant;
 import com.df.tja.domain.WfMajorProgressRecord;
 import com.df.tja.domain.WfYearMonthFill;
 import com.df.tja.domain.cust.WfYearMonthFillMore;
@@ -135,7 +136,7 @@ public class WfYearFillController extends WfBaseController {
 
             if (WfConstant.AuditStatus.AUDITING.equals(auditStatus)) {
                 // 运营部
-                SysUser ocSysUser = userService.queryRoleUser(WfConstant.FlowTaskRole.YUNYING);
+                SysUser ocSysUser = userService.queryRoleUser(TjaConstant.FlowTaskRole.YUNYING);
                 processArgs.addVariable("ocOrg", ocSysUser.getId());
 
                 processArgs.addVariable("url", "/admin/ym/weekFill/toedit/" + yearFill.getId());

@@ -34,6 +34,7 @@ import com.df.framework.exception.LogicalException;
 import com.df.framework.sys.domain.SysUser;
 import com.df.framework.sys.service.ISysUserService;
 import com.df.framework.util.HttpUtil;
+import com.df.tja.constant.TjaConstant;
 import com.df.tja.domain.WfPlanScheme;
 import com.df.tja.service.IWfPlanSchemeService;
 
@@ -119,7 +120,7 @@ public class WfPlanSchemeController extends WfBaseController {
             if (WfConstant.AuditStatus.AUDITING.equals(auditStatus)) {
                 //向processArgs中传流程参数
 
-                SysUser ocSysUser = userService.queryRoleUser(WfConstant.FlowTaskRole.YUNYING);
+                SysUser ocSysUser = userService.queryRoleUser(TjaConstant.FlowTaskRole.YUNYING);
                 SysUser orgleader = userService.queryOrgLeaderById(planScheme.getReceptDeptId());
                 processArgs.addVariable("ocOrg", ocSysUser.getId());
                 processArgs.addVariable("orgLeader", orgleader.getId());
