@@ -38,5 +38,55 @@ public class CustOcYieldScheme extends OcYieldScheme {
      */
     private static final long serialVersionUID = -8625746507653337130L;
 
+    /** 属性：专业比例集合 */
     private List<CustOcYieldMajor> yieldMajors;
+
+    /** 属性：专业负责人集合 */
+    private List<CustOcYieldMajorDuty> yieldMajorDuties;
+
+    /** 属性：阶段专业产值集合 */
+    private List<CustOcYieldStageMajor> yieldStageMajors;
+
+    /**
+     * @return yieldMajors
+     */
+    public List<CustOcYieldMajor> getYieldMajors() {
+        return yieldMajors;
+    }
+
+    /**
+     * @param yieldMajors 要设置的 yieldMajors
+     */
+    public void setYieldMajors(List<CustOcYieldMajor> yieldMajors) {
+        this.yieldMajors = yieldMajors;
+    }
+
+    /**
+     * @return yieldMajorDuties
+     */
+    public List<CustOcYieldMajorDuty> getYieldMajorDuties() {
+        return yieldMajorDuties;
+    }
+
+    /**
+     * @param yieldMajorDuties 要设置的 yieldMajorDuties
+     */
+    public void setYieldMajorDuties(List<CustOcYieldMajorDuty> yieldMajorDuties) {
+        this.yieldMajorDuties = yieldMajorDuties;
+    }
+
+    /**
+     * @return yieldStageMajors
+     */
+    public List<CustOcYieldStageMajor> getYieldStageMajors() {
+        return yieldStageMajors;
+    }
+
+    /**
+     * @param yieldStageMajors 要设置的 yieldStageMajors
+     */
+    public void setYieldStageMajors(List<CustOcYieldStageMajor> yieldStageMajors) {
+        this.yieldStageMajors = yieldStageMajors;
+    }
+
 }

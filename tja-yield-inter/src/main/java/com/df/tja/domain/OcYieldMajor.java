@@ -26,7 +26,7 @@ import com.df.framework.base.domain.BaseDomain;
 /**
  * <p>OcYieldMajor </p>
  * 
- * <p>描述：项目产值专业表 </p>
+ * <p>描述：施工图产值专业表 </p>
  *
  * <p>备注：</p>
  * 

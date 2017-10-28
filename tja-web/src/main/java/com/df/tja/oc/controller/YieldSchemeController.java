@@ -13,7 +13,9 @@
 package com.df.tja.oc.controller;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.df.framework.base.controller.BaseController;
 import com.df.framework.sys.domain.SysConfig;
@@ -28,7 +31,9 @@ import com.df.framework.sys.service.ISysConfigService;
 import com.df.project.domain.cust.CustProject;
 import com.df.project.service.IProjectService;
 import com.df.tja.domain.OcStandardPrice;
+import com.df.tja.domain.cust.CustOcYieldScheme;
 import com.df.tja.service.IStandardPriceService;
+import com.df.tja.service.IYieldSchemeService;
 import com.df.tja.service.IYmConfigService;
 
 /**
@@ -60,6 +65,9 @@ public class YieldSchemeController extends BaseController {
 
     @Autowired
     private ISysConfigService sysConfigService;
+
+    @Autowired
+    private IYieldSchemeService yieldSchemeService;
 
     /**
      * 
@@ -95,15 +103,42 @@ public class YieldSchemeController extends BaseController {
         List<OcStandardPrice> prices = standardPriceService.queryAllStandardPrices();
         model.addAttribute("prices", prices);
 
+        //取90%
         BigDecimal ratioParam = ymConfigService.queryOcRebateParam();
         if (ratioParam == null) {
             ratioParam = new BigDecimal("0");
         }
         model.addAttribute("ratioParam", ratioParam);
 
+        CustOcYieldScheme ocYieldScheme = null;
         if (!"0".equals(id)) {
-
+            System.out.println("");
+        } else {
+            ocYieldScheme = new CustOcYieldScheme();
+            ocYieldScheme.setSchemeAmount(new BigDecimal(0));
         }
+        model.addAttribute("yieldScheme", ocYieldScheme);
         return "/tjad/oc/yieldsch/yield_scheme_edit";
+    }
+
+    /**
+     * 施工图产值策划保存
+     * @param yieldScheme
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/ajax/save", method = RequestMethod.POST)
+    public Map<String, String> save(CustOcYieldScheme yieldScheme) {
+        Map<String, String> resultMap = new HashMap<String, String>();
+        try {
+            yieldSchemeService.createOrModifyYieldScheme(yieldScheme);
+            resultMap.put("flag", "true");
+            resultMap.put("msg", SAVE_SUCCESS);
+        } catch (RuntimeException ex) {
+            resultMap.put("flag", "false");
+            resultMap.put("msg", "保存失败");
+            logger.error("", ex);
+        }
+        return resultMap;
     }
 }

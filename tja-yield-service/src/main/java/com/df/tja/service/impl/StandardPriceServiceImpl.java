@@ -155,6 +155,31 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
         return prices;
     }
 
+    public OcStandardPrice queryStandardPriceById(String id) throws RuntimeException {
+        OcStandardPrice price = null;
+        try {
+            price = standardPriceDao.selectByPrimaryKey(OcStandardPrice.class, id);
+            if (price != null) {
+                JSONObject jsonObject = null;
+                OcStandardRatio ocStandardRatio = null;
+                Map<String, BigDecimal> ratioMap = new HashMap<String, BigDecimal>(0);
+                ocStandardRatio = new OcStandardRatio();
+                ocStandardRatio.setStardandId(id);
+                List<OcStandardRatio> ratios = queryByCondition(OcStandardRatio.class, ocStandardRatio);
+                if (ratios != null && !ratios.isEmpty()) {
+                    for (OcStandardRatio ratio : ratios) {
+                        ratioMap.put(ratio.getMajorCode(), ratio.getMajorRatio());
+                    }
+                }
+                jsonObject = new JSONObject(ratioMap);
+                price.setRatioJson(jsonObject.toString());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return price;
+    }
+
     /** 
      * @see com.df.tja.service.IStandardPriceService#createOrModifyStandardPrice(com.df.tja.domain.OcStandardPrice)
      */

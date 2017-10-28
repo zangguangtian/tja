@@ -8,6 +8,7 @@
     <title>施工图产值策划</title>
     <%--每个jsp页面所在菜单的treePath属性值 --%>
     <df:readProp var="menu-path" value="oc.yield.scheme.menu.path" scope="request"  />
+    <link href="${site }/resources/css/management.css?v=${buildVersion}" rel="Stylesheet" type="text/css">
     <style type="text/css">
         #majorRatio td[data-major]{width:80px;text-align:right;}
         #majorRatio tr.total td{text-align:right;}
@@ -21,7 +22,7 @@
     <div class="  ">
         <div class="form">
             <!-- BEGIN FORM-->
-            <form action="#" class=" ">
+            <form id="schemeForm" method="post" class=" ">
                 <input type="hidden" id="ratioParam" value="${ratioParam }">
                 <div class="form-body clearfix">
                     <div class="form-group col-lg-6 ">
@@ -45,6 +46,7 @@
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">项目名称</label>
                         <div class="col-md-8">
+                        	<input type="hidden" name="proId" value="${project.id }">
                             <input type="text" value="${project.proName }" class="form-control" disabled="disabled">
                         </div>
                     </div>
@@ -75,7 +77,7 @@
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">用地面积（M<sup>2</sup>）</label>
                         <div class="col-md-8">
-                            <input type="text" name="landArea" class="form-control text-right" placeholder="0.00">
+                            <input type="text" name="landArea" class="form-control text-right" placeholder="0.00" data-rule-number="true">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
@@ -133,37 +135,37 @@
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">实际合同额</label>
                         <div class="col-md-8">
-                            <input type="text" name="" class="form-control">
+                            <input type="text" name="contractAmount" class="form-control" value="${yieldScheme.contractAmount }">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">分包扣减</label>
                         <div class="col-md-8">
-                            <input type="text" name="" class="form-control">
+                            <input type="text" name="pkgAmount" class="form-control" value="${yieldScheme.pkgAmount }">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">方案扣减</label>
                         <div class="col-md-8">
-                            <input type="text" name="" class="form-control">
+                            <input type="text" name="schemeAmount" class="form-control" value="${yieldScheme.schemeAmount }">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">其他扣减</label>
                         <div class="col-md-8">
-                            <input type="text" name="" class="form-control">
+                            <input type="text" name="rebateAmount" class="form-control" value="${yieldScheme.rebateAmount }">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">土建总产值</label>
                         <div class="col-md-8">
-                            <input type="text" name="" class="form-control">
+                            <input type="text" name="totalAmount" class="form-control" value="${yieldScheme.totalAmount }">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">各专业产值</label>
                         <div class="col-md-8">
-                            <input type="text" name="" class="form-control">
+                            <input type="text" name="majorAmount" class="form-control" value="${yieldScheme.majorAmount }">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
@@ -190,21 +192,138 @@
                             <input type="text" name="" class="form-control">
                         </div>
                     </div>
+                    <c:if test="${not empty majors }">
+						<c:forEach items="${majors }" var="major" varStatus="vs">
+		                    <div class="form-group col-lg-6 ">
+		                        <label class="control-label col-md-3">${major.configName }产值</label>
+		                        <div class="col-md-8">
+		                            <input type="hidden" name="yieldMajorDuties[${vs.index }].majorCode" value="${major.configCode }">
+		                            <input type="text" name="yieldMajorDuties[${vs.index }].majorYield" class="form-control">
+		                        </div>
+		                    </div>
+	                    </c:forEach>
+	                </c:if>
                     
                     <h3 class="form-tit col-lg-12">各专业产值<span class="control-label" style="font-size:12px;">（比例：%  产值：元）</span></h3>
+					<div class="table-scrollable">
+					    <table id="majorYield" class="table table-striped table-bordered table-advance table-hover dataTable">
+					        <thead>
+					            <tr>
+					                <th nowrap="nowrap" rowspan="2" style="ext-align:center;">阶段</th>
+					                <c:if test="${not empty majors }">
+					                   <c:forEach items="${majors }" var="major" >
+					                       <th nowrap="nowrap" colspan="2" style="text-align:center;">${major.configName }</th>
+					                   </c:forEach>
+					                </c:if>
+					            </tr>
+					            <tr>
+					                <c:if test="${not empty majors }">
+                                       <c:forEach items="${majors }" var="major" >
+                                           <th nowrap="nowrap" style="text-align:center;width:80px;">比例</th>
+                                           <th nowrap="nowrap" style="text-align:center;width:80px;">产值</th>
+                                       </c:forEach>
+                                    </c:if>
+					            </tr>
+					        </thead>
+                            <tbody>
+					            <tr>
+                                    <td nowrap="nowrap" style="text-align:center;">初设</td>
+                                    <c:if test="${not empty majors }">
+                                       <c:forEach items="${majors }" var="major" varStatus="vs" >
+                                           <td nowrap="nowrap" style="width:80px;">
+                                               <input type="hidden" name="yieldStageMajors[${vs.index*2 }].majorCode" value="${major.configCode }">
+                                               <input type="text" name="yieldStageMajors[${vs.index*2 }].preliminary" value="" class="form-control"></td>
+                                           <td nowrap="nowrap" style="text-align:right;width:80px;">
+                                               <input type="hidden" name="yieldStageMajors[${vs.index*2+1 }].majorCode" value="${major.configCode }">
+                                               <input type="text" name="yieldStageMajors[${vs.index*2+1 }].preliminary" value="" readonly class="form-control"></td>
+                                       </c:forEach>
+                                    </c:if>
+					            </tr>
+					            <tr>
+                                    <td nowrap="nowrap" style="text-align:center;">施工图</td>
+                                    <c:if test="${not empty majors }">
+                                       <c:forEach items="${majors }" var="major" varStatus="vs" >
+                                           <td nowrap="nowrap" style="width:80px;">
+                                               <input type="text" name="yieldStageMajors[${vs.index*2 }].drawing" value="" class="form-control"></td>
+                                           <td nowrap="nowrap" style="width:80px;">
+                                               <input type="text" name="yieldStageMajors[${vs.index*2+1 }].drawing" value="" readonly class="form-control"></td>
+                                       </c:forEach>
+                                    </c:if>
+					            </tr>
+					            <tr>
+                                    <td nowrap="nowrap" style="text-align:center;">小计</td>
+                                    <c:if test="${not empty majors }">
+                                       <c:forEach items="${majors }" var="major" varStatus="vs" >
+                                           <td nowrap="nowrap" style="width:80px;">
+                                               <input type="text" name="yieldStageMajors[${vs.index*2 }].subTotal" value="" readonly class="form-control"></td>
+                                           <td nowrap="nowrap" style="width:80px;">
+                                               <input type="text" name="yieldStageMajors[${vs.index*2+1 }].subTotal" value="" readonly class="form-control"></td>
+                                       </c:forEach>
+                                    </c:if>
+					            </tr>
+					            <tr>
+                                    <td nowrap="nowrap" style="text-align:center;">施工配合</td>
+                                    <c:if test="${not empty majors }">
+                                       <c:forEach items="${majors }" var="major" varStatus="vs" >
+                                           <td nowrap="nowrap" style="width:80px;">
+                                               <input type="text" name="yieldStageMajors[${vs.index*2 }].coordination" value="" class="form-control"></td>
+                                           <td nowrap="nowrap" style="width:80px;">
+                                               <input type="text" name="yieldStageMajors[${vs.index*2+1 }].subTotal" value="" readonly class="form-control"></td>
+                                       </c:forEach>
+                                    </c:if>
+					            </tr>
+					            <tr>
+                                    <td nowrap="nowrap" style="text-align:center;">施工配合-封顶</td>
+                                    <c:if test="${not empty majors }">
+                                       <c:forEach items="${majors }" var="major" varStatus="vs" >
+                                           <td nowrap="nowrap" style="width:80px;">
+                                               <input type="text" name="yieldStageMajors[${vs.index*2 }].cap" value="" class="form-control"></td>
+                                           <td nowrap="nowrap" style="width:80px;">
+                                               <input type="text" name="yieldStageMajors[${vs.index*2+1 }].cap" value="" readonly class="form-control"></td>
+                                       </c:forEach>
+                                    </c:if>
+					            </tr>
+					            <tr>
+                                    <td nowrap="nowrap" style="text-align:center;">施工配合-验收</td>
+                                    <c:if test="${not empty majors }">
+                                       <c:forEach items="${majors }" var="major" varStatus="vs" >
+                                           <td nowrap="nowrap" style="width:80px;">
+                                               <input type="text" name="yieldStageMajors[${vs.index*2 }].check" value="" class="form-control"></td>
+                                           <td nowrap="nowrap" style="width:80px;">
+                                               <input type="text" name="yieldStageMajors[${vs.index*2+1 }].check" value="" readonly class="form-control"></td>
+                                       </c:forEach>
+                                    </c:if>
+					            </tr>
+					        </tbody>
+					    </table>
+					</div>
+
 
                     <h3 class="form-tit col-lg-12">各专业部门负责人会签</h3>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">设计负责人</label>
                         <div class="col-md-8">
-                            <input type="text" name="" class="form-control">
+                            <input type="hidden" name="principalId" value="">
+                            <input type="text" id="principalName" class="form-control col-md-3">
+                            <a title="选择" href="javascript:void(0);" class="icon-select"></a>
                         </div>
                     </div>
-                    
+                    <c:if test="${not empty majors }">
+						<c:forEach items="${majors }" var="major" varStatus="vs">
+							<div class="form-group col-lg-6 ">
+								<label class="control-label col-md-3">${major.configName }</label>
+		                        <div class="col-md-8">
+		                        	<input type="hidden" name="yieldMajorDuties[${vs.index }].principalId" value="">
+		                            <input type="text" id="${major.configCode }.principalName" class="form-control col-md-3">
+		                            <a title="选择" href="javascript:void(0);" class="icon-select"></a>
+		                        </div>
+		                    </div>
+	                    </c:forEach>
+	                </c:if>
                     <div class="">
                        <div class="row">
                            <div class="col-md-offset-3 col-md-9">
-                               <button type="button" class="btn blue">保存</button>
+                               <button type="button" id="save-btn" class="btn blue">保存</button>
                            </div>
                        </div>
                     </div>
@@ -241,12 +360,14 @@
 	</tr>
 </table>
 <script type="text/javascript" src="${site}/resources/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+<script type="text/javascript" src="${site}/resources/js/ztree/ztree-3.4-extend.js?v=${buildVersion}"></script>
 <script type="text/javascript">
 //专业比例类型编号切换
 $(document).on("change", "#majorRatio select[name$='priceId']", priceCodeChange);
 
 $(document).on("blur", "#majorRatio input[name$='buildArea']", buildAreaChange);
 
+var principalObj = null;
 $(function(){
     // 初始化时间控件
     $(".datetimepicker").datetimepicker({
@@ -258,6 +379,14 @@ $(function(){
     
     /**添加专业比例*/
     $("#addMajor-btn").on("click", addmajorRatio);
+
+	// 选择责任人
+	$("a.icon-select").on("click",function(){
+		principalObj = this;
+		selectStaff(selectStaffBack,"radio");
+	});
+	
+	$("#save-btn").on("click", save);
 });
 
 /**添加专业比例*/
@@ -348,7 +477,7 @@ function calMajorYield(currtr, ratioJson){
 	var ratioObj = eval(ratioJson);
     var sYield = currtr.find("td[id^='mYield']").text();
     currtr.find("td[id^='majorYield']").each(function(){
-        majorRate = ratioObj[$(this).data("major")];
+        majorRate = ratioObj["'"+$(this).data("major")+"'"];
         if(majorRate == null){
             majorRate = "0";
         }
@@ -411,10 +540,15 @@ function calYLTotal(){
 		totalYield += new Number(thisVal);
 	});
 	
+	//每个专业的总产值
 	var totalMajorYield = null;
+	var tempTotalYield = new Number(0);
+	//针对每个专业，计算院内合计
 	$("#majorRatio tr.total td[data-major]").each(function(){
 		totalMajorYield = new Number(0);
+		//所有专业的产值和大于0
 		if(totalYield > 0){
+			//计算各专业的产值和
 			$("#majorRatio td[id^='majorYield'][data-major='"+ $(this).data("major") +"']").each(function(){
 				thisVal = $(this).text();
 				if(thisVal == null){
@@ -424,9 +558,46 @@ function calYLTotal(){
 			});
 			totalMajorYield = totalMajorYield * new Number(100);
 			totalMajorYield = totalMajorYield / totalYield;
+			
+			//处理尾差
+			if(Math.round(tempTotalYield + totalMajorYield) < 100){
+				tempTotalYield += totalMajorYield;
+			}else{
+				totalMajorYield = 100 - tempTotalYield;
+			}
 		}
 		$(this).text(totalMajorYield.toFixed(2));
 	});
+}
+
+/**选择责任人后的回调方法*/
+function selectStaffBack(data){
+	$(principalObj).siblings("input[name$='principalId']").val(data[0].id);
+	$(principalObj).siblings("input[id$='principalName']").val(data[0].name);
+}
+
+/**保存*/
+function save(){
+	if (jQuery("#schemeForm").valid()) {
+		var url ="${site}/admin/yield/scheme/ajax/save";
+		$.ajax({
+			type : "post",
+		 	url : url,
+		 	data : $("#schemeForm").serialize(),
+		 	error : function(request) {
+		 		$.jalert({"jatext":"Connection error"});
+		 	},
+		 	success : function(data) {
+		 		/*if(data.flag == "true"){
+		 			$.jalert({"jatext":data.msg, "jatype":"refresh", "onConfirm":function(){
+				  		window.location.href="${site}/admin/pm/project/edit/${project.id}";
+		 			}});
+		 		}else{
+		 			$.jalert({"jatext":data.msg});
+		 		}*/
+		 	}
+		});
+	}
 }
 </script>
 </body>

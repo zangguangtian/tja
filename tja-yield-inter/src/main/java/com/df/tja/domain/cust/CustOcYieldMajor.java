@@ -31,4 +31,6 @@ import com.df.tja.domain.OcYieldMajor;
 
 public class CustOcYieldMajor extends OcYieldMajor {
 
+    private static final long serialVersionUID = 5224723686322921079L;
+
 }

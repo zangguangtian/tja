@@ -34,8 +34,9 @@ import com.df.framework.base.service.IBaseService;
 public interface IYmConfigService extends IBaseService {
 
     /**
-     * 产值计算系数
-     * */
+     * 
+     * @return 产值计算系数，取什小于1
+     */
     BigDecimal queryOcRebateParam();
 
 }
