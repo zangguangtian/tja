@@ -12,6 +12,7 @@
 
 package com.df.tja.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -104,6 +105,27 @@ public class WfPlanSchemeServiceImpl extends BaseServiceImpl implements IWfPlanS
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public BigDecimal queryPlanYieldByProId(String proId) throws RuntimeException {
+        BigDecimal planYield = new BigDecimal(0);
+        try {
+            WfPlanScheme entity = new WfPlanScheme();
+            entity.setProId(proId);
+            List<WfPlanScheme> schemes = wfPlanSchemeDao.selectByHQLCondition(WfPlanScheme.class, entity, null);
+            if (schemes != null && !schemes.isEmpty()) {
+                entity = schemes.get(0);
+                if (entity != null) {
+                    planYield = entity.getSchemeYield();
+                }
+            }
+            if (planYield == null) {
+                planYield = new BigDecimal(0);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return planYield;
     }
 
     @Override

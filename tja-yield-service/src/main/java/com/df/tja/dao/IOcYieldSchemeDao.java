@@ -12,7 +12,11 @@
 
 package com.df.tja.dao;
 
+import java.util.List;
+
 import com.df.framework.base.dao.IBaseDao;
+import com.df.tja.domain.cust.CustOcYieldMajorDuty;
+import com.df.tja.domain.cust.CustOcYieldScheme;
 
 /**
  * @author TabZhu
@@ -20,4 +24,12 @@ import com.df.framework.base.dao.IBaseDao;
  */
 public interface IOcYieldSchemeDao extends IBaseDao {
 
+    /**
+     * 按ID查询施工图产值策划信息
+     * @param id
+     * @return
+     */
+    CustOcYieldScheme selectOcYieldSchemeById(String id);
+
+    List<CustOcYieldMajorDuty> selectOcYieldMajorDutiesBySchemeId(String schemeId);
 }

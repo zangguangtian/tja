@@ -28,11 +28,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.df.framework.base.controller.BaseController;
 import com.df.framework.sys.domain.SysConfig;
 import com.df.framework.sys.service.ISysConfigService;
+import com.df.framework.util.ObjectUtils;
 import com.df.project.domain.cust.CustProject;
 import com.df.project.service.IProjectService;
 import com.df.tja.domain.OcStandardPrice;
+import com.df.tja.domain.OcYieldScheme;
+import com.df.tja.domain.cust.CustOcYieldMajor;
+import com.df.tja.domain.cust.CustOcYieldMajorDuty;
 import com.df.tja.domain.cust.CustOcYieldScheme;
 import com.df.tja.service.IStandardPriceService;
+import com.df.tja.service.IWfPlanSchemeService;
 import com.df.tja.service.IYieldSchemeService;
 import com.df.tja.service.IYmConfigService;
 
@@ -68,6 +73,9 @@ public class YieldSchemeController extends BaseController {
 
     @Autowired
     private IYieldSchemeService yieldSchemeService;
+
+    @Autowired
+    private IWfPlanSchemeService wfPlanSchemeService;
 
     /**
      * 
@@ -110,14 +118,27 @@ public class YieldSchemeController extends BaseController {
         }
         model.addAttribute("ratioParam", ratioParam);
 
-        CustOcYieldScheme ocYieldScheme = null;
+        CustOcYieldScheme ocYieldScheme = new CustOcYieldScheme();
         if (!"0".equals(id)) {
-            System.out.println("");
-        } else {
-            ocYieldScheme = new CustOcYieldScheme();
-            ocYieldScheme.setSchemeAmount(new BigDecimal(0));
+            OcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
+            if (yieldScheme != null) {
+                ObjectUtils.copyProperties(yieldScheme, ocYieldScheme);
+            }
+
+            //查询专业及比例
+            List<CustOcYieldMajor> yieldMajors = yieldSchemeService.queryOcYieldMajors(id);
+            model.addAttribute("yieldMajors", yieldMajors);
+
+            //查询各专业部门产值及负责人
+            Map<String, CustOcYieldMajorDuty> duties = yieldSchemeService.queryOcYieldMajorDutiesBySchemeId(id);
+            model.addAttribute("yieldDuties", duties);
         }
+
+        //查询本项目的方案产值
+        BigDecimal planYield = wfPlanSchemeService.queryPlanYieldByProId(proId);
+        ocYieldScheme.setSchemeAmount(planYield);
         model.addAttribute("yieldScheme", ocYieldScheme);
+
         return "/tjad/oc/yieldsch/yield_scheme_edit";
     }
 

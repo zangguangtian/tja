@@ -232,7 +232,7 @@ public class OcYieldStageMajor extends BaseDomain {
      * 
      * @return 返回施工配合-验收属性的值
      */
-    @Column(name = "CHECK")
+    @Column(name = "CHECK_VAL")
     public BigDecimal getCheck() {
         return check;
     }

@@ -12,7 +12,10 @@
 
 package com.df.tja.domain.cust;
 
+import java.util.Map;
+
 import com.df.tja.domain.OcYieldMajor;
+import com.df.tja.domain.OcYieldMajorRatio;
 
 /**
  * <p>CustOcYieldMajor</p>
@@ -32,5 +35,22 @@ import com.df.tja.domain.OcYieldMajor;
 public class CustOcYieldMajor extends OcYieldMajor {
 
     private static final long serialVersionUID = 5224723686322921079L;
+
+    /** 专业比例集合,key为CustOcYieldMajor+OcYieldMajorRatio.majorCode*/
+    private Map<String, OcYieldMajorRatio> majorMap;
+
+    /**
+     * @return majorMap
+     */
+    public Map<String, OcYieldMajorRatio> getMajorMap() {
+        return majorMap;
+    }
+
+    /**
+     * @param majorMap 要设置的 majorMap
+     */
+    public void setMajorMap(Map<String, OcYieldMajorRatio> majorMap) {
+        this.majorMap = majorMap;
+    }
 
 }

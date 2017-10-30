@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ import com.df.framework.util.ArithmeticUtil;
 import com.df.framework.util.LoggerUtil;
 import com.df.framework.util.ObjectUtils;
 import com.df.framework.util.StringUtil;
+import com.df.project.domain.ProMajorRoleRate;
 import com.df.tja.dao.IOcYieldSchemeDao;
 import com.df.tja.domain.OcStandardPrice;
 import com.df.tja.domain.OcYieldMajor;
@@ -105,7 +107,7 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
 
                 //修改施工图产值策划
                 ocYieldScheme = ocYieldSchemeDao.selectByPrimaryKey(OcYieldScheme.class, custOcYieldScheme.getId());
-                ObjectUtils.batchCopyProperties(custOcYieldScheme, ocYieldScheme,
+                BeanUtils.copyProperties(custOcYieldScheme, ocYieldScheme,
                     new String[] {"proId", "schemeAmount", "creator", "createDate"});
                 ocYieldScheme.setTotalAmount(totalAmount);
                 ocYieldScheme.setMajorAmount(majorAmount);
@@ -130,10 +132,83 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
             majorTotalAmount = ArithmeticUtil.sub(majorTotalAmount, ocYieldScheme.getPmYield());
             createOcYieldMajorDuty(majorTotalAmount, custOcYieldScheme, majorWLHJ);
 
+            //为项目添加专业分配比例
+            createProMajorRoleRate(custOcYieldScheme.getProId(), majorWLHJ);
         } catch (Exception ex) {
             LoggerUtil.error(YieldSchemeServiceImpl.class, "", ex);
             throw new RuntimeException(ex);
         }
+    }
+
+    public CustOcYieldScheme queryOcYieldSchemeById(String id) throws RuntimeException {
+        CustOcYieldScheme custOcYieldScheme = null;
+        try {
+            custOcYieldScheme = ocYieldSchemeDao.selectOcYieldSchemeById(id);
+        } catch (Exception ex) {
+            LoggerUtil.error(YieldSchemeServiceImpl.class, "", ex);
+            throw new RuntimeException(ex);
+        }
+        return custOcYieldScheme;
+    }
+
+    public Map<String, CustOcYieldMajorDuty> queryOcYieldMajorDutiesBySchemeId(String sId) throws RuntimeException {
+        Map<String, CustOcYieldMajorDuty> majorDutyMap = null;
+        try {
+            List<CustOcYieldMajorDuty> duties = ocYieldSchemeDao.selectOcYieldMajorDutiesBySchemeId(sId);
+            if (duties != null && !duties.isEmpty()) {
+                majorDutyMap = new HashMap<String, CustOcYieldMajorDuty>(0);
+                for (CustOcYieldMajorDuty duty : duties) {
+                    majorDutyMap.put(duty.getMajorCode(), duty);
+                }
+            }
+        } catch (Exception ex) {
+            LoggerUtil.error(YieldSchemeServiceImpl.class, "", ex);
+            throw new RuntimeException(ex);
+        }
+        return majorDutyMap;
+    }
+
+    public List<CustOcYieldMajor> queryOcYieldMajors(String schemeId) throws RuntimeException {
+        List<CustOcYieldMajor> custYieldMajors = null;
+        try {
+            OcYieldMajor ocYieldMajor = new OcYieldMajor();
+            ocYieldMajor.setSchemeId(schemeId);
+            //专业列表
+            List<OcYieldMajor> majors = ocYieldSchemeDao.selectBySQLCondition(OcYieldMajor.class, ocYieldMajor, null);
+            if (majors != null && !majors.isEmpty()) {
+                CustOcYieldMajor custOcYieldMajor = null;
+                OcYieldMajorRatio ocYieldMajorRatio = null;
+                List<OcYieldMajorRatio> majorRatios = null;
+                custYieldMajors = new ArrayList<CustOcYieldMajor>(0);
+                Map<String, OcYieldMajorRatio> majorMap = null;
+                for (OcYieldMajor yieldMajor : majors) {
+                    custOcYieldMajor = new CustOcYieldMajor();
+                    ObjectUtils.copyProperties(yieldMajor, custOcYieldMajor);
+
+                    /**查询专业的各比例和产值*/
+                    ocYieldMajorRatio = new OcYieldMajorRatio();
+                    ocYieldMajorRatio.setSchemeId(schemeId);
+                    ocYieldMajorRatio.setMajorId(yieldMajor.getId());
+                    ocYieldMajorRatio.setOrderBy("majorCode asc");
+                    majorRatios = ocYieldSchemeDao.selectByHQLCondition(OcYieldMajorRatio.class, ocYieldMajorRatio,
+                        null);
+
+                    majorMap = new HashMap<String, OcYieldMajorRatio>(0);
+                    if (majorRatios != null && !majorRatios.isEmpty()) {
+                        for (OcYieldMajorRatio majorRatio : majorRatios) {
+                            majorMap.put(yieldMajor.getId() + "." + majorRatio.getMajorCode(), majorRatio);
+                        }
+                    }
+                    custOcYieldMajor.setMajorMap(majorMap);
+
+                    custYieldMajors.add(custOcYieldMajor);
+                }
+            }
+        } catch (Exception ex) {
+            LoggerUtil.error(YieldSchemeServiceImpl.class, "", ex);
+            throw new RuntimeException(ex);
+        }
+        return custYieldMajors;
     }
 
     /**
@@ -202,7 +277,6 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
                 BigDecimal wlYieldTotal = new BigDecimal(0);
                 //按专业存储总产值
                 Map<String, BigDecimal> majorYieldTotal = new HashMap<String, BigDecimal>(0);
-                List<OcYieldMajorRatio> ratios = new ArrayList<OcYieldMajorRatio>();
                 for (SysConfig major : majors) {
                     majorRatio = new OcYieldMajorRatio();
                     majorRatio.setSchemeId(ocYieldMajor.getSchemeId());
@@ -278,7 +352,7 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
     }
 
     /**
-     * 施工图产值专业责任人表
+     * 施工图产值专业责任人
      * @param custOcYieldScheme
      * @throws RuntimeException
      */
@@ -301,7 +375,39 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
                     majorWLYield = ArithmeticUtil.div(majorWLYield, new BigDecimal(100), 2);
                     ocYieldMajorDuty.setMajorYield(majorWLYield);
                     //施工图产值专业
-                    addEntity(CustOcYieldMajorDuty.class, ocYieldMajorDuty);
+                    addEntity(OcYieldMajorDuty.class, ocYieldMajorDuty);
+                }
+            }
+        } catch (Exception ex) {
+            LoggerUtil.error(YieldSchemeServiceImpl.class, "", ex);
+            throw new RuntimeException(ex);
+        }
+    }
+
+    /**
+     * 项目专业角色比例
+     * @param custOcYieldScheme
+     * @throws RuntimeException
+     */
+    private void createProMajorRoleRate(String proId, Map<String, BigDecimal> majorWLHJ) throws RuntimeException {
+        try {
+            if (majorWLHJ != null && !majorWLHJ.isEmpty()) {
+                ProMajorRoleRate entity = null;
+                List<ProMajorRoleRate> majorRoleRates = null;
+                for (String majorCode : majorWLHJ.keySet()) {
+                    entity = new ProMajorRoleRate();
+                    entity.setProId(proId);
+                    entity.setAllotCategory("2000");
+                    entity.setAllotCode(majorCode);
+                    majorRoleRates = queryByCondition(ProMajorRoleRate.class, entity);
+                    if (majorRoleRates != null && !majorRoleRates.isEmpty()) {
+                        entity = majorRoleRates.get(0);
+                        entity.setAllotRate(majorWLHJ.get(majorCode));
+                        modify(ProMajorRoleRate.class, entity);
+                    } else {
+                        entity.setAllotRate(majorWLHJ.get(majorCode));
+                        addEntity(ProMajorRoleRate.class, entity);
+                    }
                 }
             }
         } catch (Exception ex) {

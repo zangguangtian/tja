@@ -38,6 +38,9 @@ public class CustOcYieldScheme extends OcYieldScheme {
      */
     private static final long serialVersionUID = -8625746507653337130L;
 
+    /** 属性： 设计负责人*/
+    private java.lang.String principalName;
+
     /** 属性：专业比例集合 */
     private List<CustOcYieldMajor> yieldMajors;
 
@@ -46,6 +49,20 @@ public class CustOcYieldScheme extends OcYieldScheme {
 
     /** 属性：阶段专业产值集合 */
     private List<CustOcYieldStageMajor> yieldStageMajors;
+
+    /**
+     * @return principalName
+     */
+    public java.lang.String getPrincipalName() {
+        return principalName;
+    }
+
+    /**
+     * @param principalName 要设置的 principalName
+     */
+    public void setPrincipalName(java.lang.String principalName) {
+        this.principalName = principalName;
+    }
 
     /**
      * @return yieldMajors

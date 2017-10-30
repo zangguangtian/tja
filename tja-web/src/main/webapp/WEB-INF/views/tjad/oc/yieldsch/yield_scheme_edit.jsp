@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="df" uri="http://www.diligentfirst.com/" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <html>
 <head>
@@ -24,17 +25,18 @@
             <!-- BEGIN FORM-->
             <form id="schemeForm" method="post" class=" ">
                 <input type="hidden" id="ratioParam" value="${ratioParam }">
+                <input type="hidden" name="id" value="${yieldScheme.id }">
                 <div class="form-body clearfix">
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">策划编号</label>
                         <div class="col-md-8">
-                            <input type="text" name="schemeNo" class="form-control">
+                            <input type="text" name="schemeNo" value="${yieldScheme.schemeNo }" class="form-control">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">更新日期</label>
                         <div class="col-md-8">
-                            <input type="text" name="lastUpdate" class="form-control datetimepicker">
+                            <input type="text" name="lastUpdate" value="<fmt:formatDate value='${yieldScheme.lastUpdate }' pattern='yyyy-MM-dd'/>" class="form-control datetimepicker">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
@@ -77,13 +79,13 @@
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">用地面积（M<sup>2</sup>）</label>
                         <div class="col-md-8">
-                            <input type="text" name="landArea" class="form-control text-right" placeholder="0.00" data-rule-number="true">
+                            <input type="text" name="landArea" value="${yieldScheme.landArea }" class="form-control text-right" placeholder="0.00" data-rule-number="true">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">策划依据</label>
                         <div class="col-md-8">
-                            <input type="text" name="schemeBasis" class="form-control">
+                            <input type="text" name="schemeBasis" value="${yieldScheme.schemeBasis }" class="form-control">
                         </div>
                     </div>
                     <h3 class="form-tit col-lg-12">专业比例<span class="control-label" style="font-size:12px;">（比例：%  产值：元）</span>
@@ -115,6 +117,41 @@
 					            </tr>
 					        </thead>
                             <tbody>
+                            	<c:if test="${not empty yieldMajors }">
+                            		<c:forEach items="${yieldMajors }" var="yieldMajor" varStatus="vs">
+                            			<tr>
+										    <td nowrap="nowrap" width="40px" style="text-align:center;">${vs.index + 1}</td>
+										    <td nowrap="nowrap"><input type="text" name="yieldMajors[${vs.index}].name" value="${yieldMajor.name }" class="form-control"></td>
+										    <td nowrap="nowrap" style="width:100px;">
+										       <select name="yieldMajors[${vs.index}].priceId" class="form-control">
+										           <option value="">-请选择-</option>
+										       <c:if test="${not empty prices }">
+										           <c:forEach items="${prices }" var="price">
+										           	   <c:if test="${price.id == yieldMajor.priceId }">
+											               <option value="${price.id }" selected data-uprice="${price.unitPrice }" data-ratio='${price.ratioJson }' >${price.typeCode }-${price.typeName }</option>
+										           	   </c:if>
+										           	   <c:if test="${price.id != yieldMajor.priceId }">
+											               <option value="${price.id }" data-uprice="${price.unitPrice }" data-ratio='${price.ratioJson }' >${price.typeCode }-${price.typeName }</option>
+										           	   </c:if>
+										           </c:forEach>
+										       </c:if>
+										       </select>
+										    </td>
+										    <td nowrap="nowrap"><input type="text" name="yieldMajors[${vs.index}].buildArea" value="${yieldMajor.buildArea }" data-rule-number="true" class="form-control"></td>
+										    <td nowrap="nowrap" id="price${vs.index}}" style="text-align:right;">${yieldMajor.standardPrice }</td>
+										    <td nowrap="nowrap" id="sYield${vs.index}" style="text-align:right;">${yieldMajor.standardYield }</td>
+										    <td nowrap="nowrap" id="mYield${vs.index}" style="text-align:right;">${yieldMajor.majorYield }</td>
+										    <c:if test="${not empty majors }">
+										       <c:forEach items="${majors }" var="major" >
+											       <c:set var="majorKey" value="${yieldMajor.id}.${major.configCode }"/>
+										           <td nowrap="nowrap" id="majorRatio${vs.index}.${major.configCode }" data-major="${major.configCode }">${yieldMajor.majorMap[majorKey].majorRate }</td>
+										           <td nowrap="nowrap" id="majorYield${vs.index}.${major.configCode }" data-major="${major.configCode }">${yieldMajor.majorMap[majorKey].majorYield }</td>
+										       </c:forEach>
+										    </c:if>
+										</tr>
+                            		</c:forEach>
+                            	</c:if>
+                            	
 					            <tr class="total">
                                     <td nowrap="nowrap" colspan="3" style="text-align:center;">院内合计</td>
                                     <td nowrap="nowrap" id="totalArea"></td>
@@ -171,25 +208,25 @@
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">项目负责人（%）</label>
                         <div class="col-md-8">
-                            <input type="text" name="" class="form-control">
+                            <input type="text" name="principalRate" class="form-control" value="${yieldScheme.principalRate }">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">项目负责人（产值）</label>
                         <div class="col-md-8">
-                            <input type="text" name="" class="form-control">
+                            <input type="text" name="principalYield" class="form-control" value="${yieldScheme.principalYield }">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">项目经理（%）</label>
                         <div class="col-md-8">
-                            <input type="text" name="" class="form-control">
+                            <input type="text" name="pmRate" class="form-control" value="${yieldScheme.pmRate }">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">项目经理（产值）</label>
                         <div class="col-md-8">
-                            <input type="text" name="" class="form-control">
+                            <input type="text" name="pmYield" class="form-control" value="${yieldScheme.pmYield }">
                         </div>
                     </div>
                     <c:if test="${not empty majors }">
@@ -198,7 +235,7 @@
 		                        <label class="control-label col-md-3">${major.configName }产值</label>
 		                        <div class="col-md-8">
 		                            <input type="hidden" name="yieldMajorDuties[${vs.index }].majorCode" value="${major.configCode }">
-		                            <input type="text" name="yieldMajorDuties[${vs.index }].majorYield" class="form-control">
+		                            <input type="text" name="yieldMajorDuties[${vs.index }].majorYield" value="${yieldDuties[major.configCode].majorYield }" class="form-control">
 		                        </div>
 		                    </div>
 	                    </c:forEach>
@@ -231,9 +268,11 @@
                                     <c:if test="${not empty majors }">
                                        <c:forEach items="${majors }" var="major" varStatus="vs" >
                                            <td nowrap="nowrap" style="width:80px;">
+                                               <input type="hidden" name="yieldStageMajors[${vs.index*2 }].category" value="1000">
                                                <input type="hidden" name="yieldStageMajors[${vs.index*2 }].majorCode" value="${major.configCode }">
                                                <input type="text" name="yieldStageMajors[${vs.index*2 }].preliminary" value="" class="form-control"></td>
                                            <td nowrap="nowrap" style="text-align:right;width:80px;">
+                                               <input type="hidden" name="yieldStageMajors[${vs.index*2+1 }].category" value="2000">
                                                <input type="hidden" name="yieldStageMajors[${vs.index*2+1 }].majorCode" value="${major.configCode }">
                                                <input type="text" name="yieldStageMajors[${vs.index*2+1 }].preliminary" value="" readonly class="form-control"></td>
                                        </c:forEach>
@@ -303,8 +342,8 @@
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">设计负责人</label>
                         <div class="col-md-8">
-                            <input type="hidden" name="principalId" value="">
-                            <input type="text" id="principalName" class="form-control col-md-3">
+                            <input type="hidden" name="principalId" value="${yieldScheme.principalId }">
+                            <input type="text" id="principalName" value="${yieldScheme.principalName }" class="form-control col-md-3">
                             <a title="选择" href="javascript:void(0);" class="icon-select"></a>
                         </div>
                     </div>
@@ -313,13 +352,19 @@
 							<div class="form-group col-lg-6 ">
 								<label class="control-label col-md-3">${major.configName }</label>
 		                        <div class="col-md-8">
-		                        	<input type="hidden" name="yieldMajorDuties[${vs.index }].principalId" value="">
-		                            <input type="text" id="${major.configCode }.principalName" class="form-control col-md-3">
+		                        	<input type="hidden" name="yieldMajorDuties[${vs.index }].principalId" value="${yieldDuties[major.configCode].principalId }">
+		                            <input type="text" id="${major.configCode }.principalName" value="${yieldDuties[major.configCode].principalName }" class="form-control col-md-3">
 		                            <a title="选择" href="javascript:void(0);" class="icon-select"></a>
 		                        </div>
 		                    </div>
 	                    </c:forEach>
 	                </c:if>
+	                <div class="form-group col-lg-12 " style="margin-left: 4%">
+						<label class="control-label col-md-1">备注</label>
+						<div class="col-md-10">
+							<textarea class="form-control" rows="5" name="remark">${yieldScheme.remark }</textarea>
+						</div>
+					</div>
                     <div class="">
                        <div class="row">
                            <div class="col-md-offset-3 col-md-9">
@@ -387,6 +432,9 @@ $(function(){
 	});
 	
 	$("#save-btn").on("click", save);
+    
+    /**计算院内合计*/
+    calYLTotal();
 });
 
 /**添加专业比例*/
@@ -477,7 +525,7 @@ function calMajorYield(currtr, ratioJson){
 	var ratioObj = eval(ratioJson);
     var sYield = currtr.find("td[id^='mYield']").text();
     currtr.find("td[id^='majorYield']").each(function(){
-        majorRate = ratioObj["'"+$(this).data("major")+"'"];
+        majorRate = ratioObj[$(this).data("major")];
         if(majorRate == null){
             majorRate = "0";
         }

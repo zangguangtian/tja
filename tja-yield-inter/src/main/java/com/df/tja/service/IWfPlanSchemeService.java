@@ -12,6 +12,7 @@
 
 package com.df.tja.service;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 import com.df.activiti.domain.ProcessArgs;
@@ -51,6 +52,14 @@ public interface IWfPlanSchemeService extends IBaseService {
      * @return
      */
     void queryPlanSchemeById(Map<String, Object> attributes, String id) throws RuntimeException;
+
+    /**
+     * 按项目ID查询项目的方案产值
+     * @param proId
+     * @return
+     * @throws RuntimeException
+     */
+    BigDecimal queryPlanYieldByProId(String proId) throws RuntimeException;
 
     void addWriteBackPlanScheme(String id) throws RuntimeException;
 
