@@ -20,7 +20,7 @@ if( StringUtils.isBlank(loadUser)){
 <script type="text/javascript" src="${site}/resources/js/ztree/ztree-3.4-extend.js?v=${buildVersion}"></script>
 <script type="text/javascript">
 //<!--
-var rootId = "0";
-var rootParentId = "-1";
+var rootId = "PRO0001I";
+var rootParentId = "0";
 //-->
 </script>

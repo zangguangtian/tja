@@ -124,9 +124,10 @@
 	function initLoadTree(){
 		if(typeof rootId != 'undefined' && typeof rootParentId != 'undefined'){
 			var settingType = $("#settingType").val();
-			var url = context+"/admin/hr/org/ajax/loadnode";
+			var url = context+"/admin/hr/org/ajax/loadnode?id="+rootId;
 			$.getJSON(url, function(data) {
-				var zNodes = {"id":rootId, "name":"同济人", "pId":rootParentId, "open":"true", "icon":context+"/resources/images/jzTree/1_open.png", "children":data};
+				var zNodes = {"id":rootId, "name":"同济人建筑设计公司", "pId":rootParentId, "open":"true", "icon":context+"/resources/images/jzTree/1_open.png", "children":data};
+				console.log(zNodes);
 			    if(settingType == "radio"){//选择人员类型1
 					$.fn.zTree.init($("#orgTree"), checkuserSetting, zNodes);
 				}else if(settingType == "checkbox"){//选择人员类型2
@@ -137,7 +138,7 @@
 					$.fn.zTree.init($("#orgTree"), checkSetting, zNodes);
 				}
 				
-				if(rootId == "0"){
+				if(rootId == "PRO0001I"){
 					var zTree = $.fn.zTree.getZTreeObj("orgTree");
 					var node = zTree.getNodes()[0];  
 					zTree.selectNode(node);
@@ -156,7 +157,7 @@
 	 * @param msg
 	 */
 	function zTreeOnAsyncSuccess(event, treeId, treeNode, msg) {
-		if(rootId == "0"){
+		if(rootId == "PRO0001I"){
 			var treeObj = getTreeObj(treeId);
 			var node = treeObj.getNodeByParam("id", defaultId, null);
 			treeObj.selectNode(node);
