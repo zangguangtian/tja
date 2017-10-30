@@ -129,7 +129,9 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
     public List<OcStandardPrice> queryAllStandardPrices() throws RuntimeException {
         List<OcStandardPrice> prices = null;
         try {
-            prices = standardPriceDao.selectBySQLCondition(OcStandardPrice.class, null, null);
+            OcStandardPrice entity = new OcStandardPrice();
+            entity.setOrderBy("typeCode asc");
+            prices = standardPriceDao.selectBySQLCondition(OcStandardPrice.class, entity, null);
             if (prices != null && !prices.isEmpty()) {
                 JSONObject jsonObject = null;
                 OcStandardRatio ocStandardRatio = null;
@@ -190,43 +192,12 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
                 modify(OcStandardPrice.class, ocStandardPrice);
                 String keyValue = ocStandardPrice.getKeyValue();
                 if (StringUtils.isNotBlank(keyValue) && keyValue.contains("&")) {
-                    String[] codeValues = keyValue.split("&");
+                    //先删除
+                    OcStandardRatio ocStandardRatio = new OcStandardRatio();
+                    ocStandardRatio.setStardandId(ocStandardPrice.getId());
+                    deleteByObject(OcStandardRatio.class, ocStandardRatio);
 
-                    if (codeValues != null && codeValues.length > 0) {
-                        //先删除
-                        OcStandardRatio ocStandardRatio = new OcStandardRatio();
-                        ocStandardRatio.setStardandId(ocStandardPrice.getId());
-                        deleteByObject(OcStandardRatio.class, ocStandardRatio);
-
-                        //再添加
-                        BigDecimal majorRatio = null;
-                        for (String codeValue : codeValues) {
-                            if (StringUtils.isNotBlank(codeValue) && codeValue.contains("=")) {
-                                String[] code = codeValue.split("=");
-
-                                String majorCode = code[0];
-                                if (majorCode.contains("_")) {
-                                    majorCode = majorCode.split("_")[1];
-                                }
-                                majorRatio = new BigDecimal(0);
-                                if (code.length > 1) {
-                                    majorRatio = new BigDecimal(code[1]);
-                                }
-
-                                ocStandardRatio = new OcStandardRatio();
-                                ocStandardRatio.setMajorCode(majorCode);
-                                ocStandardRatio.setMajorRatio(majorRatio);
-                                ocStandardRatio.setStardandId(ocStandardPrice.getId());
-                                addEntity(OcStandardRatio.class, ocStandardRatio);
-
-                            } else {
-                                //若没有添加  抛出 异常 回滚删除的  数据
-                                throw new LogicalException("数据有误!");
-                            }
-                        }
-
-                    }
-
+                    createStandardPrice(ocStandardPrice.getId(), keyValue);
                 }
             } else {
                 if (StringUtil.isNotBlank(ocStandardPrice.getCategoryCode())
@@ -234,36 +205,9 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
                     addEntity(OcStandardPrice.class, ocStandardPrice);
 
                     String keyValue = ocStandardPrice.getKeyValue();
-                    if (StringUtils.isNotBlank(keyValue) && keyValue.contains("&")) {
-                        String[] codeValues = keyValue.split("&");
-
-                        if (codeValues != null && codeValues.length > 0) {
-                            BigDecimal majorRatio = null;
-                            for (String codeValue : codeValues) {
-                                if (StringUtils.isNotBlank(codeValue) && codeValue.contains("=")) {
-                                    String[] code = codeValue.split("=");
-                                    String majorCode = code[0];
-                                    if (majorCode.contains("_")) {
-                                        majorCode = majorCode.split("_")[1];
-                                    }
-                                    majorRatio = new BigDecimal(0);
-                                    if (code.length > 1) {
-                                        majorRatio = new BigDecimal(code[1]);
-                                    }
-                                    OcStandardRatio ocStandardRatio = new OcStandardRatio();
-                                    ocStandardRatio.setMajorCode(majorCode);
-                                    ocStandardRatio.setMajorRatio(majorRatio);
-                                    ocStandardRatio.setStardandId(ocStandardPrice.getId());
-                                    addEntity(OcStandardRatio.class, ocStandardRatio);
-                                }
-                            }
-                        }
-
-                    }
+                    createStandardPrice(ocStandardPrice.getId(), keyValue);
                 }
             }
-        } catch (LogicalException ex) {
-            throw ex;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -288,5 +232,34 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
             throw new RuntimeException(e);
         }
 
+    }
+
+    private void createStandardPrice(String priceId, String keyValue) {
+        if (StringUtils.isNotBlank(keyValue) && keyValue.contains("&")) {
+            String[] codeValues = keyValue.split("&");
+
+            if (codeValues != null && codeValues.length > 0) {
+                BigDecimal majorRatio = null;
+                OcStandardRatio ocStandardRatio = null;
+                for (String codeValue : codeValues) {
+                    if (StringUtils.isNotBlank(codeValue) && codeValue.contains("=")) {
+                        String[] code = codeValue.split("=");
+                        String majorCode = code[0];
+                        if (majorCode.contains("_")) {
+                            majorCode = majorCode.split("_")[1];
+                        }
+                        majorRatio = new BigDecimal(0);
+                        if (code.length > 1) {
+                            majorRatio = new BigDecimal(code[1]);
+                        }
+                        ocStandardRatio = new OcStandardRatio();
+                        ocStandardRatio.setMajorCode(majorCode);
+                        ocStandardRatio.setMajorRatio(majorRatio);
+                        ocStandardRatio.setStardandId(priceId);
+                        addEntity(OcStandardRatio.class, ocStandardRatio);
+                    }
+                }
+            }
+        }
     }
 }
