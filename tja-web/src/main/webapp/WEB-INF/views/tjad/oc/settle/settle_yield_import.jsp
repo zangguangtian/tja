@@ -18,9 +18,6 @@
 </head>
 <body>
 <div class="">
-	<center>
-		<h3></h3>
-	</center>
 	<div class=" ">
 		<div class="form">
 			<!-- BEGIN FORM-->
@@ -47,7 +44,7 @@
 			</div>
 			</form>
 			<!-- END FORM-->
-			 <div class="clearfix showResult">
+			 <div class="clearfix showResult" style="padding:0px 6px;">
 			 <div class="form-group col-lg-12 ">
                  <label class="control-label col-md-3">数据检查结果</label>
                  <div class="col-md-8">
@@ -60,11 +57,14 @@
                  </div>
              </div>
 			</div>
-			<div class="wrapBox ">
-			    <div id="content">
-			    </div>
+			<div class="wrapper">
+				<div class="wrapdiv">
+					<div class="wrapBox ">
+					    <div id="content">
+					    </div>
+					</div>
+				</div>
 			</div>
-			
 			<div style="position: absolute;bottom: 8%;right: 5%;">
 			   	<div class="row">
 			        <div class="col-md-offset-3 col-md-9">
@@ -131,7 +131,7 @@ jQuery(document).ready(function(){
 
 
 function ajaxImpInfo(date){
-	var sUrl ="${site}/config/query";
+	var sUrl ="${site}/config/ajax/query";
 	jQuery.ajax({
 		type: "POST",
 		url:sUrl,
