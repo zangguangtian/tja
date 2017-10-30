@@ -12,8 +12,12 @@
 
 package com.df.tja.ym.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -34,7 +38,10 @@ import com.df.framework.exception.LogicalException;
 import com.df.framework.sys.domain.SysUser;
 import com.df.framework.sys.service.ISysUserService;
 import com.df.framework.util.HttpUtil;
+import com.df.hr.domain.cust.CustStaff;
+import com.df.project.service.IProjectService;
 import com.df.tja.constant.TjaConstant;
+import com.df.tja.domain.WfYieldMajorRate;
 import com.df.tja.domain.WfYieldSettle;
 import com.df.tja.domain.cust.WfYieldSettleModel;
 import com.df.tja.service.IWfYieldSettleService;
@@ -63,6 +70,9 @@ public class WfYieldSettleController extends WfBaseController {
     @Autowired
     private ISysUserService userService;
 
+    @Autowired
+    private IProjectService projectService;
+
     /**
      * <p>描述 : 列表</p>
      */
@@ -71,11 +81,12 @@ public class WfYieldSettleController extends WfBaseController {
         return "/tjad/ym/yieldSettle/yieldSettle_list";
     }
 
-    /**
-     * <p>描述 : 编辑</p>
-     * @param proId 项目ID
-     * @param periodId 期间ID
-     */
+
+        /**
+    * <p>描述 : 编辑</p>
+    * @param proId 项目ID
+    * @param periodId 期间ID
+    */
     @RequestMapping(value = "/toedit/{id}/{editType}")
     public String toEdit(@PathVariable("id") String id, @PathVariable("editType") String editType, Model model)
         throws RuntimeException {
@@ -94,22 +105,25 @@ public class WfYieldSettleController extends WfBaseController {
         Map<String, Object> outParams = new HashMap<String, Object>();
         wfYieldSettleService.queryYieldSettle(inParams, outParams);
 
+        //普通年度产值结算流程
+        String url = "/tjad/ym/yieldSettle/yieldSettle_edit";
+        String redUrl = "redirect:/admin/ym/yieldSettle/toview/" + WfConstant.Operate.VIEW + "/";
+        if ("2000".equals(editType)) {
+            // 特批年度产值结算流程
+            url = "/tjad/ym/yieldSettle/specSettle_edit";
+            redUrl = "redirect:/admin/ym/yieldSettle/ordin/toview/" + WfConstant.Operate.VIEW + "/";
+        }
+
         if (!"0".equals(id)) {
             WfYieldSettle yieldSettle = (WfYieldSettle) outParams.get("yieldSettle");
 
             if (WfConstant.AuditStatus.AUDITING.equals(yieldSettle.getAuditStatus())
                 || WfConstant.AuditStatus.AUDITED.equals(yieldSettle.getAuditStatus())) {
-                return "redirect:/admin/ym/yieldSettle/toview/" + WfConstant.Operate.VIEW + "/" + yieldSettle.getId();
+                return redUrl + yieldSettle.getId();
             }
         }
         model.addAllAttributes(outParams);
 
-        //普通年度产值结算流程
-        String url = "/tjad/ym/yieldSettle/yieldSettle_edit";
-        if ("2000".equals(editType)) {
-            // 特批年度产值结算流程
-            url = "/tjad/ym/yieldSettle/specSettle_edit";
-        }
         return url;
     }
 
@@ -131,17 +145,39 @@ public class WfYieldSettleController extends WfBaseController {
         try {
             String procKey = "WfSpecialSettle"; //年度产值结算 - 特批流程
             if ("1000".equals(yieldSettle.getWfCategory().trim())) {
-                procKey = "WfSpecialSettle";
+                procKey = "WfOrdinSettle";
             }
             String userId = HttpUtil.getUser().getId();
             ProcessArgs processArgs = new ProcessArgs(userId, procKey, auditStatus);
 
             if (WfConstant.AuditStatus.AUDITING.equals(auditStatus)) {
+                // 运营部
+                SysUser ocSysUser = userService.queryRoleUser(TjaConstant.FlowTaskRole.YUNYING);
+                processArgs.addVariable("ocOrg", ocSysUser.getId());
+                processArgs.addVariable("url", "/admin/ym/yieldSettle/toedit/" + yieldSettle.getId() + "/2000");
+                if ("1000".equals(yieldSettle.getWfCategory().trim())) {
+                    Set<String> majorUsers = new HashSet<String>();
+                    //各专业负责人审批
+                    List<WfYieldMajorRate> majorRates = settleModel.getMajorRates();
+                    List<String> majorCodes = new ArrayList<String>();
+                    if (majorRates != null && majorRates.size() > 0) {
+                        for (WfYieldMajorRate majorRate : majorRates) {
+                            majorCodes.add(majorRate.getMajorCode());
+                        }
+                    }
 
-                if ("2000".equals(yieldSettle.getWfCategory().trim())) {
-                    // 运营部
-                    SysUser ocSysUser = userService.queryRoleUser(TjaConstant.FlowTaskRole.YUNYING);
-                    processArgs.addVariable("ocOrg", ocSysUser.getId());
+                    List<CustStaff> custStaffs = projectService.queryMajorMainLeaderByCode(majorCodes,
+                        yieldSettle.getProId());
+
+                    for (CustStaff custStaff : custStaffs) {
+                        majorUsers.add(custStaff.getUserId());
+                    }
+                    processArgs.addVariable("majorUsers", majorUsers);
+
+                    Map<String, List<String>> userMajorMap = projectService.queryMajorMainLeaderMapByCode(majorCodes,
+                        yieldSettle.getProId());
+
+                    processArgs.addVariable("userMajorMap", userMajorMap);
                     processArgs.addVariable("url", "/admin/ym/yieldSettle/toedit/" + yieldSettle.getId() + "/1000");
                 }
             }
@@ -185,7 +221,7 @@ public class WfYieldSettleController extends WfBaseController {
         throws RuntimeException {
         Map<String, Object> modelMap = new HashMap<String, Object>();
 
-        wfYieldSettleService.queryYieldSettleForView(modelMap, id);
+        wfYieldSettleService.queryYieldSettleForView(modelMap, id, null);
 
         WfYieldSettle yieldSettle = (WfYieldSettle) modelMap.get("yieldSettle");
 
@@ -201,23 +237,44 @@ public class WfYieldSettleController extends WfBaseController {
         //打印预览
         if (request.getRequestURI().contains("/toprint")) {
             modelMap.put("print", "print");
-            /*String procKey = "WfSpecialSettle"; //年度产值结算 - 特批流程
-            if ("1000".equals(yieldSettle.getWfCategory().trim())) {
-                procKey = "WfSpecialSettle";
-            }*/
             modelMap.put("definitionKey", "WfSpecialSettle");
             modelMap.put("executionId", yieldSettle.getProcId());
         }
 
-        String url = "/tjad/ym/yieldSettle/yieldSettle_view";
-        if ("2000".equals(yieldSettle.getWfCategory().trim())) {
-            // 特批年度产值结算流程
-            url = "/tjad/ym/yieldSettle/specSettle_view";
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addAllObjects(modelMap);
+        modelAndView.setViewName("/tjad/ym/yieldSettle/specSettle_view");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = {"/ordin/toview/{operate}/{id}", "/ordin/toprint/{operate}/{id}"}, method = RequestMethod.GET)
+    public ModelAndView toViewOrApproveOrdin(@PathVariable("operate") String operate, @PathVariable("id") String id,
+                                             String view) throws RuntimeException {
+        Map<String, Object> modelMap = new HashMap<String, Object>();
+
+        wfYieldSettleService.queryYieldSettleForView(modelMap, id, Integer.parseInt(view));
+
+        WfYieldSettle yieldSettle = (WfYieldSettle) modelMap.get("yieldSettle");
+        modelMap.put("view", Integer.parseInt(view));
+        //检查操作
+        Map<String, String> ins = new HashMap<String, String>(0);
+        ins.put("operate", operate);
+        ins.put("procId", yieldSettle.getProcId());
+        ins.put("applyer", yieldSettle.getCreator());
+        ins.put("auditStatus", yieldSettle.getAuditStatus());
+        checkOperate(ins, modelMap);
+
+        HttpServletRequest request = HttpUtil.getHttpServletRequest();
+        //打印预览
+        if (request.getRequestURI().contains("/toprint")) {
+            modelMap.put("print", "print");
+            modelMap.put("definitionKey", "WfOrdinSettle");
+            modelMap.put("executionId", yieldSettle.getProcId());
         }
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addAllObjects(modelMap);
-        modelAndView.setViewName(url);
+        modelAndView.setViewName("/tjad/ym/yieldSettle/yieldSettle_view");
         return modelAndView;
     }
 
@@ -254,3 +311,4 @@ public class WfYieldSettleController extends WfBaseController {
         return mess;
     }
 }
+

@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -60,6 +61,9 @@ public class WfYieldMajorRate extends BaseDomain {
     /** 属性：结算比例 */
     private BigDecimal settleRate;
 
+    /**非持久性 字段*/
+    private java.lang.String majorName;
+    
     /**
      * <p> 属性：wfId的Getter方法. </p>
      * 
@@ -154,6 +158,15 @@ public class WfYieldMajorRate extends BaseDomain {
     @Column(name = "CREATE_DATE")
     public java.util.Date getCreateDate() {
         return createDate;
+    }
+
+    @Transient
+    public java.lang.String getMajorName() {
+        return majorName;
+    }
+
+    public void setMajorName(java.lang.String majorName) {
+        this.majorName = majorName;
     }
 
     public boolean equals(Object o) {

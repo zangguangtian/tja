@@ -61,7 +61,7 @@ public interface IWfYieldSettleService extends IBaseService {
      * @param modelMap
      * @param id
      */
-    void queryYieldSettleForView(Map<String, Object> modelMap, String id) throws RuntimeException;
+    void queryYieldSettleForView(Map<String, Object> modelMap, String id, Integer view) throws RuntimeException;
 
     /**
      * <p>描述 : </p>

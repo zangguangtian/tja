@@ -80,6 +80,8 @@ public class WfYieldMajorRoleAllot extends BaseDomain {
     /** 属性：员工名称*/
     private java.lang.String staffName;
 
+    private java.lang.String roleName;
+
     /**
      * <p> 属性：wfId的Getter方法. </p>
      * 
@@ -278,6 +280,15 @@ public class WfYieldMajorRoleAllot extends BaseDomain {
 
     public void setStaffName(java.lang.String staffName) {
         this.staffName = staffName;
+    }
+
+    @Transient
+    public java.lang.String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(java.lang.String roleName) {
+        this.roleName = roleName;
     }
 
     public boolean equals(Object o) {

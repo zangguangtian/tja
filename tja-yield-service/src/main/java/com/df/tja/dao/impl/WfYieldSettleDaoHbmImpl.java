@@ -20,10 +20,12 @@ import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.df.framework.base.dao.impl.BaseDaoHbmImpl;
-import com.df.hr.domain.Staff;
+import com.df.framework.sys.domain.SysConfig;
 import com.df.hr.domain.cust.CustStaff;
 import com.df.tja.dao.IWfYieldSettleDao;
+import com.df.tja.domain.WfYieldMajorRate;
 import com.df.tja.domain.WfYieldMajorRoleAllot;
+import com.df.tja.domain.WfYieldPrincipalAllot;
 import com.df.tja.domain.WfYieldSettle;
 
 /**
@@ -48,7 +50,6 @@ public class WfYieldSettleDaoHbmImpl extends BaseDaoHbmImpl implements IWfYieldS
      */
     @Override
     public List<CustStaff> selectMajorBudgetStaff(String proId, String majorCode) {
-        List<Staff> staffs = new ArrayList<Staff>();
         StringBuilder sql = new StringBuilder();
         sql.append(" SELECT PBS.STAFF_ID AS id, HS.NAME AS name,PBS.MAJOR_CODE AS majorCode, ");
         sql.append(" SC.CONFIG_NAME AS  majorName FROM PM_BUDGET_STAFF_TM PBS                ");
@@ -58,6 +59,23 @@ public class WfYieldSettleDaoHbmImpl extends BaseDaoHbmImpl implements IWfYieldS
         SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
         query.setParameter(0, proId);
         query.setParameter(1, majorCode);
+        query.setResultTransformer(Transformers.aliasToBean(CustStaff.class));
+        return query.list();
+    }
+
+    /** 
+     * @see com.df.tja.dao.IWfYieldSettleDao#selectBudgetStaffByRole(java.lang.String, java.lang.String)
+     */
+    @Override
+    public List<CustStaff> selectBudgetStaffByRole(String proId, String roleCode) {
+        StringBuilder sql = new StringBuilder();
+        sql.append(" SELECT PBS.STAFF_ID AS id, HS.NAME AS name         ");
+        sql.append("  FROM PM_BUDGET_STAFF_TM PBS                       ");
+        sql.append(" LEFT JOIN HR_STAFF_TM HS ON PBS.STAFF_ID = HS.ID   ");
+        sql.append(" WHERE PBS.PRO_ID = ? AND PBS.INVOLVED_ROLE = ?     ");
+        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setParameter(0, proId);
+        query.setParameter(1, roleCode);
         query.setResultTransformer(Transformers.aliasToBean(CustStaff.class));
         return query.list();
     }
@@ -113,6 +131,61 @@ public class WfYieldSettleDaoHbmImpl extends BaseDaoHbmImpl implements IWfYieldS
             return list.get(0);
         }
         return null;
+    }
+
+    /** 
+     * @see com.df.tja.dao.IWfYieldSettleDao#selectMajorByProId(java.lang.String)
+     */
+    @Override
+    public List<SysConfig> selectMajorByProId(String proId) {
+        StringBuilder sql = new StringBuilder();
+        sql.append(" SELECT DISTINCT PBS.MAJOR_CODE AS configCode,                ");
+        sql.append(" SC.CONFIG_NAME AS configName FROM PM_BUDGET_STAFF_TM PBS     ");
+        sql.append(" LEFT JOIN SYS_CONFIG_TM SC ON                                ");
+        sql.append(" PBS.MAJOR_CODE = SC.CONFIG_CODE                              ");
+        sql.append(" WHERE PBS.PRO_ID = ?                                         ");
+        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setResultTransformer(Transformers.aliasToBean(SysConfig.class));
+        query.setString(0, proId);
+        return query.list();
+    }
+
+    /** 
+     * @see com.df.tja.dao.IWfYieldSettleDao#selectPrincipalAllot(java.lang.String, java.lang.String)
+     */
+    @Override
+    public List<WfYieldPrincipalAllot> selectPrincipalAllot(String id, String staffCategory) {
+        StringBuilder sql = new StringBuilder();
+        sql.append(" SELECT                                                                        ");
+        sql.append(" YP.ID AS id,YP.WF_ID AS wfId,YP.STAFF_CATEGORY AS staffCategory,              ");
+        sql.append(" YP.STAFF_ID AS staffId,YP.STAFF_SORT AS staffSort,YP.STAFF_RATE AS staffRate, ");
+        sql.append(" YP.STAFF_YIELD AS staffYield,HS.NAME AS staffName                             ");
+        sql.append(" FROM WF_YIELD_PRINCIPAL_ALLOT YP                                              ");
+        sql.append(" LEFT JOIN HR_STAFF_TM HS ON YP.STAFF_ID = HS.ID                               ");
+        sql.append(" WHERE YP.WF_ID = ? AND YP.STAFF_CATEGORY = ?                                     ");
+        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setResultTransformer(Transformers.aliasToBean(WfYieldPrincipalAllot.class));
+        query.setString(0, id);
+        query.setString(1, staffCategory);
+        return query.list();
+    }
+
+    /** 
+     * @see com.df.tja.dao.IWfYieldSettleDao#selectMajorRate(java.lang.String)
+     */
+    @Override
+    public List<WfYieldMajorRate> selectMajorRate(String id) {
+        StringBuilder sql = new StringBuilder();
+        sql.append(" SELECT                                                                                 ");
+        sql.append(" YM.ID AS id,YM.WF_ID AS wfId,YM.MAJOR_CODE AS majorCode,                               ");
+        sql.append(" YM.MAJOR_SORT AS majorSort,YM.SETTLE_RATE AS settleRate,                               ");
+        sql.append(" SC.CONFIG_NAME AS majorName                                                            ");
+        sql.append(" FROM WF_YIELD_MAJOR_RATE YM                                                            ");
+        sql.append(" LEFT JOIN SYS_CONFIG_TM SC ON YM.MAJOR_CODE = SC.CONFIG_CODE WHERE YM.WF_ID = ?        ");
+        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setResultTransformer(Transformers.aliasToBean(WfYieldMajorRate.class));
+        query.setString(0, id);
+        return query.list();
     }
 
 }

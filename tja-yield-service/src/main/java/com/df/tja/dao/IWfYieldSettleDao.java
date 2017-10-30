@@ -15,8 +15,11 @@ package com.df.tja.dao;
 import java.util.List;
 
 import com.df.framework.base.dao.IBaseDao;
+import com.df.framework.sys.domain.SysConfig;
 import com.df.hr.domain.cust.CustStaff;
+import com.df.tja.domain.WfYieldMajorRate;
 import com.df.tja.domain.WfYieldMajorRoleAllot;
+import com.df.tja.domain.WfYieldPrincipalAllot;
 import com.df.tja.domain.WfYieldSettle;
 
 /**
@@ -60,5 +63,41 @@ public interface IWfYieldSettleDao extends IBaseDao {
      * @return
      */
     WfYieldSettle selectWfYieldSettleById(String id);
+
+    /**
+     * 
+     * <p>描述 : </p>
+     *
+     * @param proId
+     * @param roleCode
+     * @return
+     */
+    List<CustStaff> selectBudgetStaffByRole(String proId, String roleCode);
+
+    /**
+     * <p>描述 : </p>
+     *
+     * @param proId
+     * @return
+     */
+    List<SysConfig> selectMajorByProId(String proId);
+
+    /**
+     * 
+     * <p>描述 : </p>
+     *
+     * @param id
+     * @param staffCategory
+     * @return
+     */
+    List<WfYieldPrincipalAllot> selectPrincipalAllot(String id, String staffCategory);
+
+    /**
+     * <p>描述 : </p>
+     *
+     * @param id
+     * @return
+     */
+    List<WfYieldMajorRate> selectMajorRate(String id);
 
 }
