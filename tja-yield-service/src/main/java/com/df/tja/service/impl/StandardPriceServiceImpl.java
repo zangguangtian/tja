@@ -131,7 +131,7 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
         try {
             OcStandardPrice entity = new OcStandardPrice();
             entity.setOrderBy("typeCode asc");
-            prices = standardPriceDao.selectBySQLCondition(OcStandardPrice.class, entity, null);
+            prices = standardPriceDao.selectByHQLCondition(OcStandardPrice.class, entity, null);
             if (prices != null && !prices.isEmpty()) {
                 JSONObject jsonObject = null;
                 OcStandardRatio ocStandardRatio = null;
