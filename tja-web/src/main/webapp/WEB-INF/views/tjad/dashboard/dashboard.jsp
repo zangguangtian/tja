@@ -1,6 +1,7 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="df" uri="http://www.diligentfirst.com/" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
@@ -8,7 +9,7 @@
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <title>首页</title>
     <%--每个jsp页面所在菜单的treePath属性值 --%>
-    <df:readProp var="menu-path" value="ym.week.menu.path" scope="request"  />
+    <df:readProp var="menu-path" value="ym.home.menu.path" scope="request"  />
   	<style type="text/css">
   	.common-message {
 	    width: 98%;
@@ -48,6 +49,9 @@
 	    font-size: 14px;
 	    margin: 15px 0 10px 0;
 	    font-weight: 500;
+	}
+	.page-content .col-lg-9 p a {
+		width: 250px;
 	}
   	</style>
   </head>
@@ -92,19 +96,30 @@
         
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 bg-green-seagreen">
             <div class="col-lg-3">
-                <a href="javascript:;" class="icon-btn">
+                <a href="${site }/admin/wf/process/read/search" class="icon-btn">
                     <img src="${site}/resources/pages/img/u629.png" alt="" />
-                    <div>待阅事务</div>
-                    <span class="badge badge-danger"> 2 </span>
+                    <div> 待阅事务 </div>
+                    <span class="badge badge-danger"> ${readPage.totalCount} </span>
                 </a>
             </div>
             <div class="col-lg-9">
-                <p>
-                    <a href="#">项目周报：16-BJ-006海口龙华区……</a>
-                </p>
+                <c:if test="${not empty messes}">
+                <c:forEach items="${messes}" var="mess">
+                    <p>
+                    	<c:if test="${not empty mess.url}">
+							<a href="${site}${mess.url}" title="${mess.content}">${mess.content}</a>
+						</c:if>
+						<c:if test="${empty mess.url}">
+							<a href="javascript:void(0)" title="${mess.content}" onclick="showContent('${mess.id}')">${mess.content }</a>
+						</c:if>
+	                    <span>${mess.submiter }</span>
+                    </p>
+                </c:forEach>
+            </c:if>
             </div>
         </div>
         
+        <sec:authorize url="/admin/ym/weekFill/list">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 bg-red-pink ">
             <div class="col-lg-3">
                 <a href="${site}/admin/ym/weekFill/list" class="icon-btn">
@@ -123,7 +138,9 @@
             </c:if>
             </div>
         </div>
+        </sec:authorize>
         
+        <sec:authorize url="/admin/ym/monthFill/list">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 bg-purple-plum">
             <div class="col-lg-3">
                 <a href="${site}/admin/ym/monthFill/list" class="icon-btn">
@@ -142,7 +159,9 @@
             </c:if>
             </div>
         </div>
+        </sec:authorize>
         
+        <sec:authorize url="/admin/ym/yearFill/list">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 bg-blue">
             <div class="col-lg-3">
                 <a href="${site}/admin/ym/yearFill/list" class="icon-btn">
@@ -161,6 +180,7 @@
             </c:if>
             </div>
         </div>
+        </sec:authorize>
 
     </div>
 </div>
@@ -177,6 +197,25 @@ function autoScroll(obj){
 			  $(this).css({marginTop: "0px"}).find("li:first").appendTo(this);
 		  });
 }
+
+function showContent(id){
+	$.get(context+"/admin/wf/process/read/ajax/edit/"+id, {}, function(html, textStatus){
+		layer.open({
+		    type: 1,
+			shade: [0.5, '#393D49'],
+			closeBtn: 2,
+			title: "待阅", //不显示标
+			area: ['650px', '300px'],
+			content:html,
+			btn: ["关闭"],
+			yes:function(index, layero){
+				window.parent.location.reload();
+				layer.closeAll('page');
+			}
+		});
+	});
+}
+
 </script>
 </body>
 </html>
