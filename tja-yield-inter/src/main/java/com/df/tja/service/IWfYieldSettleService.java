@@ -72,4 +72,12 @@ public interface IWfYieldSettleService extends IBaseService {
     void approveWfYieldSettle(WfYieldSettle yieldSettle, WfYieldSettleModel settleModel, Integer view)
         throws RuntimeException, LogicalException;
 
+    /**
+     * 
+     * <p>描述 : 流程结束后修改项目状态</p>
+     *
+     * @param id
+     * @throws RuntimeException
+     */
+    void modifyProStutas(String id) throws RuntimeException;
 }

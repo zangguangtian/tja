@@ -19,6 +19,7 @@ import com.df.framework.sys.domain.SysConfig;
 import com.df.hr.domain.cust.CustStaff;
 import com.df.tja.domain.WfYieldMajorRate;
 import com.df.tja.domain.WfYieldMajorRoleAllot;
+import com.df.tja.domain.WfYieldMajorRoleRate;
 import com.df.tja.domain.WfYieldPrincipalAllot;
 import com.df.tja.domain.WfYieldSettle;
 
@@ -99,5 +100,23 @@ public interface IWfYieldSettleDao extends IBaseDao {
      * @return
      */
     List<WfYieldMajorRate> selectMajorRate(String id);
+
+    /**
+     * <p>描述 : </p>
+     *
+     * @param id
+     * @param majorCode
+     * @return
+     */
+    List<WfYieldMajorRoleRate> selectMajorRoleRate(String wfId, String majorCode);
+
+    /**
+     * <p>描述 : </p>
+     *
+     * @param id
+     * @param majorCode
+     * @return
+     */
+    List<WfYieldMajorRoleAllot> selectMajorRoleAllot(String wfId, String majorCode);
 
 }

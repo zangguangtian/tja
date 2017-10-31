@@ -35,16 +35,17 @@
                </div>
             </div>
 			<!-- BEGIN FORM-->
-			<form id="saveForm" action="${site}/admin/ym/yieldSettle/ajax/approve" class="row">
+			<form id="approveForm" action="${site}/admin/ym/yieldSettle/ajax/approve" class="row">
 				<input type="hidden" name="wfCategory" value="1000">
 				<input type="hidden" name="id" value="${yieldSettle.id}">
 		        <input type="hidden" name="procId" value="${yieldSettle.procId }">
 		        <input type="hidden" name="approve" value="2"/>
+		        <input type="hidden" name="view" value="${view}"/>
 				<div class="form-body clearfix">
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目编号</label>
 						<div class="col-md-8">
-							<input type="text" name="proCode" class="form-control col-md-3" disabled value="${project.proCode}">
+							<input type="text" name="proCode" class="form-control " disabled value="${project.proCode}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
@@ -104,7 +105,7 @@
 						<label class="control-label col-md-3">项目经理</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-			            	<input type="text" name="pManagers" class="form-control col-md-3" value="${project.pManagers}" disabled>
+			            	<input type="text" name="pManagers" class="form-control " value="${project.pManagers}" disabled>
 						</div>
 					</div>
 					
@@ -113,14 +114,14 @@
 						<label class="control-label col-md-3">当年可结算产值(¥)</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-							<input type="text" class="form-control" name="yearYield" value="${project.yield}" disabled>
+							<input type="text" class="form-control" name="yearYield" value="${yieldSettle.yearYield}" disabled>
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">历年已结算产值(¥)</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-							<input type="text" class="form-control" name="hisyearYield" value="${project.yield}" disabled>
+							<input type="text" class="form-control" name="hisyearYield" value="${yieldSettle.hisyearYield}" disabled>
 						</div>
 					</div>
 					
@@ -128,7 +129,7 @@
 						<label class="control-label col-md-3">所处状态</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-						    <tags:config type="label" cssClass="form-control" selectCode="${yieldSettle.itemStatus}" parentCode="PM.STATUS" name="itemStatus"></tags:config>
+						    <tags:config type="label" code="${yieldSettle.itemStatus}" />
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
@@ -162,6 +163,7 @@
 							    <div class="col-lg-4  col-md-4 col-sm-4 col-xs-4">项目负责人</div>
 							    <div class="col-lg-4  col-md-4 col-sm-4 col-xs-4 text-right">
 							      <label>比例：</label>
+							      <input type="hidden" name="principalRate" value="${yieldSettle.principalRate}">
 							      ${yieldSettle.principalRate}
 								</div>
 							</div>
@@ -176,6 +178,8 @@
 								</thead>
 								<tbody>
 								 <c:set var="size" value="0"></c:set>
+								 <c:set var="total_le_rate" value="0"></c:set>
+								 <c:set var="total_le_yield" value="0"></c:set>
 								 <c:if test="${not empty proLeaders}">
 								   <c:forEach items="${proLeaders}" var="leader" varStatus="st">
 									    <tr>
@@ -188,12 +192,14 @@
 											</td>
 										</tr>
 										<c:set var="size" value="${size+1}"></c:set>
+										<c:set var="total_le_rate" value="${leader.staffRate+total_le_rate}"></c:set>
+								        <c:set var="total_le_yield" value="${leader.staffYield+total_le_yield}"></c:set>
 								   </c:forEach>
 								  </c:if>
 								<tr class="total">
 									<td  class="text-center col-lg-4">合计</td>
-									<td  class="col-lg-4 text-right"></td>
-									<td  class="col-lg-4 text-right"></td>
+									<td  class="col-lg-4 text-right">${total_le_rate}</td>
+									<td  class="col-lg-4 text-right">${total_le_yield}</td>
 								</tr>
 								</tbody>
 							</table>
@@ -203,6 +209,7 @@
 							    <div class="col-lg-4  col-md-4 col-sm-4 col-xs-4">项目经理</div>
 							    <div class="col-lg-4  col-md-4 col-sm-4 col-xs-4 text-right">
 							      <label>比例：</label>
+							      <input type="hidden" name="pmRate" value="${yieldSettle.pmRate}">
 							      ${yieldSettle.pmRate}
 								</div>
 							</div>
@@ -215,23 +222,27 @@
 									</tr>
 								</thead>
 								<tbody>
+								 <c:set var="total_pm_rate" value="0"></c:set>
+								 <c:set var="total_pm_yield" value="0"></c:set>
 								 <c:if test="${not empty proManagers}">
 									  <c:forEach items="${proManagers}" var="manager">
 									    <tr>
 											<td  class="text-center col-lg-4">${manager.staffName}</td>
 											<td  class="col-lg-4 text-right">
-											  <input type="text" class="form-control text-right" name="principalAllots[${size}].staffRate"  data-rule-number="true"  placeholder="0.00" value="${manager.staffRate}" disabled>
+											  <input type="text" class="form-control text-right" name="principalAllots[${size}].staffRate"  placeholder="0.00" value="${manager.staffRate}" disabled>
 											</td>
 											<td  class="col-lg-4 text-right">
 											<input type="text" class="form-control text-right" name="principalAllots[${size}].staffYield" value="${manager.staffYield}" placeholder="0.00" disabled>
 											</td>
 										</tr>
+										<c:set var="total_pm_rate" value="${manager.staffRate+total_pm_rate}"></c:set>
+								        <c:set var="total_pm_yield" value="${manager.staffYield+total_pm_yield}"></c:set>
 									 </c:forEach>
 								 </c:if>
 								 <tr class="total">
 									<td  class="text-center col-lg-4">合计</td>
-									<td  class="col-lg-4 text-right"></td>
-									<td  class="col-lg-4 text-right"></td>
+									<td  class="col-lg-4 text-right">${total_pm_rate}</td>
+									<td  class="col-lg-4 text-right">${total_pm_yield}</td>
 								 </tr>
 								</tbody>
 							</table>
@@ -248,6 +259,7 @@
 									</tr>
 								</thead>
 								<tbody>
+								<c:set var="totalSettleRate" value="0"></c:set>
 								<c:if test="${not empty majorRates}">
 									  <c:forEach items="${majorRates}" var="majorRate" varStatus="st">
 									    <tr>
@@ -255,28 +267,21 @@
 											  ${majorRate.majorName}
 											</td>
 											<td  class="col-lg-8 text-right">
-											   <input type="text" class="form-control text-right" name="majorRates[${st.index}].settleRate"  data-rule-number="true"  placeholder="0.00" value="${majorRate.settleRate}" disabled>
+											   <input type="text" class="form-control text-right" name="majorRates[${st.index}].settleRate"  placeholder="0.00" value="${majorRate.settleRate}" disabled>
+											   <c:set var="totalSettleRate" value="${majorRate.settleRate+totalSettleRate}"></c:set>
 											</td>
 										</tr>
 									  </c:forEach>
 								  </c:if>
 								<tr class="total">
 									<td  class="text-center col-lg-4">合计</td>
-									<td  class="col-lg-8 text-right"></td>
+									<td  class="col-lg-8 text-right">${totalSettleRate}</td>
 								</tr>
 								</tbody>
 							</table>
 						</div>
 					</div>
-					
-					<c:if test="${view == 2 }">
-						<jsp:include page="include_major.jsp"/>
-					</c:if>
-					
-					<c:if test="${view > 2 }">
-					
-					</c:if>
-					
+					<jsp:include page="include_major.jsp"/>
 					<jsp:include page="../../../framework/activiti/wf_approve.jsp" flush="true"/>
 	                <tags:histask procId="${yieldSettle.procId }"/>
 				</div>
@@ -285,62 +290,93 @@
 		</div>
 	</div>
 </div>
+<div>
+ <table id="clone_text" style="display: none">
+ <tr class="row roleAllot">
+ <input type="hidden" class="ta_input" name="majorRoleAllots[{0}].wfId" value="">
+    <input type="hidden" class="ta_input" name="majorRoleAllots[{0}].id" value="">
+    <input type="hidden" class="ta_input" name="majorRoleAllots[{0}].majorCode" value="">
+    <input type="hidden" class="ta_input" name="majorRoleAllots[{0}].category" value="1000">
+    <input type="hidden" class="ta_input" name="majorRoleAllots[{0}].roleCode" value="">
+    <input type="hidden" class="ta_input" name="majorRoleAllots[{0}].staffId" value="">
+    <input type="hidden" class="ta_input" name="majorRoleAllots[{0}].staffSort" value="">
+	<td class="text-center col-lg-4"></td>
+	<td class="col-lg-4 input-icon left">
+	 <input type="text" name="majorRoleAllots[{0}].staffRate"
+					placeholder="0.00"
+					data-rule-number="true"
+					data-rule-required="true"
+					class="form-control text-right" 
+					data-rule-max="100"
+					data-rule-min="0" 
+					value="">
+				</td>
+	<td class=" col-lg-4 text-right">
+	 <input type="text" placeholder="0.00" name="majorRoleAllots[{0}].staffYield" class="form-control text-right" value="" readonly>
+	</td>
+  </tr>
+ </table>
+</div>
 <script type="text/javascript">
-    var tIndex = ${size};
-    var leaderCate = "${categoryLeader}";
-    var pmCate = "${categoryPm}";
 	$(function(){
-		
-		jQuery(document).on("keyup","#leader tbody input[name$='staffRate']",function(){
+		jQuery(document).on("keyup","input[name$='.staffRate']",function(){
 			countOutputValue($(this));
 		});
-		
-		jQuery(document).on("keyup","#pm tbody input[name$='staffRate']",function(){
-			countOutputValue($(this));
-		});
-		
-		jQuery(".btn_leader").on("click",function(){
-			selectStaff(selectLeader,'checkbox');
-		});
-		
-		jQuery(".btn_pm").on("click",function(){
-			selectStaff(selectPm,'checkbox');
-		});
-		
-		initTotal(null);
 	});
 
+	function getNumValue(controlid) {
+	       var num = controlid.val();
+	       if (validateInput(num)) {
+	           num = parseFloat(num);
+	       }
+	       else {
+	           num = 0;
+	       }
+	       return num;
+	   }
+ 
+  function validateInput(inputstr) {
+	      flag = false;
+	      if (inputstr != "") {
+	          if (isNaN(inputstr)) {
+	              flag = false; //如果输入字符不是数字
+	          }
+	          else {//输入数字但是小于0
+	              if (parseFloat(inputstr) < 0)
+	                  flag = false;
+	              else
+	                  flag = true;
+	          }
+	      }
+	      return flag;
+	  }
+	
 	//计算产值
 	function countOutputValue(_this){
-		  var staffRate = _this.val();
-		  //项目负责人 项目经理 比例
-		  var rate = _this.closest("table").prev().find("input[name^='wfYieldSettle']").val();
-		  //合同额 
-		  var contractAmount = jQuery("input[name$='.contractAmount']").val();
-		  //分包扣减
-		  var pkgAmount = jQuery("input[name$='.pkgAmount']").val();
-		  //方案扣减
-		  var schemeAmount = jQuery("input[name$='.schemeAmount']").val();
-		  //其他扣减
-		  var rebateAmount = jQuery("input[name$='.rebateAmount']").val();
+		  var staffRate = getNumValue(_this);
+		  //专业角色  比例
+		  var rate = getNumValue(_this.closest("table").prev().find("input[name$='allotRate']"));
+		  //当年可结算产值(¥)
+		  var yearYield = getNumValue(jQuery("input[name$='.yearYield']"));
+		  //项目经理 比例
+		  var pmRate = getNumValue(jQuery("input[name='pmRate']"));
+		  //项目负责人 比例
+		  var principalRate = getNumValue(jQuery("input[name='principalRate']"));
 		  
-		  if(rate == '' || typeof rate == 'undefined' || isNaN(rate)){
-			  rate = 0.00;
+		  //本专业结算比例
+		  var majorAllotRate = getNumValue(_this.closest("div.col-lg-12").prev().find("input[name='majorAllotRate']")); 
+		  
+		  var roleCode = _this.closest("tr").find("input[name$='.roleCode']").val();
+		  var staffYield = 0.00;
+		  if("PrjMajorLeader" == roleCode){
+			  // 专业负责人个人产值=当年可结算产值(¥)×(100-项目负责人比例-项目经理比例)×本专业结算比例×专业负责人比例×工作量/100000000
+			  staffYield = new Number(yearYield)*(100-new Number(principalRate) - new Number(pmRate))*(new Number(majorAllotRate))*(new Number(rate))*(new Number(staffRate))/100000000;
+		  }else{
+			//专业负责人比例
+			var allotRate = getNumValue(jQuery("input[name$='.roleCode'][value='PrjMajorLeader']").closest("div.row").find("input[name$='.allotRate']"));  
+			//校对人、审核人、设计人/制图人个人产值=当年可结算产值(¥)×(100-项目负责人比例-项目经理比例)×本专业结算比例×(100-专业负责人比例)×本角色比例×工作量/10000000000
+			  staffYield = new Number(yearYield) * (100-new Number(principalRate) - new Number(pmRate))*(new Number(majorAllotRate))*(100 - new Number(allotRate))*(new Number(rate))*(new Number(staffRate))/100000000;
 		  }
-		  if(contractAmount == '' || typeof contractAmount == 'undefined' || isNaN(contractAmount)){
-			  contractAmount = 0.00;
-		  }
-		  if(pkgAmount == '' || typeof pkgAmount == 'undefined' || isNaN(pkgAmount)){
-			  pkgAmount = 0.00;
-		  }
-		  if(schemeAmount == '' || typeof schemeAmount == 'undefined' || isNaN(schemeAmount)){
-			  schemeAmount = 0.00;
-		  }
-		  if(rebateAmount == '' || typeof rebateAmount == 'undefined' || isNaN(rebateAmount)){
-			  rebateAmount = 0.00;
-		  }
-		  //=(实际合同额-分包扣减-方案扣减-其他扣减)×0.9×比例×工作量/10000
-		  var staffYield =(new Number(contractAmount) - new Number(pkgAmount) - new Number(schemeAmount) - new Number(rebateAmount)) * 0.9 * new Number(rate) * staffRate/10000;
 		  var _input = _this.closest("tr").find("td:last").find("input");
 		  _input.val(new Number(staffYield).toFixed(2));
 		  var flag = initTotal(_this);
@@ -348,110 +384,17 @@
 	
 	//合计
 	function initTotal(_this){
-		var flag = false;
-		var jQObj = new Array();
-		if(_this == null || typeof _this == 'undefined'){
-			//页面加载合计
-			jQObj.push(jQuery("#leader"));
-			jQObj.push(jQuery("#pm"));
-			flag = total(jQObj);
-			totalMajor();
-		}else{
-			// 动态改变工作量 加载合计
-			jQObj.push(_this.closest("table"));
-			flag = total(jQObj);
-		}
-		return flag;
-	}
-	
-	//当年专业结算比例合计
-	function totalMajor(){
-		var totalsettleRate = 0.00;
-		jQuery.each($("#majorSettleRate tbody tr:not(:last)"),function(index,item){
+		var totalstaffRate = 0.00;
+		var totalstaffYield = 0.00;
+		jQuery.each(_this.closest("table").find("tbody tr:not(:last)"),function(index,item){
 			var _this = $(item);
-			var settleRate = _this.find("input[name$='.settleRate']").val();
-			if(settleRate == '' || typeof settleRate == 'undefined' || isNaN(settleRate)){
-				settleRate = 0.00;
-			  }
-			totalsettleRate = new Number(totalsettleRate) + new Number(settleRate);
+			var staffRate = getNumValue(_this.find("input[name$='staffRate']"));
+			var staffYield =getNumValue(_this.find("input[name$='staffYield']"));
+		    totalstaffRate = new Number(totalstaffRate) + new Number(staffRate);
+		    totalstaffYield = new Number(totalstaffYield) + new Number(staffYield);
 		});
-		$("#majorSettleRate tr.total").find("td:eq(1)").text(new Number(totalsettleRate).toFixed(2));
-		
-	}
-	
-	function total(obj){
-		var flag = true;
-		for(var i =0 ;i<obj.length;i++){
-			var _obj = obj[i];
-			var totalstaffRate = 0.00;
-			var totalstaffYield = 0.00;
-			jQuery.each(_obj.find("tbody tr:not(:last)"),function(index,item){
-				var _this = $(item);
-				var staffRate = _this.find("input[name$='staffRate']").val();
-				var staffYield = _this.find("input[name$='staffYield']").val();
-				if(staffYield == '' || typeof staffYield == 'undefined' || isNaN(staffYield)){
-					staffYield = 0;
-				  }
-				  if(staffRate == '' || typeof staffRate == 'undefined' || isNaN(staffRate)){
-					  staffRate = 0;
-				  }
-				  totalstaffRate = new Number(totalstaffRate) + new Number(staffRate);
-				  totalstaffYield = new Number(totalstaffYield) + new Number(staffYield);
-			});
-			if(new Number(totalstaffRate) !=100){
-				flag = false;
-			}
-			_obj.find("tr.total").find("td:eq(1)").text(new Number(totalstaffRate).toFixed(2));
-			_obj.find("tr.total").find("td:eq(2)").text(new Number(totalstaffYield).toFixed(2));
-		}
-		return flag;
-	}
-	
-	function selectPm(data){
-		selectStaffBack(data,"pm");
-	}
-	
-    function selectLeader(data){
-    	selectStaffBack(data,"leader");
-	}
-	
-	function selectStaffBack(data,type){
-		var _thisTable = jQuery("#leader");
-		var staffCategory = leaderCate;
-		if(type == "pm"){
-			_thisTable = jQuery("#pm");
-			staffCategory = pmCate;
-		}
-		jQuery.each(data,function(index,item){
-			var info = $(item)[0];
-			var trs = _thisTable.find("tbody tr:not(:last)");
-			var trSize = _thisTable.find("tbody tr:not(:last)").size();
-			if(trSize == 0){
-				var $item = jQuery("#clone_text").clone();
-				$item.html($item.html().format(tIndex));
-				$item.find("tr input[name$='.staffId']").val(info.id);
-				$item.find("tr input[name$='.staffSort']").val(tIndex);
-				$item.find("tr input[name$='.staffCategory']").val(staffCategory);
-				$item.find("tr td:first").text(info.name);
-				_thisTable.find(".total").before($item.find("tr"));
-				trSize ++;
-				tIndex ++;
-			}else{
-				var _size = _thisTable.find("tbody tr input[value='"+info.id+"']").size();
-				if(_size <= 0){
-					//可以添加
-					var $item = jQuery("#clone_text").clone();
-					$item.html($item.html().format(tIndex));
-					$item.find("tr input[name$='.staffId']").val(info.id);
-					$item.find("tr input[name$='.staffSort']").val(tIndex);
-					$item.find("tr input[name$='.staffCategory']").val(staffCategory);
-					$item.find("tr td:first").text(info.name);
-					_thisTable.find(".total").before($item.find("tr"));
-					trSize ++;
-					tIndex++;
-				}
-			}
-		});
+		_this.closest("table").find("tr.total").find("td:eq(1)").text(new Number(totalstaffRate).toFixed(2));
+		_this.closest("table").find("tr.total").find("td:eq(2)").text(new Number(totalstaffYield).toFixed(2));
 	}
 	
 	$(document).on("click", "#reject-btn", function(){
@@ -479,7 +422,7 @@
 	/*打印预览*/
 	jQuery("#printview-btn").dfprint({
 	    action : "printview",
-	    url : "${site}/admin/ym/yieldSettle/toprint/v/${yieldSettle.id}"
+	    url : "${site}/admin/ym/yieldSettle/ordin/toprint/v/${yieldSettle.id}"
 	});
 
 	/*打印*/

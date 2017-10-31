@@ -117,14 +117,14 @@
 						<label class="control-label col-md-3">当年可结算产值(¥)</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-							<input type="text" class="form-control" name="wfYieldSettle.yearYield" value="${project.yield}" readonly>
+							<input type="text" class="form-control" name="wfYieldSettle.yearYield" value="${empty yieldSettle.yearYield ? project.yield : yieldSettle.yearYield}" readonly>
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">历年已结算产值(¥)</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-							<input type="text" class="form-control" name="wfYieldSettle.hisyearYield" value="${project.yield}" readonly>
+							<input type="text" class="form-control" name="wfYieldSettle.hisyearYield" value="${empty yieldSettle.hisyearYield ? project.yield : yieldSettle.hisyearYield}" readonly>
 						</div>
 					</div>
 					
@@ -161,7 +161,7 @@
 					
 
 					<h3 class="form-tit col-lg-12">产值分配</h3>
-					<div class="col-lg-12">
+					<div class="col-lg-12 form-group">
 						<div class="col-lg-6 ">
 							<div class="row clearfix">
 							    <div class="col-lg-4  col-md-4 col-sm-4 col-xs-4">项目负责人</div>
@@ -188,14 +188,22 @@
 								   <c:forEach items="${proLeaders}" var="leader" varStatus="st">
 									    <tr>
 											<td  class="text-center col-lg-4">${leader.staffName}</td>
-											<td  class="col-lg-4 text-right">
+											<td  class="col-lg-4 text-right input-icon left">
+											  <i class="fa"></i>
 											  <input type="hidden" name="principalAllots[${size}].id" value="${leader.id}">
 											  <input type="hidden" name="principalAllots[${size}].wfId" value="${leader.wfId}">
 											  <input type="hidden" name="principalAllots[${size}].staffCategory" value="${leader.staffCategory}">
 											  <input type="hidden" name="principalAllots[${size}].staffSort" value="${leader.staffSort}">
 											  <input type="hidden" name="principalAllots[${size}].staffId" value="${leader.staffId}">
-											  <input type="text" class="form-control text-right" name="principalAllots[${size}].staffRate" value="${leader.staffRate}" data-rule-number="true"  placeholder="0.00">
-											</td>
+											  <input type="text" class="form-control text-right"
+														name="principalAllots[${size}].staffRate"
+														value="${leader.staffRate}"
+														data-rule-number="true" 
+														data-rule-max="100"
+														data-rule-min="0" 
+														placeholder="0.00"
+														data-rule-required="true">
+													</td>
 											<td  class="col-lg-4 text-right">
 											  <input type="text" class="form-control text-right" name="principalAllots[${size}].staffYield" value="${leader.staffYield}" placeholder="0.00" readonly>
 											</td>
@@ -208,14 +216,22 @@
 								   <c:forEach items="${leaders}" var="leader" varStatus="st">
 									    <tr>
 											<td  class="text-center col-lg-4">${leader.name}</td>
-											<td  class="col-lg-4 text-right">
+											<td  class="col-lg-4 text-right input-icon left">
+											  <i class="fa"></i>
 											  <input type="hidden" name="principalAllots[${size}].id" value="">
 											  <input type="hidden" name="principalAllots[${size}].wfId" value="">
 											  <input type="hidden" name="principalAllots[${size}].staffCategory" value="${categoryLeader}">
 											  <input type="hidden" name="principalAllots[${size}].staffSort" value="${st.index}">
 											  <input type="hidden" name="principalAllots[${size}].staffId" value="${leader.staffId}">
-											  <input type="text" class="form-control text-right" name="principalAllots[${size}].staffRate" value="" data-rule-number="true"  placeholder="0.00">
-											</td>
+											  <input type="text" class="form-control text-right"
+														name="principalAllots[${size}].staffRate" 
+														data-rule-number="true" 
+														data-rule-max="100"
+														data-rule-min="0" 
+														placeholder="0.00"
+														data-rule-required="true"
+														value="">
+													</td>
 											<td  class="col-lg-4 text-right">
 											  <input type="text" class="form-control text-right" name="principalAllots[${size}].staffYield" value="" placeholder="0.00" readonly>
 											</td>
@@ -255,36 +271,54 @@
 									  <c:forEach items="${proManagers}" var="manager">
 									    <tr>
 											<td  class="text-center col-lg-4">${manager.staffName}</td>
-											<td  class="col-lg-4 text-right">
+											<td  class="col-lg-4 text-right input-icon left">
+											  <i class="fa"></i>
 											  <input type="hidden" name="principalAllots[${size}].id" value="${manager.id}">
 											  <input type="hidden" name="principalAllots[${size}].wfId" value="${manager.wfId}">
 											  <input type="hidden" name="principalAllots[${size}].staffCategory" value="${manager.staffCategory}">
 											  <input type="hidden" name="principalAllots[${size}].staffSort" value="${manager.staffSort}">
 											  <input type="hidden" name="principalAllots[${size}].staffId" value="${manager.staffId}">
-											  <input type="text" class="form-control text-right" name="principalAllots[${size}].staffRate"  data-rule-number="true"  placeholder="0.00" value="${manager.staffRate}">
-											</td>
+											  <input type="text" class="form-control text-right"
+														name="principalAllots[${size}].staffRate"
+														data-rule-number="true" 
+														data-rule-max="100"
+														data-rule-min="0" 
+														placeholder="0.00"
+														data-rule-required="true"
+														value="${manager.staffRate}">
+													</td>
 											<td  class="col-lg-4 text-right">
 											<input type="text" class="form-control text-right" name="principalAllots[${size}].staffYield" value="${manager.staffYield}" placeholder="0.00" readonly>
 											</td>
 										</tr>
+										<c:set var="size" value="${size+1}"></c:set>
 									 </c:forEach>
 								 </c:if>
 								 <c:if test="${empty proManagers and not empty proPms}">
 									  <c:forEach items="${proPms}" var="proPm">
 									    <tr>
 											<td  class="text-center col-lg-4">${proPm.name}</td>
-											<td  class="col-lg-4 text-right">
+											<td  class="col-lg-4 text-right input-icon left">
+											  <i class="fa"></i>
 											  <input type="hidden" name="principalAllots[${size}].id" value="">
 											  <input type="hidden" name="principalAllots[${size}].wfId" value="">
 											  <input type="hidden" name="principalAllots[${size}].staffCategory" value="${categoryPm}">
 											  <input type="hidden" name="principalAllots[${size}].staffSort" value="${st.index}">
 											  <input type="hidden" name="principalAllots[${size}].staffId" value="${proPm.id}">
-											  <input type="text" class="form-control text-right" name="principalAllots[${size}].staffRate"  data-rule-number="true"  placeholder="0.00" value="">
-											</td>
+											  <input type="text" class="form-control text-right"
+														name="principalAllots[${size}].staffRate"
+														data-rule-number="true" 
+														data-rule-max="100"
+														data-rule-min="0" 
+														placeholder="0.00"
+														data-rule-required="true"
+														value="">
+													</td>
 											<td  class="col-lg-4 text-right">
 											<input type="text" class="form-control text-right" name="principalAllots[${size}].staffYield" value="" placeholder="0.00" readonly>
 											</td>
 										</tr>
+										<c:set var="size" value="${size+1}"></c:set>
 									 </c:forEach>
 								 </c:if>
 								 <tr class="total">
@@ -296,7 +330,7 @@
 							</table>
 						</div>
 					</div>
-					<div class="col-lg-12">
+					<div class="col-lg-12 form-group">
 						<div class="col-lg-5 ">
 						    <caption>当年专业结算比例</caption>
 							<table class="table table-bordered" id="majorSettleRate">
@@ -313,13 +347,21 @@
 											<td  class="text-center col-lg-4">
 											  ${majorRate.majorName}
 											</td>
-											<td  class="col-lg-8 text-right">
+											<td  class="col-lg-8 text-right input-icon left">
+											   <i class="fa"></i>
 											   <input type="hidden" name="majorRates[${st.index}].id" value="${majorRate.id}">
 											   <input type="hidden" name="majorRates[${st.index}].wfId" value="${majorRate.wfId}">
 											   <input type="hidden" name="majorRates[${st.index}].majorCode" value="${majorRate.majorCode}">
 											   <input type="hidden" name="majorRates[${st.index}].majorSort" value="${majorRate.majorSort}">
-											   <input type="text" class="form-control text-right" name="majorRates[${st.index}].settleRate"  data-rule-number="true"  placeholder="0.00" value="${majorRate.settleRate}">
-											</td>
+											   <input type="text" class="form-control text-right"
+														name="majorRates[${st.index}].settleRate"
+														data-rule-number="true" 
+														data-rule-max="100"
+														data-rule-min="0" 
+														placeholder="0.00"
+														data-rule-required="true"
+														value="${majorRate.settleRate}">
+													</td>
 										</tr>
 									  </c:forEach>
 								  </c:if>
@@ -330,13 +372,21 @@
 											<td  class="text-center col-lg-4">
 											  ${config.configName}
 											</td>
-											<td  class="col-lg-8 text-right">
+											<td  class="col-lg-8 text-right input-icon left">
+											   <i class="fa"></i>
 											   <input type="hidden" name="majorRates[${st.index}].id" value="">
 											   <input type="hidden" name="majorRates[${st.index}].wfId" value="">
 											   <input type="hidden" name="majorRates[${st.index}].majorCode" value="${config.configCode}">
 											   <input type="hidden" name="majorRates[${st.index}].majorSort" value="${st.index}">
-											   <input type="text" class="form-control text-right" name="majorRates[${st.index}].settleRate"  data-rule-number="true"  placeholder="0.00" value="">
-											</td>
+											   <input type="text" class="form-control text-right"
+														name="majorRates[${st.index}].settleRate"
+														data-rule-number="true"
+														placeholder="0.00" 
+														data-rule-max="100"
+														data-rule-min="0" 
+														data-rule-required="true"
+														value="${config.configValue}">
+													</td>
 										</tr>
 									  </c:forEach>
 								  </c:if>
@@ -355,14 +405,22 @@
 			<table id="clone_text" style="display: none">
 			 <tr>
 				<td  class="text-center col-lg-4"></td>
-				<td  class="col-lg-4 text-right">
+				<td  class="col-lg-4 text-right input-icon left">
+				  <i class="fa"></i>
 				  <input type="hidden" name="principalAllots[{0}].id" value="">
 				  <input type="hidden" name="principalAllots[{0}].wfId" value="">
 				  <input type="hidden" name="principalAllots[{0}].staffCategory" value="">
 				  <input type="hidden" name="principalAllots[{0}].staffSort" value="">
 				  <input type="hidden" name="principalAllots[{0}].staffId" value="">
-				  <input type="text" class="form-control text-right" name="principalAllots[{0}].staffRate"  data-rule-number="true"  placeholder="0.00" value="">
-				</td>
+				  <input type="text" class="form-control text-right"
+							name="principalAllots[{0}].staffRate" 
+							data-rule-number="true" 
+						    data-rule-max="100"
+						    data-rule-min="0" 
+						    placeholder="0.00"
+						    data-rule-required="true"
+							value="">
+						</td>
 				<td  class="col-lg-4 text-right">
 				  <input type="text" class="form-control text-right" name="principalAllots[{0}].staffYield" placeholder="0.00" value="" readonly>
 				</td>
@@ -407,32 +465,17 @@
 		  var staffRate = _this.val();
 		  //项目负责人 项目经理 比例
 		  var rate = _this.closest("table").prev().find("input[name^='wfYieldSettle']").val();
-		  //合同额 
-		  var contractAmount = jQuery("input[name$='.contractAmount']").val();
-		  //分包扣减
-		  var pkgAmount = jQuery("input[name$='.pkgAmount']").val();
-		  //方案扣减
-		  var schemeAmount = jQuery("input[name$='.schemeAmount']").val();
-		  //其他扣减
-		  var rebateAmount = jQuery("input[name$='.rebateAmount']").val();
+		  //当年可结算产值
+		  var yearYield = jQuery("input[name$='.yearYield']").val();
 		  
 		  if(rate == '' || typeof rate == 'undefined' || isNaN(rate)){
 			  rate = 0.00;
 		  }
-		  if(contractAmount == '' || typeof contractAmount == 'undefined' || isNaN(contractAmount)){
-			  contractAmount = 0.00;
+		  if(yearYield == '' || typeof yearYield == 'undefined' || isNaN(yearYield)){
+			  yearYield = 0.00;
 		  }
-		  if(pkgAmount == '' || typeof pkgAmount == 'undefined' || isNaN(pkgAmount)){
-			  pkgAmount = 0.00;
-		  }
-		  if(schemeAmount == '' || typeof schemeAmount == 'undefined' || isNaN(schemeAmount)){
-			  schemeAmount = 0.00;
-		  }
-		  if(rebateAmount == '' || typeof rebateAmount == 'undefined' || isNaN(rebateAmount)){
-			  rebateAmount = 0.00;
-		  }
-		  //=(实际合同额-分包扣减-方案扣减-其他扣减)×0.9×比例×工作量/10000
-		  var staffYield =(new Number(contractAmount) - new Number(pkgAmount) - new Number(schemeAmount) - new Number(rebateAmount)) * 0.9 * new Number(rate) * staffRate/10000;
+		  //=当年可结算产值×比例×工作量/10000
+		  var staffYield =new Number(yearYield) * new Number(rate) * staffRate/10000;
 		  var _input = _this.closest("tr").find("td:last").find("input");
 		  _input.val(new Number(staffYield).toFixed(2));
 		  var flag = initTotal(_this);
@@ -458,17 +501,21 @@
 	
 	//当年专业结算比例合计
 	function totalMajor(){
-		var totalsettleRate = 0.00;
-		jQuery.each($("#majorSettleRate tbody tr:not(:last)"),function(index,item){
-			var _this = $(item);
-			var settleRate = _this.find("input[name$='.settleRate']").val();
-			if(settleRate == '' || typeof settleRate == 'undefined' || isNaN(settleRate)){
-				settleRate = 0.00;
-			  }
-			totalsettleRate = new Number(totalsettleRate) + new Number(settleRate);
-		});
-		$("#majorSettleRate tr.total").find("td:eq(1)").text(new Number(totalsettleRate).toFixed(2));
-		
+	var flag = true;
+	var totalsettleRate = 0.00;
+	jQuery.each($("#majorSettleRate tbody tr:not(:last)"),function(index,item){
+		var _this = $(item);
+		var settleRate = _this.find("input[name$='.settleRate']").val();
+		if(settleRate == '' || typeof settleRate == 'undefined' || isNaN(settleRate)){
+			settleRate = 0.00;
+		  }
+		totalsettleRate = new Number(totalsettleRate) + new Number(settleRate);
+	});
+	$("#majorSettleRate tr.total").find("td:eq(1)").text(new Number(totalsettleRate).toFixed(2));
+	if(new Number(totalsettleRate) !=100){
+		flag = false;
+	}
+	 return flag;
 	}
 	
 	function total(obj){
@@ -516,7 +563,6 @@
 		}
 		jQuery.each(data,function(index,item){
 			var info = $(item)[0];
-			var trs = _thisTable.find("tbody tr:not(:last)");
 			var trSize = _thisTable.find("tbody tr:not(:last)").size();
 			if(trSize == 0){
 				var $item = jQuery("#clone_text").clone();
@@ -526,7 +572,6 @@
 				$item.find("tr input[name$='.staffCategory']").val(staffCategory);
 				$item.find("tr td:first").text(info.name);
 				_thisTable.find(".total").before($item.find("tr"));
-				trSize ++;
 				tIndex ++;
 			}else{
 				var _size = _thisTable.find("tbody tr input[value='"+info.id+"']").size();
@@ -539,7 +584,6 @@
 					$item.find("tr input[name$='.staffCategory']").val(staffCategory);
 					$item.find("tr td:first").text(info.name);
 					_thisTable.find(".total").before($item.find("tr"));
-					trSize ++;
 					tIndex++;
 				}
 			}
@@ -560,6 +604,10 @@
 	    	if(flag){
 	    		if(!initTotal()){
 	    			$.jalert({"jatext":"比例合计必须为100"});
+	                flag = false;
+	    		}
+	    		if(flag && !totalMajor()){
+	    			$.jalert({"jatext":"专业结算比例必须为100"});
 	                flag = false;
 	    		}
 	    	}

@@ -21,6 +21,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -247,11 +248,14 @@ public class WfYieldSettleController extends WfBaseController {
         return modelAndView;
     }
 
-    @RequestMapping(value = {"/ordin/toview/{operate}/{id}", "/ordin/toprint/{operate}/{id}"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/ordin/toview/{operate}/{id}", "/ordin/toprint/{operate}/{id}"})
     public ModelAndView toViewOrApproveOrdin(@PathVariable("operate") String operate, @PathVariable("id") String id,
                                              String view) throws RuntimeException {
         Map<String, Object> modelMap = new HashMap<String, Object>();
 
+        if (StringUtils.isBlank(view)) {
+            view = "100";
+        }
         wfYieldSettleService.queryYieldSettleForView(modelMap, id, Integer.parseInt(view));
 
         WfYieldSettle yieldSettle = (WfYieldSettle) modelMap.get("yieldSettle");

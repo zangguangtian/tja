@@ -53,6 +53,8 @@ public class WfYieldSettleModel implements Serializable {
 
     private List<WfYieldPrincipalAllot> principalAllots;
 
+    private Integer tabs;
+
     public WfYieldSettle getWfYieldSettle() {
         return wfYieldSettle;
     }
@@ -93,4 +95,11 @@ public class WfYieldSettleModel implements Serializable {
         this.principalAllots = principalAllots;
     }
 
+    public Integer getTabs() {
+        return tabs;
+    }
+
+    public void setTabs(Integer tabs) {
+        this.tabs = tabs;
+    }
 }

@@ -29,12 +29,14 @@ import com.df.activiti.service.IProcessService;
 import com.df.framework.base.service.impl.BaseServiceImpl;
 import com.df.framework.exception.LogicalException;
 import com.df.framework.sys.domain.SysConfig;
+import com.df.framework.util.ArithmeticUtil;
 import com.df.framework.util.HttpUtil;
 import com.df.hr.domain.Staff;
 import com.df.hr.domain.cust.CustStaff;
 import com.df.project.dao.IProjectDao;
 import com.df.project.domain.ProBudgetStaff;
 import com.df.project.domain.ProMajorRoleRate;
+import com.df.project.domain.Project;
 import com.df.project.domain.ProjectExtend;
 import com.df.project.domain.cust.CustProject;
 import com.df.tja.constant.TjaConstant;
@@ -87,43 +89,32 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
         String syId = (String) inParams.get("syId");
         String id = (String) inParams.get("id");
         String editType = (String) inParams.get("editType");
-
+        outParams.put("categoryLeader", TjaConstant.SysCode.STAFF_CATEGORY_LEADER);
+        outParams.put("categoryPm", TjaConstant.SysCode.STAFF_CATEGORY_PM);
         try {
-            if ("0".equals(id)) {
-                //新建
+            if ("0".equals(id)) { //新建
                 CustProject project = projectDao.selectProInfoById(proId);
                 OcPeriodManage periodManage = queryByPrimaryKey(OcPeriodManage.class, periodId);
                 outParams.put("periodManage", periodManage);
                 outParams.put("permitId", syId);
-
-                if ("1000".equals(editType)) {
-                    //年度产值结算；
+                if ("1000".equals(editType)) { //年度产值结算；
                     OcSettleYield ocSettleYield = queryByPrimaryKey(OcSettleYield.class, syId);
                     project.setYield(ocSettleYield.getSettleYield());
-
                     //获取 项目负责人 和 项目经理 比例
                     ProjectExtend projectExtend = queryByPrimaryKey(ProjectExtend.class, proId);
                     outParams.put("projectExtend", projectExtend);
-
                     //获取项目负责人下 的 人员 
                     List<CustStaff> leaders = wfYieldSettleDao.selectBudgetStaffByRole(proId,
                         TjaConstant.SysCode.STAFF_CATEGORY_LEADER);
                     outParams.put("leaders", leaders);
-
                     //获取项目经理下 的 人员 
                     List<CustStaff> pms = wfYieldSettleDao.selectBudgetStaffByRole(proId,
                         TjaConstant.SysCode.STAFF_CATEGORY_PM);
                     outParams.put("proPms", pms);
-
                     //当年专业结算比例
                     List<SysConfig> configs = wfYieldSettleDao.selectMajorByProId(proId);
                     outParams.put("configs", configs);
-
-                    outParams.put("categoryLeader", TjaConstant.SysCode.STAFF_CATEGORY_LEADER);
-                    outParams.put("categoryPm", TjaConstant.SysCode.STAFF_CATEGORY_PM);
-
-                } else if ("2000".equals(editType)) {
-                    // 年度产值结算特批
+                } else if ("2000".equals(editType)) { // 年度产值结算特批
                     OcPermitYield ocPermitYield = queryByPrimaryKey(OcPermitYield.class, syId);
                     project.setYield(ocPermitYield.getPermitYield());
                     List<CustStaff> staffs = wfYieldSettleDao.selectMajorBudgetStaff(proId,
@@ -140,9 +131,7 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
                     }
                 }
                 outParams.put("project", project);
-
-            } else {
-                //修改 
+            } else { //修改 
                 WfYieldSettle yieldSettle = wfYieldSettleDao.selectWfYieldSettleById(id);
                 outParams.put("yieldSettle", yieldSettle);
                 CustProject project = projectDao.selectProInfoById(yieldSettle.getProId());
@@ -156,12 +145,10 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
                     List<WfYieldPrincipalAllot> allotsLeaders = wfYieldSettleDao.selectPrincipalAllot(
                         yieldSettle.getId(), TjaConstant.SysCode.STAFF_CATEGORY_LEADER);
                     outParams.put("proLeaders", allotsLeaders);
-
                     //获取项目经理下 的 人员 
                     List<WfYieldPrincipalAllot> allotsPms = wfYieldSettleDao.selectPrincipalAllot(yieldSettle.getId(),
                         TjaConstant.SysCode.STAFF_CATEGORY_PM);
                     outParams.put("proManagers", allotsPms);
-
                     //当年专业结算比例
                     List<WfYieldMajorRate> majorRates = wfYieldSettleDao.selectMajorRate(yieldSettle.getId());
                     outParams.put("majorRates", majorRates);
@@ -175,7 +162,6 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        
     }
 
     /** 
@@ -201,10 +187,8 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
                             if (StringUtils.isNotBlank(roleAllot.getId())) {
                                 modify(WfYieldMajorRoleAllot.class, roleAllot);
                             } else {
-                                if (roleAllot.getStaffYield().compareTo(BigDecimal.ZERO) > 0) {
-                                    roleAllot.setWfId(yieldSettle.getId());
-                                    addEntity(WfYieldMajorRoleAllot.class, roleAllot);
-                                }
+                                roleAllot.setWfId(yieldSettle.getId());
+                                addEntity(WfYieldMajorRoleAllot.class, roleAllot);
                             }
                         }
                     }
@@ -213,10 +197,8 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
                     List<WfYieldMajorRoleAllot> roleAllots = settleModel.getMajorRoleAllots();
                     if (roleAllots != null && roleAllots.size() > 0) {
                         for (WfYieldMajorRoleAllot roleAllot : roleAllots) {
-                            if (roleAllot.getStaffYield().compareTo(BigDecimal.ZERO) > 0) {
-                                roleAllot.setWfId(yieldSettle.getId());
-                                addEntity(WfYieldMajorRoleAllot.class, roleAllot);
-                            }
+                            roleAllot.setWfId(yieldSettle.getId());
+                            addEntity(WfYieldMajorRoleAllot.class, roleAllot);
                         }
                     }
 
@@ -241,21 +223,16 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
         if (principalAllots != null && principalAllots.size() > 0) {
             for (WfYieldPrincipalAllot allot : principalAllots) {
                 //添加
-                if (allot.getStaffRate().compareTo(BigDecimal.ZERO) > 0) {
-                    allot.setWfId(yieldSettle.getId());
-                    addEntity(WfYieldPrincipalAllot.class, allot);
-                }
+                allot.setWfId(yieldSettle.getId());
+                addEntity(WfYieldPrincipalAllot.class, allot);
             }
-
         }
         //当年专业结算比例
         List<WfYieldMajorRate> majorRates = settleModel.getMajorRates();
         if (majorRates != null && majorRates.size() > 0) {
             for (WfYieldMajorRate majorRate : majorRates) {
-                if (majorRate.getSettleRate().compareTo(BigDecimal.ZERO) > 0) {
-                    majorRate.setWfId(yieldSettle.getId());
-                    addEntity(WfYieldMajorRate.class, majorRate);
-                }
+                majorRate.setWfId(yieldSettle.getId());
+                addEntity(WfYieldMajorRate.class, majorRate);
             }
         }
     }
@@ -278,10 +255,8 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
                     modify(WfYieldPrincipalAllot.class, allot);
                 } else {
                     //添加
-                    if (allot.getStaffRate().compareTo(BigDecimal.ZERO) > 0) {
-                        allot.setWfId(yieldSettle.getId());
-                        addEntity(WfYieldPrincipalAllot.class, allot);
-                    }
+                    allot.setWfId(yieldSettle.getId());
+                    addEntity(WfYieldPrincipalAllot.class, allot);
                 }
 
             }
@@ -295,10 +270,8 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
                 if (StringUtils.isNotBlank(majorRate.getId())) {
                     modify(WfYieldMajorRate.class, majorRate);
                 } else {
-                    if (majorRate.getSettleRate().compareTo(BigDecimal.ZERO) > 0) {
-                        majorRate.setWfId(yieldSettle.getId());
-                        addEntity(WfYieldMajorRate.class, majorRate);
-                    }
+                    majorRate.setWfId(yieldSettle.getId());
+                    addEntity(WfYieldMajorRate.class, majorRate);
                 }
             }
         }
@@ -311,6 +284,8 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
     public void queryYieldSettleForView(Map<String, Object> modelMap, String id, Integer view) throws RuntimeException {
         WfYieldSettle yieldSettle = wfYieldSettleDao.selectWfYieldSettleById(id);
         CustProject project = projectDao.selectProInfoById(yieldSettle.getProId());
+        OcPeriodManage periodManage = queryByPrimaryKey(OcPeriodManage.class, yieldSettle.getPeriodId());
+        modelMap.put("periodManage", periodManage);
         modelMap.put("project", project);
         modelMap.put("yieldSettle", yieldSettle);
         if ("1000".equals(yieldSettle.getWfCategory().trim())) {
@@ -326,31 +301,81 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
             //当年专业结算比例
             List<WfYieldMajorRate> majorRates = wfYieldSettleDao.selectMajorRate(yieldSettle.getId());
             modelMap.put("majorRates", majorRates);
-
-            Map<String, Object> variables = processService.getVariables(yieldSettle.getProcId(), HttpUtil.getUser()
-                .getId());
-
+            List<YieldSettleMajorModel> majorModels = new ArrayList<YieldSettleMajorModel>();
             //各专业负责人审批
             if (view == 2) {
+                Map<String, Object> variables = processService.getVariables(yieldSettle.getProcId(), HttpUtil.getUser()
+                    .getId());
+
                 Map<String, List<String>> userMajorMap = (Map<String, List<String>>) variables.get("userMajorMap");
                 List<String> majors = userMajorMap.get(HttpUtil.getUser().getId());
-                List<YieldSettleMajorModel> majorModels = new ArrayList<YieldSettleMajorModel>();
                 //审核中
                 if (WfConstant.AuditStatus.AUDITING.equals(yieldSettle.getAuditStatus())) {
                     addMajorAndSatffAllot(majors, yieldSettle, majorModels);
                 } else if (WfConstant.AuditStatus.AUDITREJECT.equals(yieldSettle.getAuditStatus())) {
                     //审核退回
-
+                    addMajorAndAllotEdit(yieldSettle, majors, majorModels);
                 }
-                modelMap.put("majorModels", majorModels);
+            } else if (view > 2) {
+                Map<String, Object> variables = processService.getHistoricVariables(yieldSettle.getProcId());
+                Map<String, List<String>> userMajorMap = (Map<String, List<String>>) variables.get("userMajorMap");
+                //看到所有的专业
+                List<String> allMajors = new ArrayList<String>();
+                for (Map.Entry<String, List<String>> entry : userMajorMap.entrySet()) {
+                    allMajors.addAll(entry.getValue());
+                }
+                addMajorAndAllotEdit(yieldSettle, allMajors, majorModels);
             }
+            modelMap.put("majorModels", majorModels);
         } else if ("2000".equals(yieldSettle.getWfCategory().trim())) {
             //年度产值结算 - 特批流程
-            OcPeriodManage periodManage = queryByPrimaryKey(OcPeriodManage.class, yieldSettle.getPeriodId());
-            modelMap.put("periodManage", periodManage);
             // 年度产值结算特批
             List<WfYieldMajorRoleAllot> permitYields = wfYieldSettleDao.selectMajorRoleAllotByWfId(yieldSettle.getId());
             modelMap.put("majorRoleAllots", permitYields);
+        }
+    }
+
+    /**
+     * <p>描述 : </p>
+     *
+     * @param yieldSettle
+     * @param majors
+     * @param majorModels
+     */
+    private void addMajorAndAllotEdit(WfYieldSettle yieldSettle, List<String> majors,
+                                      List<YieldSettleMajorModel> majorModels) {
+        if (majors != null && majors.size() > 0) {
+            for (String major : majors) {
+                YieldSettleMajorModel settleMajor = new YieldSettleMajorModel();
+                if (major.contains("-")) {
+                    String[] codeName = major.split("-");
+                    if (codeName.length > 1) {
+                        settleMajor.setMajorCode(codeName[0]);
+                        settleMajor.setMajorName(codeName[1]);
+
+                        //年度产值专业角色人员
+                        List<WfYieldMajorRoleAllot> majorRoleAllots = wfYieldSettleDao.selectMajorRoleAllot(
+                            yieldSettle.getId(), codeName[0]);
+
+                        //各专业负责人审批   年度产值专业角色结算比例
+                        List<WfYieldMajorRoleRate> majorRoleRates = wfYieldSettleDao.selectMajorRoleRate(
+                            yieldSettle.getId(), codeName[0]);
+
+                        WfYieldMajorRate majorRate = new WfYieldMajorRate();
+                        majorRate.setWfId(yieldSettle.getId());
+                        majorRate.setMajorCode(codeName[0]);
+                        List<WfYieldMajorRate> list = queryByCondition(WfYieldMajorRate.class, majorRate);
+                        if (list != null && list.size() > 0) {
+                            majorRate = list.get(0);
+                            settleMajor.setMajorAllotRate(majorRate.getSettleRate());
+                        }
+
+                        settleMajor.setMajorRoleAllots(majorRoleAllots);
+                        settleMajor.setMajorRoleRates(majorRoleRates);
+                    }
+                }
+                majorModels.add(settleMajor);
+            }
         }
     }
 
@@ -439,22 +464,68 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
         if ("1000".equals(yieldSettle.getWfCategory().trim())) {
             //年度产值结算 - 普通流程
             if (view == 2) {
+                Integer tabs = settleModel.getTabs();
                 //各专业负责人审批   年度产值专业角色结算比例
                 List<WfYieldMajorRoleRate> roleRates = settleModel.getMajorRoleRates();
 
                 //年度产值专业角色人员
                 List<WfYieldMajorRoleAllot> majorRoleAllots = settleModel.getMajorRoleAllots();
 
+                BigDecimal totalAllotRate = new BigDecimal(0);
+                if (roleRates != null && roleRates.size() > 0) {
+                    for (WfYieldMajorRoleRate majorRoleRate : roleRates) {
+                        majorRoleRate.setWfId(yieldSettle.getId());
+                        if (StringUtils.isNoneBlank(majorRoleRate.getId())) {
+                            //修改
+                            modify(WfYieldMajorRoleRate.class, majorRoleRate);
 
+                        } else {
+                            //添加
+                            addEntity(WfYieldMajorRoleRate.class, majorRoleRate);
+                        }
+
+                        //累加计算 检查 比例：校对人+审核人+设计人/制图人=100%；
+                        totalAllotRate = ArithmeticUtil.add(totalAllotRate, majorRoleRate.getAllotRate());
+                    }
+                }
+                BigDecimal total = ArithmeticUtil.mul(new BigDecimal(tabs), new BigDecimal(100));
+                
+                if ((total.compareTo(totalAllotRate)) != 0) {
+                    throw new LogicalException("校对人+审核人+设计人/制图人=100%");
+                }
+                
+                BigDecimal totalRoleAllot = new BigDecimal(0);
+                if (majorRoleAllots != null && majorRoleAllots.size() > 0) {
+                    for (WfYieldMajorRoleAllot wfYieldMajorRoleAllot : majorRoleAllots) {
+                        wfYieldMajorRoleAllot.setWfId(yieldSettle.getId());
+                        if (StringUtils.isNoneBlank(wfYieldMajorRoleAllot.getId())) {
+                            //修改
+                            modify(WfYieldMajorRoleAllot.class, wfYieldMajorRoleAllot);
+
+                        } else {
+                            //添加
+                            addEntity(WfYieldMajorRoleAllot.class, wfYieldMajorRoleAllot);
+                        }
+                        totalRoleAllot = ArithmeticUtil.add(totalRoleAllot, wfYieldMajorRoleAllot.getStaffRate());
+                    }
+                }
+
+                BigDecimal total2 = ArithmeticUtil.mul(ArithmeticUtil.mul(new BigDecimal(tabs), new BigDecimal(100)),
+                    new BigDecimal(roleRates.size()));
+                if ((total2.compareTo(totalRoleAllot)) != 0) {
+                    throw new LogicalException("工作量(%)合计必须达到100");
+                }
             }
-
         }
-        /*else if ("2000".equals(yieldSettle.getWfCategory().trim())) {
-            //年度产值结算 - 特批流程
-            
-        }*/
         processService.approveWf(yieldSettle, null);
 
     }
 
+    public void modifyProStutas(String id) throws RuntimeException {
+        WfYieldSettle yieldSettle = queryByPrimaryKey(WfYieldSettle.class, id);
+        Project project = new Project();
+        project.setId(yieldSettle.getProId());
+        project.setProStatus(yieldSettle.getItemStatus());
+        modify(Project.class, project);
+    }
 }

@@ -25,6 +25,7 @@ import com.df.hr.domain.cust.CustStaff;
 import com.df.tja.dao.IWfYieldSettleDao;
 import com.df.tja.domain.WfYieldMajorRate;
 import com.df.tja.domain.WfYieldMajorRoleAllot;
+import com.df.tja.domain.WfYieldMajorRoleRate;
 import com.df.tja.domain.WfYieldPrincipalAllot;
 import com.df.tja.domain.WfYieldSettle;
 
@@ -139,11 +140,13 @@ public class WfYieldSettleDaoHbmImpl extends BaseDaoHbmImpl implements IWfYieldS
     @Override
     public List<SysConfig> selectMajorByProId(String proId) {
         StringBuilder sql = new StringBuilder();
-        sql.append(" SELECT DISTINCT PBS.MAJOR_CODE AS configCode,                ");
-        sql.append(" SC.CONFIG_NAME AS configName FROM PM_BUDGET_STAFF_TM PBS     ");
-        sql.append(" LEFT JOIN SYS_CONFIG_TM SC ON                                ");
-        sql.append(" PBS.MAJOR_CODE = SC.CONFIG_CODE                              ");
-        sql.append(" WHERE PBS.PRO_ID = ?                                         ");
+        sql.append(" SELECT DISTINCT PBS.MAJOR_CODE AS configCode,                   ");
+        sql.append(" SC.CONFIG_NAME AS configName,V.REF_MAJOR_RATE AS configValue    ");
+        sql.append(" FROM PM_BUDGET_STAFF_TM PBS                                     ");
+        sql.append(" LEFT JOIN SYS_CONFIG_TM SC ON PBS.MAJOR_CODE = SC.CONFIG_CODE   ");
+        sql.append(" LEFT JOIN V_PM_REF_MAJOR_RATE V ON PBS.PRO_ID = V.PRO_ID        ");
+        sql.append(" AND PBS.MAJOR_CODE = V.CONFIG_CODE                              ");
+        sql.append(" WHERE PBS.PRO_ID = ?                                            ");
         SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
         query.setResultTransformer(Transformers.aliasToBean(SysConfig.class));
         query.setString(0, proId);
@@ -185,6 +188,62 @@ public class WfYieldSettleDaoHbmImpl extends BaseDaoHbmImpl implements IWfYieldS
         SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
         query.setResultTransformer(Transformers.aliasToBean(WfYieldMajorRate.class));
         query.setString(0, id);
+        return query.list();
+    }
+
+    /** 
+     * @see com.df.tja.dao.IWfYieldSettleDao#selectMajorRoleRate(java.lang.String, java.lang.String)
+     */
+    @Override
+    public List<WfYieldMajorRoleRate> selectMajorRoleRate(String wfId, String majorCode) {
+        StringBuilder sql = new StringBuilder();
+        sql.append(" SELECT                                                           ");
+        sql.append(" MR.ID AS id,                                                     ");
+        sql.append(" MR.WF_ID AS wfId,                                                ");
+        sql.append(" MR.MAJOR_CODE AS majorCode,                                      ");
+        sql.append(" MR.ROLE_CODE AS roleCode,                                        ");
+        sql.append(" MR.ROLE_SORT AS roleSort,                                        ");
+        sql.append(" MR.ALLOT_RATE AS allotRate,                                      ");
+        sql.append(" MR.MAJOR_RATE_ID AS majorRateId,                                 ");
+        sql.append(" MR.CREATE_DATE AS createDate,                                    ");
+        sql.append(" SC.CONFIG_NAME AS roleName                                       ");
+        sql.append(" FROM                                                             ");
+        sql.append("   WF_YIELD_MAJOR_ROLE_RATE MR                                    ");
+        sql.append(" LEFT JOIN SYS_CONFIG_TM SC ON MR.ROLE_CODE = SC.CONFIG_CODE      ");
+        sql.append(" WHERE MR.WF_ID = ? AND MR.MAJOR_CODE = ?                         ");
+        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setResultTransformer(Transformers.aliasToBean(WfYieldMajorRoleRate.class));
+        query.setString(0, wfId);
+        query.setString(1, majorCode);
+        return query.list();
+    }
+
+    /** 
+     * @see com.df.tja.dao.IWfYieldSettleDao#selectMajorRoleAllot(java.lang.String, java.lang.String)
+     */
+    @Override
+    public List<WfYieldMajorRoleAllot> selectMajorRoleAllot(String wfId, String majorCode) {
+        StringBuilder sql = new StringBuilder();
+        sql.append(" SELECT                                                            ");
+        sql.append(" MR.ID AS id,                                                      ");
+        sql.append(" MR.WF_ID AS wfId,                                                 ");
+        sql.append(" MR.CATEGORY AS category,                                          ");
+        sql.append(" MR.MAJOR_ROLE_ID AS majorRoleId,                                  ");
+        sql.append(" MR.ROLE_CODE AS roleCode,                                         ");
+        sql.append(" MR.MAJOR_CODE AS majorCode,                                       ");
+        sql.append(" MR.STAFF_ID AS staffId,                                           ");
+        sql.append(" MR.STAFF_SORT AS staffSort,                                       ");
+        sql.append(" MR.STAFF_RATE AS staffRate,                                       ");
+        sql.append(" MR.STAFF_YIELD AS staffYield,                                     ");
+        sql.append(" HS.NAME AS staffName                                              ");
+        sql.append(" FROM                                                              ");
+        sql.append("   WF_YIELD_MAJOR_ROLE_ALLOT MR                                    ");
+        sql.append(" LEFT JOIN HR_STAFF_TM HS ON MR.STAFF_ID = HS.ID                   ");
+        sql.append(" WHERE MR.WF_ID = ? AND MR.MAJOR_CODE = ? AND MR.CATEGORY = 1000   ");
+        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setResultTransformer(Transformers.aliasToBean(WfYieldMajorRoleAllot.class));
+        query.setString(0, wfId);
+        query.setString(1, majorCode);
         return query.list();
     }
 
