@@ -357,11 +357,11 @@ function save(){
 	 	for (var i = 0; i < allotCodeList.length; i++) {
 	 		rateObj[allotCodeList[i].value] = parseFloat(allotRateList[i].value);
 		}
-	 	if(rateObj["PM.MAJORROLE.LEADER"] > 100){
+	 	if(rateObj["PrjMajorLeader"] > 100){
 	 		$.jalert({"jatext":"专业负责人分配比例不能超过100"});
 			return;
 	 	}
-	 	if((rateObj["PM.MAJORROLE.CHECKER"]+rateObj["PM.MAJORROLE.APPROVER"]+rateObj["PM.MAJORROLE.DESIGNER"]) > 100){
+	 	if((rateObj["PrjTaskChecker"]+rateObj["PrjTaskApprover"]+rateObj["PrjTaskDesigner"]) > 100){
 	 		$.jalert({"jatext":"校对人+审核人+设计人/制图人 分配比例不能超过100"});
 			return;
 	 	}

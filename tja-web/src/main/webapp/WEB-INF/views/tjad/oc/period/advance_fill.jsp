@@ -27,7 +27,7 @@ var baseDb = new BaseDb();
 
 getPeriodSelect = function(){
 	var _select = $("<select name='periodId' class='form-control'></select>");
-	var url = context+"/admin/oc/period/ajax/select";
+	var url = context+"/admin/oc/period/ajax/select?type=OC.PERIOD.TYPE.YEAR";
 	$.ajax({
 		url: url,
 		success: function(data){

@@ -45,13 +45,13 @@
 			<div class="form-group col-lg-6 ">
 				<label class="control-label col-md-4">合同额(¥)</label>
 				<div class="col-md-7">
-					<input type="text" class="form-control text-right" value="${project.contractAmount}" disabled="disabled">
+					<input type="text" class="form-control" value="${project.contractAmount}" disabled="disabled">
 				</div>
 			</div>
 			<div class="form-group col-lg-6 ">
 				<label class="control-label col-md-4">分包额(¥)</label>
 				<div class="col-md-7">
-					<input type="text" class="form-control text-right" value="${project.pkgAmount}" disabled="disabled">
+					<input type="text" class="form-control" value="${project.pkgAmount}" disabled="disabled">
 				</div>
 			</div>
 			<div class="form-group col-lg-6 ">
