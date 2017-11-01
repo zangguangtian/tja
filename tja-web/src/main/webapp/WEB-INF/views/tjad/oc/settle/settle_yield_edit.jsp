@@ -39,13 +39,13 @@
 				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">合同编号</label>
 					<div class="col-md-7">
-						<input class="form-control" type="text" disabled="disabled" value="${settleYield.itemNo}">
+						<input class="form-control" type="text" disabled="disabled" value="${settleYield.contractCode}">
 					</div>
 				</div>
 				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">项目类型</label>
 					<div class="col-md-7">
-						<tags:config type="label" code="${settleYield.proCategory}" />
+						<input class="form-control" type="text" disabled="disabled" value="${project.proType}">
 					</div>
 				</div>
 			</div>
@@ -67,13 +67,13 @@
 				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">项目负责人</label>
 					<div class="col-md-7">
-						<input class="form-control" type="text" disabled="disabled" value="${settleYield.proFzrName}">
+						<input class="form-control" type="text" disabled="disabled" value="${settleYield.pmLeaders}">
 					</div>
 				</div>
 				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">项目经理</label>
 					<div class="col-md-7">
-						<input class="form-control" type="text" disabled="disabled" value="${settleYield.proJlName}">
+						<input class="form-control" type="text" disabled="disabled" value="${settleYield.pManagers}">
 					</div>
 				</div>
 			</div>

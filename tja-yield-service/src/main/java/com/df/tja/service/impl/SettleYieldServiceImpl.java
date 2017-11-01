@@ -25,6 +25,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,6 +36,8 @@ import com.df.framework.util.ExcelHelper;
 import com.df.framework.util.FileUtil;
 import com.df.framework.util.LoggerUtil;
 import com.df.project.domain.Project;
+import com.df.project.domain.cust.CustProject;
+import com.df.project.service.IProjectService;
 import com.df.tja.dao.IOcSettleYieldDao;
 import com.df.tja.domain.OcSettleYield;
 import com.df.tja.domain.OcSettleYieldImp;
@@ -61,9 +64,17 @@ public class SettleYieldServiceImpl extends BaseServiceImpl implements ISettleYi
     @Autowired
     IOcSettleYieldDao ocSettleYieldDao;
 
+    @Autowired
+    IProjectService projectService;
+
     @Override
     public OcSettleYieldMore querySettleYield(String id) throws RuntimeException {
-        return ocSettleYieldDao.querySettleYield(id);
+        OcSettleYieldMore osy = new OcSettleYieldMore();
+        OcSettleYield settleYield = ocSettleYieldDao.querySettleYield(id);
+        CustProject project = projectService.queryByProId(settleYield.getProId());
+        BeanUtils.copyProperties(project, osy);
+        BeanUtils.copyProperties(settleYield, osy);
+        return osy;
     }
 
     @Override

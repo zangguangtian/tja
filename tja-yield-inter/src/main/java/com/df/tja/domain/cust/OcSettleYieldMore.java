@@ -40,17 +40,17 @@ public class OcSettleYieldMore extends OcSettleYield {
     /** 项目名称 */
     private String proName;
     /** 合同编号 */
-    private String itemNo;
+    private String contractCode;
     /** 项目类型 */
-    private String proCategory;
+    private String proType;
     /** 合同额 */
     private BigDecimal contractAmount;
     /** 分包额 */
     private BigDecimal pkgAmount;
     /** 项目负责人 */
-    private String proFzrName;
+    private String pmLeaders;
     /** 项目经理 */
-    private String proJlName;
+    private String pManagers;
 
     /**
      * <p> 属性proCode的Getter方法. </p>
@@ -89,39 +89,39 @@ public class OcSettleYieldMore extends OcSettleYield {
     }
 
     /**
-     * <p> 属性itemNo的Getter方法. </p>
+     * <p> 属性contractCode的Getter方法. </p>
      * 
-     * @return 返回itemNo属性的值
+     * @return 返回contractCode属性的值
      */
-    public String getItemNo() {
-        return itemNo;
+    public String getContractCode() {
+        return contractCode;
     }
 
     /**
-     * <p> 属性itemNo的Setter方法. </p>
+     * <p> 属性contractCode的Setter方法. </p>
      * 
-     * @param itemNo 为属性itemNo设置的值
+     * @param contractCode 为属性contractCode设置的值
      */
-    public void setItemNo(String itemNo) {
-        this.itemNo = itemNo;
+    public void setContractCode(String contractCode) {
+        this.contractCode = contractCode;
     }
 
     /**
-     * <p> 属性proCategory的Getter方法. </p>
+     * <p> 属性proType的Getter方法. </p>
      * 
-     * @return 返回proCategory属性的值
+     * @return 返回proType属性的值
      */
-    public String getProCategory() {
-        return proCategory;
+    public String getProType() {
+        return proType;
     }
 
     /**
-     * <p> 属性proCategory的Setter方法. </p>
+     * <p> 属性proType的Setter方法. </p>
      * 
-     * @param proCategory 为属性proCategory设置的值
+     * @param proType 为属性proType设置的值
      */
-    public void setProCategory(String proCategory) {
-        this.proCategory = proCategory;
+    public void setProType(String proType) {
+        this.proType = proType;
     }
 
     /**
@@ -161,39 +161,39 @@ public class OcSettleYieldMore extends OcSettleYield {
     }
 
     /**
-     * <p> 属性proFzrName的Getter方法. </p>
+     * <p> 属性pmLeaders的Getter方法. </p>
      * 
-     * @return 返回proFzrName属性的值
+     * @return 返回pmLeaders属性的值
      */
-    public String getProFzrName() {
-        return proFzrName;
+    public String getPmLeaders() {
+        return pmLeaders;
     }
 
     /**
-     * <p> 属性proFzrName的Setter方法. </p>
+     * <p> 属性pmLeaders的Setter方法. </p>
      * 
-     * @param proFzrName 为属性proFzrName设置的值
+     * @param pmLeaders 为属性pmLeaders设置的值
      */
-    public void setProFzrName(String proFzrName) {
-        this.proFzrName = proFzrName;
+    public void setPmLeaders(String pmLeaders) {
+        this.pmLeaders = pmLeaders;
     }
 
     /**
-     * <p> 属性proJlName的Getter方法. </p>
+     * <p> 属性pManagers的Getter方法. </p>
      * 
-     * @return 返回proJlName属性的值
+     * @return 返回pManagers属性的值
      */
-    public String getProJlName() {
-        return proJlName;
+    public String getpManagers() {
+        return pManagers;
     }
 
     /**
-     * <p> 属性proJlName的Setter方法. </p>
+     * <p> 属性pManagers的Setter方法. </p>
      * 
-     * @param proJlName 为属性proJlName设置的值
+     * @param pManagers 为属性pManagers设置的值
      */
-    public void setProJlName(String proJlName) {
-        this.proJlName = proJlName;
+    public void setpManagers(String pManagers) {
+        this.pManagers = pManagers;
     }
 
 }
