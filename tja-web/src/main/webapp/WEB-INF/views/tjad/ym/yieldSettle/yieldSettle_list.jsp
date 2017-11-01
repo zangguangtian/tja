@@ -44,7 +44,7 @@ jQuery(function(){
 		loadList("YM_SETTLE_LIST", $("#content"));
 	});
 	$("a[href='#tab_1']").on("click", function(){
-		loadList("YM_SETTLE_LIST", $("#content2"));
+		loadList("YM_SETTLE_HIS_LIST", $("#content2"));
 	});
 });
 

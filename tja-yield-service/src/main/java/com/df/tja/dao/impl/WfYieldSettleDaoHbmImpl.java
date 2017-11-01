@@ -247,4 +247,23 @@ public class WfYieldSettleDaoHbmImpl extends BaseDaoHbmImpl implements IWfYieldS
         return query.list();
     }
 
+    /** 
+     * @see com.df.tja.dao.IWfYieldSettleDao#selectHisYearYield()
+     */
+    @Override
+    public WfYieldSettle selectHisYearYield() {
+        StringBuilder sql = new StringBuilder();
+        sql.append(" SELECT                                                              ");
+        sql.append(" ISNULL(SUM(YS.YEAR_YIELD), 0) AS yearYield                          ");
+        sql.append(" FROM                                                                ");
+        sql.append(" WF_YIELD_SETTLE YS                                                  ");
+        sql.append(" LEFT JOIN WF_FLOW_MAIN FM ON YS.ID = FM.ID                          ");
+        sql.append(" WHERE YS.WF_CATEGORY = '1000'                                       ");
+        sql.append(" AND Datename(year,YS.CREATE_DATE) != Datename(year,GetDate())       ");
+        sql.append(" AND FM.AUDIT_STATUS = 2                                             ");
+        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setResultTransformer(Transformers.aliasToBean(WfYieldSettle.class));
+        return (WfYieldSettle) query.uniqueResult();
+    }
+
 }

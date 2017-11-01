@@ -119,4 +119,11 @@ public interface IWfYieldSettleDao extends IBaseDao {
      */
     List<WfYieldMajorRoleAllot> selectMajorRoleAllot(String wfId, String majorCode);
 
+    /**
+     * <p>描述 : 获取历年已经结算产值</p>
+     *
+     * @return
+     */
+    WfYieldSettle selectHisYearYield();
+
 }

@@ -300,6 +300,7 @@
     <input type="hidden" class="ta_input" name="majorRoleAllots[{0}].roleCode" value="">
     <input type="hidden" class="ta_input" name="majorRoleAllots[{0}].staffId" value="">
     <input type="hidden" class="ta_input" name="majorRoleAllots[{0}].staffSort" value="">
+    <input type="hidden" name="majorRoleAllots[{0}].staffYield" value="">
 	<td class="text-center col-lg-4"></td>
 	<td class="col-lg-4 input-icon left">
 	 <input type="text" name="majorRoleAllots[{0}].staffRate"
@@ -312,7 +313,6 @@
 					value="">
 				</td>
 	<td class=" col-lg-4 text-right">
-	 <input type="text" placeholder="0.00" name="majorRoleAllots[{0}].staffYield" class="form-control text-right" value="" readonly>
 	</td>
   </tr>
  </table>
@@ -320,7 +320,10 @@
 <script type="text/javascript">
 	$(function(){
 		jQuery(document).on("keyup","input[name$='.staffRate']",function(){
-			countOutputValue($(this));
+			countOutputValue($(this).closest("tr"));
+		});
+		jQuery(document).on("keyup","input[name$='.allotRate']",function(){
+			countOutputValue($(this).parent().parent().next().find("tbody tr:not(:last)"));
 		});
 	});
 
@@ -352,34 +355,42 @@
 	  }
 	
 	//计算产值
-	function countOutputValue(_this){
-		  var staffRate = getNumValue(_this);
-		  //专业角色  比例
-		  var rate = getNumValue(_this.closest("table").prev().find("input[name$='allotRate']"));
-		  //当年可结算产值(¥)
-		  var yearYield = getNumValue(jQuery("input[name$='.yearYield']"));
-		  //项目经理 比例
-		  var pmRate = getNumValue(jQuery("input[name='pmRate']"));
-		  //项目负责人 比例
-		  var principalRate = getNumValue(jQuery("input[name='principalRate']"));
-		  
-		  //本专业结算比例
-		  var majorAllotRate = getNumValue(_this.closest("div.col-lg-12").prev().find("input[name='majorAllotRate']")); 
-		  
-		  var roleCode = _this.closest("tr").find("input[name$='.roleCode']").val();
-		  var staffYield = 0.00;
-		  if("PrjMajorLeader" == roleCode){
-			  // 专业负责人个人产值=当年可结算产值(¥)×(100-项目负责人比例-项目经理比例)×本专业结算比例×专业负责人比例×工作量/100000000
-			  staffYield = new Number(yearYield)*(100-new Number(principalRate) - new Number(pmRate))*(new Number(majorAllotRate))*(new Number(rate))*(new Number(staffRate))/100000000;
-		  }else{
-			//专业负责人比例
-			var allotRate = getNumValue(jQuery("input[name$='.roleCode'][value='PrjMajorLeader']").closest("div.row").find("input[name$='.allotRate']"));  
-			//校对人、审核人、设计人/制图人个人产值=当年可结算产值(¥)×(100-项目负责人比例-项目经理比例)×本专业结算比例×(100-专业负责人比例)×本角色比例×工作量/10000000000
-			  staffYield = new Number(yearYield) * (100-new Number(principalRate) - new Number(pmRate))*(new Number(majorAllotRate))*(100 - new Number(allotRate))*(new Number(rate))*(new Number(staffRate))/100000000;
-		  }
-		  var _input = _this.closest("tr").find("td:last").find("input");
-		  _input.val(new Number(staffYield).toFixed(2));
-		  var flag = initTotal(_this);
+	function countOutputValue(_tr){
+		if(_tr.size()>0){
+			jQuery.each(_tr,function(index,item){
+				var _this = $(item).find("input[name$='.staffRate']");
+				var staffRate = getNumValue(_this);
+				  //专业角色  比例
+				  var rate = getNumValue(_this.closest("table").prev().find("input[name$='allotRate']"));
+				  //当年可结算产值(¥)
+				  var yearYield = getNumValue(jQuery("input[name='yearYield']"));
+				  //项目经理 比例
+				  var pmRate = getNumValue(jQuery("input[name='pmRate']"));
+				  //项目负责人 比例
+				  var principalRate = getNumValue(jQuery("input[name='principalRate']"));
+				  
+				  //本专业结算比例
+				  var majorAllotRate = getNumValue(jQuery("div.tab-content div.active").find("input[name='majorAllotRate']"));
+				  
+				  var roleCode = $(item).find("input[name$='.roleCode']").val();
+				  var staffYield = 0.00;
+				  if("PrjMajorLeader" == roleCode){
+					  // 专业负责人个人产值=当年可结算产值(¥)×(100-项目负责人比例-项目经理比例)×本专业结算比例×专业负责人比例×工作量/100000000
+					  staffYield = new Number(yearYield)*(100-new Number(principalRate) - new Number(pmRate))*(new Number(majorAllotRate))*(new Number(rate))*(new Number(staffRate))/100000000;
+				  }else{
+					//专业负责人比例
+					var allotRate = getNumValue(jQuery("input[name$='.roleCode'][value='PrjMajorLeader']").closest("div.row").find("input[name$='.allotRate']"));  
+					//校对人、审核人、设计人/制图人个人产值=当年可结算产值(¥)×(100-项目负责人比例-项目经理比例)×本专业结算比例×(100-专业负责人比例)×本角色比例×工作量/10000000000
+					  staffYield = new Number(yearYield) * (100-new Number(principalRate) - new Number(pmRate))*(new Number(majorAllotRate))*(100 - new Number(allotRate))*(new Number(rate))*(new Number(staffRate))/100000000;
+				  }
+				  var _td = $(item).find("td:last");
+				  _td.text(new Number(staffYield).toFixed(2));
+				  $(item).find("input[name$='.staffYield']").val(new Number(staffYield).toFixed(2));
+				  if(index == _tr.size()-1){
+					  initTotal(_this);
+				  }
+			});
+		}
 	}
 	
 	//合计

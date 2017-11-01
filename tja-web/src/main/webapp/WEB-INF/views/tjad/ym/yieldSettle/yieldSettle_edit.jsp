@@ -48,52 +48,52 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目编号</label>
 						<div class="col-md-8">
-							<input type="text" name="wfYieldSettle.proCode" class="form-control col-md-3" readonly value="${project.proCode}">
+							<input type="text" name="wfYieldSettle.proCode" class="form-control col-md-3" disabled value="${project.proCode}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目名称</label>
 						<div class="col-md-8">
-							<input type="text" name="wfYieldSettle.proName" class="form-control" readonly value="${project.proName}">
+							<input type="text" name="wfYieldSettle.proName" class="form-control" disabled value="${project.proName}">
 						</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">合同编号</label>
 						<div class="col-md-8">
-							<input type="text" name="wfYieldSettle.proType" class="form-control" readonly value="${project.contractCode}">
+							<input type="text" name="wfYieldSettle.proType" class="form-control" disabled value="${project.contractCode}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目类型</label>
 						<div class="col-md-8">
-							<input type="text" name="wfYieldSettle.proType" class="form-control" readonly value="${project.proType}">
+							<input type="text" name="wfYieldSettle.proType" class="form-control" disabled value="${project.proType}">
 						</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">合同额(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" readonly name="wfYieldSettle.contractAmount" value="${project.contractAmount}">
+							<input type="text" class="form-control" disabled name="wfYieldSettle.contractAmount" value="${project.contractAmount}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">分包扣减(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" readonly name="wfYieldSettle.pkgAmount" value="${project.pkgAmount}">
+							<input type="text" class="form-control" disabled name="wfYieldSettle.pkgAmount" value="${project.pkgAmount}">
 						</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">方案扣减(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" readonly name="wfYieldSettle.schemeAmount" value="${project.schemeAmount}">
+							<input type="text" class="form-control" disabled name="wfYieldSettle.schemeAmount" value="${project.schemeAmount}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">其他扣减(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" readonly name="wfYieldSettle.rebateAmount" value="${project.rebateAmount}"> 
+							<input type="text" class="form-control" disabled name="wfYieldSettle.rebateAmount" value="${project.rebateAmount}"> 
 						</div>
 					</div>
 					
@@ -101,14 +101,14 @@
 						<label class="control-label col-md-3">项目负责人</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-							<input type="text" class="form-control" readonly name="wfYieldSettle.pManagers" value="${project.pmLeaders}">
+							<input type="text" class="form-control" disabled name="wfYieldSettle.pManagers" value="${project.pmLeaders}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目经理</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-			            	<input type="text" name="wfYieldSettle.pManagers" class="form-control col-md-3" value="${project.pManagers}" readonly>
+			            	<input type="text" name="wfYieldSettle.pManagers" class="form-control col-md-3" value="${project.pManagers}" disabled>
 						</div>
 					</div>
 					
@@ -117,14 +117,14 @@
 						<label class="control-label col-md-3">当年可结算产值(¥)</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-							<input type="text" class="form-control" name="wfYieldSettle.yearYield" value="${empty yieldSettle.yearYield ? project.yield : yieldSettle.yearYield}" readonly>
+							<input type="text" class="form-control" name="wfYieldSettle.yearYield" value="${empty yieldSettle.yearYield ? project.yield : yieldSettle.yearYield}" disabled>
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">历年已结算产值(¥)</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-							<input type="text" class="form-control" name="wfYieldSettle.hisyearYield" value="${empty yieldSettle.hisyearYield ? project.yield : yieldSettle.hisyearYield}" readonly>
+							<input type="text" class="form-control" name="wfYieldSettle.hisyearYield" value="${empty yieldSettle.hisyearYield ? hisyearYield : yieldSettle.hisyearYield}" disabled>
 						</div>
 					</div>
 					
@@ -167,7 +167,7 @@
 							    <div class="col-lg-4  col-md-4 col-sm-4 col-xs-4">项目负责人</div>
 							    <div class="col-lg-4  col-md-4 col-sm-4 col-xs-4 text-right">
 							      <label>比例：</label>
-							      <input type="text" class="ta_input" name="wfYieldSettle.principalRate"  data-rule-number="true"  placeholder="0.00" value="${empty yieldSettle.principalRate?projectExtend.principalRate : yieldSettle.principalRate}" style="display: inline-block;">
+							      <input type="text" class="ta_input keyupRate" name="wfYieldSettle.principalRate"  data-rule-number="true"  placeholder="0.00" value="${empty yieldSettle.principalRate?projectExtend.principalRate : yieldSettle.principalRate}" style="display: inline-block;">
 								</div>
 								<div class="col-lg-4 text-right  col-md-4 col-sm-4 col-xs-4">
 									<input type="button" class="btn blue btn_leader" value="添加"> 
@@ -205,7 +205,7 @@
 														data-rule-required="true">
 													</td>
 											<td  class="col-lg-4 text-right">
-											  <input type="text" class="form-control text-right" name="principalAllots[${size}].staffYield" value="${leader.staffYield}" placeholder="0.00" readonly>
+											  <input type="text" class="form-control text-right" name="principalAllots[${size}].staffYield" value="${leader.staffYield}" placeholder="0.00" disabled>
 											</td>
 										</tr>
 										<c:set var="size" value="${size+1}"></c:set>
@@ -233,7 +233,7 @@
 														value="">
 													</td>
 											<td  class="col-lg-4 text-right">
-											  <input type="text" class="form-control text-right" name="principalAllots[${size}].staffYield" value="" placeholder="0.00" readonly>
+											  <input type="text" class="form-control text-right" name="principalAllots[${size}].staffYield" value="" placeholder="0.00" disabled>
 											</td>
 										</tr>
 										<c:set var="size" value="${size+1}"></c:set>
@@ -252,7 +252,7 @@
 							    <div class="col-lg-4  col-md-4 col-sm-4 col-xs-4">项目经理</div>
 							    <div class="col-lg-4  col-md-4 col-sm-4 col-xs-4 text-right">
 							      <label>比例：</label>
-							      <input type="text" class="ta_input" name="wfYieldSettle.pmRate"  data-rule-number="true"  placeholder="0.00" value="${empty yieldSettle.pmRate ?projectExtend.pmRate : yieldSettle.pmRate}" style="display: inline-block;">
+							      <input type="text" class="ta_input keyupRate" name="wfYieldSettle.pmRate"  data-rule-number="true"  placeholder="0.00" value="${empty yieldSettle.pmRate ?projectExtend.pmRate : yieldSettle.pmRate}" style="display: inline-block;">
 								</div>
 								<div class="col-lg-3 text-right  col-md-4 col-sm-4 col-xs-4">
 									<input type="button" class="btn blue btn_pm" value="添加"> 
@@ -288,7 +288,7 @@
 														value="${manager.staffRate}">
 													</td>
 											<td  class="col-lg-4 text-right">
-											<input type="text" class="form-control text-right" name="principalAllots[${size}].staffYield" value="${manager.staffYield}" placeholder="0.00" readonly>
+											<input type="text" class="form-control text-right" name="principalAllots[${size}].staffYield" value="${manager.staffYield}" placeholder="0.00" disabled>
 											</td>
 										</tr>
 										<c:set var="size" value="${size+1}"></c:set>
@@ -315,7 +315,7 @@
 														value="">
 													</td>
 											<td  class="col-lg-4 text-right">
-											<input type="text" class="form-control text-right" name="principalAllots[${size}].staffYield" value="" placeholder="0.00" readonly>
+											<input type="text" class="form-control text-right" name="principalAllots[${size}].staffYield" value="" placeholder="0.00" disabled>
 											</td>
 										</tr>
 										<c:set var="size" value="${size+1}"></c:set>
@@ -422,7 +422,7 @@
 							value="">
 						</td>
 				<td  class="col-lg-4 text-right">
-				  <input type="text" class="form-control text-right" name="principalAllots[{0}].staffYield" placeholder="0.00" value="" readonly>
+				  <input type="text" class="form-control text-right" name="principalAllots[{0}].staffYield" placeholder="0.00" value="" disabled>
 				</td>
 			 </tr>
 			</table>
@@ -437,12 +437,12 @@
     var pmCate = "${categoryPm}";
 	$(function(){
 		
-		jQuery(document).on("keyup","#leader tbody input[name$='staffRate']",function(){
-			countOutputValue($(this));
+		jQuery(document).on("keyup","input[name$='staffRate']",function(){
+			countOutputValue($(this).closest("tr"));
 		});
 		
-		jQuery(document).on("keyup","#pm tbody input[name$='staffRate']",function(){
-			countOutputValue($(this));
+		jQuery(document).on("keyup","input.keyupRate",function(){
+			countOutputValue($(this).parent().parent().next().find("tbody tr:not(:last)"));
 		});
 		
 		jQuery(document).on("keyup","#majorSettleRate tbody input[name$='settleRate']",function(){
@@ -461,24 +461,31 @@
 	});
 
 	//计算产值
-	function countOutputValue(_this){
-		  var staffRate = _this.val();
-		  //项目负责人 项目经理 比例
-		  var rate = _this.closest("table").prev().find("input[name^='wfYieldSettle']").val();
-		  //当年可结算产值
-		  var yearYield = jQuery("input[name$='.yearYield']").val();
-		  
-		  if(rate == '' || typeof rate == 'undefined' || isNaN(rate)){
-			  rate = 0.00;
+	function countOutputValue(_tr){
+		  if(_tr.size()>0){
+			  jQuery.each(_tr,function(index,item){
+				  var $item = $(item);
+				  var staffRate = $item.find("input[name$='staffRate']").val();
+				  //项目负责人 项目经理 比例
+				  var rate = $item.closest("table").prev().find("input[name^='wfYieldSettle']").val();
+				  //当年可结算产值
+				  var yearYield = jQuery("input[name$='.yearYield']").val();
+				  
+				  if(rate == '' || typeof rate == 'undefined' || isNaN(rate)){
+					  rate = 0.00;
+				  }
+				  if(yearYield == '' || typeof yearYield == 'undefined' || isNaN(yearYield)){
+					  yearYield = 0.00;
+				  }
+				  //=当年可结算产值×比例×工作量/10000
+				  var staffYield =new Number(yearYield) * new Number(rate) * staffRate/10000;
+				  var _input = $item.find("td:last").find("input");
+				  _input.val(new Number(staffYield).toFixed(2));
+				  if(index == _tr.size()-1){
+					 initTotal($item.find("input[name$='staffRate']"));  
+				  }
+			  });
 		  }
-		  if(yearYield == '' || typeof yearYield == 'undefined' || isNaN(yearYield)){
-			  yearYield = 0.00;
-		  }
-		  //=当年可结算产值×比例×工作量/10000
-		  var staffYield =new Number(yearYield) * new Number(rate) * staffRate/10000;
-		  var _input = _this.closest("tr").find("td:last").find("input");
-		  _input.val(new Number(staffYield).toFixed(2));
-		  var flag = initTotal(_this);
 	}
 	
 	//合计
@@ -618,6 +625,8 @@
 	function ajaxSave(flag,status){
 		var url ="${site}/admin/ym/yieldSettle/ajax/save";
 	    if (flag) {
+	    	//把disabled属性去掉
+	    	jQuery("input:disabled").removeAttr("disabled");
 	    	$("input[name='wfYieldSettle.auditStatus']").val(status);
 		        jQuery.ajax({
 		        type : "POST",

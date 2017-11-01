@@ -114,6 +114,9 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
                     //当年专业结算比例
                     List<SysConfig> configs = wfYieldSettleDao.selectMajorByProId(proId);
                     outParams.put("configs", configs);
+                    //历年已结算产值
+                    WfYieldSettle settle = wfYieldSettleDao.selectHisYearYield();
+                    outParams.put("hisyearYield", settle.getYearYield());
                 } else if ("2000".equals(editType)) { // 年度产值结算特批
                     OcPermitYield ocPermitYield = queryByPrimaryKey(OcPermitYield.class, syId);
                     project.setYield(ocPermitYield.getPermitYield());

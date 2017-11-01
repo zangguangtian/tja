@@ -1,7 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<div class="col-md-12">
+<div class="col-md-12 form-group">
 	<div class="tabbable-line boxless tabbable-reversed">
 		<ul class="nav nav-tabs">
 		    <c:set var="tabSize" value="0"></c:set>
@@ -43,10 +43,9 @@
 								    <input type="hidden" class="ta_input" name="majorRoleRates[${roleSize}].roleCode" value="${majorRoleRate.roleCode}">
 								    <input type="hidden" class="ta_input" name="majorRoleRates[${roleSize}].majorRateId" value="${majorRoleRate.majorRateId}">
 									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">${majorRoleRate.roleName}</div>
-									<div class="col-lg-4 text-right col-md-4 col-sm-4 col-xs-4 input-icon left">
+									<div class="col-lg-4 text-right col-md-4 col-sm-4 col-xs-4">
 										比例：
 										<c:if test="${view == 2 }">
-										    <i class="fa"></i>
 											<input type="text" class="ta_input"
 												name="majorRoleRates[${roleSize}].allotRate"
 												placeholder="0.00"
@@ -84,19 +83,20 @@
 												<c:set var="totalRate" value="${majorRoleAllot.staffRate + totalRate}"></c:set>
 												<c:set var="totalYield" value="${majorRoleAllot.staffYield + totalYield}"></c:set>
 												<tr class="row roleAllot">
-												<input type="hidden" class="ta_input" name="majorRoleAllots[${rateSize}].wfId" value="${majorRoleAllot.wfId}">
+												    <input type="hidden" class="ta_input" name="majorRoleAllots[${rateSize}].wfId" value="${majorRoleAllot.wfId}">
 												    <input type="hidden" class="ta_input" name="majorRoleAllots[${rateSize}].id" value="${majorRoleAllot.id}">
 												    <input type="hidden" class="ta_input" name="majorRoleAllots[${rateSize}].majorCode" value="${majorRoleAllot.majorCode}">
 												    <input type="hidden" class="ta_input" name="majorRoleAllots[${rateSize}].category" value="1000">
 												    <input type="hidden" class="ta_input" name="majorRoleAllots[${rateSize}].roleCode" value="${majorRoleAllot.roleCode}">
 												    <input type="hidden" class="ta_input" name="majorRoleAllots[${rateSize}].staffId" value="${majorRoleAllot.staffId}">
 												    <input type="hidden" class="ta_input" name="majorRoleAllots[${rateSize}].staffSort" value="${empty majorRoleAllot.staffSort ? in.index : majorRoleAllot.staffSort}">
+													<input type="hidden" name="majorRoleAllots[${rateSize}].staffYield" value="${majorRoleAllot.staffYield}">
 													<td class="text-center col-lg-4">
 													  ${majorRoleAllot.staffName}
 													</td>
 													<td class="text-right col-lg-4 input-icon left">
 													<c:if test="${view == 2 }">
-												<i class="fa"></i>
+												    <i class="fa"></i>
 													<input type="text"
 														name="majorRoleAllots[${rateSize}].staffRate"
 														class="form-control text-right"
@@ -106,16 +106,17 @@
 													    data-rule-max="100"
 													    data-rule-min="0" 
 														value="${majorRoleAllot.staffRate}">
-																		</c:if>
+													</c:if>
 													<c:if test="${view > 2 }">${majorRoleAllot.staffRate}</c:if>
 													</td>
 													<td class=" col-lg-4 text-right">
-													<c:if test="${view == 2 }">
+													<%-- <c:if test="${view == 2 }">
 													<input type="text" placeholder="0.00" name="majorRoleAllots[${rateSize}].staffYield" class="form-control text-right" value="${majorRoleAllot.staffYield}" readonly>
 													</c:if>
 													<c:if test="${view > 2 }">
 													  ${majorRoleAllot.staffYield}
-													</c:if>
+													</c:if> --%>
+													${majorRoleAllot.staffYield}
 													</td>
 												</tr>
 												<c:set var="rateSize" value="${rateSize + 1}"></c:set>
