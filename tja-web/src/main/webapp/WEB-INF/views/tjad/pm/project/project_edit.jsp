@@ -347,7 +347,7 @@ function selectStaffBack(data){
 function save(){
 	if (jQuery("#projectForm").valid()) {
 		if (parseFloat($("#rateSum").text()) > 100) {
-			$.jalert({"jatext":"项目角色分配比例不能超过100"});
+			$.jalert({"jatext":"项目角色分配比例不能超过100%"});
 			return;
 		}
 		
@@ -358,11 +358,11 @@ function save(){
 	 		rateObj[allotCodeList[i].value] = parseFloat(allotRateList[i].value);
 		}
 	 	if(rateObj["PrjMajorLeader"] > 100){
-	 		$.jalert({"jatext":"专业负责人分配比例不能超过100"});
+	 		$.jalert({"jatext":"专业负责人分配比例不能超过100%"});
 			return;
 	 	}
 	 	if((rateObj["PrjTaskChecker"]+rateObj["PrjTaskApprover"]+rateObj["PrjTaskDesigner"]) > 100){
-	 		$.jalert({"jatext":"校对人+审核人+设计人/制图人 分配比例不能超过100"});
+	 		$.jalert({"jatext":"校对人+审核人+设计人/制图人 分配比例不能超过100%"});
 			return;
 	 	}
 	
