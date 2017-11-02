@@ -31,11 +31,18 @@
 	</center>
 	<div class='<c:if test="${not empty print }">print</c:if>'>
 		<div class="form">
-            <div class="row">
-                <div class='col-lg-3 <c:if test="${not empty print }">printSeq</c:if> <c:if test="${empty print }">seq</c:if>'>
+            <div class="form-group col-lg-12">
+                <%-- <div class='col-lg-3 <c:if test="${not empty print }">printSeq</c:if> <c:if test="${empty print }">seq</c:if>'>
                                                      流水号:${planScheme.seqNo}
-                </div>
-                <div class="col-lg-9 text-right">
+                </div> --%>
+                <div class="form-group col-lg-5 ">
+					<label class="control-label col-md-3">流水号</label>
+					<div class="col-md-8">
+						<input type="text" class="form-control" value="${planScheme.seqNo}" disabled="disabled" title="${planScheme.seqNo}">
+					</div>
+				</div>
+                
+                <div class="col-lg-7 text-right">
                     <c:if test="${canRevoke }">
                         <input type="button" id="reject-btn" value="撤回" class="btn blue">
                     </c:if>
@@ -105,14 +112,14 @@
 						<label class="control-label col-md-3">方案产值(￥)</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-							<input type="text" class="form-control" data-rule-number="true" name="schemeYield" disabled data-rule-required="true" value="${planScheme.schemeYield}">
+							<input type="text" class="form-control" data-rule-number="true" name="schemeYield" disabled  value="<fmt:formatNumber value='${planScheme.schemeYield}' pattern='#,#00.00#'/>">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">承接部门</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-			            	<input type="text" id="orgName" class="form-control col-md-3" value="${planScheme.orgName}" data-rule-required="true" disabled>
+			            	<input type="text" id="orgName" class="form-control col-md-3" value="${planScheme.orgName}" disabled>
 						</div>
 					</div>
 					<div class="form-group col-lg-12 " style="margin-left: 4%">

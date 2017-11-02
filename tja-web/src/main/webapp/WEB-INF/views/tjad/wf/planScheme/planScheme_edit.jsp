@@ -45,49 +45,52 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目编号</label>
 						<div class="col-md-8">
-							<input type="text" name="proCode" class="form-control col-md-3" readonly value="${project.proCode}">
+							<input type="text" name="proCode" class="form-control col-md-3" disabled value="${project.proCode}">
 							<a id="selectPro" title="选择" href="javascript:void(0);" class="icon-select"></a>
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目名称</label>
 						<div class="col-md-8">
-							<input type="text" name="proName" class="form-control" readonly value="${project.proName}">
+							<input type="text" name="proName" class="form-control" disabled value="${project.proName}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目类型</label>
 						<div class="col-md-8">
-							<input type="text" name="proType" class="form-control" readonly value="${project.proType}">
+							<input type="text" name="proType" class="form-control" disabled value="${project.proType}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目级别</label>
-						<div class="col-md-8">
+						<div class="col-md-8 input-icon right">
+						    <i class="fa"></i>
 							<tags:config type="select" cssClass="form-control" selectCode="${planScheme.itemGrade}" parentCode="PM.GRADE" name="itemGrade"></tags:config>
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目负责人</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" readonly name="pmLeaders" value="${project.pmLeaders}">
+							<input type="text" class="form-control" disabled name="pmLeaders" value="${project.pmLeaders}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目经理</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" readonly name="pManagers" value="${project.pManagers}">
+							<input type="text" class="form-control" disabled name="pManagers" value="${project.pManagers}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">设计启动时间</label>
-						<div class="col-md-8">
+						<div class="col-md-8 input-icon right">
+						    <i class="fa"></i>
 							<input type="text" class="form-control datetimepicker" name="designStart" value='<fmt:formatDate value="${planScheme.designStart}" pattern="yyyy-MM-dd" />'>
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">设计完成时间</label>
-						<div class="col-md-8">
+						<div class="col-md-8 input-icon right">
+						    <i class="fa"></i>
 							<input type="text" class="form-control datetimepicker" name="designCompleted" value='<fmt:formatDate value="${planScheme.designCompleted}" pattern="yyyy-MM-dd" />'> 
 						</div>
 					</div>
@@ -95,7 +98,7 @@
 						<label class="control-label col-md-3">方案产值(¥)<span class="required">※</span></label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-							<input type="text" class="form-control" data-rule-number="true" name="schemeYield" data-rule-required="true" value="${planScheme.schemeYield}">
+							<input type="text" class="form-control" data-rule-number="true" name="schemeYield" data-rule-required="true" value="<fmt:formatNumber value='${planScheme.schemeYield}' pattern='#,#00.00#'/>">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
@@ -110,19 +113,21 @@
 					
 					<div class="form-group col-lg-12 " style="margin-left: 4%">
 						<label class="control-label col-md-1">概况</label>
-						<div class="col-md-10">
+						<div class="col-md-10 input-icon right">
+						    <i class="fa"></i>
 						    <textarea class="form-control" rows="3" name="schemeOverview">${planScheme.schemeOverview}</textarea>
 						</div>
 					</div>
 					<div class="form-group col-lg-12 " style="margin-left: 4%">
 						<label class="control-label col-md-1">备注</label>
-						<div class="col-md-10">
+						<div class="col-md-10 input-icon right">
+						    <i class="fa"></i>
 							<textarea class="form-control" rows="3" name="remark">${planScheme.remark}</textarea>
 						</div>
 					</div> 
 
 					<h3 class="form-tit col-lg-12">设计团队</h3>
-					<div class="col-lg-5 ">
+					<div class="col-lg-5 form-group">
 						<div class="clearfix">
 							<div class="col-lg-12 text-right col-md-4 col-sm-4 col-xs-4">
 								<input type="button" class="btn blue btn_tj" value="添加"/> 
@@ -141,13 +146,24 @@
 							      <c:forEach var="shemeTeam" items="${shemeTeams}" varStatus="st">
 							        <tr>
 										<td  class="text-center col-lg-4">${shemeTeam.staffName }</td>
-										<td  class=" col-lg-4">
+										<td  class="col-lg-4 input-icon left">
+										<i class="fa"></i>
 										<input type="hidden" name="shemeTeams[${st.index}].id" class="text-right" value="${shemeTeam.id }">
 										<input type="hidden" name="shemeTeams[${st.index}].staffId" class="text-right" value="${shemeTeam.staffId }">
 										<input type="hidden" name="shemeTeams[${st.index}].staffSort" class="text-right" value="${shemeTeam.staffSort }">
-										<input type="text" name="shemeTeams[${st.index}].refRate" data-rule-number="true"  placeholder="0.00" class="text-right" value="${shemeTeam.refRate }">
+										<input type="hidden" name="shemeTeams[${st.index}].refYield" class="text-right" value="${shemeTeam.refYield }">
+										<input type="text" name="shemeTeams[${st.index}].refRate"
+													class="text-right"
+													data-rule-number="true" 
+													data-rule-max="100"
+													data-rule-min="0" 
+													placeholder="0.00"
+													data-rule-required="true"
+													value="${shemeTeam.refRate }">
+												</td>
+										<td  class=" col-lg-4 text-right">
+										 <fmt:formatNumber value='${shemeTeam.refYield }' pattern='#,#00.00#'/>
 										</td>
-										<td  class=" col-lg-4 text-right"><input type="text" name="shemeTeams[${st.index}].refYield" readonly placeholder="0.00" class="text-right" value="${shemeTeam.refYield }"></td>
 									</tr>
 							      </c:forEach>
 							    </c:if>
@@ -172,13 +188,21 @@
 			<table id="clone_text" style="display: none">
 				<tr>
 					<td  class="text-center col-lg-4"></td>
-					<td  class=" col-lg-4">
+					<td  class="col-lg-4 input-icon left">
+					<i class="fa"></i>
 					<input type="hidden" name="shemeTeams[{0}].id" class="text-right">
 					<input type="hidden" name="shemeTeams[{0}].staffId" class="text-right">
 					<input type="hidden" name="shemeTeams[{0}].staffSort" class="text-right">
-					<input type="text" name="shemeTeams[{0}].refRate" data-rule-number="true"  placeholder="0.00" class="text-right">
-					</td>
-					<td  class=" col-lg-4 text-right"><input type="text" name="shemeTeams[{0}].refYield" readonly placeholder="0.00" class="text-right"></td>
+					<input type="hidden" name="shemeTeams[{0}].refYield" class="text-right" value="">
+					<input type="text" name="shemeTeams[{0}].refRate"
+							class="text-right"
+							data-rule-number="true" 
+							data-rule-max="100"
+							data-rule-min="0" 
+							placeholder="0.00"
+							data-rule-required="true">
+						</td>
+					<td  class=" col-lg-4 text-right"><input type="text" name="shemeTeams[{0}].refYield" disabled placeholder="0.00" class="text-right"></td>
 				</tr>
 			</table>
 		</div>
@@ -199,37 +223,26 @@
 		jQuery(document).on("keyup","#designTeam tbody input[name$='refRate']",function(){
 			  var _this = $(this);
 			  var refRate = _this.val();
-			  var schemeYield =	$("input[name='schemeYield']").val();
+			  if(refRate.charAt(refRate.length-1) !='.'){
+				  refRate = new Number(new Number(refRate).toFixed(2));
+				  _this.val(refRate);
+			  }
+			  var schemeYield =	delcommafy($("input[name='schemeYield']").val());
 			  if(schemeYield == '' || typeof schemeYield == 'undefined' || isNaN(schemeYield)){
 				  schemeYield = 0;
 			  }
 			  if(refRate == '' || typeof refRate == 'undefined' || isNaN(refRate)){
 				  refRate = 0;
 			  }
-			  var refYieldInput = _this.closest("tr").find("td:last").find("input");
+			  var _lastTd = _this.closest("tr").find("td:last");
 			  var refYield = new Number(schemeYield) * new Number(refRate)/100;
-			  refYieldInput.val(new Number(refYield).toFixed(2));
-			  
-			  var flag = initTotal();
+			  _lastTd.text(toThousands(new Number(refYield).toFixed(2)));
+			  _this.closest("tr").find("input[name$='refYield']").val(new Number(refYield).toFixed(2));
+			  initTotal();
 		});
 		
 		jQuery(document).on("keyup","input[name='schemeYield']",function(){
-			var schemeYield = $(this).val();
-			if(schemeYield == '' || typeof schemeYield == 'undefined' || isNaN(schemeYield)){
-				  schemeYield = 0;
-			  }
-			$("#designTeam tbody tr").each(function(){
-				var _this = $(this);
-				var refRate = _this.find("input[name$='refRate']").val();
-				if(refRate == '' || typeof refRate == 'undefined' || isNaN(refRate)){
-					  refRate = 0;
-				}
-				var refYieldInput = _this.find("td:last").find("input");
-				var refYield = new Number(schemeYield) * new Number(refRate)/100;
-				  refYieldInput.val(new Number(refYield).toFixed(2));
-				  var flag = initTotal();
-			});
-			
+			countSchemeYield();
 		});
 		
 		jQuery("#secOrg").on("click",function(){
@@ -242,6 +255,26 @@
 		initTotal();
 	});
 
+	function countSchemeYield(){
+		var schemeYield = delcommafy($("input[name='schemeYield']").val());
+		if(schemeYield == '' || typeof schemeYield == 'undefined' || isNaN(schemeYield)){
+			  schemeYield = 0;
+		  }
+		$("#designTeam tbody tr").each(function(){
+			var _this = $(this);
+			var refRate = _this.find("input[name$='refRate']").val();
+			if(refRate == '' || typeof refRate == 'undefined' || isNaN(refRate)){
+				  refRate = 0;
+			}
+ 			var _lastTd = _this.find("td:last");
+			var refYield = new Number(schemeYield) * new Number(refRate)/100;
+			_lastTd.text(toThousands(new Number(refYield).toFixed(2)));
+		    _this.find("input[name$='refYield']").val(new Number(refYield).toFixed(2));
+			
+			initTotal();
+		});
+	}
+	
 	//合计
 	function initTotal(){
 		var flag = true;
@@ -264,7 +297,7 @@
 			flag = false;
 		}
 		$("#designTeam tr.total").find("td:eq(1)").text(new Number(totalRefRate).toFixed(2));
-		$("#designTeam tr.total").find("td:eq(2)").text(new Number(totalRefYield).toFixed(2));
+		$("#designTeam tr.total").find("td:eq(2)").text(toThousands(new Number(totalRefYield).toFixed(2)));
 		return flag;
 	}
 	
@@ -374,6 +407,9 @@
 	function ajaxSave(flag,status){
 		var url ="${site}/admin/wf/planScheme/ajax/esave";
 	    if (flag) {
+	    	//千分位处理
+	    	$("input[name='schemeYield']").val(delcommafy($("input[name='schemeYield']").val()));
+	    	$("input:disabled").removeAttr("disabled")
 	    	$("input[name='auditStatus']").val(status);
 		        jQuery.ajax({
 		        type : "POST",
@@ -395,6 +431,19 @@
 	        });
 	    }
 	}
+	
+	//千分位处理 去掉千分位
+	function delcommafy(num){  
+	   num = num.replace(/[ ]/g, "");//去除空格  
+	   num=num.replace(/,/gi,'');  
+	   return num;  
+	}
+	
+	//添加千分位
+	function toThousands(num) {
+	    return (num || 0).toString().replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
+	}
+	
 </script>
 
 </body>
