@@ -16,7 +16,7 @@
 	<center>
 		<h3>项目预估进度月报-${monthFill.periodName}</h3>
 	</center>
-	<div class=" ">
+	<div class="<c:if test="${not empty print }">print</c:if>">
 		<div class="form">
 			<!-- BEGIN FORM-->
 			<form id="approveForm" action="${site}/admin/ym/monthFill/ajax/approve" method="post">
@@ -31,13 +31,13 @@
 			<input type="hidden" name="procId" value="${monthFill.procId }">
 			
 			<div class="form-body clearfix" style="padding-bottom: 0">
-				<div class="form-group col-xs-6 ">
+				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">流水号</label>
 					<div class="col-md-7">
 						<label class="control-label">${monthFill.seqNo}</label>
 					</div>
 				</div>
-				<div class="form-group col-xs-6 ">
+				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4"></label>
 					<div class="col-md-7 text-right">
 						<c:if test="${canRevoke}">
@@ -54,100 +54,100 @@
 			</div>
 			
 			<div class="form-body clearfix">
-				<div class="form-group col-xs-6 ">
+				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">项目编号</label>
 					<div class="col-md-7">
 						<label class="control-label">${monthFill.proCode}</label>
 					</div>
 				</div>
-				<div class="form-group col-xs-6 ">
+				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">项目名称</label>
 					<div class="col-md-7">
 						<label class="control-label">${monthFill.proName}</label>
 					</div>
 				</div>
-				<div class="form-group col-xs-6 ">
+				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">项目类型</label>
 					<div class="col-md-7">
 						<label class="control-label">${monthFill.proType}</label>
 					</div>
 				</div>
-				<div class="form-group col-xs-6 ">
+				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">项目级别</label>
 					<div class="col-md-7">
 						<tags:config type="label" code="${monthFill.proGrade}"/>
 					</div>
 				</div>
-				<div class="form-group col-xs-6 ">
+				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">实际合同额(¥)</label>
 					<div class="col-md-7">
 						<label name="contractAmount" class="control-label">${monthFill.contractAmount}</label>
 					</div>
 				</div>
-				<div class="form-group col-xs-6 ">
+				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">分包扣减(¥)</label>
 					<div class="col-md-7">
 						<label name="pkgAmount" class="control-label">${monthFill.pkgAmount}</label>
 					</div>
 				</div>
-				<div class="form-group col-xs-6 ">
+				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">方案扣减(¥)</label>
 					<div class="col-md-7">
 						<label name="schemeAmount" class="control-label">${monthFill.schemeAmount}</label>
 					</div>
 				</div>
-				<div class="form-group col-xs-6 ">
+				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">其他扣减(¥)</label>
 					<div class="col-md-7">
 						<label name="rebateAmount" class="control-label">${monthFill.rebateAmount}</label>
 					</div>
 				</div>
-				<div class="form-group col-xs-6 ">
+				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">项目负责人</label>
 					<div class="col-md-7">
 						<label class="control-label">${monthFill.pmLeaders}</label>
 					</div>
 				</div>
-				<div class="form-group col-xs-6 ">
+				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">项目经理</label>
 					<div class="col-md-7">
 						<label class="control-label">${monthFill.pManagers}</label>
 					</div>
 				</div>
-				<div class="form-group col-xs-6 ">
+				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">所处状态</label>
 					<div class="col-md-7">
 						<tags:config type="label" code="${monthFill.itemStatus}"/>
 					</div>
 				</div>
 				
-				<div class="form-group col-xs-12 ">
+				<div class="form-group col-lg-12 ">
 					<label class="control-label col-md-2" style="margin-left: -0.6%;">施工进度描述</label>
 					<div class="col-md-9" style="width: 78%;">
 						<textarea rows="3" class="form-control" disabled>${monthFill.progressExplain}</textarea>
 					</div>
 				</div>
-				<div class="form-group col-xs-12 ">
+				<div class="form-group col-lg-12 ">
 					<label class="control-label col-md-2" style="margin-left: -0.6%;">备注</label>
 					<div class="col-md-9" style="width: 78%;">
 						<textarea rows="3" class="form-control" disabled>${monthFill.remark}</textarea>
 					</div>
 				</div>
-				<div class="form-group col-xs-6 ">
+				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">创建人</label>
 					<div class="col-md-7">
 						<label class="control-label">${monthFill.creator}</label>
 					</div>
 				</div>
-				<div class="form-group col-xs-6 ">
+				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">创建时间</label>
 					<div class="col-md-7">
 						<label class="control-label"><fmt:formatDate pattern="yyyy-MM-dd" value="${monthFill.createDate}"/></label>
 					</div>
 				</div>
 				
-				<h5 class="form-tit col-xs-12">专业进度</h5>
-				<div class="col-xs-12">
+				<h5 class="form-tit col-lg-12">专业进度</h5>
+				<div class="col-lg-12">
 					<table id="majorTable" class="table table-bordered edit">
 						<thead>
 							<tr>

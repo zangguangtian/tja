@@ -16,7 +16,7 @@
 		<h3>项目周报-${weekFill.periodName}</h3>
 		<h6><fmt:formatDate pattern="yyyy年MM月dd日" value="${weekFill.rangeStart}"/> ~ <fmt:formatDate pattern="yyyy年MM月dd日" value="${weekFill.rangeEnd}"/></h6>
 	</center>
-	<div class=" ">
+	<div class="<c:if test="${not empty print }">print</c:if>">
 		<div class="form">
 			<!-- BEGIN FORM-->
 			<form id="approveForm" action="${site}/admin/ym/weekFill/ajax/approve" method="post">

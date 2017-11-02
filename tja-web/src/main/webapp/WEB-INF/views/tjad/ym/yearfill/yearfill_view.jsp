@@ -16,7 +16,7 @@
 	<center>
 		<h3>项目实际进度年报-${yearFill.periodName}</h3>
 	</center>
-	<div class=" ">
+	<div class="<c:if test="${not empty print }">print</c:if>">
 		<div class="form">
 			<!-- BEGIN FORM-->
 			<form id="approveForm" action="${site}/admin/ym/yearFill/ajax/approve" method="post">
