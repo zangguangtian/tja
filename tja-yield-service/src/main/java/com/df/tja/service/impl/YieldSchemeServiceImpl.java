@@ -70,7 +70,9 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
             OcYieldScheme ocYieldScheme = null;
             BigDecimal rebate = ymConfigService.queryOcRebateParam();
 
+            //计算土建总产值
             BigDecimal totalAmount = custOcYieldScheme.getTotalAmount();
+            //计算各专业产值
             BigDecimal majorAmount = ArithmeticUtil.round(ArithmeticUtil.mul(totalAmount, rebate), 2);
             if ("0".equals(StringUtil.defaultIfBlank(custOcYieldScheme.getId(), "0"))) { //插入
                 ocYieldScheme = new OcYieldScheme();
@@ -78,9 +80,11 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
 
                 ocYieldScheme.setTotalAmount(totalAmount);
                 ocYieldScheme.setMajorAmount(majorAmount);
+                //项目负责人(产值)
                 ocYieldScheme.setPrincipalYield(
                     ArithmeticUtil.div(ArithmeticUtil.multMul(ocYieldScheme.getPrincipalRate(), totalAmount, rebate),
                         new BigDecimal(100), 2));
+                //项目经理(产值)
                 ocYieldScheme.setPmYield(ArithmeticUtil.div(
                     ArithmeticUtil.multMul(ocYieldScheme.getPmRate(), totalAmount, rebate), new BigDecimal(100), 2));
                 addEntity(OcYieldScheme.class, ocYieldScheme);
@@ -111,9 +115,11 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
                     new String[] {"proId", "schemeAmount", "creator", "createDate"});
                 ocYieldScheme.setTotalAmount(totalAmount);
                 ocYieldScheme.setMajorAmount(majorAmount);
+                //项目负责人(产值)
                 ocYieldScheme.setPrincipalYield(
                     ArithmeticUtil.div(ArithmeticUtil.multMul(ocYieldScheme.getPrincipalRate(), totalAmount, rebate),
                         new BigDecimal(100), 2));
+                //项目经理(产值)
                 ocYieldScheme.setPmYield(ArithmeticUtil.div(
                     ArithmeticUtil.multMul(ocYieldScheme.getPmRate(), totalAmount, rebate), new BigDecimal(100), 2));
                 ocYieldSchemeDao.update(OcYieldScheme.class, ocYieldScheme);
@@ -166,6 +172,31 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
             throw new RuntimeException(ex);
         }
         return majorDutyMap;
+    }
+
+    public Map<String, CustOcYieldStageMajor> queryOcYieldStageMajorsBySchemeId(String schemeId)
+        throws RuntimeException {
+        Map<String, CustOcYieldStageMajor> stageMajorMap = null;
+        try {
+            OcYieldStageMajor entity = new OcYieldStageMajor();
+            entity.setSchemeId(schemeId);
+            List<OcYieldStageMajor> stageMajors = ocYieldSchemeDao.selectByHQLCondition(OcYieldStageMajor.class, entity,
+                null);
+
+            if (stageMajors != null && !stageMajors.isEmpty()) {
+                stageMajorMap = new HashMap<String, CustOcYieldStageMajor>(0);
+                CustOcYieldStageMajor custStageMajor = null;
+                for (OcYieldStageMajor stageMajor : stageMajors) {
+                    custStageMajor = new CustOcYieldStageMajor();
+                    ObjectUtils.copyProperties(stageMajor, custStageMajor);
+                    stageMajorMap.put(stageMajor.getCategory() + "." + stageMajor.getMajorCode(), custStageMajor);
+                }
+            }
+        } catch (Exception ex) {
+            LoggerUtil.error(YieldSchemeServiceImpl.class, "", ex);
+            throw new RuntimeException(ex);
+        }
+        return stageMajorMap;
     }
 
     public List<CustOcYieldMajor> queryOcYieldMajors(String schemeId) throws RuntimeException {

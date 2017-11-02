@@ -36,6 +36,7 @@ import com.df.tja.domain.OcYieldScheme;
 import com.df.tja.domain.cust.CustOcYieldMajor;
 import com.df.tja.domain.cust.CustOcYieldMajorDuty;
 import com.df.tja.domain.cust.CustOcYieldScheme;
+import com.df.tja.domain.cust.CustOcYieldStageMajor;
 import com.df.tja.service.IStandardPriceService;
 import com.df.tja.service.IWfPlanSchemeService;
 import com.df.tja.service.IYieldSchemeService;
@@ -77,6 +78,9 @@ public class YieldSchemeController extends BaseController {
     @Autowired
     private IWfPlanSchemeService wfPlanSchemeService;
 
+    private String[][] schemeStages = new String[][] {{"preliminary", "初设"}, {"drawing", "施工图"}, {"subTotal", "小计"},
+        {"coordination", "施工配合"}, {"cap", "施工配合-封顶"}, {"check", "施工配合-验收"}};
+
     /**
      * 
      * <p>描述 : 施工图产值策划列表  </p>
@@ -99,6 +103,8 @@ public class YieldSchemeController extends BaseController {
     @RequestMapping(value = "/edit/{proId}/{id}", method = RequestMethod.GET)
     public String toedit(@PathVariable("proId") String proId, @PathVariable("id") String id, Model model)
         throws RuntimeException {
+        model.addAttribute("schemeStages", schemeStages);
+
         //取项目
         CustProject project = projectService.queryByProId(proId);
         model.addAttribute("project", project);
@@ -132,6 +138,10 @@ public class YieldSchemeController extends BaseController {
             //查询各专业部门产值及负责人
             Map<String, CustOcYieldMajorDuty> duties = yieldSchemeService.queryOcYieldMajorDutiesBySchemeId(id);
             model.addAttribute("yieldDuties", duties);
+
+            //查询各专业部门产值及负责人
+            Map<String, CustOcYieldStageMajor> stageMajors = yieldSchemeService.queryOcYieldStageMajorsBySchemeId(id);
+            model.addAttribute("stageMajors", stageMajors);
         }
 
         //查询本项目的方案产值

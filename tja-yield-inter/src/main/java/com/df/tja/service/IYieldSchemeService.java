@@ -19,6 +19,7 @@ import com.df.framework.base.service.IBaseService;
 import com.df.tja.domain.cust.CustOcYieldMajor;
 import com.df.tja.domain.cust.CustOcYieldMajorDuty;
 import com.df.tja.domain.cust.CustOcYieldScheme;
+import com.df.tja.domain.cust.CustOcYieldStageMajor;
 
 /**
  * @author TabZhu
@@ -48,6 +49,14 @@ public interface IYieldSchemeService extends IBaseService {
      * @throws RuntimeException
      */
     Map<String, CustOcYieldMajorDuty> queryOcYieldMajorDutiesBySchemeId(String schemeId) throws RuntimeException;
+
+    /**
+     * 查询各专业的阶段产值
+     * @param schemeId
+     * @return
+     * @throws RuntimeException
+     */
+    Map<String, CustOcYieldStageMajor> queryOcYieldStageMajorsBySchemeId(String schemeId) throws RuntimeException;
 
     /**
      * 通过策划ID查询专业列表

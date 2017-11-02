@@ -172,61 +172,61 @@
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">实际合同额</label>
                         <div class="col-md-8">
-                            <input type="text" name="contractAmount" class="form-control" value="${yieldScheme.contractAmount }">
+                            <input type="text" name="contractAmount" class="form-control fourAmount" value="${yieldScheme.contractAmount }">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">分包扣减</label>
                         <div class="col-md-8">
-                            <input type="text" name="pkgAmount" class="form-control" value="${yieldScheme.pkgAmount }">
+                            <input type="text" name="pkgAmount" class="form-control fourAmount" value="${yieldScheme.pkgAmount }">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">方案扣减</label>
                         <div class="col-md-8">
-                            <input type="text" name="schemeAmount" class="form-control" value="${yieldScheme.schemeAmount }">
+                            <input type="text" name="schemeAmount" class="form-control fourAmount" value="${yieldScheme.schemeAmount }" readonly>
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">其他扣减</label>
                         <div class="col-md-8">
-                            <input type="text" name="rebateAmount" class="form-control" value="${yieldScheme.rebateAmount }">
+                            <input type="text" name="rebateAmount" class="form-control fourAmount" value="${yieldScheme.rebateAmount }">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">土建总产值</label>
                         <div class="col-md-8">
-                            <input type="text" name="totalAmount" class="form-control" value="${yieldScheme.totalAmount }">
+                            <input type="text" name="totalAmount" class="form-control" value="${yieldScheme.totalAmount }" readonly>
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">各专业产值</label>
                         <div class="col-md-8">
-                            <input type="text" name="majorAmount" class="form-control" value="${yieldScheme.majorAmount }">
+                            <input type="text" name="majorAmount" class="form-control" value="${yieldScheme.majorAmount }" readonly>
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">项目负责人（%）</label>
                         <div class="col-md-8">
-                            <input type="text" name="principalRate" class="form-control" value="${yieldScheme.principalRate }">
+                            <input type="text" name="principalRate" class="form-control twoProUser" value="${yieldScheme.principalRate }">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">项目负责人（产值）</label>
                         <div class="col-md-8">
-                            <input type="text" name="principalYield" class="form-control" value="${yieldScheme.principalYield }">
+                            <input type="text" name="principalYield" class="form-control" value="${yieldScheme.principalYield }" readonly>
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">项目经理（%）</label>
                         <div class="col-md-8">
-                            <input type="text" name="pmRate" class="form-control" value="${yieldScheme.pmRate }">
+                            <input type="text" name="pmRate" class="form-control twoProUser" value="${yieldScheme.pmRate }">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">项目经理（产值）</label>
                         <div class="col-md-8">
-                            <input type="text" name="pmYield" class="form-control" value="${yieldScheme.pmYield }">
+                            <input type="text" name="pmYield" class="form-control" value="${yieldScheme.pmYield }" readonly>
                         </div>
                     </div>
                     <c:if test="${not empty majors }">
@@ -235,7 +235,7 @@
 		                        <label class="control-label col-md-3">${major.configName }产值</label>
 		                        <div class="col-md-8">
 		                            <input type="hidden" name="yieldMajorDuties[${vs.index }].majorCode" value="${major.configCode }">
-		                            <input type="text" name="yieldMajorDuties[${vs.index }].majorYield" value="${yieldDuties[major.configCode].majorYield }" class="form-control">
+		                            <input type="text" name="yieldMajorDuties[${vs.index }].majorYield" data-majorcode="${major.configCode }" value="${yieldDuties[major.configCode].majorYield }" class="form-control eachMajorYield" readonly>
 		                        </div>
 		                    </div>
 	                    </c:forEach>
@@ -246,10 +246,10 @@
 					    <table id="majorYield" class="table table-striped table-bordered table-advance table-hover dataTable">
 					        <thead>
 					            <tr>
-					                <th nowrap="nowrap" rowspan="2" style="ext-align:center;">阶段</th>
+					                <th nowrap="nowrap" rowspan="2" style="text-align:center;">阶段</th>
 					                <c:if test="${not empty majors }">
 					                   <c:forEach items="${majors }" var="major" >
-					                       <th nowrap="nowrap" colspan="2" style="text-align:center;">${major.configName }</th>
+					                       <th nowrap="nowrap" colspan="2" style="text-align:center;" data-smcode="${major.configCode }">${major.configName }</th>
 					                   </c:forEach>
 					                </c:if>
 					            </tr>
@@ -263,76 +263,69 @@
 					            </tr>
 					        </thead>
                             <tbody>
-					            <tr>
-                                    <td nowrap="nowrap" style="text-align:center;">初设</td>
-                                    <c:if test="${not empty majors }">
-                                       <c:forEach items="${majors }" var="major" varStatus="vs" >
-                                           <td nowrap="nowrap" style="width:80px;">
-                                               <input type="hidden" name="yieldStageMajors[${vs.index*2 }].category" value="1000">
-                                               <input type="hidden" name="yieldStageMajors[${vs.index*2 }].majorCode" value="${major.configCode }">
-                                               <input type="text" name="yieldStageMajors[${vs.index*2 }].preliminary" value="" class="form-control"></td>
-                                           <td nowrap="nowrap" style="text-align:right;width:80px;">
-                                               <input type="hidden" name="yieldStageMajors[${vs.index*2+1 }].category" value="2000">
-                                               <input type="hidden" name="yieldStageMajors[${vs.index*2+1 }].majorCode" value="${major.configCode }">
-                                               <input type="text" name="yieldStageMajors[${vs.index*2+1 }].preliminary" value="" readonly class="form-control"></td>
-                                       </c:forEach>
-                                    </c:if>
-					            </tr>
-					            <tr>
-                                    <td nowrap="nowrap" style="text-align:center;">施工图</td>
-                                    <c:if test="${not empty majors }">
-                                       <c:forEach items="${majors }" var="major" varStatus="vs" >
-                                           <td nowrap="nowrap" style="width:80px;">
-                                               <input type="text" name="yieldStageMajors[${vs.index*2 }].drawing" value="" class="form-control"></td>
-                                           <td nowrap="nowrap" style="width:80px;">
-                                               <input type="text" name="yieldStageMajors[${vs.index*2+1 }].drawing" value="" readonly class="form-control"></td>
-                                       </c:forEach>
-                                    </c:if>
-					            </tr>
-					            <tr>
-                                    <td nowrap="nowrap" style="text-align:center;">小计</td>
-                                    <c:if test="${not empty majors }">
-                                       <c:forEach items="${majors }" var="major" varStatus="vs" >
-                                           <td nowrap="nowrap" style="width:80px;">
-                                               <input type="text" name="yieldStageMajors[${vs.index*2 }].subTotal" value="" readonly class="form-control"></td>
-                                           <td nowrap="nowrap" style="width:80px;">
-                                               <input type="text" name="yieldStageMajors[${vs.index*2+1 }].subTotal" value="" readonly class="form-control"></td>
-                                       </c:forEach>
-                                    </c:if>
-					            </tr>
-					            <tr>
-                                    <td nowrap="nowrap" style="text-align:center;">施工配合</td>
-                                    <c:if test="${not empty majors }">
-                                       <c:forEach items="${majors }" var="major" varStatus="vs" >
-                                           <td nowrap="nowrap" style="width:80px;">
-                                               <input type="text" name="yieldStageMajors[${vs.index*2 }].coordination" value="" class="form-control"></td>
-                                           <td nowrap="nowrap" style="width:80px;">
-                                               <input type="text" name="yieldStageMajors[${vs.index*2+1 }].subTotal" value="" readonly class="form-control"></td>
-                                       </c:forEach>
-                                    </c:if>
-					            </tr>
-					            <tr>
-                                    <td nowrap="nowrap" style="text-align:center;">施工配合-封顶</td>
-                                    <c:if test="${not empty majors }">
-                                       <c:forEach items="${majors }" var="major" varStatus="vs" >
-                                           <td nowrap="nowrap" style="width:80px;">
-                                               <input type="text" name="yieldStageMajors[${vs.index*2 }].cap" value="" class="form-control"></td>
-                                           <td nowrap="nowrap" style="width:80px;">
-                                               <input type="text" name="yieldStageMajors[${vs.index*2+1 }].cap" value="" readonly class="form-control"></td>
-                                       </c:forEach>
-                                    </c:if>
-					            </tr>
-					            <tr>
-                                    <td nowrap="nowrap" style="text-align:center;">施工配合-验收</td>
-                                    <c:if test="${not empty majors }">
-                                       <c:forEach items="${majors }" var="major" varStatus="vs" >
-                                           <td nowrap="nowrap" style="width:80px;">
-                                               <input type="text" name="yieldStageMajors[${vs.index*2 }].check" value="" class="form-control"></td>
-                                           <td nowrap="nowrap" style="width:80px;">
-                                               <input type="text" name="yieldStageMajors[${vs.index*2+1 }].check" value="" readonly class="form-control"></td>
-                                       </c:forEach>
-                                    </c:if>
-					            </tr>
+                            	<c:forEach items="${schemeStages }" var="schemeStage" varStatus="ssVs">
+						            <tr class="${schemeStage[0] }">
+	                                    <td nowrap="nowrap" style="text-align:center;">${schemeStage[1] }</td>
+	                                    <c:if test="${not empty majors }">
+	                                       <c:forEach items="${majors }" var="major" varStatus="vs" >
+	                                       	   <c:set var="ssKey" value="1000.${major.configCode }" />
+	                                           <td nowrap="nowrap" style="width:80px;">
+	                                           	   <c:if test="${ssVs.index == 0 }">
+		                                               <input type="hidden" name="yieldStageMajors[${vs.index*2 }].category" value="1000">
+		                                               <input type="hidden" name="yieldStageMajors[${vs.index*2 }].majorCode" value="${major.configCode }">
+	                                           	   </c:if>
+	                                               <c:choose>
+	                                                   <c:when test="${schemeStage[0] == 'preliminary' }">
+			                                               <input type="text" name="yieldStageMajors[${vs.index*2 }].preliminary" value="${stageMajors[ssKey].preliminary }"  data-smcode="${major.configCode }" class="form-control majorratio">
+	                                                   </c:when>
+	                                                   <c:when test="${schemeStage[0] == 'drawing' }">
+			                                               <input type="text" name="yieldStageMajors[${vs.index*2 }].drawing" value="${stageMajors[ssKey].drawing }"  data-smcode="${major.configCode }" class="form-control majorratio">
+	                                                   </c:when>
+	                                                   <c:when test="${schemeStage[0] == 'subTotal' }">
+			                                               <input type="text" name="yieldStageMajors[${vs.index*2 }].subTotal" value="${stageMajors[ssKey].subTotal }"  data-smcode="${major.configCode }" readonly class="form-control majorratio">
+	                                                   </c:when>
+	                                                   <c:when test="${schemeStage[0] == 'coordination' }">
+			                                               <input type="text" name="yieldStageMajors[${vs.index*2 }].coordination" value="${stageMajors[ssKey].coordination }"  data-smcode="${major.configCode }" class="form-control majorratio">
+	                                                   </c:when>
+	                                                   <c:when test="${schemeStage[0] == 'cap' }">
+			                                               <input type="text" name="yieldStageMajors[${vs.index*2 }].cap" value="${stageMajors[ssKey].cap }"  data-smcode="${major.configCode }" class="form-control majorratio">
+	                                                   </c:when>
+	                                                   <c:when test="${schemeStage[0] == 'check' }">
+			                                               <input type="text" name="yieldStageMajors[${vs.index*2 }].check" value="${stageMajors[ssKey].check }"  data-smcode="${major.configCode }" class="form-control majorratio">
+	                                                   </c:when>
+	                                               </c:choose>
+	                                           </td>
+	                                           <c:set var="ssKey" value="2000.${major.configCode }" />
+	                                           <td nowrap="nowrap" style="text-align:right;width:80px;">
+	                                           	   <c:if test="${ssVs.index == 0 }">
+		                                               <input type="hidden" name="yieldStageMajors[${vs.index*2+1 }].category" value="2000">
+		                                               <input type="hidden" name="yieldStageMajors[${vs.index*2+1 }].majorCode" value="${major.configCode }">
+	                                           	   </c:if>
+	                                               <c:choose>
+	                                                   <c:when test="${schemeStage[0] == 'preliminary' }">
+	                                                       <input type="text" name="yieldStageMajors[${vs.index*2+1 }].preliminary" value="${stageMajors[ssKey].preliminary }"  data-smcode="${major.configCode }" readonly class="form-control majoryield">
+	                                                   </c:when>
+	                                                   <c:when test="${schemeStage[0] == 'drawing' }">
+	                                                       <input type="text" name="yieldStageMajors[${vs.index*2+1 }].drawing" value="${stageMajors[ssKey].drawing }"  data-smcode="${major.configCode }" readonly class="form-control majoryield">
+	                                                   </c:when>
+	                                                   <c:when test="${schemeStage[0] == 'subTotal' }">
+	                                                       <input type="text" name="yieldStageMajors[${vs.index*2+1 }].subTotal" value="${stageMajors[ssKey].subTotal }"  data-smcode="${major.configCode }" readonly class="form-control majoryield">
+	                                                   </c:when>
+	                                                   <c:when test="${schemeStage[0] == 'coordination' }">
+	                                                       <input type="text" name="yieldStageMajors[${vs.index*2+1 }].coordination" value="${stageMajors[ssKey].coordination }"  data-smcode="${major.configCode }" readonly class="form-control majoryield">
+	                                                   </c:when>
+	                                                   <c:when test="${schemeStage[0] == 'cap' }">
+	                                                       <input type="text" name="yieldStageMajors[${vs.index*2+1 }].cap" value="${stageMajors[ssKey].cap }"  data-smcode="${major.configCode }" readonly class="form-control majoryield">
+	                                                   </c:when>
+	                                                   <c:when test="${schemeStage[0] == 'check' }">
+	                                                       <input type="text" name="yieldStageMajors[${vs.index*2+1 }].check" value="${stageMajors[ssKey].check }"  data-smcode="${major.configCode }" readonly class="form-control majoryield">
+	                                                   </c:when>
+	                                               </c:choose>
+	                                           </td>
+	                                       </c:forEach>
+	                                    </c:if>
+						            </tr>
+                            	</c:forEach>
 					        </tbody>
 					    </table>
 					</div>
@@ -410,7 +403,17 @@
 //专业比例类型编号切换
 $(document).on("change", "#majorRatio select[name$='priceId']", priceCodeChange);
 
+//专业比例列表中建筑面积事件绑定
 $(document).on("blur", "#majorRatio input[name$='buildArea']", buildAreaChange);
+
+//土建产值中四个金额事件绑定
+$(document).on("blur", "input.fourAmount", fourAmountChange);
+
+//土建产值中项目负责人、项目经理事件绑定
+$(document).on("blur", "input.twoProUser", calProUserYield);
+
+//各专业产值中比例事件绑定
+$(document).on("blur", "#majorYield input.majorratio:not([readonly])", majorRatioChange);
 
 var principalObj = null;
 $(function(){
@@ -431,8 +434,9 @@ $(function(){
 		selectStaff(selectStaffBack,"radio");
 	});
 	
+	/** 保存*/
 	$("#save-btn").on("click", save);
-    
+
     /**计算院内合计*/
     calYLTotal();
 });
@@ -489,7 +493,130 @@ function buildAreaChange(){
     calYLTotal();
 }
 
-/**计算土建基准产值、各专业产值*/
+/**显示专业的默认比例*/
+function showMajorRate(currtr, ratioJson){
+	var ratioObj = eval(ratioJson);
+	var majorRate = null;
+	currtr.find("td[id^='majorRatio']").each(function(){
+		majorRate = ratioObj[$(this).data("major")];
+		if(majorRate == null){
+			majorRate = "0";
+		}
+		$(this).text(majorRate);
+	});
+}
+
+/**土建产值四个金额修改*/
+function fourAmountChange(){
+	var totalAmount = new Number(0);
+	var contractAmount = $("input[name='contractAmount']").val();
+	if(contractAmount != null && contractAmount != ""){
+		totalAmount = new Number(contractAmount);
+	}
+	
+	var $thisVal = null;
+	$("input[name='pkgAmount'],input[name='schemeAmount'],input[name='rebateAmount']").each(function(){
+		$thisVal = $(this).val();
+		if($thisVal != null && $thisVal != ""){
+			totalAmount = totalAmount - new Number($thisVal);
+		}
+	});
+	$("input[name='totalAmount']").val(totalAmount.toFixed(2));
+	
+	var ratioParam = $("#ratioParam").val();
+	if(ratioParam != null && ratioParam !=""){
+		totalAmount = totalAmount * new Number(ratioParam);
+	}else{
+		totalAmount = new Number(0);
+	}
+	$("input[name='majorAmount']").val(totalAmount.toFixed(2));
+	
+	/**计算项目负责人、项目经理的产值*/
+	calProUserYield();
+	
+	/**计算土建产值中各专业的产值*/
+	calEachMajorYield();
+}
+
+/**各专业产值列表中比例切换*/
+function majorRatioChange(){
+	var smcode = $(this).data("smcode");
+	
+	var preliminary = $("#majorYield input.majorratio[name$='preliminary'][data-smcode='"+smcode+"']").val();
+	if(preliminary == null || preliminary == ""){
+		preliminary = "0";
+	}
+	
+	var drawing = $("#majorYield input.majorratio[name$='drawing'][data-smcode='"+smcode+"']").val();
+	if(drawing == null || drawing == ""){
+		drawing = "0";
+	}
+	
+	var coordination = $("#majorYield input.majorratio[name$='coordination'][data-smcode='"+smcode+"']").val();
+	if(coordination == null || coordination == ""){
+		coordination = "0";
+	}
+	
+	var cap = $("#majorYield input.majorratio[name$='cap'][data-smcode='"+smcode+"']").val();
+	if(cap == null || cap == ""){
+		cap = "0";
+	}
+	
+	var check = $("#majorYield input.majorratio[name$='check'][data-smcode='"+smcode+"']").val();
+	if(check == null || check == ""){
+		check = "0";
+	}
+
+	var temp = new Number(preliminary) + new Number(drawing) + new Number(coordination);
+	if(temp.toFixed(2) != "100.00" && temp.toFixed(2) != "0.00" ){
+		var majorName = $("#majorYield th[data-smcode='"+smcode+"']").text();
+		$.jalert({"jatext":majorName+"专业的初设、施工图、施工配合比例应该为100%"});
+		return;
+	}
+	
+	temp = new Number(cap) + new Number(check);
+	if(temp.toFixed(2) != "100.00" && temp.toFixed(2) != "0.00"){
+		var majorName = $("#majorYield th[data-smcode='"+smcode+"']").text();
+		$.jalert({"jatext":majorName+"专业的施工配合-封顶、施工配合-验收比例应该为100%"});
+		return;
+	}
+	$("#majorYield input.majorratio[name$='subTotal'][data-smcode='"+smcode+"']").val((new Number(preliminary) + new Number(drawing)).toFixed(2));
+	
+	//计算指定专业的各阶段产值
+	calEachStageYield(smcode);
+}
+
+/**选择责任人后的回调方法*/
+function selectStaffBack(data){
+	$(principalObj).siblings("input[name$='principalId']").val(data[0].id);
+	$(principalObj).siblings("input[id$='principalName']").val(data[0].name);
+}
+
+/**保存*/
+function save(){
+	if (jQuery("#schemeForm").valid()) {
+		var url ="${site}/admin/yield/scheme/ajax/save";
+		$.ajax({
+			type : "post",
+		 	url : url,
+		 	data : $("#schemeForm").serialize(),
+		 	error : function(request) {
+		 		$.jalert({"jatext":"Connection error"});
+		 	},
+		 	success : function(data) {
+		 		if(data.flag == "true"){
+		 			$.jalert({"jatext":data.msg, "jatype":"refresh", "onConfirm":function(){
+		 				window.location.href="${site}/admin/yield/scheme/list";
+		 			}});
+		 		}else{
+		 			$.jalert({"jatext":data.msg});
+		 		}
+		 	}
+		});
+	}
+}
+
+/**计算专业比例列表中土建基准产值、各专业产值*/
 function calSYield(currtr, uprice, barea){
 	if(uprice == null){
 		uprice = "0";
@@ -505,20 +632,7 @@ function calSYield(currtr, uprice, barea){
 	currtr.find("td[id^='mYield']").text(mYield.toFixed(2));
 }
 
-/**显示专业的默认比例*/
-function showMajorRate(currtr, ratioJson){
-	var ratioObj = eval(ratioJson);
-	var majorRate = null;
-	currtr.find("td[id^='majorRatio']").each(function(){
-		majorRate = ratioObj[$(this).data("major")];
-		if(majorRate == null){
-			majorRate = "0";
-		}
-		$(this).text(majorRate);
-	});
-}
-
-/**计算专业的产值*/
+/**计算专业比例列表中专业的产值*/
 function calMajorYield(currtr, ratioJson){
     var majorYield = null;
 	var majorRate = null;
@@ -535,7 +649,7 @@ function calMajorYield(currtr, ratioJson){
     });
 }
 
-/**计算院内合计*/
+/**计算专业比例列表中的院内合计*/
 function calYLTotal(){
 	var thisVal = null;
 	//计算院内建筑面积
@@ -616,36 +730,102 @@ function calYLTotal(){
 		}
 		$(this).text(totalMajorYield.toFixed(2));
 	});
+	
+	/**计算土建产值中各专业的产值*/
+	calEachMajorYield();
 }
 
-/**选择责任人后的回调方法*/
-function selectStaffBack(data){
-	$(principalObj).siblings("input[name$='principalId']").val(data[0].id);
-	$(principalObj).siblings("input[id$='principalName']").val(data[0].name);
-}
-
-/**保存*/
-function save(){
-	if (jQuery("#schemeForm").valid()) {
-		var url ="${site}/admin/yield/scheme/ajax/save";
-		$.ajax({
-			type : "post",
-		 	url : url,
-		 	data : $("#schemeForm").serialize(),
-		 	error : function(request) {
-		 		$.jalert({"jatext":"Connection error"});
-		 	},
-		 	success : function(data) {
-		 		/*if(data.flag == "true"){
-		 			$.jalert({"jatext":data.msg, "jatype":"refresh", "onConfirm":function(){
-				  		window.location.href="${site}/admin/pm/project/edit/${project.id}";
-		 			}});
-		 		}else{
-		 			$.jalert({"jatext":data.msg});
-		 		}*/
-		 	}
-		});
+/**计算项目负责人、项目经理的产值*/
+function calProUserYield(){
+	//各专业产值
+	var majorAmount = $("input[name='majorAmount']").val();
+	if(majorAmount == null || majorAmount == ""){
+		majorAmount = "0";
 	}
+	
+	//项目负责人（%）
+	var principalRate = $("input[name='principalRate']").val();
+	if(principalRate == null || principalRate == ""){
+		principalRate = "0";
+	}
+	
+	//项目经理（%）
+	var pmRate = $("input[name='pmRate']").val();
+	if(pmRate == null || pmRate == ""){
+		pmRate = "0";
+	}
+	
+	$("input[name='principalYield']").val((new Number(majorAmount) * new Number(principalRate) / new Number(100)).toFixed(2));
+	$("input[name='pmYield']").val((new Number(majorAmount) * new Number(pmRate) / new Number(100)).toFixed(2));
+}
+
+/**计算土建产值中各专业的产值*/
+function calEachMajorYield(){
+	//各专业总产值
+	var majorAmount = $("input[name='majorAmount']").val();
+	if(majorAmount == null || majorAmount == ""){
+		majorAmount = "0";
+	}
+	//各专业的产值
+	var $eachMWL = null;
+	var majorCode = null;
+	$("input.eachMajorYield[data-majorcode]").each(function(){
+		majorCode = $(this).data("majorcode");
+		$eachMWL = $("#majorRatio tr.total").find("td[data-major='"+majorCode+"']").text();
+		if($eachMWL == null || $eachMWL == ""){
+			$eachMWL = "0";
+		}
+		$(this).val((new Number(majorAmount) * new Number($eachMWL) / new Number(100)).toFixed(2));
+	});
+}
+
+/**计算各专业产值中指定专业的各阶段的产值*/
+function calEachStageYield(majorCode){
+	//土建产值中对应专业的产值
+	var majorYield = $("input[name$='majorYield'][data-majorcode='"+majorCode+"'].eachMajorYield").val();
+	if(majorYield == null || majorYield == ""){
+		majorYield = "0";
+	}
+	
+	//计算指定专业初设阶段的产值
+	var pRate = $("#majorYield input.majorratio[name$='preliminary'][data-smcode='"+majorCode+"']").val();
+	if(pRate == null || pRate == ""){
+		pRate = "0";
+	}
+	var pYield = new Number(majorYield) * new Number(pRate) / new Number(100);
+	$("#majorYield input.majoryield[name$='preliminary'][data-smcode='"+majorCode+"']").val(pYield.toFixed(2));
+	
+	//计算指定专业施工图阶段的产值
+	var dRate = $("#majorYield input.majorratio[name$='drawing'][data-smcode='"+majorCode+"']").val();
+	if(dRate == null || dRate == ""){
+		dRate = "0";
+	}
+	var dYield = new Number(majorYield) * new Number(dRate) / new Number(100);
+	$("#majorYield input.majoryield[name$='drawing'][data-smcode='"+majorCode+"']").val(dYield.toFixed(2));
+
+	//计算指定专业小计阶段的产值
+	var sRate = $("#majorYield input.majorratio[name$='subTotal'][data-smcode='"+majorCode+"']").val();
+	if(sRate == null || sRate == ""){
+		sRate = "0";
+	}
+	var sYield = new Number(pYield.toFixed(2)) + new Number(dYield.toFixed(2));
+	$("#majorYield input.majoryield[name$='subTotal'][data-smcode='"+majorCode+"']").val(sYield.toFixed(2));
+	
+	//计算指定专业施工配合阶段的产值
+	var cYield = new Number(majorYield) - new Number(sYield.toFixed(2));
+	$("#majorYield input.majoryield[name$='coordination'][data-smcode='"+majorCode+"']").val(cYield.toFixed(2));
+
+	//计算指定专业施工配合-封顶阶段的产值
+	var capRate = $("#majorYield input.majorratio[name$='cap'][data-smcode='"+majorCode+"']").val();
+	if(capRate == null || capRate == ""){
+		capRate = "0";
+	}
+	var capYield = new Number(cYield.toFixed(2)) * new Number(capRate) / new Number(100);
+	$("#majorYield input.majoryield[name$='cap'][data-smcode='"+majorCode+"']").val(capYield.toFixed(2));
+
+	//计算指定专业施工配合-验收阶段的产值
+	var ckYield = new Number(cYield.toFixed(2)) - new Number(capYield.toFixed(2));
+	$("#majorYield input.majoryield[name$='check'][data-smcode='"+majorCode+"']").val(ckYield.toFixed(2));
 }
 </script>
 </body>
