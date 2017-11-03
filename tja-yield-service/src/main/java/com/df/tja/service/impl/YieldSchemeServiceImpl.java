@@ -259,6 +259,7 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
                 JSONObject majorRatioJson = null;
                 OcYieldMajor ocYieldMajor = null;
                 String schemeId = custOcYieldScheme.getId();
+                Map<String, BigDecimal> majorYieldTotal = new HashMap<String, BigDecimal>(0); //按专业存储每个专业的总产值
                 for (CustOcYieldMajor custYieldMajor : yieldMajors) {
                     ocYieldMajor = new OcYieldMajor();
                     ObjectUtils.copyProperties(custYieldMajor, ocYieldMajor);
@@ -278,7 +279,31 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
 
                     //施工图产值专业比例
                     majorRatioJson = new JSONObject(ocStandardPrice.getRatioJson());
-                    createOcYieldMajorRatio(ocYieldMajor, custOcYieldScheme.getProId(), majorRatioJson, majorWLTotal);
+                    createOcYieldMajorRatio(ocYieldMajor, custOcYieldScheme.getProId(), majorRatioJson,
+                        majorYieldTotal);
+                }
+
+                //计算院内合计
+                if (!majorYieldTotal.isEmpty()) {
+                    //计算所有专业的总产值
+                    BigDecimal wlYieldTotal = new BigDecimal(0);
+                    for (BigDecimal majorYield : majorYieldTotal.values()) {
+                        wlYieldTotal = ArithmeticUtil.add(wlYieldTotal, majorYield);
+                    }
+                    //计算院内合计
+                    BigDecimal total = new BigDecimal(0);
+                    BigDecimal tempYield = new BigDecimal(0);
+                    for (String majorCode : majorYieldTotal.keySet()) {
+                        tempYield = ArithmeticUtil.div(
+                            ArithmeticUtil.mul(majorYieldTotal.get(majorCode), new BigDecimal(100)), wlYieldTotal, 2);
+                        if (new BigDecimal(100).compareTo(ArithmeticUtil.add(total, tempYield)) > 0) {
+                            majorWLTotal.put(majorCode, tempYield);
+                            total = ArithmeticUtil.add(total, tempYield);
+                        } else {
+                            majorWLTotal.put(majorCode,
+                                ArithmeticUtil.round(ArithmeticUtil.sub(new BigDecimal(100), total), 2));
+                        }
+                    }
                 }
             }
         } catch (Exception ex) {
@@ -292,11 +317,11 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
      * @param ocYieldMajor
      * @param proId
      * @param majorRatioJson
-     * @param majorWLTotal
+     * @param majorYieldTotal
      * @throws RuntimeException
      */
     private void createOcYieldMajorRatio(OcYieldMajor ocYieldMajor, String proId, JSONObject majorRatioJson,
-                                         Map<String, BigDecimal> majorWLTotal)
+                                         Map<String, BigDecimal> majorYieldTotal)
         throws RuntimeException {
         try {
             List<SysConfig> majors = sysConfigService.querySysConfigsByParentCode("PM.MAJOR");
@@ -305,9 +330,6 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
                 String majorRateVal = "0";
                 //院内所有专业产值之和
                 BigDecimal tempYield = new BigDecimal(0);
-                BigDecimal wlYieldTotal = new BigDecimal(0);
-                //按专业存储总产值
-                Map<String, BigDecimal> majorYieldTotal = new HashMap<String, BigDecimal>(0);
                 for (SysConfig major : majors) {
                     majorRatio = new OcYieldMajorRatio();
                     majorRatio.setSchemeId(ocYieldMajor.getSchemeId());
@@ -326,28 +348,12 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
                     addEntity(OcYieldMajorRatio.class, majorRatio);
 
                     tempYield = new BigDecimal(0);
-                    wlYieldTotal = ArithmeticUtil.add(wlYieldTotal, majorRatio.getMajorYield());
                     if (majorYieldTotal.containsKey(major.getConfigCode())) {
                         tempYield = majorYieldTotal.get(major.getConfigCode());
                         tempYield = ArithmeticUtil.add(tempYield, majorRatio.getMajorYield());
                         majorYieldTotal.put(major.getConfigCode(), tempYield);
                     } else {
                         majorYieldTotal.put(major.getConfigCode(), majorRatio.getMajorYield());
-                    }
-                }
-
-                //计算院内合计
-                if (!majorYieldTotal.isEmpty()) {
-                    BigDecimal total = new BigDecimal(0);
-                    for (String majorCode : majorYieldTotal.keySet()) {
-                        tempYield = ArithmeticUtil.div(majorYieldTotal.get(majorCode), wlYieldTotal, 2);
-                        if (new BigDecimal(100).compareTo(ArithmeticUtil.add(total, tempYield)) > 0) {
-                            majorWLTotal.put(majorCode, tempYield);
-                            total = ArithmeticUtil.add(total, tempYield);
-                        } else {
-                            majorWLTotal.put(majorCode,
-                                ArithmeticUtil.round(ArithmeticUtil.sub(new BigDecimal(100), total), 2));
-                        }
                     }
                 }
             }
