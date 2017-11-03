@@ -34,9 +34,9 @@
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
-                        <label class="control-label col-md-3">更新日期</label>
+                        <label class="control-label col-md-3">更新日期<span class="required">※</span></label>
                         <div class="col-md-8">
-                            <input type="text" name="lastUpdate" value="<fmt:formatDate value='${yieldScheme.lastUpdate }' pattern='yyyy-MM-dd'/>" class="form-control datetimepicker">
+                            <input type="text" name="lastUpdate" value="<fmt:formatDate value='${yieldScheme.lastUpdate }' pattern='yyyy-MM-dd'/>" data-rule-required="true" class="form-control datetimepicker">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
@@ -94,13 +94,13 @@
 					    <table id="majorRatio" class="table table-striped table-bordered table-advance table-hover dataTable">
 					        <thead>
 					            <tr>
-					                <th nowrap="nowrap" rowspan="2" style="ext-align:center;">序号</th>
-					                <th nowrap="nowrap" rowspan="2" style="text-align:center;">类型名称(系数)</th>
-					                <th nowrap="nowrap" rowspan="2" style="text-align:center;">类型编号</th>
-					                <th nowrap="nowrap" rowspan="2" style="text-align:center;">建筑面积(m<sup>2</sup>)</th>
-					                <th nowrap="nowrap" rowspan="2" style="text-align:center;">土建基准<br>单价(元/m<sup>2</sup>)</br></th>
-					                <th nowrap="nowrap" rowspan="2" style="text-align:center;">土建基准产值</th>
-					                <th nowrap="nowrap" rowspan="2" style="text-align:center;">各专业产值<br>(90%)</br></th>
+					                <th rowspan="2" style="ext-align:center;">序号</th>
+					                <th rowspan="2" style="text-align:center;" class="form-group">类型名称(系数)<span class="required">※</span></th>
+					                <th rowspan="2" style="text-align:center;" class="form-group">类型编号<span class="required">※</span></th>
+					                <th rowspan="2" style="text-align:center;" class="form-group">建筑面积(m<sup>2</sup>)<span class="required">※</span></th>
+					                <th rowspan="2" style="text-align:center;">土建基准<br>单价(元/m<sup>2</sup>)</br></th>
+					                <th rowspan="2" style="text-align:center;">土建基准产值</th>
+					                <th rowspan="2" style="text-align:center;">各专业产值<br>(90%)</br></th>
 					                <c:if test="${not empty majors }">
 					                   <c:forEach items="${majors }" var="major" >
 					                       <th nowrap="nowrap" colspan="2" style="text-align:center;">${major.configName }</th>
@@ -121,9 +121,9 @@
                             		<c:forEach items="${yieldMajors }" var="yieldMajor" varStatus="vs">
                             			<tr>
 										    <td nowrap="nowrap" width="40px" style="text-align:center;">${vs.index + 1}</td>
-										    <td nowrap="nowrap"><input type="text" name="yieldMajors[${vs.index}].name" value="${yieldMajor.name }" class="form-control"></td>
+										    <td nowrap="nowrap"><input type="text" name="yieldMajors[${vs.index}].name" value="${yieldMajor.name }" class="form-control" data-rule-required="true"></td>
 										    <td nowrap="nowrap" style="width:100px;">
-										       <select name="yieldMajors[${vs.index}].priceId" class="form-control">
+										       <select name="yieldMajors[${vs.index}].priceId" class="form-control" data-rule-required="true">
 										           <option value="">-请选择-</option>
 										       <c:if test="${not empty prices }">
 										           <c:forEach items="${prices }" var="price">
@@ -137,7 +137,7 @@
 										       </c:if>
 										       </select>
 										    </td>
-										    <td nowrap="nowrap"><input type="text" name="yieldMajors[${vs.index}].buildArea" value="${yieldMajor.buildArea }" data-rule-number="true" class="form-control"></td>
+										    <td nowrap="nowrap"><input type="text" name="yieldMajors[${vs.index}].buildArea" value="${yieldMajor.buildArea }" data-rule-number="true" data-rule-required="true" class="form-control"></td>
 										    <td nowrap="nowrap" id="price${vs.index}}" style="text-align:right;">${yieldMajor.standardPrice }</td>
 										    <td nowrap="nowrap" id="sYield${vs.index}" style="text-align:right;">${yieldMajor.standardYield }</td>
 										    <td nowrap="nowrap" id="mYield${vs.index}" style="text-align:right;">${yieldMajor.majorYield }</td>
@@ -170,9 +170,9 @@
 
                     <h3 class="form-tit col-lg-12">土建产值<span class="control-label" style="font-size:12px;">（元）</span></h3>
                     <div class="form-group col-lg-6 ">
-                        <label class="control-label col-md-3">实际合同额</label>
+                        <label class="control-label col-md-3">实际合同额<span class="required">※</span></label>
                         <div class="col-md-8">
-                            <input type="text" name="contractAmount" class="form-control fourAmount" value="${yieldScheme.contractAmount }">
+                            <input type="text" name="contractAmount" class="form-control fourAmount" data-rule-required="true" value="${yieldScheme.contractAmount }">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
@@ -206,9 +206,9 @@
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
-                        <label class="control-label col-md-3">项目负责人（%）</label>
+                        <label class="control-label col-md-3">项目负责人（%）<span class="required">※</span></label>
                         <div class="col-md-8">
-                            <input type="text" name="principalRate" class="form-control twoProUser" value="${yieldScheme.principalRate }">
+                            <input type="text" name="principalRate" class="form-control twoProUser" value="${yieldScheme.principalRate }" data-rule-required="true">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
@@ -218,9 +218,9 @@
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
-                        <label class="control-label col-md-3">项目经理（%）</label>
+                        <label class="control-label col-md-3">项目经理（%）<span class="required">※</span></label>
                         <div class="col-md-8">
-                            <input type="text" name="pmRate" class="form-control twoProUser" value="${yieldScheme.pmRate }">
+                            <input type="text" name="pmRate" class="form-control twoProUser" value="${yieldScheme.pmRate }" data-rule-required="true">
                         </div>
                     </div>
                     <div class="form-group col-lg-6 ">
@@ -376,9 +376,9 @@
 <table id="majorRatio_clone" style="display:none;">
     <tr>
 	    <td nowrap="nowrap" width="40px" style="text-align:center;">{0}</td>
-	    <td nowrap="nowrap"><input type="text" name="yieldMajors[{0}].name" value="" class="form-control"></td>
+	    <td nowrap="nowrap"><input type="text" name="yieldMajors[{0}].name" value="" class="form-control" data-rule-required="true"></td>
 	    <td nowrap="nowrap" style="width:100px;">
-	       <select name="yieldMajors[{0}].priceId" class="form-control">
+	       <select name="yieldMajors[{0}].priceId" class="form-control" data-rule-required="true">
 	           <option value="">-请选择-</option>
 	       <c:if test="${not empty prices }">
 	           <c:forEach items="${prices }" var="price">
@@ -387,7 +387,7 @@
 	       </c:if>
 	       </select>
 	    </td>
-	    <td nowrap="nowrap"><input type="text" name="yieldMajors[{0}].buildArea" value="" data-rule-number="true" class="form-control"></td>
+	    <td nowrap="nowrap"><input type="text" name="yieldMajors[{0}].buildArea" value="" data-rule-required="true" data-rule-number="true" class="form-control"></td>
 	    <td nowrap="nowrap" id="price{0}" style="text-align:right;"></td>
 	    <td nowrap="nowrap" id="sYield{0}" style="text-align:right;"></td>
 	    <td nowrap="nowrap" id="mYield{0}" style="text-align:right;"></td>
