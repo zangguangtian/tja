@@ -145,6 +145,8 @@
 								</tr>
 							</thead>
 							<tbody>
+							    <c:set var="totalYield" value="0"></c:set>
+							    <c:set var="totalRate" value="0"></c:set>
 							    <c:if test="${not empty shemeTeams}">
 							      <c:forEach var="shemeTeam" items="${shemeTeams}" varStatus="st">
 							        <tr>
@@ -152,15 +154,17 @@
 										<td  class=" col-lg-4">
 										<input type="text" name="shemeTeams[${st.index}].refRate" data-rule-number="true" class="text-right" value="${shemeTeam.refRate }" disabled>
 										</td>
-										<td  class=" col-lg-4 text-right"><input type="text" name="shemeTeams[${st.index}].refYield" disabled class="text-right" value="${shemeTeam.refYield }"></td>
+										<td  class=" col-lg-4 text-right"><input type="text" name="shemeTeams[${st.index}].refYield" disabled class="text-right" value="<fmt:formatNumber value='${shemeTeam.refYield }' pattern='#,#00.00#'/>"></td>
 									</tr>
+									<c:set var="totalRate" value="${totalRate + shemeTeam.refRate }"></c:set>
+									<c:set var="totalYield" value="${totalYield + shemeTeam.refYield }"></c:set>
 							      </c:forEach>
 							    </c:if>
 							
 								<tr class="total">
 									<td  class="text-center col-lg-4">合计</td>
-									<td  class="col-lg-4 text-right"></td>
-									<td  class=" col-lg-4 text-right"></td>
+									<td  class="col-lg-4 text-right">${totalRate}</td>
+									<td  class=" col-lg-4 text-right"><fmt:formatNumber value='${totalYield}' pattern='#,#00.00#'/></td>
 								</tr>
 							</tbody>
 						</table>
@@ -196,35 +200,6 @@ $(document).on("click", "#reject-btn", function(){
         }});
     }
 });	
-
-$(function(){
-	initTotal();
-});
-
-function initTotal(){
-	var flag = true;
-	var totalRefRate = 0.00;
-	var totalRefYield = 0.00;
-	jQuery.each($("#designTeam tbody tr:not(:last)"),function(index,item){
-		var _this = $(item);
-		var refRate = _this.find("input[name$='refRate']").val();
-		var refYield = _this.find("input[name$='refYield']").val();
-		if(refYield == '' || typeof refYield == 'undefined' || isNaN(refYield)){
-			refYield = 0;
-		  }
-		  if(refRate == '' || typeof refRate == 'undefined' || isNaN(refRate)){
-			  refRate = 0;
-		  }
-		totalRefRate = new Number(totalRefRate) + new Number(refRate);
-		totalRefYield = new Number(totalRefYield) + new Number(refYield);
-	});
-	if(new Number(totalRefRate) !=100){
-		flag = false;
-	}
-	$("#designTeam tr.total").find("td:eq(1)").text(new Number(totalRefRate).toFixed(2));
-	$("#designTeam tr.total").find("td:eq(2)").text(new Number(totalRefYield).toFixed(2));
-	return flag;
-}
 
 /*打印预览*/
 jQuery("#printview-btn").dfprint({
