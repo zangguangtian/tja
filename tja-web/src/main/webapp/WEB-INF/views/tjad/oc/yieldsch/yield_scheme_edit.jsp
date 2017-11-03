@@ -252,6 +252,7 @@
 					                       <th nowrap="nowrap" colspan="2" style="text-align:center;" data-smcode="${major.configCode }">${major.configName }</th>
 					                   </c:forEach>
 					                </c:if>
+					                <th nowrap="nowrap" rowspan="2" style="text-align:center;">产值合计</th>
 					            </tr>
 					            <tr>
 					                <c:if test="${not empty majors }">
@@ -324,6 +325,7 @@
 	                                           </td>
 	                                       </c:forEach>
 	                                    </c:if>
+	                                    <td nowrap="nowrap" style="text-align:center;"></td>
 						            </tr>
                             	</c:forEach>
 					        </tbody>
@@ -439,6 +441,9 @@ $(function(){
 
     /**计算院内合计*/
     calYLTotal();
+
+    /**计算各专业产值中每个阶段的产值合计*/
+    calEachStageYieldTotal();
 });
 
 /**添加专业比例*/
@@ -566,24 +571,13 @@ function majorRatioChange(){
 	if(check == null || check == ""){
 		check = "0";
 	}
-
-	var temp = new Number(preliminary) + new Number(drawing) + new Number(coordination);
-	if(temp.toFixed(2) != "100.00" && temp.toFixed(2) != "0.00" ){
-		var majorName = $("#majorYield th[data-smcode='"+smcode+"']").text();
-		$.jalert({"jatext":majorName+"专业的初设、施工图、施工配合比例应该为100%"});
-		return;
-	}
-	
-	temp = new Number(cap) + new Number(check);
-	if(temp.toFixed(2) != "100.00" && temp.toFixed(2) != "0.00"){
-		var majorName = $("#majorYield th[data-smcode='"+smcode+"']").text();
-		$.jalert({"jatext":majorName+"专业的施工配合-封顶、施工配合-验收比例应该为100%"});
-		return;
-	}
 	$("#majorYield input.majorratio[name$='subTotal'][data-smcode='"+smcode+"']").val((new Number(preliminary) + new Number(drawing)).toFixed(2));
 	
 	//计算指定专业的各阶段产值
 	calEachStageYield(smcode);
+
+    /**计算各专业产值中每个阶段的产值合计*/
+    calEachStageYieldTotal();
 }
 
 /**选择责任人后的回调方法*/
@@ -592,27 +586,81 @@ function selectStaffBack(data){
 	$(principalObj).siblings("input[id$='principalName']").val(data[0].name);
 }
 
+/**
+ * 检查各专业产值中的比例是否正确
+ */
+function checkEMRatio(){
+	var flag = false;
+	var smcode = null;
+	$("#majorYield thead th[data-smcode]").each(function(){
+		smcode = $(this).data("smcode");
+		var preliminary = $("#majorYield input.majorratio[name$='preliminary'][data-smcode='"+smcode+"']").val();
+		if(preliminary == null || preliminary == ""){
+			preliminary = "0";
+		}
+		
+		var drawing = $("#majorYield input.majorratio[name$='drawing'][data-smcode='"+smcode+"']").val();
+		if(drawing == null || drawing == ""){
+			drawing = "0";
+		}
+		
+		var coordination = $("#majorYield input.majorratio[name$='coordination'][data-smcode='"+smcode+"']").val();
+		if(coordination == null || coordination == ""){
+			coordination = "0";
+		}
+		
+		var cap = $("#majorYield input.majorratio[name$='cap'][data-smcode='"+smcode+"']").val();
+		if(cap == null || cap == ""){
+			cap = "0";
+		}
+		
+		var check = $("#majorYield input.majorratio[name$='check'][data-smcode='"+smcode+"']").val();
+		if(check == null || check == ""){
+			check = "0";
+		}
+
+		var temp = new Number(preliminary) + new Number(drawing) + new Number(coordination);
+		if(temp.toFixed(2) != "100.00" && temp.toFixed(2) != "0.00" ){
+			var majorName = $(this).text();
+			$.jalert({"jatext":majorName+"专业的初设、施工图、施工配合比例应该为100%"});
+			flag = true;
+			return false;
+		}
+		
+		temp = new Number(cap) + new Number(check);
+		if(temp.toFixed(2) != "100.00" && temp.toFixed(2) != "0.00"){
+			var majorName = $(this).text();
+			$.jalert({"jatext":majorName+"专业的施工配合-封顶、施工配合-验收比例应该为100%"});
+			flag = true;
+			return false;
+		}
+	});
+	return flag;
+}
+
 /**保存*/
 function save(){
 	if (jQuery("#schemeForm").valid()) {
-		var url ="${site}/admin/yield/scheme/ajax/save";
-		$.ajax({
-			type : "post",
-		 	url : url,
-		 	data : $("#schemeForm").serialize(),
-		 	error : function(request) {
-		 		$.jalert({"jatext":"Connection error"});
-		 	},
-		 	success : function(data) {
-		 		if(data.flag == "true"){
-		 			$.jalert({"jatext":data.msg, "jatype":"refresh", "onConfirm":function(){
-		 				window.location.href="${site}/admin/yield/scheme/list";
-		 			}});
-		 		}else{
-		 			$.jalert({"jatext":data.msg});
-		 		}
-		 	}
-		});
+		if(!checkEMRatio()){
+			var url ="${site}/admin/yield/scheme/ajax/save";
+			$.ajax({
+				type : "post",
+			 	url : url,
+			 	data : $("#schemeForm").serialize(),
+			 	error : function(request) {
+			 		$.jalert({"jatext":"Connection error"});
+			 	},
+			 	success : function(data) {
+			 		if(data.flag == "true"){
+			 			$.jalert({"jatext":data.msg, "jatype":"refresh", "onConfirm":function(){
+			 				window.location.href="${site}/admin/yield/scheme/list";
+			 			}});
+			 		}else{
+			 			$.jalert({"jatext":data.msg});
+			 		}
+			 	}
+			});
+		}
 	}
 }
 
@@ -693,6 +741,7 @@ function calYLTotal(){
 	$("#totalUnitPrice").text(totalUPrice.toFixed(2));
 	
 	//计算每个专业的院内合计
+	//所有专业的总产值
 	var totalYield = new Number(0);
 	$("#majorRatio td[id^='majorYield']").each(function(){
 		thisVal = $(this).text();
@@ -704,6 +753,7 @@ function calYLTotal(){
 	
 	//每个专业的总产值
 	var totalMajorYield = null;
+	//用于处理尾差
 	var tempTotalYield = new Number(0);
 	//针对每个专业，计算院内合计
 	$("#majorRatio tr.total td[data-major]").each(function(){
@@ -722,10 +772,10 @@ function calYLTotal(){
 			totalMajorYield = totalMajorYield / totalYield;
 			
 			//处理尾差
-			if(Math.round(tempTotalYield + totalMajorYield) < 100){
-				tempTotalYield += totalMajorYield;
+			if((tempTotalYield + new Number(totalMajorYield.toFixed(2))) < new Number(100)){
+				tempTotalYield += new Number(totalMajorYield.toFixed(2));
 			}else{
-				totalMajorYield = 100 - tempTotalYield;
+				totalMajorYield = new Number(100) - tempTotalYield;
 			}
 		}
 		$(this).text(totalMajorYield.toFixed(2));
@@ -767,15 +817,25 @@ function calEachMajorYield(){
 		majorAmount = "0";
 	}
 	//各专业的产值
-	var $eachMWL = null;
+	var $eachMWL = null;	//院内合计权重
 	var majorCode = null;
+	var $eachMajorYield = null, tempTotalYield = new Number(0);
 	$("input.eachMajorYield[data-majorcode]").each(function(){
 		majorCode = $(this).data("majorcode");
 		$eachMWL = $("#majorRatio tr.total").find("td[data-major='"+majorCode+"']").text();
 		if($eachMWL == null || $eachMWL == ""){
 			$eachMWL = "0";
 		}
-		$(this).val((new Number(majorAmount) * new Number($eachMWL) / new Number(100)).toFixed(2));
+		$eachMajorYield = new Number(majorAmount) * new Number($eachMWL) / new Number(100);
+		
+		//处理尾差
+		if((tempTotalYield + new Number($eachMajorYield.toFixed(2))) < new Number(majorAmount)){
+			tempTotalYield += new Number($eachMajorYield.toFixed(2));
+		}else{
+			$eachMajorYield = new Number(majorAmount) - tempTotalYield;
+		}
+		console.log($eachMajorYield);
+		$(this).val($eachMajorYield.toFixed(2));
 	});
 }
 
@@ -826,6 +886,17 @@ function calEachStageYield(majorCode){
 	//计算指定专业施工配合-验收阶段的产值
 	var ckYield = new Number(cYield.toFixed(2)) - new Number(capYield.toFixed(2));
 	$("#majorYield input.majoryield[name$='check'][data-smcode='"+majorCode+"']").val(ckYield.toFixed(2));
+}
+
+/**计算各专业产值中各阶段的产值合计*/
+function calEachStageYieldTotal(){
+	$("#majorYield tbody tr").each(function(){
+		var total = new Number(0);
+		$(this).find("input:text.majoryield").each(function(){
+			total += new Number($(this).val());
+		});
+		$(this).find("td:last").text(total.toFixed(2));
+	});
 }
 </script>
 </body>
