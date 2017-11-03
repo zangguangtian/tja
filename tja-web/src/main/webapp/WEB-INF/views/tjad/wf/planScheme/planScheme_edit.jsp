@@ -18,11 +18,15 @@
 	</center>
 	<div class="">
 		<div class="form">
-            <div class="row">
-                <div class="col-lg-3" style="text-align:center;margin-top:17px;padding-right:30px;">
-                                                     流水号:${planScheme.seqNo}
-                </div>
-                <div class="col-lg-9 text-right">
+            <div class="form-group col-lg-12">
+                <div class="form-group col-lg-5 ">
+					<label class="control-label col-md-3">流水号</label>
+					<div class="col-md-8">
+						<input type="text" class="form-control" value="${planScheme.seqNo}" disabled="disabled" title="${planScheme.seqNo}">
+					</div>
+				</div>
+                
+                <div class="col-lg-7 text-right">
 	                <c:if test="${empty planScheme.procId }">
 	                    <input type="button" value="保存" class="btn blue save" onclick="save(0)">
 	                    <input type="button" value="提交" class="btn blue submit" onclick="save(1)">
@@ -111,14 +115,14 @@
 						</div>
 					</div>
 					
-					<div class="form-group col-lg-12 " style="margin-left: 4%">
+					<div class="form-group col-lg-12 " style="padding-left: 4%;">
 						<label class="control-label col-md-1">概况</label>
 						<div class="col-md-10 input-icon right">
 						    <i class="fa"></i>
 						    <textarea class="form-control" rows="3" name="schemeOverview">${planScheme.schemeOverview}</textarea>
 						</div>
 					</div>
-					<div class="form-group col-lg-12 " style="margin-left: 4%">
+					<div class="form-group col-lg-12 " style="padding-left: 4%;">
 						<label class="control-label col-md-1">备注</label>
 						<div class="col-md-10 input-icon right">
 						    <i class="fa"></i>

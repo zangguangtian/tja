@@ -110,8 +110,7 @@
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">方案产值(￥)</label>
-						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i>
+						<div class="col-md-8">
 							<input type="text" class="form-control" data-rule-number="true" name="schemeYield" disabled  value="<fmt:formatNumber value='${planScheme.schemeYield}' pattern='#,#00.00#'/>">
 						</div>
 					</div>
@@ -122,13 +121,13 @@
 			            	<input type="text" id="orgName" class="form-control col-md-3" value="${planScheme.orgName}" disabled>
 						</div>
 					</div>
-					<div class="form-group col-lg-12 " style="margin-left: 4%">
+					<div class="form-group col-lg-12 " style="padding-left: 4%;">
 						<label class="control-label col-md-1">概况</label>
 						<div class="col-md-10">
 						    <textarea class="form-control" rows="3" name="schemeOverview" disabled>${planScheme.schemeOverview}</textarea>
 						</div>
 					</div>
-					<div class="form-group col-lg-12 " style="margin-left: 4%">
+					<div class="form-group col-lg-12 " style="padding-left: 4%;">
 						<label class="control-label col-md-1">备注</label>
 						<div class="col-md-10">
 							<textarea class="form-control" rows="3" name="remark" disabled>${planScheme.remark}</textarea>
