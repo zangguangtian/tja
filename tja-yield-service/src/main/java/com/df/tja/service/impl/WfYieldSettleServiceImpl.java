@@ -23,7 +23,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.df.activiti.constant.WfConstant;
 import com.df.activiti.domain.ProcessArgs;
 import com.df.activiti.service.IProcessService;
 import com.df.framework.base.service.impl.BaseServiceImpl;
@@ -312,13 +311,18 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
 
                 Map<String, List<String>> userMajorMap = (Map<String, List<String>>) variables.get("userMajorMap");
                 List<String> majors = userMajorMap.get(HttpUtil.getUser().getId());
-                //审核中
-                if (WfConstant.AuditStatus.AUDITING.equals(yieldSettle.getAuditStatus())) {
+
+                addMajorAndAllotEdit(yieldSettle, majors, majorModels);
+                YieldSettleMajorModel yieldSettleMajorModel = majorModels.get(0);
+                if (yieldSettleMajorModel == null) {
+                    majorModels.clear();
                     addMajorAndSatffAllot(majors, yieldSettle, majorModels);
-                } else if (WfConstant.AuditStatus.AUDITREJECT.equals(yieldSettle.getAuditStatus())) {
-                    //审核退回
-                    addMajorAndAllotEdit(yieldSettle, majors, majorModels);
+                } else if (yieldSettleMajorModel.getMajorRoleRates() == null
+                           || yieldSettleMajorModel.getMajorRoleRates().size() <= 0) {
+                    majorModels.clear();
+                    addMajorAndSatffAllot(majors, yieldSettle, majorModels);
                 }
+
             } else if (view > 2) {
                 Map<String, Object> variables = processService.getHistoricVariables(yieldSettle.getProcId());
                 Map<String, List<String>> userMajorMap = (Map<String, List<String>>) variables.get("userMajorMap");

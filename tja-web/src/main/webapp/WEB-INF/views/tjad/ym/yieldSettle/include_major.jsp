@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <div class="col-md-12 form-group">
 	<div class="tabbable-line boxless tabbable-reversed">
@@ -110,13 +111,7 @@
 													<c:if test="${view > 2 }">${majorRoleAllot.staffRate}</c:if>
 													</td>
 													<td class=" col-lg-4 text-right">
-													<%-- <c:if test="${view == 2 }">
-													<input type="text" placeholder="0.00" name="majorRoleAllots[${rateSize}].staffYield" class="form-control text-right" value="${majorRoleAllot.staffYield}" readonly>
-													</c:if>
-													<c:if test="${view > 2 }">
-													  ${majorRoleAllot.staffYield}
-													</c:if> --%>
-													${majorRoleAllot.staffYield}
+													<fmt:formatNumber value='${majorRoleAllot.staffYield}' pattern='#,#00.00#'/>
 													</td>
 												</tr>
 												<c:set var="rateSize" value="${rateSize + 1}"></c:set>

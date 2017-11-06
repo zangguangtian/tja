@@ -71,26 +71,26 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">合同额(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" disabled name="contractAmount" value="${project.contractAmount}">
+							<input type="text" class="form-control" disabled name="contractAmount" value="<fmt:formatNumber value='${yieldSettle.contractAmount}' pattern='#,#00.00#'/>">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">分包扣减(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" disabled name="pkgAmount" value="${project.pkgAmount}">
+							<input type="text" class="form-control" disabled name="pkgAmount" value="<fmt:formatNumber value='${yieldSettle.pkgAmount}' pattern='#,#00.00#'/>">
 						</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">方案扣减(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" disabled name="schemeAmount" value="${project.schemeAmount}">
+							<input type="text" class="form-control" disabled name="schemeAmount" value="<fmt:formatNumber value='${yieldSettle.schemeAmount}' pattern='#,#00.00#'/>">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">其他扣减(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" disabled name="rebateAmount" value="${project.rebateAmount}"> 
+							<input type="text" class="form-control" disabled name="rebateAmount" value="<fmt:formatNumber value='${yieldSettle.rebateAmount}' pattern='#,#00.00#'/>"> 
 						</div>
 					</div>
 					
@@ -114,14 +114,14 @@
 						<label class="control-label col-md-3">当年可结算产值(¥)</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-							<input type="text" class="form-control" name="yearYield" value="${yieldSettle.yearYield}" disabled>
+							<input type="text" class="form-control" name="yearYield" value="<fmt:formatNumber value='${yieldSettle.yearYield}' pattern='#,#00.00#'/>" disabled>
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">历年已结算产值(¥)</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-							<input type="text" class="form-control" name="hisyearYield" value="${yieldSettle.hisyearYield}" disabled>
+							<input type="text" class="form-control" name="hisyearYield" value="<fmt:formatNumber value='${yieldSettle.hisyearYield}' pattern='#,#00.00#'/>" disabled>
 						</div>
 					</div>
 					
@@ -188,7 +188,7 @@
 											  <input type="text" class="form-control text-right" name="principalAllots[${size}].staffRate" value="${leader.staffRate}" data-rule-number="true"  placeholder="0.00" disabled>
 											</td>
 											<td  class="col-lg-4 text-right">
-											  <input type="text" class="form-control text-right" name="principalAllots[${size}].staffYield" value="${leader.staffYield}" placeholder="0.00" disabled>
+											  <fmt:formatNumber value='${leader.staffYield}' pattern='#,#00.00#'/>
 											</td>
 										</tr>
 										<c:set var="size" value="${size+1}"></c:set>
@@ -199,7 +199,7 @@
 								<tr class="total">
 									<td  class="text-center col-lg-4">合计</td>
 									<td  class="col-lg-4 text-right">${total_le_rate}</td>
-									<td  class="col-lg-4 text-right">${total_le_yield}</td>
+									<td  class="col-lg-4 text-right"><fmt:formatNumber value='${total_le_yield}' pattern='#,#00.00#'/></td>
 								</tr>
 								</tbody>
 							</table>
@@ -232,7 +232,7 @@
 											  <input type="text" class="form-control text-right" name="principalAllots[${size}].staffRate"  placeholder="0.00" value="${manager.staffRate}" disabled>
 											</td>
 											<td  class="col-lg-4 text-right">
-											<input type="text" class="form-control text-right" name="principalAllots[${size}].staffYield" value="${manager.staffYield}" placeholder="0.00" disabled>
+											 <fmt:formatNumber value='${manager.staffYield}' pattern='#,#00.00#'/>
 											</td>
 										</tr>
 										<c:set var="total_pm_rate" value="${manager.staffRate+total_pm_rate}"></c:set>
@@ -242,7 +242,7 @@
 								 <tr class="total">
 									<td  class="text-center col-lg-4">合计</td>
 									<td  class="col-lg-4 text-right">${total_pm_rate}</td>
-									<td  class="col-lg-4 text-right">${total_pm_yield}</td>
+									<td  class="col-lg-4 text-right"><fmt:formatNumber value='${total_pm_yield}' pattern='#,#00.00#'/></td>
 								 </tr>
 								</tbody>
 							</table>
@@ -327,8 +327,7 @@
 		});
 	});
 
-	function getNumValue(controlid) {
-	       var num = controlid.val();
+	function getNumValue(num) {
 	       if (validateInput(num)) {
 	           num = parseFloat(num);
 	       }
@@ -359,18 +358,29 @@
 		if(_tr.size()>0){
 			jQuery.each(_tr,function(index,item){
 				var _this = $(item).find("input[name$='.staffRate']");
-				var staffRate = getNumValue(_this);
+				var staffRate = _this.val();
+				
+				 if(staffRate!='' && staffRate.charAt(staffRate.length-1) !='.'){
+					  staffRate = new Number(new Number(staffRate).toFixed(2));
+					  _this.val(staffRate);
+				  }
 				  //专业角色  比例
-				  var rate = getNumValue(_this.closest("table").prev().find("input[name$='allotRate']"));
+				  var rate = _this.closest("table").prev().find("input[name$='allotRate']").val();
+				  
+				  if(rate!='' && rate.charAt(rate.length-1) !='.'){
+					  rate = new Number(new Number(rate).toFixed(2));
+					  _this.closest("table").prev().find("input[name$='allotRate']").val(rate);
+				  }
+				  
 				  //当年可结算产值(¥)
-				  var yearYield = getNumValue(jQuery("input[name='yearYield']"));
+				  var yearYield = getNumValue(delcommafy(jQuery("input[name='yearYield']").val()));
 				  //项目经理 比例
-				  var pmRate = getNumValue(jQuery("input[name='pmRate']"));
+				  var pmRate = getNumValue(jQuery("input[name='pmRate']").val());
 				  //项目负责人 比例
-				  var principalRate = getNumValue(jQuery("input[name='principalRate']"));
+				  var principalRate = getNumValue(jQuery("input[name='principalRate']").val());
 				  
 				  //本专业结算比例
-				  var majorAllotRate = getNumValue(jQuery("div.tab-content div.active").find("input[name='majorAllotRate']"));
+				  var majorAllotRate = getNumValue(jQuery("div.tab-content div.active").find("input[name='majorAllotRate']").val());
 				  
 				  var roleCode = $(item).find("input[name$='.roleCode']").val();
 				  var staffYield = 0.00;
@@ -379,12 +389,12 @@
 					  staffYield = new Number(yearYield)*(100-new Number(principalRate) - new Number(pmRate))*(new Number(majorAllotRate))*(new Number(rate))*(new Number(staffRate))/100000000;
 				  }else{
 					//专业负责人比例
-					var allotRate = getNumValue(jQuery("input[name$='.roleCode'][value='PrjMajorLeader']").closest("div.row").find("input[name$='.allotRate']"));  
+					var allotRate = getNumValue(jQuery("input[name$='.roleCode'][value='PrjMajorLeader']").closest("div.row").find("input[name$='.allotRate']").val());  
 					//校对人、审核人、设计人/制图人个人产值=当年可结算产值(¥)×(100-项目负责人比例-项目经理比例)×本专业结算比例×(100-专业负责人比例)×本角色比例×工作量/10000000000
 					  staffYield = new Number(yearYield) * (100-new Number(principalRate) - new Number(pmRate))*(new Number(majorAllotRate))*(100 - new Number(allotRate))*(new Number(rate))*(new Number(staffRate))/100000000;
 				  }
 				  var _td = $(item).find("td:last");
-				  _td.text(new Number(staffYield).toFixed(2));
+				  _td.text(toThousands(new Number(staffYield).toFixed(2)));
 				  $(item).find("input[name$='.staffYield']").val(new Number(staffYield).toFixed(2));
 				  if(index == _tr.size()-1){
 					  initTotal(_this);
@@ -399,13 +409,13 @@
 		var totalstaffYield = 0.00;
 		jQuery.each(_this.closest("table").find("tbody tr:not(:last)"),function(index,item){
 			var _this = $(item);
-			var staffRate = getNumValue(_this.find("input[name$='staffRate']"));
-			var staffYield =getNumValue(_this.find("input[name$='staffYield']"));
+			var staffRate = getNumValue(_this.find("input[name$='staffRate']").val());
+			var staffYield =getNumValue(_this.find("input[name$='staffYield']").val());
 		    totalstaffRate = new Number(totalstaffRate) + new Number(staffRate);
 		    totalstaffYield = new Number(totalstaffYield) + new Number(staffYield);
 		});
 		_this.closest("table").find("tr.total").find("td:eq(1)").text(new Number(totalstaffRate).toFixed(2));
-		_this.closest("table").find("tr.total").find("td:eq(2)").text(new Number(totalstaffYield).toFixed(2));
+		_this.closest("table").find("tr.total").find("td:eq(2)").text(toThousands(new Number(totalstaffYield).toFixed(2)));
 	}
 	
 	$(document).on("click", "#reject-btn", function(){
@@ -429,6 +439,18 @@
 	        }});
 	    }
 	});
+	
+	//千分位处理 去掉千分位
+	function delcommafy(num){  
+	   num = num.replace(/[ ]/g, "");//去除空格  
+	   num=num.replace(/,/gi,'');  
+	   return num;  
+	}
+	
+	//添加千分位
+	function toThousands(num) {
+	    return (num || 0).toString().replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
+	}
 	
 	/*打印预览*/
 	jQuery("#printview-btn").dfprint({

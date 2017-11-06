@@ -61,7 +61,7 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">合同编号</label>
 						<div class="col-md-8">
-							<input type="text" name="wfYieldSettle.proType" class="form-control" disabled value="${project.contractCode}">
+							<input type="text" name="wfYieldSettle.contractCode" class="form-control" disabled value="${project.contractCode}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
@@ -74,27 +74,35 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">合同额(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" disabled name="wfYieldSettle.contractAmount" value="${project.contractAmount}">
-						</div>
+								<input type="text" class="form-control" disabled
+									name="wfYieldSettle.contractAmount"
+									value="<fmt:formatNumber value='${empty yieldSettle.contractAmount?project.contractAmount:yieldSettle.contractAmount}' pattern='#,#00.00#'/>">
+							</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">分包扣减(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" disabled name="wfYieldSettle.pkgAmount" value="${project.pkgAmount}">
-						</div>
+								<input type="text" class="form-control" disabled
+									name="wfYieldSettle.pkgAmount"
+									value="<fmt:formatNumber value='${empty yieldSettle.pkgAmount?project.pkgAmount:yieldSettle.pkgAmount}' pattern='#,#00.00#'/>">
+							</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">方案扣减(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" disabled name="wfYieldSettle.schemeAmount" value="${project.schemeAmount}">
-						</div>
+								<input type="text" class="form-control" disabled
+									name="wfYieldSettle.schemeAmount"
+									value="<fmt:formatNumber value='${empty yieldSettle.schemeAmount?project.schemeAmount:yieldSettle.schemeAmount}' pattern='#,#00.00#'/>">
+							</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">其他扣减(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" disabled name="wfYieldSettle.rebateAmount" value="${project.rebateAmount}"> 
-						</div>
+								<input type="text" class="form-control" disabled
+									name="wfYieldSettle.rebateAmount"
+									value="<fmt:formatNumber value='${empty yieldSettle.rebateAmount?project.rebateAmount:yieldSettle.rebateAmount}' pattern='#,#00.00#'/>">
+							</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
@@ -116,16 +124,20 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">当年可结算产值(¥)</label>
 						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i>
-							<input type="text" class="form-control" name="wfYieldSettle.yearYield" value="${empty yieldSettle.yearYield ? project.yield : yieldSettle.yearYield}" disabled>
-						</div>
+						    <i class="fa"></i> <input type="text" class="form-control"
+									name="wfYieldSettle.yearYield"
+									value="<fmt:formatNumber value='${empty yieldSettle.yearYield ? project.yield : yieldSettle.yearYield}' pattern='#,#00.00#'/>"
+									disabled>
+							</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">历年已结算产值(¥)</label>
 						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i>
-							<input type="text" class="form-control" name="wfYieldSettle.hisyearYield" value="${empty yieldSettle.hisyearYield ? hisyearYield : yieldSettle.hisyearYield}" disabled>
-						</div>
+						    <i class="fa"></i> <input type="text" class="form-control"
+									name="wfYieldSettle.hisyearYield"
+									value="<fmt:formatNumber value='${empty yieldSettle.hisyearYield ? hisyearYield : yieldSettle.hisyearYield}' pattern='#,#00.00#'/>"
+									disabled>
+							</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
@@ -184,6 +196,8 @@
 								</thead>
 								<tbody>
 								 <c:set var="size" value="0"></c:set>
+								 <c:set var="total_staffYield" value="0"></c:set>
+								 <c:set var="total_staffRate" value="0"></c:set>
 								 <c:if test="${not empty proLeaders}">
 								   <c:forEach items="${proLeaders}" var="leader" varStatus="st">
 									    <tr>
@@ -195,6 +209,7 @@
 											  <input type="hidden" name="principalAllots[${size}].staffCategory" value="${leader.staffCategory}">
 											  <input type="hidden" name="principalAllots[${size}].staffSort" value="${leader.staffSort}">
 											  <input type="hidden" name="principalAllots[${size}].staffId" value="${leader.staffId}">
+											  <input type="hidden" name="principalAllots[${size}].staffYield" value="${leader.staffYield}">
 											  <input type="text" class="form-control text-right"
 														name="principalAllots[${size}].staffRate"
 														value="${leader.staffRate}"
@@ -205,10 +220,12 @@
 														data-rule-required="true">
 													</td>
 											<td  class="col-lg-4 text-right">
-											  <input type="text" class="form-control text-right" name="principalAllots[${size}].staffYield" value="${leader.staffYield}" placeholder="0.00" disabled>
+											 <fmt:formatNumber value='${leader.staffYield}' pattern='#,#00.00#'/>
 											</td>
 										</tr>
 										<c:set var="size" value="${size+1}"></c:set>
+										<c:set var="total_staffYield" value="${total_staffYield + leader.staffYield}"></c:set>
+										<c:set var="total_staffRate" value="${total_staffRate + leader.staffRate}"></c:set>
 								   </c:forEach>
 								  </c:if>
 								  
@@ -223,6 +240,7 @@
 											  <input type="hidden" name="principalAllots[${size}].staffCategory" value="${categoryLeader}">
 											  <input type="hidden" name="principalAllots[${size}].staffSort" value="${st.index}">
 											  <input type="hidden" name="principalAllots[${size}].staffId" value="${leader.staffId}">
+											  <input type="hidden" name="principalAllots[${size}].staffYield" value="">
 											  <input type="text" class="form-control text-right"
 														name="principalAllots[${size}].staffRate" 
 														data-rule-number="true" 
@@ -232,17 +250,15 @@
 														data-rule-required="true"
 														value="">
 													</td>
-											<td  class="col-lg-4 text-right">
-											  <input type="text" class="form-control text-right" name="principalAllots[${size}].staffYield" value="" placeholder="0.00" disabled>
-											</td>
+											<td  class="col-lg-4 text-right"></td>
 										</tr>
 										<c:set var="size" value="${size+1}"></c:set>
 								   </c:forEach>
 								  </c:if>
 									<tr class="total">
 										<td  class="text-center col-lg-4">合计</td>
-										<td  class="col-lg-4 text-right"></td>
-										<td  class="col-lg-4 text-right"></td>
+										<td  class="col-lg-4 text-right">${total_staffRate}</td>
+										<td  class="col-lg-4 text-right">${total_staffYield}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -267,6 +283,8 @@
 									</tr>
 								</thead>
 								<tbody>
+								<c:set var="total_manager_rate" value="0"></c:set>
+								<c:set var="total_manager_yield" value="0"></c:set>
 								 <c:if test="${not empty proManagers}">
 									  <c:forEach items="${proManagers}" var="manager">
 									    <tr>
@@ -278,6 +296,7 @@
 											  <input type="hidden" name="principalAllots[${size}].staffCategory" value="${manager.staffCategory}">
 											  <input type="hidden" name="principalAllots[${size}].staffSort" value="${manager.staffSort}">
 											  <input type="hidden" name="principalAllots[${size}].staffId" value="${manager.staffId}">
+											  <input type="hidden" name="principalAllots[${size}].staffYield" value="${manager.staffYield}">
 											  <input type="text" class="form-control text-right"
 														name="principalAllots[${size}].staffRate"
 														data-rule-number="true" 
@@ -288,10 +307,12 @@
 														value="${manager.staffRate}">
 													</td>
 											<td  class="col-lg-4 text-right">
-											<input type="text" class="form-control text-right" name="principalAllots[${size}].staffYield" value="${manager.staffYield}" placeholder="0.00" disabled>
+											 <fmt:formatNumber value='${manager.staffYield}' pattern='#,#00.00#'/>
 											</td>
 										</tr>
 										<c:set var="size" value="${size+1}"></c:set>
+										<c:set var="total_manager_rate" value="${total_manager_rate + manager.staffRate}"></c:set>
+								        <c:set var="total_manager_yield" value="${total_manager_yield + manager.staffYield}"></c:set>
 									 </c:forEach>
 								 </c:if>
 								 <c:if test="${empty proManagers and not empty proPms}">
@@ -305,6 +326,7 @@
 											  <input type="hidden" name="principalAllots[${size}].staffCategory" value="${categoryPm}">
 											  <input type="hidden" name="principalAllots[${size}].staffSort" value="${st.index}">
 											  <input type="hidden" name="principalAllots[${size}].staffId" value="${proPm.id}">
+											  <input type="hidden" name="principalAllots[${size}].staffYield" value="">
 											  <input type="text" class="form-control text-right"
 														name="principalAllots[${size}].staffRate"
 														data-rule-number="true" 
@@ -314,17 +336,15 @@
 														data-rule-required="true"
 														value="">
 													</td>
-											<td  class="col-lg-4 text-right">
-											<input type="text" class="form-control text-right" name="principalAllots[${size}].staffYield" value="" placeholder="0.00" disabled>
-											</td>
+											<td  class="col-lg-4 text-right"></td>
 										</tr>
 										<c:set var="size" value="${size+1}"></c:set>
 									 </c:forEach>
 								 </c:if>
 								 <tr class="total">
 									<td  class="text-center col-lg-4">合计</td>
-									<td  class="col-lg-4 text-right"></td>
-									<td  class="col-lg-4 text-right"></td>
+									<td  class="col-lg-4 text-right">${total_manager_rate}</td>
+									<td  class="col-lg-4 text-right">${total_manager_yield}</td>
 								 </tr>
 								</tbody>
 							</table>
@@ -341,6 +361,7 @@
 									</tr>
 								</thead>
 								<tbody>
+								<c:set var="total_major_rate" value="0"></c:set>
 								<c:if test="${not empty majorRates}">
 									  <c:forEach items="${majorRates}" var="majorRate" varStatus="st">
 									    <tr>
@@ -363,6 +384,7 @@
 														value="${majorRate.settleRate}">
 													</td>
 										</tr>
+										<c:set var="total_major_rate" value="${total_major_rate + majorRate.settleRate}"></c:set>
 									  </c:forEach>
 								  </c:if>
 								  
@@ -388,12 +410,13 @@
 														value="${config.configValue}">
 													</td>
 										</tr>
+										<c:set var="total_major_rate" value="${total_major_rate + config.configValue}"></c:set>
 									  </c:forEach>
 								  </c:if>
 								  
 									<tr class="total">
 										<td  class="text-center col-lg-4">合计</td>
-										<td  class="col-lg-8 text-right"></td>
+										<td  class="col-lg-8 text-right">${total_major_rate}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -412,6 +435,7 @@
 				  <input type="hidden" name="principalAllots[{0}].staffCategory" value="">
 				  <input type="hidden" name="principalAllots[{0}].staffSort" value="">
 				  <input type="hidden" name="principalAllots[{0}].staffId" value="">
+				  <input type="hidden" name="principalAllots[{0}].staffYield" value="">
 				  <input type="text" class="form-control text-right"
 							name="principalAllots[{0}].staffRate" 
 							data-rule-number="true" 
@@ -422,7 +446,6 @@
 							value="">
 						</td>
 				<td  class="col-lg-4 text-right">
-				  <input type="text" class="form-control text-right" name="principalAllots[{0}].staffYield" placeholder="0.00" value="" disabled>
 				</td>
 			 </tr>
 			</table>
@@ -456,8 +479,6 @@
 		jQuery(".btn_pm").on("click",function(){
 			selectStaff(selectPm,'checkbox');
 		});
-		
-		initTotal(null);
 	});
 
 	//计算产值
@@ -466,21 +487,24 @@
 			  jQuery.each(_tr,function(index,item){
 				  var $item = $(item);
 				  var staffRate = $item.find("input[name$='staffRate']").val();
+				  if(staffRate!='' && staffRate.charAt(staffRate.length-1) !='.'){
+					  staffRate = new Number(new Number(staffRate).toFixed(2));
+					  $item.find("input[name$='staffRate']").val(staffRate);
+				  }
 				  //项目负责人 项目经理 比例
 				  var rate = $item.closest("table").prev().find("input[name^='wfYieldSettle']").val();
-				  //当年可结算产值
-				  var yearYield = jQuery("input[name$='.yearYield']").val();
+				  if(rate!='' && rate.charAt(rate.length-1) !='.'){
+					  rate = new Number(new Number(rate).toFixed(2));
+					  $item.closest("table").prev().find("input[name^='wfYieldSettle']").val(rate);
+				  }
 				  
-				  if(rate == '' || typeof rate == 'undefined' || isNaN(rate)){
-					  rate = 0.00;
-				  }
-				  if(yearYield == '' || typeof yearYield == 'undefined' || isNaN(yearYield)){
-					  yearYield = 0.00;
-				  }
+				  //当年可结算产值
+				  var yearYield =getNumValue(delcommafy(jQuery("input[name$='.yearYield']").val()));
 				  //=当年可结算产值×比例×工作量/10000
 				  var staffYield =new Number(yearYield) * new Number(rate) * staffRate/10000;
-				  var _input = $item.find("td:last").find("input");
-				  _input.val(new Number(staffYield).toFixed(2));
+				  var _td = $item.find("td:last");
+				  _td.text(toThousands(new Number(staffYield).toFixed(2)));
+				  $item.find("input[name$='staffYield']").val(new Number(staffYield).toFixed(2));
 				  if(index == _tr.size()-1){
 					 initTotal($item.find("input[name$='staffRate']"));  
 				  }
@@ -508,21 +532,22 @@
 	
 	//当年专业结算比例合计
 	function totalMajor(){
-	var flag = true;
-	var totalsettleRate = 0.00;
-	jQuery.each($("#majorSettleRate tbody tr:not(:last)"),function(index,item){
-		var _this = $(item);
-		var settleRate = _this.find("input[name$='.settleRate']").val();
-		if(settleRate == '' || typeof settleRate == 'undefined' || isNaN(settleRate)){
-			settleRate = 0.00;
-		  }
-		totalsettleRate = new Number(totalsettleRate) + new Number(settleRate);
-	});
-	$("#majorSettleRate tr.total").find("td:eq(1)").text(new Number(totalsettleRate).toFixed(2));
-	if(new Number(totalsettleRate) !=100){
-		flag = false;
-	}
-	 return flag;
+		var flag = true;
+		var totalsettleRate = 0.00;
+		jQuery.each($("#majorSettleRate tbody tr:not(:last)"),function(index,item){
+			var _this = $(item);
+			var settleRate = _this.find("input[name$='.settleRate']").val();
+			if(settleRate!='' && settleRate.charAt(settleRate.length-1) !='.'){
+				  settleRate = new Number(new Number(settleRate).toFixed(2));
+				  _this.find("input[name$='.settleRate']").val(settleRate);
+			  }
+			totalsettleRate = new Number(totalsettleRate) + new Number(settleRate);
+		});
+		$("#majorSettleRate tr.total").find("td:eq(1)").text(new Number(totalsettleRate).toFixed(2));
+		if(new Number(totalsettleRate) !=100){
+			flag = false;
+		}
+		return flag;
 	}
 	
 	function total(obj){
@@ -533,22 +558,16 @@
 			var totalstaffYield = 0.00;
 			jQuery.each(_obj.find("tbody tr:not(:last)"),function(index,item){
 				var _this = $(item);
-				var staffRate = _this.find("input[name$='staffRate']").val();
-				var staffYield = _this.find("input[name$='staffYield']").val();
-				if(staffYield == '' || typeof staffYield == 'undefined' || isNaN(staffYield)){
-					staffYield = 0;
-				  }
-				  if(staffRate == '' || typeof staffRate == 'undefined' || isNaN(staffRate)){
-					  staffRate = 0;
-				  }
-				  totalstaffRate = new Number(totalstaffRate) + new Number(staffRate);
-				  totalstaffYield = new Number(totalstaffYield) + new Number(staffYield);
+				var staffRate = getNumValue(_this.find("input[name$='staffRate']").val());
+				var staffYield =getNumValue(_this.find("input[name$='staffYield']").val());
+				totalstaffRate = new Number(totalstaffRate) + new Number(staffRate);
+				totalstaffYield = new Number(totalstaffYield) + new Number(staffYield);
 			});
 			if(new Number(totalstaffRate) !=100){
 				flag = false;
 			}
 			_obj.find("tr.total").find("td:eq(1)").text(new Number(totalstaffRate).toFixed(2));
-			_obj.find("tr.total").find("td:eq(2)").text(new Number(totalstaffYield).toFixed(2));
+			_obj.find("tr.total").find("td:eq(2)").text(toThousands(new Number(totalstaffYield).toFixed(2)));
 		}
 		return flag;
 	}
@@ -627,6 +646,10 @@
 	    if (flag) {
 	    	//把disabled属性去掉
 	    	jQuery("input:disabled").removeAttr("disabled");
+	    	jQuery.each(jQuery("input[name$='Amount'],input[name$='yearYield']"),function(index,item){
+	    		var _item = $(item);
+	    		_item.val(delcommafy(_item.val()));
+	    	});
 	    	$("input[name='wfYieldSettle.auditStatus']").val(status);
 		        jQuery.ajax({
 		        type : "POST",
@@ -648,6 +671,44 @@
 	        });
 	    }
 	}
+	
+	//千分位处理 去掉千分位
+	function delcommafy(num){  
+	   num = num.replace(/[ ]/g, "");//去除空格  
+	   num=num.replace(/,/gi,'');  
+	   return num;  
+	}
+	
+	//添加千分位
+	function toThousands(num) {
+	    return (num || 0).toString().replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
+	}
+	
+	function getNumValue(num) {
+	       if (validateInput(num)) {
+	           num = parseFloat(num);
+	       }
+	       else {
+	           num = 0;
+	       }
+	       return num;
+	   }
+
+    function validateInput(inputstr) {
+	      flag = false;
+	      if (inputstr != "") {
+	          if (isNaN(inputstr)) {
+	              flag = false; //如果输入字符不是数字
+	          }
+	          else {//输入数字但是小于0
+	              if (parseFloat(inputstr) < 0)
+	                  flag = false;
+	              else
+	                  flag = true;
+	          }
+	      }
+	      return flag;
+	  }
 </script>
 
 </body>
