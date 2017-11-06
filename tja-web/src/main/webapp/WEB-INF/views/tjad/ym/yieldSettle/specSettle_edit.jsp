@@ -48,77 +48,87 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目编号</label>
 						<div class="col-md-8">
-							<input type="text" name="wfYieldSettle.proCode" class="form-control col-md-3" readonly value="${project.proCode}">
+							<input type="text" name="wfYieldSettle.proCode" class="form-control col-md-3" disabled value="${project.proCode}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目名称</label>
 						<div class="col-md-8">
-							<input type="text" name="wfYieldSettle.proName" class="form-control" readonly value="${project.proName}">
+							<input type="text" name="wfYieldSettle.proName" class="form-control" disabled value="${project.proName}">
 						</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">合同编号</label>
 						<div class="col-md-8">
-							<input type="text" name="wfYieldSettle.proType" class="form-control" readonly value="${project.contractCode}">
+							<input type="text" name="wfYieldSettle.proType" class="form-control" disabled value="${project.contractCode}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目类型</label>
 						<div class="col-md-8">
-							<input type="text" name="wfYieldSettle.proType" class="form-control" readonly value="${project.proType}">
+							<input type="text" name="wfYieldSettle.proType" class="form-control" disabled value="${project.proType}">
 						</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">合同额(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" readonly name="wfYieldSettle.contractAmount" value="${project.contractAmount}">
-						</div>
+								<input type="text" class="form-control" disabled
+									name="wfYieldSettle.contractAmount"
+									value="<fmt:formatNumber value='${empty yieldSettle.contractAmount?project.contractAmount:yieldSettle.contractAmount}' pattern='#,#00.00#'/>">
+							</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">分包扣减(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" readonly name="wfYieldSettle.pkgAmount" value="${project.pkgAmount}">
-						</div>
+								<input type="text" class="form-control" disabled
+									name="wfYieldSettle.pkgAmount"
+									value="<fmt:formatNumber value='${empty yieldSettle.pkgAmount?project.pkgAmount:yieldSettle.pkgAmount}' pattern='#,#00.00#'/>">
+							</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">方案扣减(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" readonly name="wfYieldSettle.schemeAmount" value="${project.schemeAmount}">
-						</div>
+								<input type="text" class="form-control" disabled
+									name="wfYieldSettle.schemeAmount"
+									value="<fmt:formatNumber value='${empty yieldSettle.schemeAmount?project.schemeAmount:yieldSettle.schemeAmount}' pattern='#,#00.00#'/>">
+							</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">其他扣减(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" readonly name="wfYieldSettle.rebateAmount" value="${project.rebateAmount}"> 
-						</div>
+								<input type="text" class="form-control" disabled
+									name="wfYieldSettle.rebateAmount"
+									value="<fmt:formatNumber value='${empty yieldSettle.rebateAmount?project.rebateAmount:yieldSettle.rebateAmount}' pattern='#,#00.00#'/>">
+							</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">项目负责人<span class="required">※</span></label>
+						<label class="control-label col-md-3">项目负责人</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-							<input type="text" class="form-control" readonly name="wfYieldSettle.pManagers" value="${project.pmLeaders}">
+							<input type="text" class="form-control" disabled name="wfYieldSettle.pManagers" value="${project.pmLeaders}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">项目经理<span class="required">※</span></label>
+						<label class="control-label col-md-3">项目经理</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-			            	<input type="text" name="wfYieldSettle.pManagers" class="form-control col-md-3" value="${project.pManagers}" readonly>
+			            	<input type="text" name="wfYieldSettle.pManagers" class="form-control col-md-3" value="${project.pManagers}" disabled>
 						</div>
 					</div>
 					
 					
 					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">当年特批产值(¥)<span class="required">※</span></label>
+						<label class="control-label col-md-3">当年特批产值(¥)</label>
 						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i>
-							<input type="text" class="form-control" name="wfYieldSettle.yearYield" value="${project.yield}" readonly>
-						</div>
+						    <i class="fa"></i> <input type="text" class="form-control"
+									name="wfYieldSettle.yearYield"
+									value="<fmt:formatNumber value='${empty yieldSettle.yearYield ? project.yield : yieldSettle.yearYield}' pattern='#,#00.00#'/>"
+									disabled>
+							</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3"></label>
@@ -146,7 +156,7 @@
 					
 
 					<h3 class="form-tit col-lg-12">${majorName}</h3>
-					<div class="col-lg-5 ">
+					<div class="col-lg-5 form-group">
 						<div class="clearfix">
 							<div class="col-lg-12 text-right col-md-4 col-sm-4 col-xs-4">
 								<input type="button" class="btn blue btn_tj" value="添加"/> 
@@ -166,15 +176,17 @@
 							      <c:forEach var="majorRoleAllot" items="${majorRoleAllots}" varStatus="st">
 							        <tr>
 										<td  class="text-center col-lg-4">${majorRoleAllot.staffName }</td>
-										<td  class=" col-lg-4">
+										<td  class=" col-lg-4 input-icon left">
+										<i class="fa"></i>
 										<input type="hidden" name="majorRoleAllots[${st.index}].id" class="text-right" value="${majorRoleAllot.id}">
 										<input type="hidden" name="majorRoleAllots[${st.index}].staffId" class="text-right" value="${majorRoleAllot.staffId}">
 										<input type="hidden" name="majorRoleAllots[${st.index}].category" class="text-right" value="2000">
 										<input type="hidden" name="majorRoleAllots[${st.index}].majorCode" class="text-right" value="${majorRoleAllot.majorCode}">
 										<input type="hidden" name="majorRoleAllots[${st.index}].staffSort" class="text-right" value="${majorRoleAllot.staffSort}">
+										<input type="hidden" name="majorRoleAllots[${st.index}].staffYield" value="${majorRoleAllot.staffYield}">
 										<input type="text" name="majorRoleAllots[${st.index}].staffRate" data-rule-number="true"  placeholder="0.00" class="text-right" value="${majorRoleAllot.staffRate}">
 										</td>
-										<td  class=" col-lg-4 text-right"><input type="text" name="majorRoleAllots[${st.index}].staffYield" readonly placeholder="0.00" class="text-right" value="${majorRoleAllot.staffYield}"></td>
+										<td  class=" col-lg-4 text-right"><fmt:formatNumber value='${majorRoleAllot.staffYield}' pattern='#,#00.00#'/></td>
 									</tr>
 							      </c:forEach>
 							    </c:if>
@@ -183,15 +195,17 @@
 							      <c:forEach var="staff" items="${staffs}" varStatus="st">
 							        <tr>
 										<td  class="text-center col-lg-4">${staff.name }</td>
-										<td  class=" col-lg-4">
+										<td  class=" col-lg-4  input-icon left">
+										<i class="fa"></i>
 										<input type="hidden" name="majorRoleAllots[${st.index}].id" class="text-right" value="">
 										<input type="hidden" name="majorRoleAllots[${st.index}].staffId" class="text-right" value="${staff.id}">
 										<input type="hidden" name="majorRoleAllots[${st.index}].category" class="text-right" value="2000">
 										<input type="hidden" name="majorRoleAllots[${st.index}].majorCode" class="text-right" value="${majorCode}">
 										<input type="hidden" name="majorRoleAllots[${st.index}].staffSort" class="text-right" value="${st.index}">
+										<input type="hidden" name="majorRoleAllots[${st.index}].staffYield" value="">
 										<input type="text" name="majorRoleAllots[${st.index}].staffRate" data-rule-number="true"  placeholder="0.00" class="text-right" value="">
 										</td>
-										<td  class=" col-lg-4 text-right"><input type="text" name="majorRoleAllots[${st.index}].staffYield" readonly placeholder="0.00" class="text-right" value=""></td>
+										<td  class=" col-lg-4 text-right"></td>
 									</tr>
 							      </c:forEach>
 							    </c:if>
@@ -210,15 +224,17 @@
 			<table id="clone_text" style="display: none">
 				 <tr>
 					<td  class="text-center col-lg-4"></td>
-					<td  class=" col-lg-4">
+					<td  class=" col-lg-4  input-icon left">
+					<i class="fa"></i>
 					<input type="hidden" name="majorRoleAllots[{0}].id" class="text-right" value="">
 					<input type="hidden" name="majorRoleAllots[{0}].staffId" class="text-right" value="">
 					<input type="hidden" name="majorRoleAllots[{0}].category" class="text-right" value="2000">
 					<input type="hidden" name="majorRoleAllots[{0}].majorCode" class="text-right" value="${majorCode}">
 					<input type="hidden" name="majorRoleAllots[{0}].staffSort" class="text-right" value="">
+					<input type="hidden" name="majorRoleAllots[{0}].staffYield" value="">
 					<input type="text" name="majorRoleAllots[{0}].staffRate" data-rule-number="true"  placeholder="0.00" class="text-right" value="">
 					</td>
-					<td  class=" col-lg-4 text-right"><input type="text" name="majorRoleAllots[{0}].staffYield" readonly placeholder="0.00" class="text-right" value=""></td>
+					<td  class=" col-lg-4 text-right"></td>
 				</tr>
 			</table>
 		</div>
@@ -232,17 +248,16 @@
 		jQuery(document).on("keyup","#majorRole tbody input[name$='staffRate']",function(){
 			  var _this = $(this);
 			  var staffRate = _this.val();
-			  var yearYield =	$("input[name$='yearYield']").val();
-			  if(yearYield == '' || typeof yearYield == 'undefined' || isNaN(yearYield)){
-				  yearYield = 0;
+			  var yearYield =delcommafy($("input[name$='yearYield']").val());
+			  if(staffRate!='' && staffRate.charAt(staffRate.length-1) !='.'){
+				  staffRate = new Number(new Number(staffRate).toFixed(2));
+				  _this.val(staffRate);
 			  }
-			  if(staffRate == '' || typeof staffRate == 'undefined' || isNaN(staffRate)){
-				  staffRate = 0;
-			  }
-			  var _input = _this.closest("tr").find("td:last").find("input");
+			  var _td = _this.closest("tr").find("td:last");
 			  var staffYield = new Number(yearYield) * new Number(staffRate)/100;
-			  _input.val(new Number(staffYield).toFixed(2));
-			  
+			  var yield = new Number(staffYield).toFixed(2)
+			  _td.text(toThousands(yield));
+			  _this.closest("tr").find("input[name$='.staffYield']").val(yield);
 			  var flag = initTotal();
 		});
 		
@@ -259,22 +274,16 @@
 		var totalstaffYield = 0.00;
 		jQuery.each($("#majorRole tbody tr:not(:last)"),function(index,item){
 			var _this = $(item);
-			var staffRate = _this.find("input[name$='staffRate']").val();
-			var staffYield = _this.find("input[name$='staffYield']").val();
-			if(staffYield == '' || typeof staffYield == 'undefined' || isNaN(staffYield)){
-				staffYield = 0;
-			  }
-			  if(staffRate == '' || typeof staffRate == 'undefined' || isNaN(staffRate)){
-				  staffRate = 0;
-			  }
-			  totalstaffRate = new Number(totalstaffRate) + new Number(staffRate);
-			  totalstaffYield = new Number(totalstaffYield) + new Number(staffYield);
+			var staffRate = getNumValue(_this.find("input[name$='staffRate']").val());
+			var staffYield =getNumValue(_this.find("input[name$='staffYield']").val());
+			totalstaffRate = new Number(totalstaffRate) + new Number(staffRate);
+			totalstaffYield = new Number(totalstaffYield) + new Number(staffYield);
 		});
 		if(new Number(totalstaffRate) !=100){
 			flag = false;
 		}
 		$("#majorRole tr.total").find("td:eq(1)").text(new Number(totalstaffRate).toFixed(2));
-		$("#majorRole tr.total").find("td:eq(2)").text(new Number(totalstaffYield).toFixed(2));
+		$("#majorRole tr.total").find("td:eq(2)").text(toThousands(new Number(totalstaffYield).toFixed(2)));
 		return flag;
 	}
 	
@@ -304,7 +313,6 @@
 					trSize ++;
 				}
 			}
-			
 		});
 	}
 	
@@ -333,6 +341,12 @@
 	function ajaxSave(flag,status){
 		var url ="${site}/admin/ym/yieldSettle/ajax/save";
 	    if (flag) {
+	    	//把disabled属性去掉
+	    	jQuery("input:disabled").removeAttr("disabled");
+	    	jQuery.each(jQuery("input[name$='Amount'],input[name$='yearYield']"),function(index,item){
+	    		var _item = $(item);
+	    		_item.val(delcommafy(_item.val()));
+	    	});
 	    	$("input[name='wfYieldSettle.auditStatus']").val(status);
 		        jQuery.ajax({
 		        type : "POST",
@@ -354,6 +368,44 @@
 	        });
 	    }
 	}
+	
+	//千分位处理 去掉千分位
+	function delcommafy(num){  
+	   num = num.replace(/[ ]/g, "");//去除空格  
+	   num=num.replace(/,/gi,'');  
+	   return num;  
+	}
+	
+	//添加千分位
+	function toThousands(num) {
+	    return (num || 0).toString().replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
+	}
+	
+	function getNumValue(num) {
+	       if (validateInput(num)) {
+	           num = parseFloat(num);
+	       }
+	       else {
+	           num = 0;
+	       }
+	       return num;
+	   }
+
+    function validateInput(inputstr) {
+	      flag = false;
+	      if (inputstr != "") {
+	          if (isNaN(inputstr)) {
+	              flag = false; //如果输入字符不是数字
+	          }
+	          else {//输入数字但是小于0
+	              if (parseFloat(inputstr) < 0)
+	                  flag = false;
+	              else
+	                  flag = true;
+	          }
+	      }
+	      return flag;
+	  }
 </script>
 
 </body>

@@ -70,38 +70,46 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">合同额(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" disabled name="contractAmount" value="${yieldSettle.contractAmount}">
-						</div>
+								<input type="text" class="form-control" disabled
+									name="contractAmount"
+									value="<fmt:formatNumber value='${yieldSettle.contractAmount}' pattern='#,#00.00#'/>">
+							</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">分包扣减(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" disabled name="pkgAmount" value="${yieldSettle.pkgAmount}">
-						</div>
+								<input type="text" class="form-control" disabled
+									name="pkgAmount"
+									value="<fmt:formatNumber value='${yieldSettle.pkgAmount}' pattern='#,#00.00#'/>">
+							</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">方案扣减(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" disabled name="schemeAmount" value="${yieldSettle.schemeAmount}">
-						</div>
+								<input type="text" class="form-control" disabled
+									name="schemeAmount"
+									value="<fmt:formatNumber value='${yieldSettle.schemeAmount}' pattern='#,#00.00#'/>">
+							</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">其他扣减(¥)</label>
 						<div class="col-md-8">
-							<input type="text" class="form-control" disabled name="rebateAmount" value="${yieldSettle.rebateAmount}"> 
-						</div>
+								<input type="text" class="form-control" disabled
+									name="rebateAmount"
+									value="<fmt:formatNumber value='${yieldSettle.rebateAmount}' pattern='#,#00.00#'/>">
+							</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">项目负责人<span class="required">※</span></label>
+						<label class="control-label col-md-3">项目负责人</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
 							<input type="text" class="form-control" disabled name="pManagers" value="${project.pmLeaders}">
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">项目经理<span class="required">※</span></label>
+						<label class="control-label col-md-3">项目经理</label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
 			            	<input type="text" name="pManagers" class="form-control col-md-3" value="${project.pManagers}" disabled>
@@ -110,11 +118,12 @@
 					
 					
 					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">当年特批产值(¥)<span class="required">※</span></label>
+						<label class="control-label col-md-3">当年特批产值(¥)</label>
 						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i>
-							<input type="text" class="form-control"  name="yearYield" value="${yieldSettle.yearYield}" disabled>
-						</div>
+						    <i class="fa"></i> <input type="text" class="form-control" name="yearYield"
+									value="<fmt:formatNumber value='${yieldSettle.yearYield}' pattern='#,#00.00#'/>"
+									disabled>
+							</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3"></label>
@@ -145,12 +154,13 @@
 							<thead>
 								<tr>
 									<th  class="text-center col-lg-4">姓名</th>
-									<th class="text-center form-group">工作量(%)<span class="required">※</span></th>
+									<th class="text-center form-group">工作量(%)</th>
 									<th class="text-center">产值</th>
 								</tr>
 							</thead>
 							<tbody>
-							   
+							    <c:set value="total_rate" var="0"></c:set>
+							    <c:set value="total_yield" var="0"></c:set>
 							    <c:if test="${not empty majorRoleAllots}">
 							      <c:forEach var="majorRoleAllot" items="${majorRoleAllots}" varStatus="st">
 							        <tr>
@@ -158,14 +168,18 @@
 										<td  class=" col-lg-4">
 										<input type="text" name="majorRoleAllots[${st.index}].staffRate" data-rule-number="true"  placeholder="0.00" class="text-right" value="${majorRoleAllot.staffRate}" disabled>
 										</td>
-										<td  class=" col-lg-4 text-right"><input type="text" name="majorRoleAllots[${st.index}].staffYield" readonly placeholder="0.00" class="text-right" value="${majorRoleAllot.staffYield}" disabled></td>
+										<td  class=" col-lg-4 text-right">
+										 <fmt:formatNumber value='${majorRoleAllot.staffYield}' pattern='#,#00.00#'/>
+										</td>
 									</tr>
+									<c:set value="${total_rate + majorRoleAllot.staffRate}" var="total_rate"></c:set>
+							        <c:set value="${total_yield + majorRoleAllot.staffYield}" var="total_yield"></c:set>
 							      </c:forEach>
 							    </c:if>
 								<tr class="total">
 									<td  class="text-center col-lg-4">合计</td>
-									<td  class="col-lg-4 text-right"></td>
-									<td  class=" col-lg-4 text-right"></td>
+									<td  class="col-lg-4 text-right">${total_rate}</td>
+									<td  class=" col-lg-4 text-right">${total_yield}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -182,37 +196,7 @@
 <script type="text/javascript" src="${site}/resources/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js?v=${buildVersion}"></script>
 <script type="text/javascript" src="${site}/resources/js/ztree/ztree-3.4-extend.js?v=${buildVersion}"></script>
 <script type="text/javascript">
-	$(function(){
-		
-		initTotal();
-	});
 
-	//合计
-	function initTotal(){
-		var flag = true;
-		var totalstaffRate = 0.00;
-		var totalstaffYield = 0.00;
-		jQuery.each($("#majorRole tbody tr:not(:last)"),function(index,item){
-			var _this = $(item);
-			var staffRate = _this.find("input[name$='staffRate']").val();
-			var staffYield = _this.find("input[name$='staffYield']").val();
-			if(staffYield == '' || typeof staffYield == 'undefined' || isNaN(staffYield)){
-				staffYield = 0;
-			  }
-			  if(staffRate == '' || typeof staffRate == 'undefined' || isNaN(staffRate)){
-				  staffRate = 0;
-			  }
-			  totalstaffRate = new Number(totalstaffRate) + new Number(staffRate);
-			  totalstaffYield = new Number(totalstaffYield) + new Number(staffYield);
-		});
-		if(new Number(totalstaffRate) !=100){
-			flag = false;
-		}
-		$("#majorRole tr.total").find("td:eq(1)").text(new Number(totalstaffRate).toFixed(2));
-		$("#majorRole tr.total").find("td:eq(2)").text(new Number(totalstaffYield).toFixed(2));
-		return flag;
-	}
-	
 	$(document).on("click", "#reject-btn", function(){
 	    jQuery("input[type='hidden'][name='approve']").val("4");
 	    var url = jQuery("#approveForm").attr("action");
