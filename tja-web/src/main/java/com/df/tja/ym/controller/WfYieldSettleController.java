@@ -155,7 +155,7 @@ public class WfYieldSettleController extends WfBaseController {
                 // 运营部
                 SysUser ocSysUser = userService.queryRoleUser(TjaConstant.FlowTaskRole.YUNYING);
                 processArgs.addVariable("ocOrg", ocSysUser.getId());
-                processArgs.addVariable("url", "/admin/ym/yieldSettle/toedit/" + yieldSettle.getId() + "/2000");
+                processArgs.addVariable("url", "/admin/ym/yieldSettle/toedit/{formId}/2000");
                 if ("1000".equals(yieldSettle.getWfCategory().trim())) {
                     Set<String> majorUsers = new HashSet<String>();
                     //各专业负责人审批
@@ -179,7 +179,7 @@ public class WfYieldSettleController extends WfBaseController {
                         yieldSettle.getProId());
 
                     processArgs.addVariable("userMajorMap", userMajorMap);
-                    processArgs.addVariable("url", "/admin/ym/yieldSettle/toedit/" + yieldSettle.getId() + "/1000");
+                    processArgs.addVariable("url", "/admin/ym/yieldSettle/toedit/{formId}/1000");
                 }
             }
 
