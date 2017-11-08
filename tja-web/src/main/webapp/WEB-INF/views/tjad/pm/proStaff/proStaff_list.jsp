@@ -21,9 +21,6 @@ jQuery(function(){
 		url:sUrl,
 		data:{"NO":"PROSTAFF_LIST", "MODEL":"PM"},
 		async: false,
-	    error: function(request) {
-	    	jQuery.jalert({"jatext":"Connection error"});
-	    },
 	    success: function(data) {
 	    	$("#content").empty();
 			$("#content").append(data); 

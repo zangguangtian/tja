@@ -353,9 +353,6 @@
 		        url : url,
 		        data : jQuery('#saveForm').serialize(),
 		        async : false,
-		        error : function(request) {
-		        	$.jalert({"jatext":"Connection error"});
-		        },
 		        success : function(data) {
 		        	if(data.flag == 'true'){
 		        	$.jalert({"jatext":data.msg, "jatype":"refresh", "onConfirm":function(){

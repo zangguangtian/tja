@@ -204,9 +204,6 @@ $(document).on("change", "div.jsgrid-pager select#rowsPerPage",function(){
 				url : url,
 				data : insertingClient,
 				async : false,
-				error : function(request) {
-					alert("Connection error");
-				},
 				success : function(data) {
 					if (data.flag == 'true') {
 						var length = jQuery("div.jsgrid-grid-body table.jsgrid-table tr").size();

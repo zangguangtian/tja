@@ -21,9 +21,6 @@ jQuery(function(){
         url:sUrl,
         data:{"NO":"PLAN_SCHEME_LIST", "MODEL":"WF", "qarg.userId":"${SysUser.id}"},
         async: false,
-        error: function(request) {
-            jQuery.jalert({"jatext":"Connection error"});
-        },
         success: function(data) {
             $("#content").empty();
             $("#content").append(data); 

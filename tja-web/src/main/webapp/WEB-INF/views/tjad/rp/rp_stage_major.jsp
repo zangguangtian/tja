@@ -21,9 +21,6 @@ jQuery(function(){
 		url:sUrl,
 		data:{"NO":"RP_STAGE_MAJOR", "MODEL":"RP"},
 		async: false,
-	    error: function(request) {
-	    	jQuery.jalert({"jatext":"Connection error"});
-	    },
 	    success: function(data) {
 	    	$("#content").empty();
 			$("#content").append(data); 

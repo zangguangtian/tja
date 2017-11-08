@@ -137,9 +137,6 @@ function ajaxImpInfo(date){
 		url:sUrl,
 		data:{"NO":"OC_SETTLEYIELD_IMP" ,"MODEL":"OC","qarg.date" : date},
 		async: false,
-	    error: function(request) {
-	    	jQuery.jalert({"jatext":"Connection error"});
-	    },
 	    success: function(data) {
 	    	$("#content").empty();
 			$("#content").append(data); 

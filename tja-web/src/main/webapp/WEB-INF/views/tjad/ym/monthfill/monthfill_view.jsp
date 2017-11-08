@@ -275,9 +275,6 @@ $(document).on("click", "#reject-btn", function(){
                 url : url,
                 data : $("#approveForm").serialize(),
                 async : false,
-                error : function(request) {
-                	$.jalert({"jatext":"Connection error"});
-                },
                 success : function(data) {
                 	$.jalert({"jatext":data.msg});
                     window.location.href = "${site}/admin/ym/monthFill/list";

@@ -367,9 +367,6 @@
 	        url : "${site}/admin/pm/project/ajax/proinfo",
 	        data : {proId:proId},
 	        async : false,
-	        error : function(request) {
-	        	$.jalert({"jatext":"Connection error"});
-	        },
 	        success : function(data) {
 	        	console.log(data);
 	        	if(data.flag == 'true'){
@@ -420,9 +417,6 @@
 		        url : url,
 		        data : jQuery('#saveForm').serialize(),
 		        async : false,
-		        error : function(request) {
-		        	$.jalert({"jatext":"Connection error"});
-		        },
 		        success : function(data) {
 		        	if(data.flag == 'true'){
 		        	$.jalert({"jatext":data.msg, "jatype":"refresh", "onConfirm":function(){

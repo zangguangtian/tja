@@ -21,9 +21,6 @@ jQuery(function(){
 		url:sUrl,
 		data:{"NO":"PM_YIELD_SCHEME" ,"MODEL":"OC"},
 		async: false,
-	    error: function(request) {
-	    	jQuery.jalert({"jatext":"Connection error"});
-	    },
 	    success: function(data) {
 	    	$("#content").empty();
 			$("#content").append(data); 

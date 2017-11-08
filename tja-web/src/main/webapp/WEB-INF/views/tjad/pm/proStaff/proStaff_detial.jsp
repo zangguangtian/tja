@@ -138,9 +138,6 @@ function save(){
 		type : "post",
 	 	url : url,
 	 	data : $("#proStaffForm").serialize(),
-	 	error : function(request) {
-	 		$.jalert({"jatext":"Connection error"});
-	 	},
 	 	success : function(data) {
 	 		if(data.flag == "true"){
 	 			$.jalert({"jatext":data.msg, "jatype":"refresh", "onConfirm":function(){

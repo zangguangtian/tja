@@ -27,9 +27,6 @@ function loadList(NO, content_div){
 		url:sUrl,
 		data:{"NO":NO, "MODEL":"YM", "qarg.proId":proId},
 		async: false,
-	    error: function(request) {
-	    	$.jalert({"jatext":"Connection error"});
-	    },
 	    success: function(data) {
 	    	content_div.empty();
 	    	content_div.append(data); 

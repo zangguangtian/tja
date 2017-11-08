@@ -200,9 +200,6 @@
 					url : url,
 					data : insertingClient,
 					async : false,
-					error : function(request) {
-						$.jalert({"jatext":"Connection error"});
-					},
 					success : function(data) {
 						if (data.flag == 'true') {
 							var length = jQuery(
