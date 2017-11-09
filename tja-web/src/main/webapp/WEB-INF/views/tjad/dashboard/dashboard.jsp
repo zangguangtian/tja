@@ -181,6 +181,27 @@
             </div>
         </div>
         </sec:authorize>
+        
+        <sec:authorize url="/admin/ym/yieldSettle/list">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 bg-green-seagreen">
+            <div class="col-lg-3">
+                <a href="${site}/admin/ym/yieldSettle/list" class="icon-btn">
+                    <img src="${site}/resources/pages/img/u707.png" alt="" />
+                    <div>年度产值结算</div>
+                    <span class="badge badge-danger"> ${yieldSettleCount} </span>
+                </a>
+            </div>
+            <div class="col-lg-9">
+			<c:if test="${not empty yieldSettles}">
+            	<c:forEach items="${yieldSettles}" var="yieldSettle">
+                	<p>
+	                	<a href="${site}/admin/ym/yieldSettle/toedit/${yieldSettle.id}/${yieldSettle.settleCode}?proId=${yieldSettle.proId}&periodId=${yieldSettle.periodId}&syId=${yieldSettle.syId}">年度结算：${yieldSettle.proCode}${yieldSettle.proName}</a>
+                    </p>
+                </c:forEach>
+            </c:if>
+            </div>
+        </div>
+        </sec:authorize>
 
     </div>
 </div>

@@ -48,6 +48,7 @@ import com.df.tja.domain.WfYieldMajorRoleAllot;
 import com.df.tja.domain.WfYieldMajorRoleRate;
 import com.df.tja.domain.WfYieldPrincipalAllot;
 import com.df.tja.domain.WfYieldSettle;
+import com.df.tja.domain.cust.CustYieldSettle;
 import com.df.tja.domain.cust.WfYieldSettleModel;
 import com.df.tja.domain.cust.YieldSettleMajorModel;
 import com.df.tja.service.IWfYieldSettleService;
@@ -535,4 +536,29 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
         project.setProStatus(yieldSettle.getItemStatus());
         modify(Project.class, project);
     }
+
+    /** 
+     * @see com.df.tja.service.IWfYieldSettleService#queryYieldSettleList(java.lang.String)
+     */
+    @Override
+    public List<CustYieldSettle> queryYieldSettleList(String userId) throws RuntimeException {
+        try {
+            return wfYieldSettleDao.selectYieldSettleList(userId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /** 
+     * @see com.df.tja.service.IWfYieldSettleService#queryYieldSettleListCount(java.lang.String)
+     */
+    @Override
+    public int queryYieldSettleListCount(String userId) throws RuntimeException {
+        try {
+            return wfYieldSettleDao.selectYieldSettleListCount(userId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

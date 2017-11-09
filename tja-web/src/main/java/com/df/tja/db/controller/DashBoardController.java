@@ -30,6 +30,7 @@ import com.df.framework.sys.service.ISysNoticeService;
 import com.df.framework.util.HttpUtil;
 import com.df.tja.service.IWfWeekFillService;
 import com.df.tja.service.IWfYearMonthFillService;
+import com.df.tja.service.IWfYieldSettleService;
 
 /**
  * <p>DashBoardController</p>
@@ -57,6 +58,9 @@ public class DashBoardController extends BaseController {
 
     @Autowired
     private IWfYearMonthFillService yearMonthFillService;
+
+    @Autowired
+    private IWfYieldSettleService wfYieldSettleService;
 
     @Autowired
     private ISysNoticeService sysNoticeService;
@@ -92,6 +96,10 @@ public class DashBoardController extends BaseController {
         //项目年报列表
         model.addAttribute("years", yearMonthFillService.queryYmList(userId, "2000"));
         model.addAttribute("yearCount", yearMonthFillService.queryYmListCount(userId, "2000"));
+
+        //年度产值结算
+        model.addAttribute("yieldSettles", wfYieldSettleService.queryYieldSettleList(userId));
+        model.addAttribute("yieldSettleCount", wfYieldSettleService.queryYieldSettleListCount(userId));
 
         return "/tjad/dashboard/dashboard";
     }

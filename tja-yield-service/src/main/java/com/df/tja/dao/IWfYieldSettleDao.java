@@ -22,6 +22,7 @@ import com.df.tja.domain.WfYieldMajorRoleAllot;
 import com.df.tja.domain.WfYieldMajorRoleRate;
 import com.df.tja.domain.WfYieldPrincipalAllot;
 import com.df.tja.domain.WfYieldSettle;
+import com.df.tja.domain.cust.CustYieldSettle;
 
 /**
  * <p>IWfYieldSettleDao</p>
@@ -125,5 +126,21 @@ public interface IWfYieldSettleDao extends IBaseDao {
      * @return
      */
     WfYieldSettle selectHisYearYield();
+
+    /**
+     * <p>描述 : </p>
+     *
+     * @param userId
+     * @return
+     */
+    List<CustYieldSettle> selectYieldSettleList(String userId);
+
+    /**
+     * <p>描述 : </p>
+     *
+     * @param userId
+     * @return
+     */
+    int selectYieldSettleListCount(String userId);
 
 }

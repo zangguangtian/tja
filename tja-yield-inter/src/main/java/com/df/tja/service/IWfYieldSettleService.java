@@ -12,12 +12,14 @@
 
 package com.df.tja.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.df.activiti.domain.ProcessArgs;
 import com.df.framework.base.service.IBaseService;
 import com.df.framework.exception.LogicalException;
 import com.df.tja.domain.WfYieldSettle;
+import com.df.tja.domain.cust.CustYieldSettle;
 import com.df.tja.domain.cust.WfYieldSettleModel;
 
 /**
@@ -80,4 +82,20 @@ public interface IWfYieldSettleService extends IBaseService {
      * @throws RuntimeException
      */
     void modifyProStutas(String id) throws RuntimeException;
+
+    /**
+     * <p>描述 : </p>
+     *
+     * @param userId
+     * @return
+     */
+    List<CustYieldSettle> queryYieldSettleList(String userId) throws RuntimeException;
+
+    /**
+     * <p>描述 : </p>
+     *
+     * @param userId
+     * @return
+     */
+    int queryYieldSettleListCount(String userId) throws RuntimeException;
 }

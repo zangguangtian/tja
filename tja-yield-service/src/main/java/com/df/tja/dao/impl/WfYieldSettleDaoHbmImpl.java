@@ -28,6 +28,7 @@ import com.df.tja.domain.WfYieldMajorRoleAllot;
 import com.df.tja.domain.WfYieldMajorRoleRate;
 import com.df.tja.domain.WfYieldPrincipalAllot;
 import com.df.tja.domain.WfYieldSettle;
+import com.df.tja.domain.cust.CustYieldSettle;
 
 /**
  * <p>WfYieldSettleDaoHbmImpl</p>
@@ -264,6 +265,120 @@ public class WfYieldSettleDaoHbmImpl extends BaseDaoHbmImpl implements IWfYieldS
         SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
         query.setResultTransformer(Transformers.aliasToBean(WfYieldSettle.class));
         return (WfYieldSettle) query.uniqueResult();
+    }
+
+    /** 
+     * @see com.df.tja.dao.IWfYieldSettleDao#selectYieldSettleList(java.lang.String)
+     */
+    @Override
+    public List<CustYieldSettle> selectYieldSettleList(String userId) {
+        StringBuilder sql = new StringBuilder();
+        List<CustYieldSettle> settles = new ArrayList<CustYieldSettle>();
+        sql.append("       SELECT                                                    ");
+        sql.append("       TOP (5) WF.ID AS id,                                      ");
+        sql.append("       PT.ID AS proId,                                           ");
+        sql.append("       OPM.ID AS periodId,                                       ");
+        sql.append("       SY.ID AS syId,                                            ");
+        sql.append("       PT.PRO_CODE AS proCode,                                   ");
+        sql.append("       PT.PRO_NAME AS proName,                                   ");
+        sql.append("       SY.SETTLE_CODE AS settleCode                              ");
+        sql.append("   FROM                                                          ");
+        sql.append("       (SELECT ID, PERIOD_ID,                                    ");
+        sql.append("               PRO_ID,'1000' AS SETTLE_CODE,                     ");
+        sql.append("               '' AS MAJOR_CODE                                  ");
+        sql.append("           FROM OC_SETTLE_YIELD                                  ");
+        sql.append("           WHERE SETTLE_YIELD > 0                                ");
+        sql.append("           UNION ALL SELECT PY.ID,                               ");
+        sql.append("           PERIOD_ID,PRO_ID,'2000' AS SETTLE_CODE,               ");
+        sql.append("           PY.MAJOR_CODE                                         ");
+        sql.append("           FROM OC_PERMIT_YIELD PY                               ");
+        sql.append("           WHERE PERMIT_YIELD > 0 ) SY                           ");
+        sql.append("   INNER JOIN (                                                  ");
+        sql.append("       SELECT ID FROM OC_PERIOD_MANAGE OPM                       ");
+        sql.append("       WHERE TYPE_CODE = 'OC.PERIOD.TYPE.SETTLE'                 ");
+        sql.append("       AND STATUS_CODE = 'OC.PERIOD.STATUS.JXZ'                  ");
+        sql.append("       AND START_DATE <= CONVERT (DATE, GETDATE())               ");
+        sql.append("       AND CONVERT (DATE, GETDATE()) <= END_DATE                 ");
+        sql.append("   ) OPM ON SY.PERIOD_ID = OPM.ID                                ");
+        sql.append("   INNER JOIN PM_PROJECT_TM PT ON SY.PRO_ID = PT.ID              ");
+        sql.append("   LEFT JOIN WF_YIELD_SETTLE WF ON WF.PRO_ID = PT.ID             ");
+        sql.append("   AND WF.PERIOD_ID = OPM.ID                                     ");
+        sql.append("   LEFT JOIN WF_FLOW_MAIN WFM ON WF.ID = WFM.ID                  ");
+        sql.append("   AND ISNULL(WFM.AUDIT_STATUS, 0) = 0                           ");
+        sql.append("   WHERE EXISTS (SELECT 'X' FROM V_PM_MANAGER_TEAM PPT           ");
+        sql.append("           INNER JOIN V_HR_STAFF_ALL HS ON PPT.STAFF_ID = HS.ID  ");
+        sql.append("           WHERE PPT.PRO_ID = PT.ID AND HS.U_ID = ?              ");
+        sql.append("           AND PPT.TEAM_ROLE IN ('PM.TEAM.ROLE.PM',              ");
+        sql.append("               'PM.TEAM.ROLE.LEADER')                            ");
+        sql.append("           AND PPT.MAIN_FLAG = 1                                 ");
+        sql.append("       ) OR EXISTS (SELECT 'X' FROM                              ");
+        sql.append("           PM_BUDGET_STAFF_TM PBS                                ");
+        sql.append("       INNER JOIN V_HR_STAFF_ALL HS ON PBS.STAFF_ID = HS.ID      ");
+        sql.append("       WHERE PBS.PRO_ID = PT.ID                                  ");
+        sql.append("       AND PBS.MAJOR_CODE = SY.MAJOR_CODE                        ");
+        sql.append("       AND SY.SETTLE_CODE = '2000'                               ");
+        sql.append("       AND PBS.INVOLVED_ROLE = 'PrjMajorLeader'                  ");
+        sql.append("       AND HS.U_ID = ?                                           ");
+        sql.append("       AND PBS.MAIN_FLAG = 1                                     ");
+        sql.append("   )                                                             ");
+        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setResultTransformer(Transformers.aliasToBean(CustYieldSettle.class));
+        query.setString(0, userId);
+        query.setString(1, userId);
+        settles = query.list();
+        return settles;
+    }
+
+    /** 
+     * @see com.df.tja.dao.IWfYieldSettleDao#selectYieldSettleListCount(java.lang.String)
+     */
+    @Override
+    public int selectYieldSettleListCount(String userId) {
+        StringBuilder sql = new StringBuilder();
+        sql.append(" SELECT COUNT(*) FROM (                                                   ");
+        sql.append("     SELECT                                                               ");
+        sql.append("       SY.ID                                                              ");
+        sql.append("     FROM                                                                 ");
+        sql.append("         (SELECT ID, PERIOD_ID,PRO_ID,'1000' AS SETTLE_CODE,              ");
+        sql.append("             '' AS MAJOR_CODE FROM OC_SETTLE_YIELD                        ");
+        sql.append("             WHERE SETTLE_YIELD > 0                                       ");
+        sql.append("             UNION ALL SELECT PY.ID,                                      ");
+        sql.append("             PERIOD_ID,PRO_ID,'2000' AS SETTLE_CODE,                      ");
+        sql.append("             PY.MAJOR_CODE FROM OC_PERMIT_YIELD PY                        ");
+        sql.append("             WHERE PERMIT_YIELD > 0 ) SY                                  ");
+        sql.append("     INNER JOIN (                                                         ");
+        sql.append("         SELECT ID FROM OC_PERIOD_MANAGE OPM                              ");
+        sql.append("         WHERE TYPE_CODE = 'OC.PERIOD.TYPE.SETTLE'                        ");
+        sql.append("         AND STATUS_CODE = 'OC.PERIOD.STATUS.JXZ'                         ");
+        sql.append("         AND START_DATE <= CONVERT (DATE, GETDATE())                      ");
+        sql.append("         AND CONVERT (DATE, GETDATE()) <= END_DATE                        ");
+        sql.append("     ) OPM ON SY.PERIOD_ID = OPM.ID                                       ");
+        sql.append("     INNER JOIN PM_PROJECT_TM PT ON SY.PRO_ID = PT.ID                     ");
+        sql.append("     LEFT JOIN WF_YIELD_SETTLE WF ON WF.PRO_ID = PT.ID                    ");
+        sql.append("     AND WF.PERIOD_ID = OPM.ID                                            ");
+        sql.append("     LEFT JOIN WF_FLOW_MAIN WFM ON WF.ID = WFM.ID                         ");
+        sql.append("     AND ISNULL(WFM.AUDIT_STATUS, 0) = 0                                  ");
+        sql.append("         WHERE EXISTS (SELECT 'X' FROM V_PM_MANAGER_TEAM PPT              ");
+        sql.append("                 INNER JOIN V_HR_STAFF_ALL HS ON PPT.STAFF_ID = HS.ID     ");
+        sql.append("                 WHERE PPT.PRO_ID = PT.ID AND HS.U_ID = ?                 ");
+        sql.append("                 AND PPT.TEAM_ROLE IN ('PM.TEAM.ROLE.PM',                 ");
+        sql.append("                     'PM.TEAM.ROLE.LEADER')                               ");
+        sql.append("                 AND PPT.MAIN_FLAG = 1                                    ");
+        sql.append("             ) OR EXISTS (SELECT 'X' FROM                                 ");
+        sql.append("                 PM_BUDGET_STAFF_TM PBS                                   ");
+        sql.append("             INNER JOIN V_HR_STAFF_ALL HS ON PBS.STAFF_ID = HS.ID         ");
+        sql.append("             WHERE PBS.PRO_ID = PT.ID                                     ");
+        sql.append("             AND PBS.MAJOR_CODE = SY.MAJOR_CODE                           ");
+        sql.append("             AND SY.SETTLE_CODE = '2000'                                  ");
+        sql.append("             AND PBS.INVOLVED_ROLE = 'PrjMajorLeader'                     ");
+        sql.append("             AND HS.U_ID = ?                                              ");
+        sql.append("             AND PBS.MAIN_FLAG = 1                                        ");
+        sql.append("         )                                                                ");
+        sql.append("     ) R                                                                  ");
+        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setString(0, userId);
+        query.setString(1, userId);
+        return (int) query.uniqueResult();
     }
 
 }
