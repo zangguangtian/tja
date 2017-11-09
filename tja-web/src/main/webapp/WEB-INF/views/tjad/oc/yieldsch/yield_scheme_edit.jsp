@@ -18,6 +18,7 @@
 <body>
 <div class="">
     <center>
+    	<input type="button" id="print-btn" value="打印" class="btn blue" style="float:right;position:absolute;right:55px;">
         <h3>施工图产值策划</h3>
     </center>
     <div class="  ">
@@ -409,6 +410,9 @@
 <script type="text/javascript" src="${site}/resources/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 <script type="text/javascript" src="${site}/resources/js/ztree/ztree-3.4-extend.js?v=${buildVersion}"></script>
 <script type="text/javascript">
+//打印
+$(document).on("click", "#print-btn", printScheme);
+
 //专业比例类型编号切换
 $(document).on("change", "#majorRatio select[name$='priceId']", priceCodeChange);
 
@@ -466,6 +470,11 @@ function addmajorRatio(){
 	$item.find("td:eq(0)").text(trSize + 1);
 	
 	$("#majorRatio tr.total").before($item);
+}
+
+/**打印*/
+function printScheme(){
+	
 }
 
 /**专业比例类型编号切换*/
@@ -869,6 +878,9 @@ function calEachMajorYield(){
 		}
 		$(this).val($eachMajorYield.toFixed(2));
 	});
+	
+	/**计算各专业产值各阶段每个专业的产值 */
+	calAllStageYield();
 }
 
 /**计算各专业产值中指定专业的各阶段的产值*/
@@ -918,6 +930,17 @@ function calEachStageYield(majorCode){
 	//计算指定专业施工配合-验收阶段的产值
 	var ckYield = new Number(cYield.toFixed(2)) - new Number(capYield.toFixed(2));
 	$("#majorYield input.majoryield[name$='check'][data-smcode='"+majorCode+"']").val(ckYield.toFixed(2));
+}
+
+/**计算各专业产值中各阶段所有专业的产值*/
+function calAllStageYield(){
+	var stages = new Array();
+	$("#majorYield th[data-smcode]").each(function(){
+		stages.push($(this).data("smcode"));
+	});
+	for(var i=0; i<stages.length; i++){
+		calEachStageYield(stages[i]);
+	}
 }
 
 /**计算各专业产值中各阶段的产值合计*/
