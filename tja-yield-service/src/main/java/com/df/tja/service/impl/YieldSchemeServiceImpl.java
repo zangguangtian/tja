@@ -32,7 +32,6 @@ import com.df.framework.util.ObjectUtils;
 import com.df.framework.util.StringUtil;
 import com.df.project.domain.ProMajorRoleRate;
 import com.df.tja.dao.IOcYieldSchemeDao;
-import com.df.tja.domain.OcStandardPrice;
 import com.df.tja.domain.OcYieldMajor;
 import com.df.tja.domain.OcYieldMajorDuty;
 import com.df.tja.domain.OcYieldMajorRatio;
@@ -89,16 +88,6 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
                     ArithmeticUtil.multMul(ocYieldScheme.getPmRate(), totalAmount, rebate), new BigDecimal(100), 2));
                 addEntity(OcYieldScheme.class, ocYieldScheme);
             } else { //修改
-                //删除施工图产值专业
-                OcYieldMajor ocYieldMajor = new OcYieldMajor();
-                ocYieldMajor.setSchemeId(custOcYieldScheme.getId());
-                ocYieldSchemeDao.deleteByObject(OcYieldMajor.class, ocYieldMajor);
-
-                //删除施工图产值专业比例
-                OcYieldMajorRatio ocYieldMajorRatio = new OcYieldMajorRatio();
-                ocYieldMajorRatio.setSchemeId(custOcYieldScheme.getId());
-                ocYieldSchemeDao.deleteByObject(OcYieldMajorRatio.class, ocYieldMajorRatio);
-
                 //删除施工图产值阶段专业
                 OcYieldStageMajor ocYieldStageMajor = new OcYieldStageMajor();
                 ocYieldStageMajor.setSchemeId(custOcYieldScheme.getId());
@@ -242,6 +231,33 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
         return custYieldMajors;
     }
 
+    public List<CustOcYieldMajor> queryMajorAllPrices(String schemeId) throws RuntimeException {
+        List<CustOcYieldMajor> prices = null;
+        try {
+            prices = ocYieldSchemeDao.selectMajorPrices(schemeId);
+            if (prices != null && !prices.isEmpty()) {
+                JSONObject jsonObject = null;
+                Map<String, BigDecimal> ratioMap = new HashMap<String, BigDecimal>(0);
+                for (CustOcYieldMajor yieldMajor : prices) {
+                    ratioMap.clear();
+
+                    List<OcYieldMajorRatio> ratios = ocYieldSchemeDao.selectMajorRatios(yieldMajor.getPriceId(),
+                        yieldMajor.getId());
+                    if (ratios != null && !ratios.isEmpty()) {
+                        for (OcYieldMajorRatio ratio : ratios) {
+                            ratioMap.put(ratio.getMajorCode(), ratio.getMajorRate());
+                        }
+                    }
+                    jsonObject = new JSONObject(ratioMap);
+                    yieldMajor.setRatioJson(jsonObject.toString());
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return prices;
+    }
+
     /**
      * 添加施工图产值专业
      * @param custOcYieldScheme
@@ -255,27 +271,43 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
         try {
             List<CustOcYieldMajor> yieldMajors = custOcYieldScheme.getYieldMajors();
             if (yieldMajors != null && !yieldMajors.isEmpty()) {
-                OcStandardPrice ocStandardPrice = null;
+                CustOcYieldMajor ocStandardPrice = null;
                 JSONObject majorRatioJson = null;
                 OcYieldMajor ocYieldMajor = null;
                 String schemeId = custOcYieldScheme.getId();
                 Map<String, BigDecimal> majorYieldTotal = new HashMap<String, BigDecimal>(0); //按专业存储每个专业的总产值
                 for (CustOcYieldMajor custYieldMajor : yieldMajors) {
-                    ocYieldMajor = new OcYieldMajor();
-                    ObjectUtils.copyProperties(custYieldMajor, ocYieldMajor);
+                    //获取单价
+                    ocStandardPrice = queryStandardPriceById(custYieldMajor.getPriceId(), custYieldMajor.getId());
 
-                    ocStandardPrice = standardPriceService.queryStandardPriceById(ocYieldMajor.getPriceId());
+                    if (StringUtil.isNotBlank(custYieldMajor.getId())) {
+                        ocYieldMajor = ocYieldSchemeDao.selectByPrimaryKey(OcYieldMajor.class, custYieldMajor.getId());
+                        ObjectUtils.copyProperties(custYieldMajor, ocYieldMajor,
+                            new String[] {"schemeId", "creator", "createDate"});
+                        ocYieldMajor.setStandardPrice(ocStandardPrice.getStandardPrice());
+                        //土建基准产值
+                        ocYieldMajor.setStandardYield(ArithmeticUtil.round(
+                            ArithmeticUtil.mul(ocYieldMajor.getBuildArea(), ocStandardPrice.getStandardPrice()), 2));
+                        //各专业产值
+                        ocYieldMajor.setMajorYield(
+                            ArithmeticUtil.round(ArithmeticUtil.mul(ocYieldMajor.getStandardYield(), rebate), 2));
 
-                    ocYieldMajor.setSchemeId(schemeId);
-                    ocYieldMajor.setStandardPrice(ocStandardPrice.getUnitPrice());
-                    //土建基准产值
-                    ocYieldMajor.setStandardYield(ArithmeticUtil
-                        .round(ArithmeticUtil.mul(ocYieldMajor.getBuildArea(), ocStandardPrice.getUnitPrice()), 2));
-                    //各专业产值
-                    ocYieldMajor.setMajorYield(
-                        ArithmeticUtil.round(ArithmeticUtil.mul(ocYieldMajor.getStandardYield(), rebate), 2));
-                    //施工图产值专业
-                    addEntity(OcYieldMajor.class, ocYieldMajor);
+                        //施工图产值专业
+                        ocYieldSchemeDao.update(OcYieldMajor.class, ocYieldMajor);
+                    } else {
+                        ocYieldMajor = new OcYieldMajor();
+                        ObjectUtils.copyProperties(custYieldMajor, ocYieldMajor);
+                        ocYieldMajor.setSchemeId(schemeId);
+                        ocYieldMajor.setStandardPrice(ocStandardPrice.getStandardPrice());
+                        //土建基准产值
+                        ocYieldMajor.setStandardYield(ArithmeticUtil.round(
+                            ArithmeticUtil.mul(ocYieldMajor.getBuildArea(), ocStandardPrice.getStandardPrice()), 2));
+                        //各专业产值
+                        ocYieldMajor.setMajorYield(
+                            ArithmeticUtil.round(ArithmeticUtil.mul(ocYieldMajor.getStandardYield(), rebate), 2));
+                        //施工图产值专业
+                        ocYieldSchemeDao.insert(OcYieldMajor.class, ocYieldMajor);
+                    }
 
                     //施工图产值专业比例
                     majorRatioJson = new JSONObject(ocStandardPrice.getRatioJson());
@@ -324,6 +356,12 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
                                          Map<String, BigDecimal> majorYieldTotal)
         throws RuntimeException {
         try {
+            //不能放在调用queryStandardPriceById方法前执行删除操作
+            //删除施工图产值专业比例
+            OcYieldMajorRatio ocYieldMajorRatio = new OcYieldMajorRatio();
+            ocYieldMajorRatio.setMajorId(ocYieldMajor.getId());
+            ocYieldSchemeDao.deleteByObject(OcYieldMajorRatio.class, ocYieldMajorRatio);
+
             List<SysConfig> majors = sysConfigService.querySysConfigsByParentCode("PM.MAJOR");
             if (majors != null && !majors.isEmpty()) {
                 OcYieldMajorRatio majorRatio = null;
@@ -451,6 +489,33 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
             LoggerUtil.error(YieldSchemeServiceImpl.class, "", ex);
             throw new RuntimeException(ex);
         }
+    }
+
+    private CustOcYieldMajor queryStandardPriceById(String priceId, String majorId) throws RuntimeException {
+        CustOcYieldMajor price = null;
+        JSONObject jsonObject = null;
+        try {
+            price = new CustOcYieldMajor();
+
+            BigDecimal standardPrice = ocYieldSchemeDao.selectMajorPrice(priceId, majorId);
+            if (standardPrice == null) {
+                standardPrice = new BigDecimal(0);
+            }
+            price.setStandardPrice(standardPrice);
+
+            Map<String, BigDecimal> ratioMap = new HashMap<String, BigDecimal>(0);
+            List<OcYieldMajorRatio> ratios = ocYieldSchemeDao.selectMajorRatios(priceId, majorId);
+            if (ratios != null && !ratios.isEmpty()) {
+                for (OcYieldMajorRatio ratio : ratios) {
+                    ratioMap.put(ratio.getMajorCode(), ratio.getMajorRate());
+                }
+            }
+            jsonObject = new JSONObject(ratioMap);
+            price.setRatioJson(jsonObject.toString());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return price;
     }
 
 }

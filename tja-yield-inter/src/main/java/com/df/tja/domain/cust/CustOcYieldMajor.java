@@ -36,8 +36,59 @@ public class CustOcYieldMajor extends OcYieldMajor {
 
     private static final long serialVersionUID = 5224723686322921079L;
 
+    /** 属性：类型名称 */
+    private java.lang.String typeCode;
+
+    /** 属性：类型名称 */
+    private java.lang.String typeName;
+
+    /** 属性：专业比例 */
+    private java.lang.String ratioJson;
+
     /** 专业比例集合,key为CustOcYieldMajor+OcYieldMajorRatio.majorCode*/
     private Map<String, OcYieldMajorRatio> majorMap;
+
+    /**
+     * @return typeCode
+     */
+    public java.lang.String getTypeCode() {
+        return typeCode;
+    }
+
+    /**
+     * @param typeCode 要设置的 typeCode
+     */
+    public void setTypeCode(java.lang.String typeCode) {
+        this.typeCode = typeCode;
+    }
+
+    /**
+     * @return typeName
+     */
+    public java.lang.String getTypeName() {
+        return typeName;
+    }
+
+    /**
+     * @param typeName 要设置的 typeName
+     */
+    public void setTypeName(java.lang.String typeName) {
+        this.typeName = typeName;
+    }
+
+    /**
+     * @return ratioJson
+     */
+    public java.lang.String getRatioJson() {
+        return ratioJson;
+    }
+
+    /**
+     * @param ratioJson 要设置的 ratioJson
+     */
+    public void setRatioJson(java.lang.String ratioJson) {
+        this.ratioJson = ratioJson;
+    }
 
     /**
      * @return majorMap

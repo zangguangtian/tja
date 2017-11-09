@@ -65,4 +65,12 @@ public interface IYieldSchemeService extends IBaseService {
      * @throws RuntimeException
      */
     List<CustOcYieldMajor> queryOcYieldMajors(String schemeId) throws RuntimeException;
+
+    /**
+     * 查询所有的基准单价及专业比例，如果存在策划，则以当前记录的基准单价及专业比例为准
+     * @param schemeId
+     * @return
+     * @throws RuntimeException
+     */
+    List<CustOcYieldMajor> queryMajorAllPrices(String schemeId) throws RuntimeException;
 }

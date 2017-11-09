@@ -121,24 +121,27 @@
                             		<c:forEach items="${yieldMajors }" var="yieldMajor" varStatus="vs">
                             			<tr>
 										    <td nowrap="nowrap" width="40px" style="text-align:center;">${vs.index + 1}</td>
-										    <td nowrap="nowrap"><input type="text" name="yieldMajors[${vs.index}].name" value="${yieldMajor.name }" class="form-control" data-rule-required="true"></td>
+										    <td nowrap="nowrap">
+										    	<input type="hidden" name="yieldMajors[${vs.index}].id" value="${yieldMajor.id }">
+										    	<input type="text" name="yieldMajors[${vs.index}].name" value="${yieldMajor.name }" class="form-control" data-rule-required="true">
+										    </td>
 										    <td nowrap="nowrap" style="width:100px;">
 										       <select name="yieldMajors[${vs.index}].priceId" class="form-control" data-rule-required="true">
 										           <option value="">-请选择-</option>
 										       <c:if test="${not empty prices }">
 										           <c:forEach items="${prices }" var="price">
-										           	   <c:if test="${price.id == yieldMajor.priceId }">
-											               <option value="${price.id }" selected data-uprice="${price.unitPrice }" data-ratio='${price.ratioJson }' >${price.typeCode }-${price.typeName }</option>
+										           	   <c:if test="${price.priceId == yieldMajor.priceId }">
+											               <option value="${price.priceId }" selected data-uprice="${price.standardPrice }" data-ratio='${price.ratioJson }' >${price.typeCode }-${price.typeName }</option>
 										           	   </c:if>
-										           	   <c:if test="${price.id != yieldMajor.priceId }">
-											               <option value="${price.id }" data-uprice="${price.unitPrice }" data-ratio='${price.ratioJson }' >${price.typeCode }-${price.typeName }</option>
+										           	   <c:if test="${price.priceId != yieldMajor.priceId }">
+											               <option value="${price.priceId }" data-uprice="${price.standardPrice }" data-ratio='${price.ratioJson }' >${price.typeCode }-${price.typeName }</option>
 										           	   </c:if>
 										           </c:forEach>
 										       </c:if>
 										       </select>
 										    </td>
 										    <td nowrap="nowrap"><input type="text" name="yieldMajors[${vs.index}].buildArea" value="${yieldMajor.buildArea }" data-rule-number="true" data-rule-required="true" class="form-control"></td>
-										    <td nowrap="nowrap" id="price${vs.index}}" style="text-align:right;">${yieldMajor.standardPrice }</td>
+										    <td nowrap="nowrap" id="price${vs.index}" style="text-align:right;">${yieldMajor.standardPrice }</td>
 										    <td nowrap="nowrap" id="sYield${vs.index}" style="text-align:right;">${yieldMajor.standardYield }</td>
 										    <td nowrap="nowrap" id="mYield${vs.index}" style="text-align:right;">${yieldMajor.majorYield }</td>
 										    <c:if test="${not empty majors }">
@@ -382,7 +385,7 @@
 	           <option value="">-请选择-</option>
 	       <c:if test="${not empty prices }">
 	           <c:forEach items="${prices }" var="price">
-	               <option value="${price.id }" data-uprice="${price.unitPrice }" data-ratio='${price.ratioJson }' >${price.typeCode }-${price.typeName }</option>
+	               <option value="${price.priceId }" data-uprice="${price.standardPrice }" data-ratio='${price.ratioJson }' >${price.typeCode }-${price.typeName }</option>
 	           </c:forEach>
 	       </c:if>
 	       </select>
@@ -831,7 +834,6 @@ function calEachMajorYield(){
 		}else{
 			$eachMajorYield = new Number(majorAmount) - tempTotalYield;
 		}
-		console.log($eachMajorYield);
 		$(this).val($eachMajorYield.toFixed(2));
 	});
 }

@@ -12,9 +12,12 @@
 
 package com.df.tja.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.df.framework.base.dao.IBaseDao;
+import com.df.tja.domain.OcYieldMajorRatio;
+import com.df.tja.domain.cust.CustOcYieldMajor;
 import com.df.tja.domain.cust.CustOcYieldMajorDuty;
 import com.df.tja.domain.cust.CustOcYieldScheme;
 
@@ -31,5 +34,34 @@ public interface IOcYieldSchemeDao extends IBaseDao {
      */
     CustOcYieldScheme selectOcYieldSchemeById(String id);
 
+    /**
+     * 按施工图产值策划ID查询所有专业的产值及负责人
+     * @param schemeId
+     * @return
+     */
     List<CustOcYieldMajorDuty> selectOcYieldMajorDutiesBySchemeId(String schemeId);
+
+    /**
+     * 查询施工图专业比例中类型编号下拉列表
+     * @param schemeId
+     * @return
+     */
+    List<CustOcYieldMajor> selectMajorPrices(String schemeId);
+
+    /**
+     * 查询施工图专业比例中各专业的比例
+     * @param priceId
+     * @param majorId
+     * @return
+     */
+    List<OcYieldMajorRatio> selectMajorRatios(String priceId, String majorId);
+
+    /**
+     * 查询专业比例中指定记录的土建基准单价
+     * @param priceId
+     * @param majorId
+     * @return
+     */
+    BigDecimal selectMajorPrice(String priceId, String majorId);
+
 }

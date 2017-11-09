@@ -31,13 +31,11 @@ import com.df.framework.sys.service.ISysConfigService;
 import com.df.framework.util.ObjectUtils;
 import com.df.project.domain.cust.CustProject;
 import com.df.project.service.IProjectService;
-import com.df.tja.domain.OcStandardPrice;
 import com.df.tja.domain.OcYieldScheme;
 import com.df.tja.domain.cust.CustOcYieldMajor;
 import com.df.tja.domain.cust.CustOcYieldMajorDuty;
 import com.df.tja.domain.cust.CustOcYieldScheme;
 import com.df.tja.domain.cust.CustOcYieldStageMajor;
-import com.df.tja.service.IStandardPriceService;
 import com.df.tja.service.IWfPlanSchemeService;
 import com.df.tja.service.IYieldSchemeService;
 import com.df.tja.service.IYmConfigService;
@@ -62,9 +60,6 @@ public class YieldSchemeController extends BaseController {
 
     @Autowired
     private IProjectService projectService;
-
-    @Autowired
-    private IStandardPriceService standardPriceService;
 
     @Autowired
     private IYmConfigService ymConfigService;
@@ -114,7 +109,7 @@ public class YieldSchemeController extends BaseController {
         model.addAttribute("majors", majors);
 
         //查询所有土建基准单价及专业比例 
-        List<OcStandardPrice> prices = standardPriceService.queryAllStandardPrices();
+        List<CustOcYieldMajor> prices = yieldSchemeService.queryMajorAllPrices(id);
         model.addAttribute("prices", prices);
 
         //取90%
