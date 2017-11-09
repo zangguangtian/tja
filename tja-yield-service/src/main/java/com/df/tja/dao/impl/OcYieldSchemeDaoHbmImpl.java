@@ -135,10 +135,24 @@ public class OcYieldSchemeDaoHbmImpl extends BaseDaoHbmImpl implements IOcYieldS
             query.setString("majorId", majorId);
         }
         query.setString("priceId", priceId);
-        if ("297e55f15f9ad3d3015f9adb3d050055".equals(majorId)) {
-            System.out.println("");
-        }
         return (BigDecimal) query.uniqueResult();
+    }
+
+    public void deleteMajors(List<String> majorIds) {
+        StringBuffer sql = new StringBuffer("delete from oc_yield_major where id not in(:majorIds)");
+        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setParameterList("majorIds", majorIds);
+        query.executeUpdate();
+    }
+
+    public void deleteMajorRatios(String schemeId, List<String> majorIds) {
+        StringBuffer sql = new StringBuffer("");
+        sql.append("delete from oc_yield_major_ratio where scheme_id = :schemeId ");
+        sql.append(" and major_id not in(:majorIds)                              ");
+        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setString("schemeId", schemeId);
+        query.setParameterList("majorIds", majorIds);
+        query.executeUpdate();
     }
 
 }

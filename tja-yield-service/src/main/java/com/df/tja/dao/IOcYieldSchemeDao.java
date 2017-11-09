@@ -64,4 +64,17 @@ public interface IOcYieldSchemeDao extends IBaseDao {
      */
     BigDecimal selectMajorPrice(String priceId, String majorId);
 
+    /**
+     * 删除页面上已经删除的专业比例
+     * @param majorIds 存在的专业比例ID
+     */
+    void deleteMajors(List<String> majorIds);
+
+    /**
+     * 删除页面上已经删除的专业比例
+     * @param schemeId 策划ID
+     * @param majorIds 存在的专业比例ID
+     */
+    void deleteMajorRatios(String schemeId, List<String> majorIds);
+
 }

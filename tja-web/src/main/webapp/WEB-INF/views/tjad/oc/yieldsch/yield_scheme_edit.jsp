@@ -106,6 +106,7 @@
 					                       <th nowrap="nowrap" colspan="2" style="text-align:center;">${major.configName }</th>
 					                   </c:forEach>
 					                </c:if>
+					                <th rowspan="2" style="text-align:center;">操作</th>
 					            </tr>
 					            <tr>
 					                <c:if test="${not empty majors }">
@@ -151,6 +152,7 @@
 										           <td nowrap="nowrap" id="majorYield${vs.index}.${major.configCode }" data-major="${major.configCode }">${yieldMajor.majorMap[majorKey].majorYield }</td>
 										       </c:forEach>
 										    </c:if>
+										    <td style="text-align:center;"><i class="fa fa-trash-o del-btn"></i></td>
 										</tr>
                             		</c:forEach>
                             	</c:if>
@@ -166,6 +168,7 @@
                                            <td nowrap="nowrap" colspan="2" data-major="${major.configCode}"></td>
                                        </c:forEach>
                                     </c:if>
+                                    <td>&nbsp;</td>
 					            </tr>
 					        </tbody>
 					    </table>
@@ -400,6 +403,7 @@
 	           <td nowrap="nowrap" id="majorYield{0}.${major.configCode }" data-major="${major.configCode }"></td>
 	       </c:forEach>
 	    </c:if>
+	    <td style="text-align:center;"><i class="fa fa-trash-o del-btn"></i></td>
 	</tr>
 </table>
 <script type="text/javascript" src="${site}/resources/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
@@ -410,6 +414,11 @@ $(document).on("change", "#majorRatio select[name$='priceId']", priceCodeChange)
 
 //专业比例列表中建筑面积事件绑定
 $(document).on("blur", "#majorRatio input[name$='buildArea']", buildAreaChange);
+
+//专业比例列表中删除按钮事件绑定
+$(document).on("click", "#majorRatio tbody i.del-btn", function(){
+	delMajor(this);
+});
 
 //土建产值中四个金额事件绑定
 $(document).on("blur", "input.fourAmount", fourAmountChange);
@@ -499,6 +508,27 @@ function buildAreaChange(){
     
     /**计算院内合计*/
     calYLTotal();
+}
+
+/**专业比例记录删除*/
+function delMajor(obj){
+	$.jalert({"jatype":"confirm", "jatext":"确定要删除吗", "onConfirm":function(){
+		var nameVal = null;
+		var thisIndex = $(obj).closest("tr").index();
+		$(obj).closest("tr").nextAll("tr:not(.total)").each(function(index, item){
+			$(item).find("td:eq(0)").text(thisIndex + index + 1);
+			
+			$(item).find("[name^='yieldMajors']").each(function(){
+				nameVal = $(this).attr("name");
+				nameVal = nameVal.replace(/[\d]/ig, thisIndex + index);
+				$(this).attr("name", nameVal);
+			});
+		});		
+		$(obj).closest("tr").remove();
+		
+	    /**计算院内合计*/
+	    calYLTotal();
+	}});
 }
 
 /**显示专业的默认比例*/
@@ -687,7 +717,10 @@ function calMajorYield(currtr, ratioJson){
 	var ratioObj = eval(ratioJson);
     var sYield = currtr.find("td[id^='mYield']").text();
     currtr.find("td[id^='majorYield']").each(function(){
-        majorRate = ratioObj[$(this).data("major")];
+    	//如果先输入建筑面积就没有ratioObj
+    	if(ratioObj != null){
+	        majorRate = ratioObj[$(this).data("major")];
+    	}
         if(majorRate == null){
             majorRate = "0";
         }

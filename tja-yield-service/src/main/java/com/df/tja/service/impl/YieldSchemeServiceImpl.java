@@ -41,7 +41,6 @@ import com.df.tja.domain.cust.CustOcYieldMajor;
 import com.df.tja.domain.cust.CustOcYieldMajorDuty;
 import com.df.tja.domain.cust.CustOcYieldScheme;
 import com.df.tja.domain.cust.CustOcYieldStageMajor;
-import com.df.tja.service.IStandardPriceService;
 import com.df.tja.service.IYieldSchemeService;
 import com.df.tja.service.IYmConfigService;
 
@@ -54,9 +53,6 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
 
     @Autowired
     private IOcYieldSchemeDao ocYieldSchemeDao;
-
-    @Autowired
-    private IStandardPriceService standardPriceService;
 
     @Autowired
     private IYmConfigService ymConfigService;
@@ -275,6 +271,7 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
                 JSONObject majorRatioJson = null;
                 OcYieldMajor ocYieldMajor = null;
                 String schemeId = custOcYieldScheme.getId();
+                List<String> majorIds = new ArrayList<String>(0);
                 Map<String, BigDecimal> majorYieldTotal = new HashMap<String, BigDecimal>(0); //按专业存储每个专业的总产值
                 for (CustOcYieldMajor custYieldMajor : yieldMajors) {
                     //获取单价
@@ -299,21 +296,24 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
                         ObjectUtils.copyProperties(custYieldMajor, ocYieldMajor);
                         ocYieldMajor.setSchemeId(schemeId);
                         ocYieldMajor.setStandardPrice(ocStandardPrice.getStandardPrice());
-                        //土建基准产值
                         ocYieldMajor.setStandardYield(ArithmeticUtil.round(
                             ArithmeticUtil.mul(ocYieldMajor.getBuildArea(), ocStandardPrice.getStandardPrice()), 2));
-                        //各专业产值
                         ocYieldMajor.setMajorYield(
                             ArithmeticUtil.round(ArithmeticUtil.mul(ocYieldMajor.getStandardYield(), rebate), 2));
-                        //施工图产值专业
                         ocYieldSchemeDao.insert(OcYieldMajor.class, ocYieldMajor);
                     }
+                    //记录存在记录的ID
+                    majorIds.add(ocYieldMajor.getId());
 
                     //施工图产值专业比例
                     majorRatioJson = new JSONObject(ocStandardPrice.getRatioJson());
                     createOcYieldMajorRatio(ocYieldMajor, custOcYieldScheme.getProId(), majorRatioJson,
                         majorYieldTotal);
                 }
+
+                //删除已经删掉的专业比例
+                ocYieldSchemeDao.deleteMajors(majorIds);
+                ocYieldSchemeDao.deleteMajorRatios(schemeId, majorIds);
 
                 //计算院内合计
                 if (!majorYieldTotal.isEmpty()) {
@@ -365,7 +365,7 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
             List<SysConfig> majors = sysConfigService.querySysConfigsByParentCode("PM.MAJOR");
             if (majors != null && !majors.isEmpty()) {
                 OcYieldMajorRatio majorRatio = null;
-                String majorRateVal = "0";
+                String majorRateVal = null;
                 //院内所有专业产值之和
                 BigDecimal tempYield = new BigDecimal(0);
                 for (SysConfig major : majors) {
@@ -374,7 +374,10 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
                     majorRatio.setProId(proId);
                     majorRatio.setMajorId(ocYieldMajor.getId());
                     majorRatio.setMajorCode(major.getConfigCode());
-                    if (StringUtil.isNotBlank(majorRatioJson.getString(major.getConfigCode()))) {
+
+                    majorRateVal = "0";
+                    if (majorRatioJson.has(major.getConfigCode())
+                        && StringUtil.isNotBlank(majorRatioJson.getString(major.getConfigCode()))) {
                         majorRateVal = majorRatioJson.getString(major.getConfigCode());
                     }
                     //比例(%)
