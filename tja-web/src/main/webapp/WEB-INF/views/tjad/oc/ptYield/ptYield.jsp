@@ -20,14 +20,71 @@
  <script src="${site}/resources/js/jsgrid/jsgrid.js?v=${buildVersion}"></script>
  <script src="${site}/resources/js/jsgrid/db.js?v=${buildVersion}"></script>
 	<script type="text/javascript">
-		var awardsGrid = null;
+		var permitGrid = null;
 		var baseDb = new BaseDb();
+		
+		getMajor = function(){
+			var _select = $("<select name='majorCode' class='form-control'></select>");
+			var url = context+"/admin/oc/permitYield/ajax/major";
+			$.ajax({
+				url: url,
+				success: function(data){
+					if(data.flag == "true"){
+						var majors = data.list;
+						for (var i = 0; i < majors.length; i++) {
+							$(_select).append("<option value="+majors[i].configCode+">"+majors[i].configName+"</option>");
+						}
+			 		}
+			    }
+			});
+			return _select;
+		}
+		
+		getPeriodSelect = function(){
+			var _select = $("<select name='periodId' class='form-control'></select>");
+			var url = context+"/admin/oc/period/ajax/select?type=OC.PERIOD.TYPE.SETTLE";
+			$.ajax({
+				url: url,
+				success: function(data){
+					if(data.flag == "true"){
+						var periodSelect = data.periodSelect;
+						for (var i = 0; i < periodSelect.length; i++) {
+							$(_select).append("<option value="+periodSelect[i].id+">"+periodSelect[i].periodName+"</option>");
+						}
+			 		}
+			    }
+			});
+			return _select;
+		};
+		
 		$(function() {
-			var periodSelect = getPeriodSelect();
+			var Grid = jsGrid.Grid;
 			
+			var periodSelect_insert = getPeriodSelect();
+			var periodSelect_edit = getPeriodSelect();
 			var major = getMajor();
 			
-			var Grid = jsGrid.Grid;
+			jsGrid.validators.number = {
+					message:function (value, item) {
+						return "请输入大于0的数字";
+					},
+					validator: function(value, item) {
+					  return (/^(?:-?\d+|-?\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/.test(value))&&(new Number(value)>0);
+					}
+			 }
+			
+			Grid.prototype.clearInsert = function() {
+	            if(window.totalValidate != false){
+	            	var insertRow = this._createInsertRow();
+	                this._insertRow.replaceWith(insertRow);
+	                this._insertRow = insertRow;
+	                this.refresh();
+	            }else{
+	            	jQuery("tr.jsgrid-insert-row").find("td.repeat").addClass("jsgrid-invalid");
+	            	jQuery("tr.jsgrid-insert-row").find("td.repeat").attr("title","期间、项目、专业不得重复");
+	            }
+	        }
+			
 			permitGrid = new Grid("#jsGrid", {
 					height : "auto",
 					width : "100%",
@@ -43,7 +100,7 @@
 					deleteConfirm : "确认删除?",
 					invalidMessage:"",
 					controller : permitDeclareDb,
-					fields : [ {
+					fields : [{
 						name : "number",
 						title : "序号",
 						width : "5%"
@@ -56,12 +113,13 @@
 			            editing: false,
 			            css: "jsgrid-form-control",
 			            insertTemplate : function() {
-				       	    return periodSelect;
+				       	    return periodSelect_insert;
 			        	},
 			        	editTemplate: function(value, item) {
-			    			$(periodSelect).val(item.periodId);
-				       	    return periodSelect;
-			        	}
+			    			$(periodSelect_edit).val(item.periodId);
+				       	    return periodSelect_edit;
+			        	},
+			        	css:"repeat"
 			        }, {
 			        	name : "proCode",
 			        	title : "项目编号<font class=required>※</font>",
@@ -92,13 +150,13 @@
 			        	width : "20%",
 			        	inserting: false,
 			            editing: false,
-			            
 			        	insertTemplate : function(){
-			        		return "<input type='text' name='proName' class='form-control' disabled='disabled'>";
+			        		return "<input type='text' name='proName' class='form-control' readOnly>";
 			        	},
 			        	editTemplate : function(value, item) {
-			        		return "<input type='text' name='proName' class='form-control' disabled='disabled' value="+(value==null?"":value)+">";
-			        	}
+			        		return "<input type='text' name='proName' class='form-control' readOnly value="+(value==null?"":value)+">";
+			        	},
+			        	css:"repeat"
 			        },{
 			        	name : "majorName",
 			        	title : "专业<font class=required>※</font>",
@@ -113,11 +171,13 @@
 			        	editTemplate: function(value, item) {
 			    			$(major).val(item.majorCode);
 				       	    return major;
-			        	}
+			        	},
+			        	css:"repeat"
 			        },{
 						name : "permitYield",
 						title : "特批产值",
-						type : "number",
+						type : "text",
+						validate:"number",
 						width : "10%",
 						css: "jsgrid-form-control",
 						filtering:false
@@ -195,7 +255,14 @@
 		  		insertingClient.periodId = periodId;
 		  		insertingClient.proId = proId;
 		  		insertingClient.majorCode = majorCode;
-			  jQuery.ajax({
+                var falg = validateDataRepeat();
+		  		if(!falg){
+					  window.totalValidate = false;
+					  $.jalert({"jatext":"期间、项目、专业不得重复"});
+					  return;
+				}
+		  		
+			    jQuery.ajax({
 					type : "POST",
 					url : url,
 					data : insertingClient,
@@ -234,10 +301,19 @@
 	  			return;
 	  		}
 		  	
-		  		updatingClient.periodId = periodId;
-		  		updatingClient.proId = proId;
-		  		updatingClient.majorCode = majorCode;
+		  	  updatingClient.periodId = periodId;
+		  	  updatingClient.proId = proId;
+		  	  updatingClient.majorCode = majorCode;
+		  	  
+		  	  var falg = validateDataRepeat();
+	  		  if(!falg){
+				  window.totalValidate = false;
+				  $.jalert({"jatext":"期间、项目、专业不得重复"});
+				  return;
+			  }
+		  	  
 			  baseDb.updateItem(updatingClient,url);
+			  
 			  updatingClient.periodName = periodName;
 			  updatingClient.majorName  = majorName;
 			  updatingClient.proName  = proName;
@@ -251,6 +327,33 @@
 		
 		window.permitDeclareDb = permitDeclareDb;
 	}());   
+	
+	//校验输入的数据是否重复
+	function validateDataRepeat(){
+		var flag = true;
+		jQuery(".jsgrid-grid-body tr").not(".jsgrid-grid-body tr[style='display: none;']").not(".jsgrid-edit-row").each(function(){
+			var _this = $(this);
+			var periodName = _this.find("td:eq(1)").text().trim();
+			var proCode = _this.find("td:eq(2)").text().trim();
+			var majorName = _this.find("td:eq(4)").text().trim();
+			var row = jQuery(".jsgrid-filter-row");
+			var filter = jQuery(".jsgrid-filter-row").css("display");
+			if(filter == 'none'){
+				row = jQuery(".jsgrid-insert-row");
+			}else{
+				row = jQuery(".jsgrid-edit-row");
+			}
+			
+			var proCodeRow = row.find("input[name='proCode']").val();
+			var periodNameRow = row.find("select[name='periodId'] option:selected").text()
+			var majorNameRow = row.find("select[name='majorCode'] option:selected").text()
+			
+			if(periodName == periodNameRow && proCode == proCodeRow && majorName == majorNameRow){
+				flag = false;
+			}
+		});
+		return flag;
+	}
 	
 	$(document).on("click", "#selectPro", function() { 
 		_proper = $(this);
@@ -273,39 +376,6 @@
 		$(".jsgrid-insert-row td:eq(3) input").val(data.PRO_NAME);
 	}
 	
-	getMajor = function(){
-		var _select = $("<select name='majorCode' class='form-control'></select>");
-		var url = context+"/admin/oc/permitYield/ajax/major";
-		$.ajax({
-			url: url,
-			success: function(data){
-				if(data.flag == "true"){
-					var majors = data.list;
-					for (var i = 0; i < majors.length; i++) {
-						$(_select).append("<option value="+majors[i].configCode+">"+majors[i].configName+"</option>");
-					}
-		 		}
-		    }
-		});
-		return _select;
-	}
-	
-	getPeriodSelect = function(){
-		var _select = $("<select name='periodId' class='form-control'></select>");
-		var url = context+"/admin/oc/period/ajax/select?type=OC.PERIOD.TYPE.SETTLE";
-		$.ajax({
-			url: url,
-			success: function(data){
-				if(data.flag == "true"){
-					var periodSelect = data.periodSelect;
-					for (var i = 0; i < periodSelect.length; i++) {
-						$(_select).append("<option value="+periodSelect[i].id+">"+periodSelect[i].periodName+"</option>");
-					}
-		 		}
-		    }
-		});
-		return _select;
-	};
 	</script>
 </body>
 </html>
