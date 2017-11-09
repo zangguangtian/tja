@@ -14,13 +14,11 @@ package com.df.tja.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -124,62 +122,6 @@ public class StandardPriceServiceImpl extends BaseServiceImpl implements IStanda
             throw new RuntimeException(e);
         }
         return prices;
-    }
-
-    public List<OcStandardPrice> queryAllStandardPrices() throws RuntimeException {
-        List<OcStandardPrice> prices = null;
-        try {
-            OcStandardPrice entity = new OcStandardPrice();
-            entity.setOrderBy("typeCode asc");
-            prices = standardPriceDao.selectByHQLCondition(OcStandardPrice.class, entity, null);
-            if (prices != null && !prices.isEmpty()) {
-                JSONObject jsonObject = null;
-                OcStandardRatio ocStandardRatio = null;
-                Map<String, BigDecimal> ratioMap = new HashMap<String, BigDecimal>(0);
-                for (OcStandardPrice standardPrice : prices) {
-                    ratioMap.clear();
-
-                    ocStandardRatio = new OcStandardRatio();
-                    ocStandardRatio.setStardandId(standardPrice.getId());
-                    List<OcStandardRatio> ratios = queryByCondition(OcStandardRatio.class, ocStandardRatio);
-                    if (ratios != null && !ratios.isEmpty()) {
-                        for (OcStandardRatio ratio : ratios) {
-                            ratioMap.put(ratio.getMajorCode(), ratio.getMajorRatio());
-                        }
-                    }
-                    jsonObject = new JSONObject(ratioMap);
-                    standardPrice.setRatioJson(jsonObject.toString());
-                }
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return prices;
-    }
-
-    public OcStandardPrice queryStandardPriceById(String id) throws RuntimeException {
-        OcStandardPrice price = null;
-        try {
-            price = standardPriceDao.selectByPrimaryKey(OcStandardPrice.class, id);
-            if (price != null) {
-                JSONObject jsonObject = null;
-                OcStandardRatio ocStandardRatio = null;
-                Map<String, BigDecimal> ratioMap = new HashMap<String, BigDecimal>(0);
-                ocStandardRatio = new OcStandardRatio();
-                ocStandardRatio.setStardandId(id);
-                List<OcStandardRatio> ratios = queryByCondition(OcStandardRatio.class, ocStandardRatio);
-                if (ratios != null && !ratios.isEmpty()) {
-                    for (OcStandardRatio ratio : ratios) {
-                        ratioMap.put(ratio.getMajorCode(), ratio.getMajorRatio());
-                    }
-                }
-                jsonObject = new JSONObject(ratioMap);
-                price.setRatioJson(jsonObject.toString());
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return price;
     }
 
     /** 

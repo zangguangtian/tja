@@ -54,23 +54,6 @@ public interface IStandardPriceService extends IBaseService {
     List<OcStandardPrice> queryStandardPrices(OcStandardPrice ocStandardPrice, Pagination page) throws RuntimeException;
 
     /**
-     * 
-     * <p>描述 : 查询所有土建基准单价及专业比例 </p>
-     *
-     * @return
-     * @throws RuntimeException
-     */
-    List<OcStandardPrice> queryAllStandardPrices() throws RuntimeException;
-
-    /**
-     * 按ID查询土建基准单价及专业比例
-     * @param id
-     * @return
-     * @throws RuntimeException
-     */
-    OcStandardPrice queryStandardPriceById(String id) throws RuntimeException;
-
-    /**
      * <p>描述 : </p>
      *
      * @param ocStandardPrice

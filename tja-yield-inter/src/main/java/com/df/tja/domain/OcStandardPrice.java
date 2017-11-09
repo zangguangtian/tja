@@ -65,8 +65,6 @@ public class OcStandardPrice extends BaseDomain {
     private java.lang.String remark;
 
     /**********以下属性为非持久化属性**********/
-    private java.lang.String ratioJson;
-
     private java.lang.String codes; //xxx-xxx
 
     private java.lang.String values; //xxx-xxx
@@ -213,25 +211,6 @@ public class OcStandardPrice extends BaseDomain {
     @Column(name = "MODIFY_DATE")
     public java.util.Date getModifyDate() {
         return modifyDate;
-    }
-
-    /**
-     * <p> 属性ratioJson的Getter方法. </p>
-     * 
-     * @return 返回ratioJson属性的值
-     */
-    @Transient
-    public java.lang.String getRatioJson() {
-        return ratioJson;
-    }
-
-    /**
-     * <p> 属性ratioJson的Setter方法. </p>
-     * 
-     * @param ratioJson 为属性ratioJson设置的值
-     */
-    public void setRatioJson(java.lang.String ratioJson) {
-        this.ratioJson = ratioJson;
     }
 
     @Transient
