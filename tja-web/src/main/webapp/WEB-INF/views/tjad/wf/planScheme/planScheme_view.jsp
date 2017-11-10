@@ -31,35 +31,30 @@
 	</center>
 	<div class='<c:if test="${not empty print }">print</c:if>'>
 		<div class="form">
-            <div class="form-group col-lg-12">
-                <%-- <div class='col-lg-3 <c:if test="${not empty print }">printSeq</c:if> <c:if test="${empty print }">seq</c:if>'>
-                                                     流水号:${planScheme.seqNo}
-                </div> --%>
-                <div class="form-group col-lg-5 ">
-					<label class="control-label col-md-3">流水号</label>
-					<div class="col-md-8">
-						<input type="text" class="form-control" value="${planScheme.seqNo}" disabled="disabled" title="${planScheme.seqNo}">
-					</div>
-				</div>
-                
-                <div class="col-lg-7 text-right">
-                    <c:if test="${canRevoke }">
-                        <input type="button" id="reject-btn" value="撤回" class="btn blue">
-                    </c:if>
-                    <c:if test="${not empty canPrintView}">
-                        <input type="button" id="printview-btn" value="打印预览" class="btn blue"/>
-                    </c:if>
-                    <c:if test="${not empty canPrint}">
-                        <input type="button" id="print-btn" value="打印" class="btn blue"/>
-                    </c:if>
-                </div>
-            </div>
 			<!-- BEGIN FORM-->
 			<form id="approveForm" action="${site}/admin/wf/planScheme/ajax/approve" method="post" class="row">
 			    <input type="hidden" name="id" value="${planScheme.id}">
 		        <input type="hidden" name="procId" value="${planScheme.procId }">
 		        <input type="hidden" name="approve" value="2"/>
 				<div class="form-body clearfix">
+	                <div class="form-group col-lg-6">
+						<label class="control-label col-md-3">流水号</label>
+						<div class="col-md-8">
+							<input type="text" class="form-control" value="${planScheme.seqNo}" disabled="disabled" title="${planScheme.seqNo}">
+						</div>
+					</div>
+	                <div class="form-group col-lg-6 text-right">
+	                    <c:if test="${canRevoke }">
+	                        <input type="button" id="reject-btn" value="撤回" class="btn blue">
+	                    </c:if>
+	                    <c:if test="${not empty canPrintView}">
+	                        <input type="button" id="printview-btn" value="打印预览" class="btn blue"/>
+	                    </c:if>
+	                    <c:if test="${not empty canPrint}">
+	                        <input type="button" id="print-btn" value="打印" class="btn blue"/>
+	                    </c:if>
+	                </div>
+	                
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目编号</label>
 						<div class="col-md-8">

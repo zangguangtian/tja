@@ -18,28 +18,6 @@
 	</center>
 	<div class="<c:if test="${not empty print }">print</c:if>">
 		<div class="form">
-            <div class="form-group col-lg-12">
-                <%-- <div class='col-lg-3 <c:if test="${not empty print }">printSeq</c:if> <c:if test="${empty print }">seq</c:if>'>
-                                                     流水号:${yieldSettle.seqNo}
-                </div> --%>
-                <div class="form-group col-lg-5 ">
-					<label class="control-label col-md-3">流水号</label>
-					<div class="col-md-8">
-						<input type="text" class="form-control" value="${yieldSettle.seqNo}" disabled="disabled" title="${yieldSettle.seqNo}">
-					</div>
-				</div>
-               <div class="col-lg-7 text-right">
-                    <c:if test="${canRevoke }">
-                        <input type="button" id="reject-btn" value="撤回" class="btn blue">
-                    </c:if>
-                    <c:if test="${not empty canPrintView}">
-                        <input type="button" id="printview-btn" value="打印预览" class="btn blue"/>
-                    </c:if>
-                    <c:if test="${not empty canPrint}">
-                        <input type="button" id="print-btn" value="打印" class="btn blue"/>
-                    </c:if>
-               </div>
-            </div>
 			<!-- BEGIN FORM-->
 			<form id="approveForm" action="${site}/admin/ym/yieldSettle/ajax/approve" class="row">
 				<input type="hidden" name="wfCategory" value="1000">
@@ -47,114 +25,131 @@
 		        <input type="hidden" name="procId" value="${yieldSettle.procId }">
 		        <input type="hidden" name="approve" value="2"/>
 		        <input type="hidden" name="view" value="${view}"/>
+				<div class="form-body clearfix" style="padding-bottom: 0">
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">流水号</label>
+						<div class="col-xs-8">
+							<label class="control-label">${yieldSettle.seqNo}</label>
+						</div>
+					</div>
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4"></label>
+						<div class="col-xs-8 text-right">
+							<c:if test="${canRevoke}">
+								<input type="button" id="reject-btn" value="撤回" class="btn blue">
+							</c:if>
+				           	<c:if test="${not empty canPrintView}">
+								<input type="button" id="printview-btn" value="打印预览" class="btn blue">
+							</c:if>
+							<c:if test="${not empty canPrint}">
+								<input type="button" id="print-btn" value="打印" class="btn blue">
+							</c:if>
+						</div>
+					</div>
+			    </div>
+				
 				<div class="form-body clearfix">
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">项目编号</label>
-						<div class="col-md-8">
-							<input type="text" name="proCode" class="form-control " disabled value="${project.proCode}">
+				
+				    <div class="form-group col-xs-6">
+						<label class="control-label col-xs-4">项目编号</label>
+						<div class="col-xs-8">
+							<label class="control-label">${project.proCode}</label>
 						</div>
 					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">项目名称</label>
-						<div class="col-md-8">
-							<input type="text" name="proName" class="form-control" disabled value="${project.proName}">
-						</div>
-					</div>
-					
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">合同编号</label>
-						<div class="col-md-8">
-							<input type="text" name="proType" class="form-control" disabled value="${project.contractCode}">
-						</div>
-					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">项目类型</label>
-						<div class="col-md-8">
-							<input type="text" name="proType" class="form-control" disabled value="${project.proType}">
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">项目名称</label>
+						<div class="col-xs-8">
+							<label class="control-label">${project.proName}</label>
 						</div>
 					</div>
 					
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">合同额(¥)</label>
-						<div class="col-md-8">
-							<input type="text" class="form-control" disabled name="contractAmount" value="<fmt:formatNumber value='${yieldSettle.contractAmount}' pattern='#,#00.00#'/>">
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">合同编号</label>
+						<div class="col-xs-8">
+							<label class="control-label">${project.contractCode}</label>
 						</div>
 					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">分包扣减(¥)</label>
-						<div class="col-md-8">
-							<input type="text" class="form-control" disabled name="pkgAmount" value="<fmt:formatNumber value='${yieldSettle.pkgAmount}' pattern='#,#00.00#'/>">
-						</div>
-					</div>
-					
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">方案扣减(¥)</label>
-						<div class="col-md-8">
-							<input type="text" class="form-control" disabled name="schemeAmount" value="<fmt:formatNumber value='${yieldSettle.schemeAmount}' pattern='#,#00.00#'/>">
-						</div>
-					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">其他扣减(¥)</label>
-						<div class="col-md-8">
-							<input type="text" class="form-control" disabled name="rebateAmount" value="<fmt:formatNumber value='${yieldSettle.rebateAmount}' pattern='#,#00.00#'/>"> 
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">项目类型</label>
+						<div class="col-xs-8">
+							<label class="control-label">${project.proType}</label>
 						</div>
 					</div>
 					
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">项目负责人</label>
-						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i>
-							<input type="text" class="form-control" disabled name="pManagers" value="${project.pmLeaders}">
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">合同额(¥)</label>
+						<div class="col-xs-8">
+						    <label class="control-label"><fmt:formatNumber value='${yieldSettle.contractAmount}' pattern='#,#00.00#'/></label>
 						</div>
 					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">项目经理</label>
-						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i>
-			            	<input type="text" name="pManagers" class="form-control " value="${project.pManagers}" disabled>
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">分包扣减(¥)</label>
+						<div class="col-xs-8">
+						    <label class="control-label"><fmt:formatNumber value='${yieldSettle.pkgAmount}' pattern='#,#00.00#'/></label>
+						</div>
+					</div>
+					
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">方案扣减(¥)</label>
+						<div class="col-xs-8">
+						    <label class="control-label"><fmt:formatNumber value='${yieldSettle.schemeAmount}' pattern='#,#00.00#'/></label>
+						</div>
+					</div>
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">其他扣减(¥)</label>
+						<div class="col-xs-8">
+						    <label class="control-label"><fmt:formatNumber value='${yieldSettle.rebateAmount}' pattern='#,#00.00#'/></label>
+						</div>
+					</div>
+					
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">项目负责人</label>
+						<div class="col-xs-8">
+							<label class="control-label">${project.pmLeaders}</label>
+						</div>
+					</div>
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">项目经理</label>
+						<div class="col-xs-8">
+			            	<label class="control-label">${project.pManagers}</label>
 						</div>
 					</div>
 					
 					
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">当年可结算产值(¥)</label>
-						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i>
-							<input type="text" class="form-control" name="yearYield" value="<fmt:formatNumber value='${yieldSettle.yearYield}' pattern='#,#00.00#'/>" disabled>
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">当年可结算产值(¥)</label>
+						<div class="col-xs-8">
+						    <label class="control-label"><fmt:formatNumber value='${yieldSettle.yearYield}' pattern='#,#00.00#'/></label>
 						</div>
 					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">历年已结算产值(¥)</label>
-						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i>
-							<input type="text" class="form-control" name="hisyearYield" value="<fmt:formatNumber value='${yieldSettle.hisyearYield}' pattern='#,#00.00#'/>" disabled>
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">历年已结算产值(¥)</label>
+						<div class="col-xs-8">
+						    <label class="control-label"><fmt:formatNumber value='${yieldSettle.hisyearYield}' pattern='#,#00.00#'/></label>
 						</div>
 					</div>
 					
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">所处状态</label>
-						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i>
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">所处状态</label>
+						<div class="col-xs-8">
 						    <tags:config type="label" code="${yieldSettle.itemStatus}" />
 						</div>
 					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3"></label>
-						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i>
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4"></label>
+						<div class="col-xs-8">
 						</div>
 					</div>
 					
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">创建人</label>
-						<div class="col-md-8 input-icon right">
-						<input type="hidden" name="creator" value="${yieldSettle.creator}"/>
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">创建人</label>
+						<div class="col-xs-8">
 						<label class="control-label">${yieldSettle.creatorName}</label>
 						</div>
 					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">创建时间</label>
-						<div class="col-md-8 input-icon right">
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">创建时间</label>
+						<div class="col-xs-8">
 						 <jsp:useBean id="currentDate" class="java.util.Date"/>
 	            		 <fmt:formatDate value="${yieldSettle.createDate}" pattern="yyyy-MM-dd" var="currentDate"/>
 						 <label class="control-label">${currentDate }</label>
