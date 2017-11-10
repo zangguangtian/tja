@@ -33,13 +33,13 @@
 			<div class="form-body clearfix" style="padding-bottom: 0">
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-xs-4">流水号</label>
-					<div class="col-xs-7">
+					<div class="col-xs-8">
 						<label class="control-label">${yearFill.seqNo}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-xs-4"></label>
-					<div class="col-xs-7 text-right">
+					<div class="col-xs-8 text-right">
 						<c:if test="${canRevoke}">
 							<input type="button" id="reject-btn" value="撤回" class="btn blue">
 						</c:if>
@@ -56,85 +56,87 @@
 			<div class="form-body clearfix">
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-xs-4">项目编号</label>
-					<div class="col-xs-7">
+					<div class="col-xs-8">
 						<label class="control-label">${yearFill.proCode}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-xs-4">项目名称</label>
-					<div class="col-xs-7">
+					<div class="col-xs-8">
 						<label class="control-label">${yearFill.proName}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-xs-4">项目类型</label>
-					<div class="col-xs-7">
+					<div class="col-xs-8">
 						<label class="control-label">${yearFill.proType}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-xs-4">项目级别</label>
-					<div class="col-xs-7">
+					<div class="col-xs-8">
 						<tags:config type="label" code="${yearFill.proGrade}"/>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-xs-4">实际合同额(¥)</label>
-					<div class="col-xs-7">
+					<div class="col-xs-8">
 						<label name="contractAmount" class="control-label">${yearFill.contractAmount}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-xs-4">分包扣减(¥)</label>
-					<div class="col-xs-7">
+					<div class="col-xs-8">
 						<label name="pkgAmount" class="control-label">${yearFill.pkgAmount}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-xs-4">方案扣减(¥)</label>
-					<div class="col-xs-7">
+					<div class="col-xs-8">
 						<label name="schemeAmount" class="control-label">${yearFill.schemeAmount}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-xs-4">其他扣减(¥)</label>
-					<div class="col-xs-7">
+					<div class="col-xs-8">
 						<label name="rebateAmount" class="control-label">${yearFill.rebateAmount}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-xs-4">项目负责人</label>
-					<div class="col-xs-7">
+					<div class="col-xs-8">
 						<label class="control-label">${yearFill.pmLeaders}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-xs-4">项目经理</label>
-					<div class="col-xs-7">
+					<div class="col-xs-8">
 						<label class="control-label">${yearFill.pManagers}</label>
 					</div>
 				</div>
 
 				<div class="form-group col-xs-12 ">
-					<label class="control-label col-xs-2" style="margin-left: -0.6%;">备注</label>
-					<div class="col-xs-9" style="width: 78%;">
+					<label class="control-label col-xs-2">备注</label>
+					<div class="col-xs-10">
 						<textarea rows="3" class="form-control" disabled>${yearFill.remark}</textarea>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-xs-4">创建人</label>
-					<div class="col-xs-7">
+					<div class="col-xs-8">
 						<label class="control-label">${yearFill.creator}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-xs-4">创建时间</label>
-					<div class="col-xs-7">
+					<div class="col-xs-8">
 						<label class="control-label"><fmt:formatDate pattern="yyyy-MM-dd" value="${yearFill.createDate}"/></label>
 					</div>
 				</div>
 				
-				<h5 class="form-tit col-xs-12">专业实际完成进度</h5>
+				<div class="col-xs-12">
+					<h5 class="form-tit">专业实际完成进度</h5>
+				</div>
 				<div class="col-xs-12">
 					<table id="majorTable" class="table table-bordered edit">
 						<thead>
@@ -193,6 +195,8 @@
 						</tbody>
 					</table>
 				</div>
+
+				<div class="clearfix"></div>
 
 				<jsp:include page="../../../framework/activiti/wf_approve.jsp" flush="true"/>
 		        <tags:histask procId="${yearFill.procId}"/>

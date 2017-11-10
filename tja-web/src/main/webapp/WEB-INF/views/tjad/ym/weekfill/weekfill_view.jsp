@@ -31,14 +31,14 @@
 			
 			<div class="form-body clearfix" style="padding-bottom: 0">
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">流水号</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">流水号</label>
+					<div class="col-xs-8">
 						<label class="control-label">${weekFill.seqNo}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4"></label>
-					<div class="col-md-7 text-right">
+					<label class="control-label col-xs-4"></label>
+					<div class="col-xs-8 text-right">
 						<c:if test="${canRevoke}">
 							<input type="button" id="reject-btn" value="撤回" class="btn blue">
 						</c:if>
@@ -54,152 +54,154 @@
 			
 			<div class="form-body clearfix">
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">项目编号</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">项目编号</label>
+					<div class="col-xs-8">
 						<label class="control-label">${weekFill.proCode}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">项目名称</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">项目名称</label>
+					<div class="col-xs-8">
 						<label class="control-label">${weekFill.proName}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">项目类型</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">项目类型</label>
+					<div class="col-xs-8">
 						<tags:config type="label" code="${weekFill.proType}"/>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">项目级别</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">项目级别</label>
+					<div class="col-xs-8">
 						<tags:config type="label" code="${weekFill.proGrade}"/>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">实际合同额(¥)</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">实际合同额(¥)</label>
+					<div class="col-xs-8">
 						<label class="control-label">${weekFill.contractAmount}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">分包扣减(¥)</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">分包扣减(¥)</label>
+					<div class="col-xs-8">
 						<label class="control-label">${weekFill.pkgAmount}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">方案扣减(¥)</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">方案扣减(¥)</label>
+					<div class="col-xs-8">
 						<label class="control-label">${weekFill.schemeAmount}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">其他扣减(¥)</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">其他扣减(¥)</label>
+					<div class="col-xs-8">
 						<label class="control-label">${weekFill.rebateAmount}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">项目负责人</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">项目负责人</label>
+					<div class="col-xs-8">
 						<label class="control-label">${weekFill.proFzrName}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">项目经理</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">项目经理</label>
+					<div class="col-xs-8">
 						<label class="control-label">${weekFill.proJlName}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">所处状态</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">所处状态</label>
+					<div class="col-xs-8">
 						<tags:config type="label" code="${weekFill.proStatus}"/>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">所处阶段</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">所处阶段</label>
+					<div class="col-xs-8">
 						<tags:config type="label" code="${weekFill.phaseCode}"/>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">对应阶段启动时间</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">对应阶段启动时间</label>
+					<div class="col-xs-8">
 						<label class="control-label"><fmt:formatDate pattern="yyyy-MM-dd" value="${weekFill.phaseStart}"/></label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">持续时间(天)</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">持续时间(天)</label>
+					<div class="col-xs-8">
 						<label class="control-label">${weekFill.duration}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">当周进度(%)</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">当周进度(%)</label>
+					<div class="col-xs-8">
 						<label class="control-label">${weekFill.weekProgress}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">当周产值(¥)</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">当周产值(¥)</label>
+					<div class="col-xs-8">
 						<label class="control-label">${weekFill.weekYield}</label>
 					</div>
 				</div>
 				
 				<div class="form-group col-xs-12 ">
-					<label class="control-label col-md-2" style="margin-left: -0.6%;">当周工作及进展情况</label>
-					<div class="col-md-9" style="width: 78%;">
+					<label class="control-label col-xs-2">当周工作及进展情况</label>
+					<div class="col-xs-10">
 						<textarea rows="3" class="form-control" disabled>${weekFill.weekEvolve}</textarea>
 					</div>
 				</div>
 				<div class="form-group col-xs-12 ">
-					<label class="control-label col-md-2" style="margin-left: -0.6%;">下阶段工作计划</label>
-					<div class="col-md-9" style="width: 78%;">
+					<label class="control-label col-xs-2">下阶段工作计划</label>
+					<div class="col-xs-10">
 						<textarea rows="3" class="form-control" disabled>${weekFill.workPlan}</textarea>
 					</div>
 				</div>
 				<div class="form-group col-xs-12 ">
-					<label class="control-label col-md-2" style="margin-left: -0.6%;">备案情况</label>
-					<div class="col-md-9" style="width: 78%;">
+					<label class="control-label col-xs-2">备案情况</label>
+					<div class="col-xs-10">
 						<textarea rows="3" class="form-control" disabled>${weekFill.filing}</textarea>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">创建人</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">创建人</label>
+					<div class="col-xs-8">
 						<label class="control-label">${weekFill.creator}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
-					<label class="control-label col-md-4">创建时间</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">创建时间</label>
+					<div class="col-xs-8">
 						<label class="control-label"><fmt:formatDate pattern="yyyy-MM-dd" value="${weekFill.createDate}"/></label>
 					</div>
 				</div>
 				
 				<c:if test="${view == 2}">
-				<h5 class="form-tit col-xs-12">运营评定</h5>
+				<div class="col-xs-12">
+					<h5 class="form-tit">运营评定</h5>
+				</div>
 				<div class="form-group col-xs-4 ">
-					<label class="control-label col-md-4">备案情况<span class="required">※</span></label>
-					<div class="col-md-7 input-icon right">
+					<label class="control-label col-xs-4">备案情况<span class="required">※</span></label>
+					<div class="col-xs-8 input-icon right">
 						<i class="fa"></i>
 						<tags:config name="filingEstimate" type="select" otherAttr='data-rule-required="true"' cssClass="form-control" parentCode="YM.FILING" selectCode="${weekFill.filingEstimate}"/>
 					</div>
 				</div>
 				<div class="form-group col-xs-4 ">
-					<label class="control-label col-md-4">合同收费<span class="required">※</span></label>
-					<div class="col-md-7 input-icon right">
+					<label class="control-label col-xs-4">合同收费<span class="required">※</span></label>
+					<div class="col-xs-8 input-icon right">
 						<i class="fa"></i>
 						<tags:config name="feeEstimate" type="select" otherAttr='data-rule-required="true"' cssClass="form-control" parentCode="YM.CONTRACT.FEE" selectCode="${weekFill.feeEstimate}"/>
 					</div>
 				</div>
 				<div class="form-group col-xs-4 ">
-					<label class="control-label col-md-4">运营评定<span class="required">※</span></label>
-					<div class="col-md-7 input-icon right">
+					<label class="control-label col-xs-4">运营评定<span class="required">※</span></label>
+					<div class="col-xs-8 input-icon right">
 						<i class="fa"></i>
 						<tags:config name="operationEstimate" type="select" otherAttr='data-rule-required="true"' cssClass="form-control" parentCode="YM.OPERATION" selectCode="${weekFill.operationEstimate}"/>
 					</div>
@@ -207,26 +209,30 @@
 				</c:if>
 				
 				<c:if test="${view > 2}">
-				<h5 class="form-tit col-xs-12">运营评定</h5>
+				<div class="col-xs-12">
+					<h5 class="form-tit">运营评定</h5>
+				</div>
 				<div class="form-group col-xs-4 ">
-					<label class="control-label col-md-4">备案情况</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">备案情况</label>
+					<div class="col-xs-8">
 						<tags:config type="label" cssClass="form-control" code="${weekFill.filingEstimate}"/>
 					</div>
 				</div>
 				<div class="form-group col-xs-4 ">
-					<label class="control-label col-md-4">合同收费</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">合同收费</label>
+					<div class="col-xs-8">
 						<tags:config type="label" cssClass="form-control" code="${weekFill.feeEstimate}"/>
 					</div>
 				</div>
 				<div class="form-group col-xs-4 ">
-					<label class="control-label col-md-4">运营评定</label>
-					<div class="col-md-7">
+					<label class="control-label col-xs-4">运营评定</label>
+					<div class="col-xs-8">
 						<tags:config type="label" cssClass="form-control" code="${weekFill.operationEstimate}"/>
 					</div>
 				</div>
 				</c:if>
+
+				<div class="clearfix"></div>
 
 				<jsp:include page="../../../framework/activiti/wf_approve.jsp" flush="true"/>
 		        <tags:histask procId="${weekFill.procId}"/>

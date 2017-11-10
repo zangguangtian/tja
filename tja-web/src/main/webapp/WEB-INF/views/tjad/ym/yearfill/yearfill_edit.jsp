@@ -144,7 +144,9 @@
 					</div>
 				</div>
 				
-				<h5 class="form-tit col-xs-12">专业实际完成进度</h5>
+				<div class="col-xs-12">
+					<h5 class="form-tit">专业实际完成进度</h5>
+				</div>
 				<div class="col-xs-12">
 					<table id="majorTable" class="table table-bordered edit">
 						<thead>
