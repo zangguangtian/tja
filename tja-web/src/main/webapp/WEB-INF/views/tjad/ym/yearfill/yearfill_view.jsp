@@ -118,7 +118,7 @@
 				<div class="form-group col-xs-12 ">
 					<label class="control-label col-xs-2">备注</label>
 					<div class="col-xs-10">
-						<textarea rows="3" class="form-control" disabled>${yearFill.remark}</textarea>
+						<label class="control-label">${yearFill.remark}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">

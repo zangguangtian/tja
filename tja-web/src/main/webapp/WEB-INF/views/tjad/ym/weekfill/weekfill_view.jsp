@@ -30,13 +30,13 @@
 			<input type="hidden" name="procId" value="${weekFill.procId }">
 			
 			<div class="form-body clearfix" style="padding-bottom: 0">
-				<div class="form-group col-xs-6 ">
+				<div class="col-xs-6 ">
 					<label class="control-label col-xs-4">流水号</label>
 					<div class="col-xs-8">
 						<label class="control-label">${weekFill.seqNo}</label>
 					</div>
 				</div>
-				<div class="form-group col-xs-6 ">
+				<div class="col-xs-6 ">
 					<label class="control-label col-xs-4"></label>
 					<div class="col-xs-8 text-right">
 						<c:if test="${canRevoke}">
@@ -153,19 +153,19 @@
 				<div class="form-group col-xs-12 ">
 					<label class="control-label col-xs-2">当周工作及进展情况</label>
 					<div class="col-xs-10">
-						<textarea rows="3" class="form-control" disabled>${weekFill.weekEvolve}</textarea>
+						<label class="control-label">${weekFill.weekEvolve}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-12 ">
 					<label class="control-label col-xs-2">下阶段工作计划</label>
 					<div class="col-xs-10">
-						<textarea rows="3" class="form-control" disabled>${weekFill.workPlan}</textarea>
+						<label class="control-label">${weekFill.workPlan}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-12 ">
 					<label class="control-label col-xs-2">备案情况</label>
 					<div class="col-xs-10">
-						<textarea rows="3" class="form-control" disabled>${weekFill.filing}</textarea>
+						<label class="control-label">${weekFill.filing}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
