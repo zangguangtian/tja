@@ -59,6 +59,16 @@ public class ProjectController extends BaseController {
     }
 
     /**
+     * <p>描述 : 详细</p>
+     */
+    @RequestMapping(value = "/view/{proId}")
+    public String detial(@PathVariable("proId") String proId, Model model) throws RuntimeException {
+        CustProject projectMore = projectService.queryByProId(proId);
+        model.addAttribute("project", projectMore);
+        return "/tjad/pm/project/project_view";
+    }
+
+    /**
      * <p>描述 : 编辑</p>
      * @param proCode 项目编号
      */
