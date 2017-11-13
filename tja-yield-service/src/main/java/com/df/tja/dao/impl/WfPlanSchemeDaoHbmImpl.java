@@ -67,8 +67,8 @@ public class WfPlanSchemeDaoHbmImpl extends BaseDaoHbmImpl implements IWfPlanSch
         sql.append("  WP.SCHEME_YIELD AS schemeYield, WP.RECEPT_DEPT_ID As receptDeptId,       ");
         sql.append("  HO.ORG_NAME AS orgName, WP.SCHEME_OVERVIEW AS schemeOverview, FM.PROC_ID ");
         sql.append("  AS procId, FM.AUDIT_STATUS AS auditStatus, FM.SEQ_NO AS seqNo,           ");
-        sql.append("  WP.CREATOR AS creator, WP.REMARK As remark                               ");
-        sql.append("FROM WF_PLAN_SCHEME WP                                                     ");
+        sql.append("  WP.CREATOR AS creator, WP.REMARK As remark,WP.PERF_TYPE AS perfType,     ");
+        sql.append("WP.PERF_YIELD AS perfYield  FROM WF_PLAN_SCHEME WP                         ");
         sql.append("INNER JOIN WF_FLOW_MAIN FM ON WP.ID = FM.ID                                ");
         sql.append("LEFT JOIN HR_ORG_TM HO ON WP.RECEPT_DEPT_ID = HO.ID                        ");
         sql.append("WHERE WP.ID = ?                                                            ");

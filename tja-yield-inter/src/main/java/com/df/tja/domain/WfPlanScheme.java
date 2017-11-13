@@ -68,6 +68,12 @@ public class WfPlanScheme extends WfBaseDomain {
     /** 属性：承接部门 */
     private java.lang.String receptDeptId;
 
+    /** 属性：绩效类型 1000：中标产值；2000：入围产值*/
+    private java.lang.String perfType;
+
+    /** 属性：绩效产值*/
+    private BigDecimal perfYield;
+
     /** 属性：概况 */
     private String schemeOverview;
 
@@ -210,6 +216,24 @@ public class WfPlanScheme extends WfBaseDomain {
      */
     public void setSchemeOverview(String schemeOverview) {
         this.schemeOverview = schemeOverview;
+    }
+
+    @Column(name = "PERF_TYPE")
+    public java.lang.String getPerfType() {
+        return perfType;
+    }
+
+    public void setPerfType(java.lang.String perfType) {
+        this.perfType = perfType;
+    }
+
+    @Column(name = "PERF_YIELD")
+    public BigDecimal getPerfYield() {
+        return perfYield;
+    }
+
+    public void setPerfYield(BigDecimal perfYield) {
+        this.perfYield = perfYield;
     }
 
     /**

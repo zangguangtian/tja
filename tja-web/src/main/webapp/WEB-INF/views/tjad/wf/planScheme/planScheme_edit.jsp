@@ -115,6 +115,23 @@
 						</div>
 					</div>
 					
+					<div class="form-group col-lg-6 ">
+						<label class="control-label col-md-3">绩效类型</label>
+						<div class="col-md-8">
+						  <select name="perfType" class="form-control">
+						     <option>--请选择--</option>
+						     <option  value="1000"  <c:if test="${planScheme.perfType == '1000'}">selected</c:if>>中标产值</option>
+						     <option  value="2000"  <c:if test="${planScheme.perfType == '2000'}">selected</c:if>>入围产值</option>
+						  </select>
+						</div>
+					</div>
+					<div class="form-group col-lg-6 ">
+						<label class="control-label col-md-3">绩效产值</label>
+						<div class="col-md-8">
+							<input type="text" class="form-control" name="perfYield" value="<fmt:formatNumber value='${planScheme.perfYield}' pattern='#,#00.00#'/>">
+						</div>
+					</div>
+					
 					<div class="form-group col-lg-12 " style="padding-left: 4%;">
 						<label class="control-label col-md-1">概况</label>
 						<div class="col-md-10 input-icon right">
@@ -410,6 +427,7 @@
 	    if (flag) {
 	    	//千分位处理
 	    	$("input[name='schemeYield']").val(delcommafy($("input[name='schemeYield']").val()));
+	    	$("input[name='perfYield']").val(delcommafy($("input[name='perfYield']").val()));
 	    	$("input:disabled").removeAttr("disabled")
 	    	$("input[name='auditStatus']").val(status);
 		        jQuery.ajax({

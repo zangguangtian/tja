@@ -119,6 +119,23 @@
 						    <label class="control-label">${planScheme.orgName}</label>
 						</div>
 					</div>
+					
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">绩效类型</label>
+						<div class="col-xs-8">
+						   <label class="control-label">
+						   <c:if test="${planScheme.perfType == '1000'}">中标产值</c:if>
+						   <c:if test="${planScheme.perfType == '2000'}">入围产值</c:if>
+						   </label>
+						</div>
+					</div>
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">绩效产值</label>
+						<div class="col-xs-8">
+						   <label class="control-label"><fmt:formatNumber value='${planScheme.perfYield}' pattern='#,#00.00#'/></label>
+						</div>
+					</div>
+					
 					<div class="form-group col-xs-12 ">
 						<label class="control-label col-xs-2">概况</label>
 						<div class="col-xs-10">
