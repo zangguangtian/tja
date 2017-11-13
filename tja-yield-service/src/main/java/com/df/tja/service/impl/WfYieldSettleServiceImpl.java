@@ -93,47 +93,7 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
         outParams.put("categoryPm", TjaConstant.SysCode.STAFF_CATEGORY_PM);
         try {
             if ("0".equals(id)) { //新建
-                CustProject project = projectDao.selectProInfoById(proId);
-                OcPeriodManage periodManage = queryByPrimaryKey(OcPeriodManage.class, periodId);
-                outParams.put("periodManage", periodManage);
-                outParams.put("permitId", syId);
-                if ("1000".equals(editType)) { //年度产值结算；
-                    OcSettleYield ocSettleYield = queryByPrimaryKey(OcSettleYield.class, syId);
-                    project.setYield(ocSettleYield.getSettleYield());
-                    //获取 项目负责人 和 项目经理 比例
-                    ProjectExtend projectExtend = queryByPrimaryKey(ProjectExtend.class, proId);
-                    outParams.put("projectExtend", projectExtend);
-                    //获取项目负责人下 的 人员 
-                    List<CustStaff> leaders = wfYieldSettleDao.selectBudgetStaffByRole(proId,
-                        TjaConstant.SysCode.STAFF_CATEGORY_LEADER);
-                    outParams.put("leaders", leaders);
-                    //获取项目经理下 的 人员 
-                    List<CustStaff> pms = wfYieldSettleDao.selectBudgetStaffByRole(proId,
-                        TjaConstant.SysCode.STAFF_CATEGORY_PM);
-                    outParams.put("proPms", pms);
-                    //当年专业结算比例
-                    List<SysConfig> configs = wfYieldSettleDao.selectMajorByProId(proId);
-                    outParams.put("configs", configs);
-                    //历年已结算产值
-                    WfYieldSettle settle = wfYieldSettleDao.selectHisYearYield();
-                    outParams.put("hisyearYield", settle.getYearYield());
-                } else if ("2000".equals(editType)) { // 年度产值结算特批
-                    OcPermitYield ocPermitYield = queryByPrimaryKey(OcPermitYield.class, syId);
-                    project.setYield(ocPermitYield.getPermitYield());
-                    List<CustStaff> staffs = wfYieldSettleDao.selectMajorBudgetStaff(proId,
-                        ocPermitYield.getMajorCode());
-                    Set<CustStaff> staffSets = new HashSet<CustStaff>();
-                    staffSets.addAll(staffs);
-                    outParams.put("staffs", staffSets);
-                    if (staffs != null && staffs.size() > 0) {
-                        CustStaff custStaff = staffs.get(0);
-                        if (StringUtils.isNotBlank(custStaff.getMajorName())) {
-                            outParams.put("majorName", custStaff.getMajorName());
-                            outParams.put("majorCode", custStaff.getMajorCode());
-                        }
-                    }
-                }
-                outParams.put("project", project);
+                getYieldSettleInfo(outParams, proId, periodId, syId, editType);
             } else { //修改 
                 WfYieldSettle yieldSettle = wfYieldSettleDao.selectWfYieldSettleById(id);
                 outParams.put("yieldSettle", yieldSettle);
@@ -155,8 +115,7 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
                     //当年专业结算比例
                     List<WfYieldMajorRate> majorRates = wfYieldSettleDao.selectMajorRate(yieldSettle.getId());
                     outParams.put("majorRates", majorRates);
-                } else if ("2000".equals(editType)) {
-                    // 年度产值结算特批
+                } else if ("2000".equals(editType)) { // 年度产值结算特批
                     List<WfYieldMajorRoleAllot> permitYields = wfYieldSettleDao.selectMajorRoleAllotByWfId(yieldSettle
                         .getId());
                     outParams.put("majorRoleAllots", permitYields);
@@ -165,6 +124,60 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * <p>描述 : </p>
+     *
+     * @param outParams
+     * @param proId
+     * @param periodId
+     * @param syId
+     * @param editType
+     */
+    private void getYieldSettleInfo(Map<String, Object> outParams, String proId, String periodId, String syId,
+                                    String editType) {
+        CustProject project = projectDao.selectProInfoById(proId);
+        OcPeriodManage periodManage = queryByPrimaryKey(OcPeriodManage.class, periodId);
+        outParams.put("periodManage", periodManage);
+        outParams.put("permitId", syId);
+        if ("1000".equals(editType)) { //年度产值结算；
+            OcSettleYield ocSettleYield = queryByPrimaryKey(OcSettleYield.class, syId);
+            project.setYield(ocSettleYield.getSettleYield());
+            //获取 项目负责人 和 项目经理 比例
+            ProjectExtend projectExtend = queryByPrimaryKey(ProjectExtend.class, proId);
+            outParams.put("projectExtend", projectExtend);
+            //获取项目负责人下 的 人员 
+            List<CustStaff> leaders = wfYieldSettleDao.selectBudgetStaffByRole(proId,
+                TjaConstant.SysCode.STAFF_CATEGORY_LEADER);
+            outParams.put("leaders", leaders);
+            //获取项目经理下 的 人员 
+            List<CustStaff> pms = wfYieldSettleDao.selectBudgetStaffByRole(proId,
+                TjaConstant.SysCode.STAFF_CATEGORY_PM);
+            outParams.put("proPms", pms);
+            //当年专业结算比例
+            List<SysConfig> configs = wfYieldSettleDao.selectMajorByProId(proId);
+            outParams.put("configs", configs);
+            //历年已结算产值
+            WfYieldSettle settle = wfYieldSettleDao.selectHisYearYield();
+            outParams.put("hisyearYield", settle.getYearYield());
+        } else if ("2000".equals(editType)) { // 年度产值结算特批
+            OcPermitYield ocPermitYield = queryByPrimaryKey(OcPermitYield.class, syId);
+            project.setYield(ocPermitYield.getPermitYield());
+            List<CustStaff> staffs = wfYieldSettleDao.selectMajorBudgetStaff(proId,
+                ocPermitYield.getMajorCode());
+            Set<CustStaff> staffSets = new HashSet<CustStaff>();
+            staffSets.addAll(staffs);
+            outParams.put("staffs", staffSets);
+            if (staffs != null && staffs.size() > 0) {
+                CustStaff custStaff = staffs.get(0);
+                if (StringUtils.isNotBlank(custStaff.getMajorName())) {
+                    outParams.put("majorName", custStaff.getMajorName());
+                    outParams.put("majorCode", custStaff.getMajorCode());
+                }
+            }
+        }
+        outParams.put("project", project);
     }
 
     /** 
