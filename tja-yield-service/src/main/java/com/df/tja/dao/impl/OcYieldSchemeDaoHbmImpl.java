@@ -55,6 +55,21 @@ public class OcYieldSchemeDaoHbmImpl extends BaseDaoHbmImpl implements IOcYieldS
     }
 
     @SuppressWarnings("unchecked")
+    public List<CustOcYieldMajor> selectOcYieldMajorsBySchemeId(String schemeId) {
+        StringBuffer sql = new StringBuffer();
+        sql.append("select ym.id as id, ym.scheme_id as schemeId, ym.name as name,        ");
+        sql.append("  ym.price_id as priceId, sp.type_code as typeCode, ym.build_area     ");
+        sql.append("  as buildArea, ym.standard_price as standardPrice, ym.standard_yield ");
+        sql.append("  as standardYield, ym.major_yield as majorYield                      ");
+        sql.append("from oc_yield_major ym                                                ");
+        sql.append("left join oc_standard_price sp on ym.price_id = sp.id                 ");
+        sql.append("where ym.scheme_id = ?                                                ");
+        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setString(0, schemeId);
+        query.setResultTransformer(Transformers.aliasToBean(CustOcYieldMajor.class));
+        return query.list();
+    }
+
     public List<CustOcYieldMajorDuty> selectOcYieldMajorDutiesBySchemeId(String schemeId) {
         StringBuffer sql = new StringBuffer();
         sql.append("select ymd.id as id, ymd.scheme_id as schemeId, ymd.major_code as majorCode,  ");

@@ -101,4 +101,16 @@ public abstract class TjaConstant {
 
     }
 
+    /**
+     * 施工图产值策划阶段 
+     * @author TabZhu
+     *
+     */
+    public static class SGTMajor {
+        //父阶段代码 
+        public static final String MAJORPARENT = "PM.MAJOR";
+
+        public static final String[] IGNORED_MAJOR = {"Y", "I", "X", "GZ", "Z"};
+    }
+
 }

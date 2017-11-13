@@ -31,6 +31,7 @@ import com.df.framework.util.LoggerUtil;
 import com.df.framework.util.ObjectUtils;
 import com.df.framework.util.StringUtil;
 import com.df.project.domain.ProMajorRoleRate;
+import com.df.tja.constant.TjaConstant;
 import com.df.tja.dao.IOcYieldSchemeDao;
 import com.df.tja.domain.OcYieldMajor;
 import com.df.tja.domain.OcYieldMajorDuty;
@@ -187,17 +188,15 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
     public List<CustOcYieldMajor> queryOcYieldMajors(String schemeId) throws RuntimeException {
         List<CustOcYieldMajor> custYieldMajors = null;
         try {
-            OcYieldMajor ocYieldMajor = new OcYieldMajor();
-            ocYieldMajor.setSchemeId(schemeId);
             //专业列表
-            List<OcYieldMajor> majors = ocYieldSchemeDao.selectBySQLCondition(OcYieldMajor.class, ocYieldMajor, null);
+            List<CustOcYieldMajor> majors = ocYieldSchemeDao.selectOcYieldMajorsBySchemeId(schemeId);
             if (majors != null && !majors.isEmpty()) {
                 CustOcYieldMajor custOcYieldMajor = null;
                 OcYieldMajorRatio ocYieldMajorRatio = null;
                 List<OcYieldMajorRatio> majorRatios = null;
                 custYieldMajors = new ArrayList<CustOcYieldMajor>(0);
                 Map<String, OcYieldMajorRatio> majorMap = null;
-                for (OcYieldMajor yieldMajor : majors) {
+                for (CustOcYieldMajor yieldMajor : majors) {
                     custOcYieldMajor = new CustOcYieldMajor();
                     ObjectUtils.copyProperties(yieldMajor, custOcYieldMajor);
 
@@ -362,7 +361,8 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
             ocYieldMajorRatio.setMajorId(ocYieldMajor.getId());
             ocYieldSchemeDao.deleteByObject(OcYieldMajorRatio.class, ocYieldMajorRatio);
 
-            List<SysConfig> majors = sysConfigService.querySysConfigsByParentCode("PM.MAJOR");
+            List<SysConfig> majors = sysConfigService.querySysConfigsByParentCode(TjaConstant.SGTMajor.MAJORPARENT,
+                TjaConstant.SGTMajor.IGNORED_MAJOR);
             if (majors != null && !majors.isEmpty()) {
                 OcYieldMajorRatio majorRatio = null;
                 String majorRateVal = null;

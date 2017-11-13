@@ -31,6 +31,7 @@ import com.df.framework.sys.service.ISysConfigService;
 import com.df.framework.util.ObjectUtils;
 import com.df.project.domain.cust.CustProject;
 import com.df.project.service.IProjectService;
+import com.df.tja.constant.TjaConstant;
 import com.df.tja.domain.OcYieldScheme;
 import com.df.tja.domain.cust.CustOcYieldMajor;
 import com.df.tja.domain.cust.CustOcYieldMajorDuty;
@@ -105,7 +106,8 @@ public class YieldSchemeController extends BaseController {
         model.addAttribute("project", project);
 
         //取专业
-        List<SysConfig> majors = sysConfigService.querySysConfigsByParentCode("PM.MAJOR");
+        List<SysConfig> majors = sysConfigService.querySysConfigsByParentCode(TjaConstant.SGTMajor.MAJORPARENT,
+            TjaConstant.SGTMajor.IGNORED_MAJOR);
         model.addAttribute("majors", majors);
 
         //查询所有土建基准单价及专业比例 
@@ -166,5 +168,41 @@ public class YieldSchemeController extends BaseController {
             logger.error("", ex);
         }
         return resultMap;
+    }
+
+    /**
+     * 打印预览
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/toprint/{id}", method = RequestMethod.GET)
+    public String toprint(@PathVariable("id") String id, Model model) {
+        model.addAttribute("schemeStages", schemeStages);
+
+        //取专业
+        List<SysConfig> majors = sysConfigService.querySysConfigsByParentCode(TjaConstant.SGTMajor.MAJORPARENT,
+            TjaConstant.SGTMajor.IGNORED_MAJOR);
+        model.addAttribute("majors", majors);
+
+        //取策划主表
+        OcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
+        model.addAttribute("yieldScheme", yieldScheme);
+
+        //项目信息
+        CustProject project = projectService.queryByProId(yieldScheme.getProId());
+        model.addAttribute("project", project);
+
+        //查询专业及比例
+        List<CustOcYieldMajor> yieldMajors = yieldSchemeService.queryOcYieldMajors(id);
+        model.addAttribute("yieldMajors", yieldMajors);
+
+        //查询各专业部门产值及负责人
+        Map<String, CustOcYieldStageMajor> stageMajors = yieldSchemeService.queryOcYieldStageMajorsBySchemeId(id);
+        model.addAttribute("stageMajors", stageMajors);
+
+        //查询各专业部门产值及负责人
+        Map<String, CustOcYieldMajorDuty> duties = yieldSchemeService.queryOcYieldMajorDutiesBySchemeId(id);
+        model.addAttribute("yieldDuties", duties);
+        return "/tjad/oc/yieldsch/yield_scheme_view";
     }
 }

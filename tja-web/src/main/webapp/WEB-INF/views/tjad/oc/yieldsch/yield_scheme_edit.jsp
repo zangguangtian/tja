@@ -123,11 +123,11 @@
                             		<c:forEach items="${yieldMajors }" var="yieldMajor" varStatus="vs">
                             			<tr>
 										    <td nowrap="nowrap" width="40px" style="text-align:center;">${vs.index + 1}</td>
-										    <td nowrap="nowrap">
+										    <td nowrap="nowrap" class="form-group">
 										    	<input type="hidden" name="yieldMajors[${vs.index}].id" value="${yieldMajor.id }">
 										    	<input type="text" name="yieldMajors[${vs.index}].name" value="${yieldMajor.name }" class="form-control" data-rule-required="true">
 										    </td>
-										    <td nowrap="nowrap" style="width:100px;">
+										    <td nowrap="nowrap" class="form-group" style="width:100px;">
 										       <select name="yieldMajors[${vs.index}].priceId" class="form-control" data-rule-required="true">
 										           <option value="">-请选择-</option>
 										       <c:if test="${not empty prices }">
@@ -142,7 +142,7 @@
 										       </c:if>
 										       </select>
 										    </td>
-										    <td nowrap="nowrap"><input type="text" name="yieldMajors[${vs.index}].buildArea" value="${yieldMajor.buildArea }" data-rule-number="true" data-rule-required="true" class="form-control"></td>
+										    <td nowrap="nowrap" class="form-group"><input type="text" name="yieldMajors[${vs.index}].buildArea" value="${yieldMajor.buildArea }" data-rule-number="true" data-rule-required="true" class="form-control"></td>
 										    <td nowrap="nowrap" id="price${vs.index}" style="text-align:right;">${yieldMajor.standardPrice }</td>
 										    <td nowrap="nowrap" id="sYield${vs.index}" style="text-align:right;">${yieldMajor.standardYield }</td>
 										    <td nowrap="nowrap" id="mYield${vs.index}" style="text-align:right;">${yieldMajor.majorYield }</td>
@@ -383,8 +383,8 @@
 <table id="majorRatio_clone" style="display:none;">
     <tr>
 	    <td nowrap="nowrap" width="40px" style="text-align:center;">{0}</td>
-	    <td nowrap="nowrap"><input type="text" name="yieldMajors[{0}].name" value="" class="form-control" data-rule-required="true"></td>
-	    <td nowrap="nowrap" style="width:100px;">
+	    <td nowrap="nowrap" class="form-group"><input type="text" name="yieldMajors[{0}].name" value="" class="form-control" data-rule-required="true"></td>
+	    <td nowrap="nowrap" class="form-group" style="width:100px;">
 	       <select name="yieldMajors[{0}].priceId" class="form-control" data-rule-required="true">
 	           <option value="">-请选择-</option>
 	       <c:if test="${not empty prices }">
@@ -394,7 +394,7 @@
 	       </c:if>
 	       </select>
 	    </td>
-	    <td nowrap="nowrap"><input type="text" name="yieldMajors[{0}].buildArea" value="" data-rule-required="true" data-rule-number="true" class="form-control"></td>
+	    <td nowrap="nowrap" class="form-group"><input type="text" name="yieldMajors[{0}].buildArea" value="" data-rule-required="true" data-rule-number="true" class="form-control"></td>
 	    <td nowrap="nowrap" id="price{0}" style="text-align:right;"></td>
 	    <td nowrap="nowrap" id="sYield{0}" style="text-align:right;"></td>
 	    <td nowrap="nowrap" id="mYield{0}" style="text-align:right;"></td>
@@ -411,7 +411,11 @@
 <script type="text/javascript" src="${site}/resources/js/ztree/ztree-3.4-extend.js?v=${buildVersion}"></script>
 <script type="text/javascript">
 //打印
-$(document).on("click", "#print-btn", printScheme);
+jQuery("#print-btn").dfprint({
+    action : "printview",
+    width : "1000",
+    url : "${site}/admin/yield/scheme/toprint/${yieldScheme.id }"
+});
 
 //专业比例类型编号切换
 $(document).on("change", "#majorRatio select[name$='priceId']", priceCodeChange);

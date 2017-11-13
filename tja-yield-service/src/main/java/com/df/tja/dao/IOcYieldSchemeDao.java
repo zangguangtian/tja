@@ -35,6 +35,13 @@ public interface IOcYieldSchemeDao extends IBaseDao {
     CustOcYieldScheme selectOcYieldSchemeById(String id);
 
     /**
+     * 按施工图产值策划ID查询所有专业比例
+     * @param schemeId
+     * @return
+     */
+    List<CustOcYieldMajor> selectOcYieldMajorsBySchemeId(String schemeId);
+
+    /**
      * 按施工图产值策划ID查询所有专业的产值及负责人
      * @param schemeId
      * @return
