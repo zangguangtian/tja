@@ -33,99 +33,102 @@
 		<div class="form">
 			<!-- BEGIN FORM-->
 			<form id="approveForm" action="${site}/admin/wf/planScheme/ajax/approve" method="post" class="row">
-			    <input type="hidden" name="id" value="${planScheme.id}">
-		        <input type="hidden" name="procId" value="${planScheme.procId }">
-		        <input type="hidden" name="approve" value="2"/>
-				<div class="form-body clearfix">
-	                <div class="form-group col-lg-6">
-						<label class="control-label col-md-3">流水号</label>
-						<div class="col-md-8">
-							<input type="text" class="form-control" value="${planScheme.seqNo}" disabled="disabled" title="${planScheme.seqNo}">
+				    <input type="hidden" name="id" value="${planScheme.id}">
+			        <input type="hidden" name="procId" value="${planScheme.procId }">
+			        <input type="hidden" name="approve" value="2"/>
+	                <div class="form-body clearfix" style="padding-bottom: 0">
+						<div class="col-xs-6 ">
+							<label class="control-label col-xs-4">流水号</label>
+							<div class="col-xs-8">
+								<label class="control-label">${planScheme.seqNo}</label>
+							</div>
+						</div>
+						<div class="col-xs-6 ">
+							<label class="control-label col-xs-4"></label>
+							<div class="col-xs-8 text-right">
+								<c:if test="${canRevoke}">
+									<input type="button" id="reject-btn" value="撤回" class="btn blue">
+								</c:if>
+					           	<c:if test="${not empty canPrintView}">
+									<input type="button" id="printview-btn" value="打印预览" class="btn blue">
+								</c:if>
+								<c:if test="${not empty canPrint}">
+									<input type="button" id="print-btn" value="打印" class="btn blue">
+								</c:if>
+							</div>
 						</div>
 					</div>
-	                <div class="form-group col-lg-6 text-right">
-	                    <c:if test="${canRevoke }">
-	                        <input type="button" id="reject-btn" value="撤回" class="btn blue">
-	                    </c:if>
-	                    <c:if test="${not empty canPrintView}">
-	                        <input type="button" id="printview-btn" value="打印预览" class="btn blue"/>
-	                    </c:if>
-	                    <c:if test="${not empty canPrint}">
-	                        <input type="button" id="print-btn" value="打印" class="btn blue"/>
-	                    </c:if>
-	                </div>
 	                
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">项目编号</label>
-						<div class="col-md-8">
-							<input type="text" name="proCode" class="form-control col-md-3" disabled value="${project.proCode}">
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">项目编号</label>
+						<div class="col-xs-8">
+						   <label class="control-label">${project.proCode}</label>
 						</div>
 					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">项目名称</label>
-						<div class="col-md-8">
-							<input type="text" name="proName" class="form-control" disabled value="${project.proName}">
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">项目名称</label>
+						<div class="col-xs-8">
+							<label class="control-label">${project.proName}</label>
 						</div>
 					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">项目类型</label>
-						<div class="col-md-8">
-							<input type="text" name="proType" class="form-control" disabled value="${project.proType}">
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">项目类型</label>
+						<div class="col-xs-8">
+							<label class="control-label">${project.proType}</label>
 						</div>
 					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">项目级别</label>
-						<div class="col-md-8">
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">项目级别</label>
+						<div class="col-xs-8">
 							<tags:config type="label" cssClass="form-control" code="${planScheme.itemGrade}"></tags:config>
 						</div>
 					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">项目负责人</label>
-						<div class="col-md-8">
-							<input type="text" name="pmLeaders" class="form-control" disabled value="${project.pmLeaders}">
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">项目负责人</label>
+						<div class="col-xs-8">
+							<label class="control-label">${project.pmLeaders}</label>
 						</div>
 					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">项目经理</label>
-						<div class="col-md-8">
-							<input type="text" class="form-control" disabled name="pManagers" value="${project.pManagers}">
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">项目经理</label>
+						<div class="col-xs-8">
+							<label class="control-label">${project.pManagers}</label>
 						</div>
 					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">设计启动时间</label>
-						<div class="col-md-8">
-							<input type="text" class="form-control datetimepicker" name="designStart" disabled value='<fmt:formatDate value="${planScheme.designStart}" pattern="yyyy-MM-dd" />'>
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">设计启动时间</label>
+						<div class="col-xs-8">
+						    <label class="control-label"><fmt:formatDate value="${planScheme.designStart}" pattern="yyyy-MM-dd" /></label>
 						</div>
 					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">设计完成时间</label>
-						<div class="col-md-8">
-							<input type="text" class="form-control datetimepicker" name="designCompleted" disabled value='<fmt:formatDate value="${planScheme.designCompleted}" pattern="yyyy-MM-dd" />'> 
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">设计完成时间</label>
+						<div class="col-xs-8">
+							<label class="control-label"><fmt:formatDate value="${planScheme.designCompleted}" pattern="yyyy-MM-dd" /></label>
 						</div>
 					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">方案产值(￥)</label>
-						<div class="col-md-8">
-							<input type="text" class="form-control" data-rule-number="true" name="schemeYield" disabled  value="<fmt:formatNumber value='${planScheme.schemeYield}' pattern='#,#00.00#'/>">
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">方案产值(￥)</label>
+						<div class="col-xs-8">
+							<label class="control-label"><fmt:formatNumber value='${planScheme.schemeYield}' pattern='#,#00.00#'/></label>
 						</div>
 					</div>
-					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">承接部门</label>
-						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i>
-			            	<input type="text" id="orgName" class="form-control col-md-3" value="${planScheme.orgName}" disabled>
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">承接部门</label>
+						<div class="col-xs-8">
+						    <label class="control-label">${planScheme.orgName}</label>
 						</div>
 					</div>
-					<div class="form-group col-lg-12 " style="padding-left: 4%;">
-						<label class="control-label col-md-1">概况</label>
-						<div class="col-md-10">
-						    <textarea class="form-control" rows="3" name="schemeOverview" disabled>${planScheme.schemeOverview}</textarea>
+					<div class="form-group col-xs-12 ">
+						<label class="control-label col-xs-2">概况</label>
+						<div class="col-xs-10">
+						    <label class="control-label">${planScheme.schemeOverview}</label>
 						</div>
 					</div>
-					<div class="form-group col-lg-12 " style="padding-left: 4%;">
-						<label class="control-label col-md-1">备注</label>
-						<div class="col-md-10">
-							<textarea class="form-control" rows="3" name="remark" disabled>${planScheme.remark}</textarea>
+					<div class="form-group col-xs-12 ">
+						<label class="control-label col-xs-2">备注</label>
+						<div class="col-xs-10">
+							<label class="control-label">${planScheme.remark}</label>
 						</div>
 					</div> 
 
@@ -134,9 +137,9 @@
 						<table class="table table-bordered edit" id="designTeam">
 							<thead>
 								<tr>
-									<th  class="text-center col-lg-4">姓名</th>
-									<th class="text-center">比例(%)</th>
-									<th class="text-center">产值</th>
+									<th  class="text-center col-xs-2">姓名</th>
+									<th class="text-center col-xs-2">比例(%)</th>
+									<th class="text-center col-xs-2">产值</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -145,11 +148,9 @@
 							    <c:if test="${not empty shemeTeams}">
 							      <c:forEach var="shemeTeam" items="${shemeTeams}" varStatus="st">
 							        <tr>
-										<td  class="text-center col-lg-4">${shemeTeam.staffName }</td>
-										<td  class=" col-lg-4">
-										<input type="text" name="shemeTeams[${st.index}].refRate" data-rule-number="true" class="text-right" value="${shemeTeam.refRate }" disabled>
-										</td>
-										<td  class=" col-lg-4 text-right"><input type="text" name="shemeTeams[${st.index}].refYield" disabled class="text-right" value="<fmt:formatNumber value='${shemeTeam.refYield }' pattern='#,#00.00#'/>"></td>
+										<td  class="text-center">${shemeTeam.staffName }</td>
+										<td  class="text-right">${shemeTeam.refRate }</td>
+										<td  class="text-right"><fmt:formatNumber value='${shemeTeam.refYield }' pattern='#,#00.00#'/></td>
 									</tr>
 									<c:set var="totalRate" value="${totalRate + shemeTeam.refRate }"></c:set>
 									<c:set var="totalYield" value="${totalYield + shemeTeam.refYield }"></c:set>
