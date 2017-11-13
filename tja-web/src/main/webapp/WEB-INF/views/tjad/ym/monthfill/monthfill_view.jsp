@@ -160,7 +160,9 @@
 								<th class="text-center col-xs-1">累计进度比例(%)</th>
 								<th class="text-center col-xs-2">累计产值(¥)</th>
 								<th class="text-center col-xs-2">剩余产值(¥)</th>
+								<c:if test="${empty print}">
 								<th class="text-center col-xs-1">历史进度</th>
+								</c:if>
 							</tr>
 						</thead>
 						<tbody>
@@ -190,7 +192,9 @@
 								<td class="text-right">
 									<input name=".otherYield" type="text" class="text-right" value="" disabled>
 								</td>
+								<c:if test="${empty print}">
 								<td class="text-center"><a href="javascript:void(0)" onclick="majorHistory('${o.majorCode}')">查看</a></td>
+								</c:if>
 							</tr>
 						</c:forEach>
 							<tr>
@@ -201,7 +205,9 @@
 								<td class="text-right"></td>
 								<td class="text-right"></td>
 								<td class="text-right"></td>
+								<c:if test="${empty print}">
 								<td class="text-center"></td>
+								</c:if>
 							</tr>
 						</c:if>
 						</tbody>
