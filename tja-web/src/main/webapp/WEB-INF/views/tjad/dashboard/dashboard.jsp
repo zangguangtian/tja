@@ -46,7 +46,7 @@
 		height: 110px;
 	}
 	.page-content .icon-btn div {
-	    font-size: 14px;
+	    font-size: 12px;
 	    margin: 15px 0 10px 0;
 	    font-weight: 500;
 	}
