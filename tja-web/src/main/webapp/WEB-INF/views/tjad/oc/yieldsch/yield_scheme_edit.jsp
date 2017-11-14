@@ -27,6 +27,7 @@
             <form id="schemeForm" method="post" class=" ">
                 <input type="hidden" id="ratioParam" value="${ratioParam }">
                 <input type="hidden" name="id" value="${yieldScheme.id }">
+                <df:token/>
                 <div class="form-body clearfix">
                     <div class="form-group col-lg-6 ">
                         <label class="control-label col-md-3">策划编号</label>

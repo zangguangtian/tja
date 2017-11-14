@@ -159,9 +159,14 @@ public class YieldSchemeController extends BaseController {
     public Map<String, String> save(CustOcYieldScheme yieldScheme) {
         Map<String, String> resultMap = new HashMap<String, String>();
         try {
-            yieldSchemeService.createOrModifyYieldScheme(yieldScheme);
-            resultMap.put("flag", "true");
-            resultMap.put("msg", SAVE_SUCCESS);
+            if (!isRepeatSubmit()) { //防止重复提交
+                yieldSchemeService.createOrModifyYieldScheme(yieldScheme);
+                resultMap.put("flag", "true");
+                resultMap.put("msg", SAVE_SUCCESS);
+            } else {
+                resultMap.put("flag", "false");
+                resultMap.put("msg", REPEAT_SUBMIT_MESS);
+            }
         } catch (RuntimeException ex) {
             resultMap.put("flag", "false");
             resultMap.put("msg", "保存失败");
