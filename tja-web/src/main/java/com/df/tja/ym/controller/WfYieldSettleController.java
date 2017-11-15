@@ -173,6 +173,10 @@ public class WfYieldSettleController extends WfBaseController {
                     for (CustStaff custStaff : custStaffs) {
                         majorUsers.add(custStaff.getUserId());
                     }
+
+                    if (majorUsers.size() <= 0) {
+                        throw new LogicalException("专业未取到审批人!");
+                    }
                     processArgs.addVariable("majorUsers", majorUsers);
 
                     Map<String, List<String>> userMajorMap = projectService.queryMajorMainLeaderMapByCode(majorCodes,
