@@ -24,6 +24,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import com.df.activiti.domain.WfBaseDomain;
+import com.df.framework.annotation.Comment;
 
 /**
  * <p>WfPlanScheme </p>
@@ -51,33 +52,43 @@ public class WfPlanScheme extends WfBaseDomain {
     private static final long serialVersionUID = -4049750483896033751L;
 
     /** 属性：项目ID */
+    @Comment(name = "项目ID")
     private java.lang.String proId;
 
     /** 属性：项目级别。参考系统配置值 */
+    @Comment(name = "项目级别")
     private java.lang.String itemGrade;
 
     /** 属性：设计启动时间 */
+    @Comment(name = "设计启动时间")
     private java.util.Date designStart;
 
     /** 属性：设计完成时间 */
+    @Comment(name = "设计完成时间")
     private java.util.Date designCompleted;
 
     /** 属性：方案产值 */
+    @Comment(name = "方案产值")
     private BigDecimal schemeYield;
 
     /** 属性：承接部门 */
+    @Comment(name = "承接部门")
     private java.lang.String receptDeptId;
 
     /** 属性：绩效类型 1000：中标产值；2000：入围产值*/
+    @Comment(name = "绩效类型")
     private java.lang.String perfType;
 
     /** 属性：绩效产值*/
+    @Comment(name = "绩效产值")
     private BigDecimal perfYield;
 
     /** 属性：概况 */
+    @Comment(name = "概况")
     private String schemeOverview;
 
     /** 属性：备注 */
+    @Comment(name = "备注")
     private String remark;
 
     /** 属性：部门名称 */

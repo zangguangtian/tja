@@ -22,6 +22,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.df.framework.annotation.Comment;
 import com.df.framework.base.domain.BaseDomain;
 
 /**
@@ -53,15 +54,18 @@ public class WfShemeTeam extends BaseDomain {
     private java.lang.String wfId;
 
     /** 属性：人员信息ID */
+    @Comment(name = "人员信息ID")
     private java.lang.String staffId;
 
     /** 属性：人员排序号 */
     private Integer staffSort;
 
     /** 属性：对应比例 */
+    @Comment(name = "对应比例")
     private BigDecimal refRate;
 
     /** 属性：对应产值 */
+    @Comment(name = "对应产值")
     private BigDecimal refYield;
 
     /** 属性：人员名字 */
