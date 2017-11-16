@@ -13,7 +13,7 @@
 			  </c:forEach>
 			</c:if>
 		</ul>
-		<div class="tab-content">
+		<div class="tab-content" style="padding: 10px;">
 		<input type="hidden" name="tabs" value="${tabSize}">
 		<c:if test="${not empty majorModels}">
 		<c:set var="roleSize" value="0"></c:set>
@@ -71,7 +71,7 @@
 									<thead>
 										<tr class="row">
 											<th class="text-center col-lg-4">姓名</th>
-											<th class="text-center">工作量(%)<span class="required">※</span></th>
+											<th class="text-center">工作量(%)<c:if test="${view == 2 }"><span class="required">※</span></c:if></th>
 											<th class="text-center">产值</th>
 										</tr>
 									</thead>

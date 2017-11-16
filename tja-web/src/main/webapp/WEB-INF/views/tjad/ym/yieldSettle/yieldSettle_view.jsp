@@ -119,7 +119,10 @@
 					<div class="form-group col-xs-6 ">
 						<label class="control-label col-xs-4">当年可结算产值(¥)</label>
 						<div class="col-xs-8">
-						    <label class="control-label"><fmt:formatNumber value='${yieldSettle.yearYield}' pattern='#,#00.00#'/></label>
+						    <label class="control-label">
+						     <input type="hidden" name="yearYield" value="${yieldSettle.yearYield}"/>
+						     <fmt:formatNumber value='${yieldSettle.yearYield}' pattern='#,#00.00#'/>
+						    </label>
 						</div>
 					</div>
 					<div class="form-group col-xs-6 ">
@@ -256,7 +259,7 @@
 								<thead>
 									<tr>
 										<th  class="text-center col-lg-4">专业</th>
-										<th class="text-center">结算比例(%)<span class="required">※</span></th>
+										<th class="text-center">结算比例(%)</th>
 									</tr>
 								</thead>
 								<tbody>
