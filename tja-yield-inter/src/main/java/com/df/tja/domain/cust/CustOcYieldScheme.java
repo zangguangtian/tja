@@ -12,8 +12,10 @@
 
 package com.df.tja.domain.cust;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import com.df.framework.util.ArithmeticUtil;
 import com.df.tja.domain.OcYieldScheme;
 
 /**
@@ -106,4 +108,10 @@ public class CustOcYieldScheme extends OcYieldScheme {
         this.yieldStageMajors = yieldStageMajors;
     }
 
+    public BigDecimal getTotalAmount() {
+        BigDecimal totalAmount = ArithmeticUtil.sub(getContractAmount(), getPkgAmount());
+        totalAmount = ArithmeticUtil.sub(totalAmount, getSchemeAmount());
+        totalAmount = ArithmeticUtil.sub(totalAmount, getRebateAmount());
+        return totalAmount;
+    }
 }

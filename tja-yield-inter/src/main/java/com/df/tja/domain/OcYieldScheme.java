@@ -22,7 +22,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import com.df.framework.base.domain.BaseDomain;
-import com.df.framework.util.ArithmeticUtil;
 
 /**
  * <p>OcYieldScheme </p>
@@ -274,11 +273,6 @@ public class OcYieldScheme extends BaseDomain {
      */
     @Column(name = "TOTAL_AMOUNT")
     public BigDecimal getTotalAmount() {
-        if (totalAmount == null) {
-            totalAmount = ArithmeticUtil.sub(getContractAmount(), getPkgAmount());
-            totalAmount = ArithmeticUtil.sub(totalAmount, getSchemeAmount());
-            totalAmount = ArithmeticUtil.sub(totalAmount, getRebateAmount());
-        }
         return totalAmount;
     }
 
