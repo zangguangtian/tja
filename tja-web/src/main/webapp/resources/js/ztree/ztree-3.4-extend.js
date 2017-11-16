@@ -356,7 +356,7 @@
 						.append(jQuery('<td nowrap="nowrap"/>').text(this.name))
 						.append(jQuery('<td nowrap="nowrap"/>').text(this.orgName==null?"":this.orgName))
 						.append(jQuery('<td nowrap="nowrap"/>').text(this.designLevel==null?"":this.designLevel))
-						.append(jQuery('<td nowrap="nowrap"/>').text(this.sex == "1"?"男":"女"))
+						.append(jQuery('<td nowrap="nowrap"/>').text(this.sex == null?"":(this.sex == "1"?"男":"女")))
 				);
 			}
 		});
