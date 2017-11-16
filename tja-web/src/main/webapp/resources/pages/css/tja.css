@@ -7,3 +7,10 @@
 
 .ui-dialog{z-index:20000000!important}
 i.del-btn{font-size:20px;color:#cd0335;font-weight:bolder;cursor:pointer;}
+
+.view .col-md-12:hover{border: 1px solid #36c6d3 !important;}
+.view .col-md-12:hover .fa{cursor:pointer;display:inline-block;}
+.view .fa{float:right;color:#3598dc;font-size:20px;cursor:pointer;display:none;}
+.view .fa:hover{color:#217ebd;}
+.view .fa.fa-chevron-down.font-icon, .view .fa.fa-chevron-up.font-icon, .view .fa.fa-trash-o.del-btn{display:inline-block;float:none;}
+.view .fa.fa-chevron-down.font-icon h6, .view .fa.fa-chevron-up.font-icon h6{float:left;margin: 2px 2px 4px 5px;color: #333333;}
