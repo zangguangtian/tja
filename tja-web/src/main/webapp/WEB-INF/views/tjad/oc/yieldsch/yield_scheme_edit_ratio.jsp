@@ -37,13 +37,13 @@
 				<c:if test="${not empty yieldMajors }">
 					<c:forEach items="${yieldMajors }" var="yieldMajor" varStatus="vs">
 					<tr>
-					    <td nowrap="nowrap" width="40px" style="text-align:center;">${vs.index + 1}</td>
+					    <td nowrap="nowrap" style="text-align:center;">${vs.index + 1}</td>
 					    <td nowrap="nowrap" class="form-group">
-					    	<input type="hidden" name="yieldMajors[${vs.index}].id" value="${yieldMajor.id }">
-					    	<input type="text" name="yieldMajors[${vs.index}].name" value="${yieldMajor.name }" class="form-control" data-rule-required="true">
+					    	<input type="hidden" name="id${vs.index}" value="${yieldMajor.id }">
+					    	<input type="text" name="name${vs.index}" value="${yieldMajor.name }" class="form-control" data-rule-required="true">
 					    </td>
 					    <td nowrap="nowrap" class="form-group" style="width:100px;">
-					       <select name="yieldMajors[${vs.index}].priceId" class="form-control" data-rule-required="true">
+					       <select name="priceId${vs.index}" class="form-control" data-rule-required="true">
 					           <option value="">-请选择-</option>
 					       <c:if test="${not empty prices }">
 					           <c:forEach items="${prices }" var="price">
@@ -57,15 +57,15 @@
 					       </c:if>
 					       </select>
 					    </td>
-					    <td nowrap="nowrap" class="form-group"><input type="text" name="yieldMajors[${vs.index}].buildArea" value="${yieldMajor.buildArea }" data-rule-number="true" data-rule-required="true" class="form-control"></td>
-					    <td nowrap="nowrap" class="form-group"><input type="text" name="yieldMajors[${vs.index}].standardPrice" value="${yieldMajor.standardPrice }" data-rule-number="true" data-rule-required="true" class="form-control"></td>
+					    <td nowrap="nowrap" class="form-group"><input type="text" name="buildArea${vs.index}" value="${yieldMajor.buildArea }" data-rule-number="true" data-rule-required="true" class="form-control"></td>
+					    <td nowrap="nowrap" class="form-group"><input type="text" name="standardPrice${vs.index}" value="${yieldMajor.standardPrice }" data-rule-number="true" data-rule-required="true" class="form-control"></td>
 					    <td nowrap="nowrap" id="sYield${vs.index}" style="text-align:right;">${yieldMajor.standardYield }</td>
 					    <td nowrap="nowrap" id="mYield${vs.index}" style="text-align:right;">${yieldMajor.majorYield }</td>
 					    <c:if test="${not empty majors }">
 					       <c:forEach items="${majors }" var="major" >
 						       <c:set var="majorKey" value="${yieldMajor.id}.${major.configCode }"/>
-					           <td nowrap="nowrap" id="majorRatio${vs.index}.${major.configCode }" data-major="${major.configCode }">
-							   		<input type="text" value="${yieldMajor.majorMap[majorKey].majorRate }" data-rule-number="true" data-rule-required="true" class="form-control">
+					           <td nowrap="nowrap" class="form-group" style="width:80px;">
+							   		<input type="text" name="majorRate${vs.index}.${major.configCode }" value="${yieldMajor.majorMap[majorKey].majorRate }" data-major="${major.configCode }" data-rule-number="true" data-rule-required="true" class="form-control">
 					           </td>
 					           <td nowrap="nowrap" id="majorYield${vs.index}.${major.configCode }" data-major="${major.configCode }">${yieldMajor.majorMap[majorKey].majorYield }</td>
 					       </c:forEach>
@@ -101,10 +101,10 @@
 </div>
 <table id="majorRatio_clone" style="display:none;">
     <tr>
-	    <td nowrap="nowrap" width="40px" style="text-align:center;">{0}</td>
-	    <td nowrap="nowrap" class="form-group"><input type="text" name="yieldMajors[{0}].name" value="" class="form-control" data-rule-required="true"></td>
+	    <td nowrap="nowrap" style="text-align:center;">{0}</td>
+	    <td nowrap="nowrap" class="form-group"><input type="text" name="name{0}" value="" disabled class="form-control" data-rule-required="true"></td>
 	    <td nowrap="nowrap" class="form-group" style="width:100px;">
-	       <select name="yieldMajors[{0}].priceId" class="form-control" data-rule-required="true">
+	       <select name="priceId{0}" class="form-control" disabled data-rule-required="true">
 	           <option value="">-请选择-</option>
 	       <c:if test="${not empty prices }">
 	           <c:forEach items="${prices }" var="price">
@@ -113,14 +113,14 @@
 	       </c:if>
 	       </select>
 	    </td>
-	    <td nowrap="nowrap" class="form-group"><input type="text" name="yieldMajors[{0}].buildArea" value="" data-rule-required="true" data-rule-number="true" class="form-control"></td>
-	    <td nowrap="nowrap" class="form-group"><input type="text" name="yieldMajors[{0}].standardPrice" value="" data-rule-number="true" data-rule-required="true" class="form-control"></td>
+	    <td nowrap="nowrap" class="form-group"><input type="text" name="buildArea{0}" value="" disabled data-rule-required="true" data-rule-number="true" class="form-control"></td>
+	    <td nowrap="nowrap" class="form-group"><input type="text" name="standardPrice{0}" value="" disabled data-rule-number="true" data-rule-required="true" class="form-control"></td>
 	    <td nowrap="nowrap" id="sYield{0}" style="text-align:right;"></td>
 	    <td nowrap="nowrap" id="mYield{0}" style="text-align:right;"></td>
 	    <c:if test="${not empty majors }">
 	       <c:forEach items="${majors }" var="major" >
-	           <td nowrap="nowrap" id="majorRatio{0}.${major.configCode }" data-major="${major.configCode }">
-	           		<input type="text" value="" data-rule-number="true" data-rule-required="true" class="form-control">
+	       	   <td nowrap="nowrap" class="form-group" style="width:80px;">
+			   		<input type="text" name="majorRate{0}.${major.configCode }" value="" disabled data-major="${major.configCode }" data-rule-number="true" data-rule-required="true" class="form-control">
 	           </td>
 	           <td nowrap="nowrap" id="majorYield{0}.${major.configCode }" data-major="${major.configCode }"></td>
 	       </c:forEach>
@@ -135,9 +135,16 @@ $(document).on("click", "#majorRatio tbody i.del-btn", function(){
 });
 
 //专业比例类型编号切换
-$(document).on("change", "#majorRatio select[name$='priceId']", priceCodeChange);
+$(document).on("change", "#majorRatio select[name^='priceId']", priceCodeChange);
+
+//专业比例类型编号切换
+$(document).on("blur", "#majorRatio input[name^='buildArea']", otherFactorChange);
+$(document).on("blur", "#majorRatio input[name^='standardPrice']", otherFactorChange);
+$(document).on("blur", "#majorRatio input[name^='majorRate']", otherFactorChange);
 
 $(function(){
+	/**打开就计算院内合计*/
+	calYLTotal();
 	//添加专业比例记录
 	$("#addMajor-btn").on("click", addMajorRatio);
 });
@@ -146,6 +153,7 @@ $(function(){
 function addMajorRatio(){
 	var trSize = $("#majorRatio tbody tr:not(:last)").length;
 	var $item = $("#majorRatio_clone tr").clone();
+	$item.find("input,select").removeAttr("disabled");
 	$item.html($item.html().format(trSize));
 	$item.find("td:eq(0)").text(trSize + 1);
 	
@@ -159,12 +167,7 @@ function delMajor(obj){
 		var thisIndex = $(obj).closest("tr").index();
 		$(obj).closest("tr").nextAll("tr:not(.total)").each(function(index, item){
 			$(item).find("td:eq(0)").text(thisIndex + index + 1);
-			
-			$(item).find("[name^='yieldMajors']").each(function(){
-				nameVal = $(this).attr("name");
-				nameVal = nameVal.replace(/[\d]/ig, thisIndex + index);
-				$(this).attr("name", nameVal);
-			});
+			//此处删除只管处理序号，input元素的下标无需处理
 		});
 		$(obj).closest("tr").remove();
 	}});
@@ -179,16 +182,38 @@ function priceCodeChange(){
 		uprice = "0";
 	}
 	//设置土建基准单价
-	currtr.find("input[name$='standardPrice']").val(uprice);
+	currtr.find("input[name^='standardPrice']").val(uprice);
 
     //计算土建基准产值
-    var buildArea = currtr.find("input[name$='buildArea']").val();
+    var buildArea = currtr.find("input[name^='buildArea']").val();
     calSYield(currtr, uprice, buildArea);
     
+    /**显示专业的默认比例*/
     var ratioJson = priceObj.data("ratio");
     showMajorRate(currtr, ratioJson);
 
-    /**计算各专业的产值*/
+    /**按行计算各专业的产值*/
+    calMajorYield(currtr, ratioJson);
+    
+    /**计算院内合计*/
+    calYLTotal();
+}
+
+/**专业比例建筑面积、基准单价、比例切换*/
+function otherFactorChange(){
+	var currtr = $(this).closest("tr");
+
+    //计算土建基准产值
+    var buildArea = currtr.find("input[name^='buildArea']").val();
+    var uprice = currtr.find("input[name^='standardPrice']").val();
+    calSYield(currtr, uprice, buildArea);
+
+    var ratioJson = {};
+    currtr.find("input[name^='majorRate']").each(function(){
+    	ratioJson[$(this).data("major")] = $(this).val();
+    });
+    
+    /**按行计算各专业的产值*/
     calMajorYield(currtr, ratioJson);
     
     /**计算院内合计*/
@@ -215,12 +240,12 @@ function calSYield(currtr, uprice, barea){
 function showMajorRate(currtr, ratioJson){
 	var ratioObj = eval(ratioJson);
 	var majorRate = null;
-	currtr.find("td[id^='majorRatio']").each(function(){
+	currtr.find("input[name^='majorRate']").each(function(){
 		majorRate = ratioObj[$(this).data("major")];
 		if(majorRate == null){
 			majorRate = "0";
 		}
-		$(this).find("input").val(majorRate);
+		$(this).val(majorRate);
 	});
 }
 
@@ -228,18 +253,28 @@ function showMajorRate(currtr, ratioJson){
 function calMajorYield(currtr, ratioJson){
     var majorYield = null;
 	var majorRate = null;
-	var ratioObj = eval(ratioJson);
+	var ratioObj = null;
     var sYield = currtr.find("td[id^='mYield']").text();
+    
+    if(typeof ratioJson == "string"){
+    	ratioObj = eval(ratioJson);
+    }else{
+    	ratioObj = ratioJson;
+    }
+
+    var temp = new Number(0);
     currtr.find("td[id^='majorYield']").each(function(){
-    	//如果先输入建筑面积就没有ratioObj
-    	if(ratioObj != null){
-	        majorRate = ratioObj[$(this).data("major")];
-    	}
+    	majorRate = $(this).prev("td").find("input[name^='majorRate']").val();
         if(majorRate == null){
             majorRate = "0";
         }
         
         majorYield = new Number(majorRate) * new Number(sYield) / new Number(100);
+        if(temp + new Number(majorYield.toFixed(2)) < new Number(sYield)){
+        	temp = temp + new Number(majorYield.toFixed(2));
+        }else{
+        	majorYield = new Number(sYield) - temp;
+        }
         $(this).text(majorYield.toFixed(2));
     });
 }
@@ -249,7 +284,7 @@ function calYLTotal(){
 	var thisVal = null;
 	//计算院内建筑面积
 	var totalArea = new Number(0);
-	$("#majorRatio input[name$='buildArea']").each(function(){
+	$("#majorRatio input[name^='buildArea']").each(function(){
 		thisVal = $(this).val();
 		if(thisVal == null){
 			thisVal = "0";
