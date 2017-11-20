@@ -13,6 +13,7 @@
 package com.df.tja.service.impl;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -98,18 +99,7 @@ public class SettleYieldServiceImpl extends BaseServiceImpl implements ISettleYi
     public void createImpSettleYield(MultipartFile attach, String period, Map<String, Object> results)
         throws RuntimeException, LogicalException {
         try {
-            InputStream inputStream = attach.getInputStream();
-            Sheet sheet;
-            String format = FileUtil.getFileExtName(attach.getOriginalFilename());
-            if (format.equals("xls")) {
-                HSSFWorkbook hworkBook = new HSSFWorkbook(new BufferedInputStream(inputStream));
-                sheet = hworkBook.getSheetAt(0);
-            } else if ("xlsx".equals(format)) {
-                XSSFWorkbook xworkBook = new XSSFWorkbook(new BufferedInputStream(inputStream));
-                sheet = xworkBook.getSheetAt(0);
-            } else {
-                throw new LogicalException("无效的excel文件");
-            }
+            Sheet sheet = getSheetByAttach(attach);
             int maxRowIx = sheet.getLastRowNum();
             Date date = (Date) results.get("date");
             StringBuffer log;
@@ -124,7 +114,11 @@ public class SettleYieldServiceImpl extends BaseServiceImpl implements ISettleYi
                 Cell cell = row.getCell(0); //项目编号在项目信息表中是否存在（异常信息：项目不存在）；
                 String proCode = ExcelHelper.getCellFormatValue(cell);
                 Project entity = new Project();
-                entity.setProCode(proCode);
+                if (proCode.indexOf(".") > 0) {
+                    entity.setProCode(proCode.substring(0, proCode.indexOf(".")));
+                } else {
+                    entity.setProCode(proCode);
+                }
                 List<Project> list = queryByCondition(Project.class, entity);
                 if (list.size() == 0) {
                     log.append("项目不存在\n"); // 该项目不存在
@@ -163,8 +157,7 @@ public class SettleYieldServiceImpl extends BaseServiceImpl implements ISettleYi
                 }
                 ocSettleYieldDao.insert(OcSettleYieldImp.class, settleYieldImp);
             }
-            //导入无误 写入正式表
-            if (validRecord == maxRowIx) {
+            if (validRecord == maxRowIx) { //导入无误 写入正式表
                 ocSettleYieldDao.insertMegerSettleYield(date);
             }
             results.put("totalRecord", maxRowIx);
@@ -177,4 +170,27 @@ public class SettleYieldServiceImpl extends BaseServiceImpl implements ISettleYi
         }
     }
 
+    /**
+     * <p>描述 : </p>
+     *
+     * @param attach
+     * @return
+     * @throws IOException
+     * @throws LogicalException
+     */
+    private Sheet getSheetByAttach(MultipartFile attach) throws IOException, LogicalException {
+        InputStream inputStream = attach.getInputStream();
+        Sheet sheet;
+        String format = FileUtil.getFileExtName(attach.getOriginalFilename());
+        if (format.equals("xls")) {
+            HSSFWorkbook hworkBook = new HSSFWorkbook(new BufferedInputStream(inputStream));
+            sheet = hworkBook.getSheetAt(0);
+        } else if ("xlsx".equals(format)) {
+            XSSFWorkbook xworkBook = new XSSFWorkbook(new BufferedInputStream(inputStream));
+            sheet = xworkBook.getSheetAt(0);
+        } else {
+            throw new LogicalException("无效的excel文件");
+        }
+        return sheet;
+    }
 }
