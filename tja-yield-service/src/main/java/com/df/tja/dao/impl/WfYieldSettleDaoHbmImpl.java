@@ -20,7 +20,6 @@ import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.df.framework.base.dao.impl.BaseDaoHbmImpl;
-import com.df.framework.sys.domain.SysConfig;
 import com.df.hr.domain.cust.CustStaff;
 import com.df.tja.dao.IWfYieldSettleDao;
 import com.df.tja.domain.WfYieldMajorRate;
@@ -139,17 +138,17 @@ public class WfYieldSettleDaoHbmImpl extends BaseDaoHbmImpl implements IWfYieldS
      * @see com.df.tja.dao.IWfYieldSettleDao#selectMajorByProId(java.lang.String)
      */
     @Override
-    public List<SysConfig> selectMajorByProId(String proId) {
+    public List<WfYieldMajorRate> selectMajorByProId(String proId) {
         StringBuilder sql = new StringBuilder();
-        sql.append(" SELECT DISTINCT PBS.MAJOR_CODE AS configCode,                   ");
-        sql.append(" SC.CONFIG_NAME AS configName,V.REF_MAJOR_RATE AS configValue    ");
+        sql.append(" SELECT DISTINCT PBS.MAJOR_CODE AS majorCode,                    ");
+        sql.append(" SC.CONFIG_NAME AS majorName,V.REF_MAJOR_RATE AS settleRate      ");
         sql.append(" FROM PM_BUDGET_STAFF_TM PBS                                     ");
         sql.append(" LEFT JOIN SYS_CONFIG_TM SC ON PBS.MAJOR_CODE = SC.CONFIG_CODE   ");
         sql.append(" LEFT JOIN V_PM_REF_MAJOR_RATE V ON PBS.PRO_ID = V.PRO_ID        ");
         sql.append(" AND PBS.MAJOR_CODE = V.CONFIG_CODE                              ");
         sql.append(" WHERE PBS.PRO_ID = ?                                            ");
         SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
-        query.setResultTransformer(Transformers.aliasToBean(SysConfig.class));
+        query.setResultTransformer(Transformers.aliasToBean(WfYieldMajorRate.class));
         query.setString(0, proId);
         return query.list();
     }

@@ -5,16 +5,13 @@
 <div class="col-md-12 form-group">
 	<div class="tabbable-line boxless tabbable-reversed">
 		<ul class="nav nav-tabs">
-		    <c:set var="tabSize" value="0"></c:set>
 		    <c:if test="${not empty majorModels}">
 		      <c:forEach items="${majorModels}" var="majorModel" varStatus="st">
 			    <li <c:if test="${st.index == 0}">class="active"</c:if>><a href="#tab_${st.index}" data-toggle="tab" aria-expanded="true">${majorModel.majorName}</a></li>
-			    <c:set var="tabSize" value="${tabSize+1}"></c:set>
 			  </c:forEach>
 			</c:if>
 		</ul>
 		<div class="tab-content" style="padding: 10px;">
-		<input type="hidden" name="tabs" value="${tabSize}">
 		<c:if test="${not empty majorModels}">
 		<c:set var="roleSize" value="0"></c:set>
 		<c:set var="rateSize" value="0"></c:set>
@@ -41,7 +38,9 @@
 								    <input type="hidden" class="ta_input" name="majorRoleRates[${roleSize}].wfId" value="${majorRoleRate.wfId}">
 								    <input type="hidden" class="ta_input" name="majorRoleRates[${roleSize}].id" value="${majorRoleRate.id}">
 								    <input type="hidden" class="ta_input" name="majorRoleRates[${roleSize}].majorCode" value="${majorRoleRate.majorCode}">
+								    <input type="hidden" class="ta_input" name="majorRoleRates[${roleSize}].majorName" value="${majorModel.majorName}">
 								    <input type="hidden" class="ta_input" name="majorRoleRates[${roleSize}].roleCode" value="${majorRoleRate.roleCode}">
+								    <input type="hidden" class="ta_input" name="majorRoleRates[${roleSize}].roleName" value="${majorRoleRate.roleName}">
 								    <input type="hidden" class="ta_input" name="majorRoleRates[${roleSize}].majorRateId" value="${majorRoleRate.majorRateId}">
 									<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">${majorRoleRate.roleName}</div>
 									<div class="col-lg-4 text-right col-md-4 col-sm-4 col-xs-4">
@@ -87,8 +86,10 @@
 												    <input type="hidden" class="ta_input" name="majorRoleAllots[${rateSize}].wfId" value="${majorRoleAllot.wfId}">
 												    <input type="hidden" class="ta_input" name="majorRoleAllots[${rateSize}].id" value="${majorRoleAllot.id}">
 												    <input type="hidden" class="ta_input" name="majorRoleAllots[${rateSize}].majorCode" value="${majorRoleAllot.majorCode}">
+												    <input type="hidden" class="ta_input" name="majorRoleAllots[${rateSize}].majorName" value="${majorModel.majorName}">
 												    <input type="hidden" class="ta_input" name="majorRoleAllots[${rateSize}].category" value="1000">
 												    <input type="hidden" class="ta_input" name="majorRoleAllots[${rateSize}].roleCode" value="${majorRoleAllot.roleCode}">
+												    <input type="hidden" class="ta_input" name="majorRoleAllots[${rateSize}].roleName" value="${majorRoleRate.roleName}">
 												    <input type="hidden" class="ta_input" name="majorRoleAllots[${rateSize}].staffId" value="${majorRoleAllot.staffId}">
 												    <input type="hidden" class="ta_input" name="majorRoleAllots[${rateSize}].staffSort" value="${empty majorRoleAllot.staffSort ? in.index : majorRoleAllot.staffSort}">
 													<input type="hidden" name="majorRoleAllots[${rateSize}].staffYield" value="${majorRoleAllot.staffYield}">

@@ -14,6 +14,7 @@ package com.df.tja.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -156,8 +157,8 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
                 TjaConstant.SysCode.STAFF_CATEGORY_PM);
             outParams.put("proPms", pms);
             //当年专业结算比例
-            List<SysConfig> configs = wfYieldSettleDao.selectMajorByProId(proId);
-            outParams.put("configs", configs);
+            List<WfYieldMajorRate> majorRateConfigs = wfYieldSettleDao.selectMajorByProId(proId);
+            outParams.put("majorRateConfigs", majorRateConfigs);
             //历年已结算产值
             WfYieldSettle settle = wfYieldSettleDao.selectHisYearYield();
             outParams.put("hisyearYield", settle.getYearYield());
@@ -435,6 +436,7 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
                                 yieldMajorRoleRate.setMajorRateId(majorRate.getId());
                                 SysConfig entity = new SysConfig();
                                 entity.setConfigCode(proMajorRoleRate.getAllotCode());
+                                entity.setEnabledFlag(true);
                                 List<SysConfig> sysConfigs = queryByCondition(SysConfig.class, entity);
                                 if (sysConfigs != null && sysConfigs.size() > 0) {
                                     SysConfig sysConfig = sysConfigs.get(0);
@@ -481,65 +483,174 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
     public void approveWfYieldSettle(WfYieldSettle yieldSettle, WfYieldSettleModel settleModel, Integer view)
         throws RuntimeException,
         LogicalException {
-
         if ("1000".equals(yieldSettle.getWfCategory().trim())) {
-            //年度产值结算 - 普通流程
-            if (view == 2) {
-                Integer tabs = settleModel.getTabs();
-                //各专业负责人审批   年度产值专业角色结算比例
-                List<WfYieldMajorRoleRate> roleRates = settleModel.getMajorRoleRates();
-
-                //年度产值专业角色人员
-                List<WfYieldMajorRoleAllot> majorRoleAllots = settleModel.getMajorRoleAllots();
-
-                BigDecimal totalAllotRate = new BigDecimal(0);
-                if (roleRates != null && roleRates.size() > 0) {
-                    for (WfYieldMajorRoleRate majorRoleRate : roleRates) {
-                        majorRoleRate.setWfId(yieldSettle.getId());
-                        if (StringUtils.isNoneBlank(majorRoleRate.getId())) {
-                            //修改
+            if (view == 2) {/*
+                            List<WfYieldMajorRoleRate> roleRates = settleModel.getMajorRoleRates(); //各专业负责人审批   年度产值专业角色结算比例
+                            List<WfYieldMajorRoleAllot> majorRoleAllots = settleModel.getMajorRoleAllots(); //年度产值专业角色人员
+                            BigDecimal totalAllotRate = null;
+                            String roleNames = null;
+                            Map<String, BigDecimal> cheackRate = null;
+                            Map<String, String> marjorRoleMap = null;
+                            if (roleRates != null && roleRates.size() > 0) {
+                            for (WfYieldMajorRoleRate majorRoleRate : roleRates) {
+                            totalAllotRate = new BigDecimal(0);
+                            cheackRate = new HashMap<String, BigDecimal>();
+                            marjorRoleMap = new HashMap<String, String>();
+                            majorRoleRate.setWfId(yieldSettle.getId());
+                            if (StringUtils.isNoneBlank(majorRoleRate.getId())) {
                             modify(WfYieldMajorRoleRate.class, majorRoleRate);
-
-                        } else {
-                            //添加
+                            } else {
                             addEntity(WfYieldMajorRoleRate.class, majorRoleRate);
-                        }
-
-                        //累加计算 检查 比例：校对人+审核人+设计人/制图人=100%；
-                        totalAllotRate = ArithmeticUtil.add(totalAllotRate, majorRoleRate.getAllotRate());
-                    }
-                }
-                BigDecimal total = ArithmeticUtil.mul(new BigDecimal(tabs), new BigDecimal(100));
-                
-                if ((total.compareTo(totalAllotRate)) != 0) {
-                    throw new LogicalException("校对人+审核人+设计人/制图人=100%");
-                }
-                
-                BigDecimal totalRoleAllot = new BigDecimal(0);
-                if (majorRoleAllots != null && majorRoleAllots.size() > 0) {
-                    for (WfYieldMajorRoleAllot wfYieldMajorRoleAllot : majorRoleAllots) {
-                        wfYieldMajorRoleAllot.setWfId(yieldSettle.getId());
-                        if (StringUtils.isNoneBlank(wfYieldMajorRoleAllot.getId())) {
-                            //修改
+                            }
+                            //累加计算 检查 比例：校对人+审核人+设计人/制图人=100%；
+                            String marjor = majorRoleRate.getMajorName();
+                            if (cheackRate.containsKey(marjor)) {
+                            BigDecimal allotRate = cheackRate.get(marjor);
+                            totalAllotRate = ArithmeticUtil.add(allotRate, majorRoleRate.getAllotRate());
+                            } else {
+                            totalAllotRate = majorRoleRate.getAllotRate();
+                            }
+                            cheackRate.put(marjor, totalAllotRate);
+                            if (marjorRoleMap.containsKey(marjor)) {
+                            String roleName = marjorRoleMap.get(marjor);
+                            roleNames = roleName + "+" + majorRoleRate.getRoleName();
+                            } else {
+                            roleNames = majorRoleRate.getRoleName();
+                            }
+                            marjorRoleMap.put(marjor, roleNames);
+                            }
+                            if (!cheackRate.isEmpty()) {
+                            for (String marjorRoleKey : cheackRate.keySet()) {
+                            BigDecimal totalMarjorRoleAllotRate = cheackRate.get(marjorRoleKey);
+                            if ((totalMarjorRoleAllotRate.compareTo(new BigDecimal(0))) != 0) {
+                                throw new LogicalException(marjorRoleKey + marjorRoleMap.get(marjorRoleKey) + "=100%");
+                            }
+                            }
+                            }
+                            }
+                            if (majorRoleAllots != null && majorRoleAllots.size() > 0) {
+                            for (WfYieldMajorRoleAllot wfYieldMajorRoleAllot : majorRoleAllots) {
+                            totalAllotRate = new BigDecimal(0);
+                            cheackRate = new HashMap<String, BigDecimal>();
+                            marjorRoleMap = new HashMap<String, String>();
+                            wfYieldMajorRoleAllot.setWfId(yieldSettle.getId());
+                            if (StringUtils.isNoneBlank(wfYieldMajorRoleAllot.getId())) {
                             modify(WfYieldMajorRoleAllot.class, wfYieldMajorRoleAllot);
-
-                        } else {
-                            //添加
+                            } else {
                             addEntity(WfYieldMajorRoleAllot.class, wfYieldMajorRoleAllot);
-                        }
-                        totalRoleAllot = ArithmeticUtil.add(totalRoleAllot, wfYieldMajorRoleAllot.getStaffRate());
-                    }
-                }
-
-                BigDecimal total2 = ArithmeticUtil.mul(ArithmeticUtil.mul(new BigDecimal(tabs), new BigDecimal(100)),
-                    new BigDecimal(roleRates.size()));
-                if ((total2.compareTo(totalRoleAllot)) != 0) {
-                    throw new LogicalException("工作量(%)合计必须达到100");
-                }
+                            }
+                            String marjor = wfYieldMajorRoleAllot.getMajorCode() + wfYieldMajorRoleAllot.getRoleCode();
+                            if (cheackRate.containsKey(marjor)) {
+                            BigDecimal allotRate = cheackRate.get(marjor);
+                            totalAllotRate = ArithmeticUtil.add(allotRate, wfYieldMajorRoleAllot.getStaffRate());
+                            } else {
+                            totalAllotRate = wfYieldMajorRoleAllot.getStaffRate();
+                            }
+                            cheackRate.put(marjor, totalAllotRate);
+                            if (!marjorRoleMap.containsKey(marjor)) {
+                            roleNames = wfYieldMajorRoleAllot.getMajorName() + wfYieldMajorRoleAllot.getRoleName();
+                            marjorRoleMap.put(marjor, roleNames);
+                            }
+                            }
+                            if (!cheackRate.isEmpty()) {
+                            for (String marjorRoleKey : cheackRate.keySet()) {
+                            BigDecimal totalMarjorRoleAllotRate = cheackRate.get(marjorRoleKey);
+                            if ((totalMarjorRoleAllotRate.compareTo(new BigDecimal(100))) != 0) {
+                                throw new LogicalException(marjorRoleMap.get(marjorRoleKey) + "的工作量(%)合计必须达到100");
+                            }
+                            }
+                            }
+                            }
+                            */
+                addOrEditOrdinSettleAdjust(settleModel, yieldSettle);
             }
         }
         processService.approveWf(yieldSettle, null);
+    }
 
+    /**
+     * <p>描述 : </p>
+     *
+     * @param settleModel
+     * @param yieldSettle
+     * @throws LogicalException
+     */
+    private void addOrEditOrdinSettleAdjust(WfYieldSettleModel settleModel, WfYieldSettle yieldSettle)
+        throws LogicalException {
+        //检验 年度产值专业角色结算比例 年度产值专业角色人员工作量 是否为 100% 并保存修改
+        List<WfYieldMajorRoleRate> roleRates = settleModel.getMajorRoleRates(); //各专业负责人审批   年度产值专业角色结算比例
+        List<WfYieldMajorRoleAllot> majorRoleAllots = settleModel.getMajorRoleAllots(); //年度产值专业角色人员
+        BigDecimal totalAllotRate = new BigDecimal(0);
+        String roleNames = null;
+        Map<String, BigDecimal> cheackRate = new HashMap<String, BigDecimal>();
+        Map<String, String> marjorRoleMap = new HashMap<String, String>();
+        if (roleRates != null && roleRates.size() > 0) {
+            for (WfYieldMajorRoleRate majorRoleRate : roleRates) {
+                majorRoleRate.setWfId(yieldSettle.getId());
+                if (StringUtils.isNoneBlank(majorRoleRate.getId())) {
+                    modify(WfYieldMajorRoleRate.class, majorRoleRate);
+                } else {
+                    addEntity(WfYieldMajorRoleRate.class, majorRoleRate);
+                }
+                //累加计算 检查 比例：校对人+审核人+设计人/制图人=100%；
+                String marjor = majorRoleRate.getMajorName();
+                if (cheackRate.containsKey(marjor)) {
+                    BigDecimal allotRate = cheackRate.get(marjor);
+                    totalAllotRate = ArithmeticUtil.add(allotRate, majorRoleRate.getAllotRate());
+                } else {
+                    totalAllotRate = majorRoleRate.getAllotRate();
+                }
+                cheackRate.put(marjor, totalAllotRate);
+                if (marjorRoleMap.containsKey(marjor)) {
+                    String roleName = marjorRoleMap.get(marjor);
+                    roleNames = roleName + "+" + majorRoleRate.getRoleName();
+                } else {
+                    roleNames = majorRoleRate.getRoleName();
+                }
+                marjorRoleMap.put(marjor, roleNames);
+            }
+            if (!cheackRate.isEmpty()) {
+                for (String marjorRoleKey : cheackRate.keySet()) {
+                    BigDecimal totalMarjorRoleAllotRate = cheackRate.get(marjorRoleKey);
+                    if ((totalMarjorRoleAllotRate.compareTo(new BigDecimal(100))) != 0) {
+                        throw new LogicalException(marjorRoleKey + marjorRoleMap.get(marjorRoleKey) + "=100%");
+                    }
+                }
+            }
+        }
+        if (majorRoleAllots != null && majorRoleAllots.size() > 0) {
+            totalAllotRate = new BigDecimal(0);
+            cheackRate = new HashMap<String, BigDecimal>();
+            marjorRoleMap = new HashMap<String, String>();
+            for (WfYieldMajorRoleAllot wfYieldMajorRoleAllot : majorRoleAllots) {
+                wfYieldMajorRoleAllot.setWfId(yieldSettle.getId());
+                if (StringUtils.isNoneBlank(wfYieldMajorRoleAllot.getId())) {
+                    modify(WfYieldMajorRoleAllot.class, wfYieldMajorRoleAllot);
+                } else {
+                    addEntity(WfYieldMajorRoleAllot.class, wfYieldMajorRoleAllot);
+                }
+                String marjor = wfYieldMajorRoleAllot.getMajorCode() + wfYieldMajorRoleAllot.getRoleCode();
+                if (cheackRate.containsKey(marjor)) {
+                    BigDecimal allotRate = cheackRate.get(marjor);
+                    totalAllotRate = ArithmeticUtil.add(allotRate, wfYieldMajorRoleAllot.getStaffRate());
+                } else {
+                    totalAllotRate = wfYieldMajorRoleAllot.getStaffRate();
+                }
+                cheackRate.put(marjor, totalAllotRate);
+                if (!marjorRoleMap.containsKey(marjor)) {
+                    roleNames = wfYieldMajorRoleAllot.getMajorName() + wfYieldMajorRoleAllot.getRoleName();
+                    marjorRoleMap.put(marjor, roleNames);
+                }
+            }
+            if (!cheackRate.isEmpty()) {
+                for (String marjorRoleKey : cheackRate.keySet()) {
+                    BigDecimal totalMarjorRoleAllotRate = cheackRate.get(marjorRoleKey);
+                    if ((totalMarjorRoleAllotRate.compareTo(new BigDecimal(100))) != 0) {
+                        throw new LogicalException(marjorRoleMap.get(marjorRoleKey) + "的工作量(%)合计必须达到100");
+                    }
+                }
+            }
+        }
     }
 
     public void modifyProStutas(String id) throws RuntimeException {

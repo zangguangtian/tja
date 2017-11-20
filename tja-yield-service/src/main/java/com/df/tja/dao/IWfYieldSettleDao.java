@@ -15,7 +15,6 @@ package com.df.tja.dao;
 import java.util.List;
 
 import com.df.framework.base.dao.IBaseDao;
-import com.df.framework.sys.domain.SysConfig;
 import com.df.hr.domain.cust.CustStaff;
 import com.df.tja.domain.WfYieldMajorRate;
 import com.df.tja.domain.WfYieldMajorRoleAllot;
@@ -82,7 +81,7 @@ public interface IWfYieldSettleDao extends IBaseDao {
      * @param proId
      * @return
      */
-    List<SysConfig> selectMajorByProId(String proId);
+    List<WfYieldMajorRate> selectMajorByProId(String proId);
 
     /**
      * 

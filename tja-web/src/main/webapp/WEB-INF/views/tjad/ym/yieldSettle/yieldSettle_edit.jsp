@@ -388,17 +388,17 @@
 									  </c:forEach>
 								  </c:if>
 								  
-								 <c:if test="${empty majorRates and not empty configs}">
-									  <c:forEach items="${configs}" var="config" varStatus="st">
+								 <c:if test="${empty majorRates and not empty majorRateConfigs}">
+									  <c:forEach items="${majorRateConfigs}" var="majorRateConfig" varStatus="st">
 									    <tr>
 											<td  class="text-center col-lg-4">
-											  ${config.configName}
+											  ${majorRateConfig.majorName}
 											</td>
 											<td  class="col-lg-8 text-right input-icon left">
 											   <i class="fa"></i>
 											   <input type="hidden" name="majorRates[${st.index}].id" value="">
 											   <input type="hidden" name="majorRates[${st.index}].wfId" value="">
-											   <input type="hidden" name="majorRates[${st.index}].majorCode" value="${config.configCode}">
+											   <input type="hidden" name="majorRates[${st.index}].majorCode" value="${majorRateConfig.majorCode}">
 											   <input type="hidden" name="majorRates[${st.index}].majorSort" value="${st.index}">
 											   <input type="text" class="form-control text-right"
 														name="majorRates[${st.index}].settleRate"
@@ -407,10 +407,10 @@
 														data-rule-max="100"
 														data-rule-min="0" 
 														data-rule-required="true"
-														value="${config.configValue}">
+														value="${majorRateConfig.settleRate}">
 													</td>
 										</tr>
-										<c:set var="total_major_rate" value="${total_major_rate + config.configValue}"></c:set>
+										<c:set var="total_major_rate" value="${total_major_rate + config.settleRate}"></c:set>
 									  </c:forEach>
 								  </c:if>
 								  
