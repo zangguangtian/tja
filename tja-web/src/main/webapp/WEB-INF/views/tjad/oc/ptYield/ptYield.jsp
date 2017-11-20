@@ -62,7 +62,8 @@
 			
 			var periodSelect_insert = getPeriodSelect();
 			var periodSelect_edit = getPeriodSelect();
-			var major = getMajor();
+			var major_insert = getMajor();
+			var major_edit = getMajor();
 			
 			jsGrid.validators.number = {
 					message:function (value, item) {
@@ -166,11 +167,11 @@
 			        	inserting: false,
 			            editing: false,
 			            insertTemplate : function() {
-				       	    return major;
+				       	    return major_insert;
 			        	},
 			        	editTemplate: function(value, item) {
-			    			$(major).val(item.majorCode);
-				       	    return major;
+			    			$(major_edit).val(item.majorCode);
+				       	    return major_edit;
 			        	},
 			        	css:"repeat"
 			        },{
@@ -225,6 +226,10 @@
 			permitGrid.openPage(1);
 	    });
 	
+		jQuery(document).on("blur", "tr.jsgrid-edit-row",function(){
+			//alert("shiqu");
+	    });
+		
 	(function() {
 		var permitDeclareDb = {
 		  loadData: function(filter) {
@@ -255,7 +260,7 @@
 		  		insertingClient.periodId = periodId;
 		  		insertingClient.proId = proId;
 		  		insertingClient.majorCode = majorCode;
-                var falg = validateDataRepeat();
+                var falg = validateDataRepeat("insert");
 		  		if(!falg){
 					  window.totalValidate = false;
 					  $.jalert({"jatext":"期间、项目、专业不得重复"});
@@ -305,7 +310,7 @@
 		  	  updatingClient.proId = proId;
 		  	  updatingClient.majorCode = majorCode;
 		  	  
-		  	  var falg = validateDataRepeat();
+		  	  var falg = validateDataRepeat("update");
 	  		  if(!falg){
 				  window.totalValidate = false;
 				  $.jalert({"jatext":"期间、项目、专业不得重复"});
@@ -329,9 +334,16 @@
 	}());   
 	
 	//校验输入的数据是否重复
-	function validateDataRepeat(){
+	function validateDataRepeat(type){
 		var flag = true;
-		jQuery(".jsgrid-grid-body tr").not(".jsgrid-grid-body tr[style='display: none;']").not(".jsgrid-edit-row").each(function(){
+		var condition = "";
+		if(type == 'insert'){
+			condition = ".jsgrid-grid-body tr:not(.jsgrid-edit-row)";
+		}else if(type == 'update'){
+			condition = ".jsgrid-grid-body tr:not(tr[style='display: none;']):not(.jsgrid-edit-row)";
+		}
+		
+		jQuery(condition).each(function(){
 			var _this = $(this);
 			var periodName = _this.find("td:eq(1)").text().trim();
 			var proCode = _this.find("td:eq(2)").text().trim();
