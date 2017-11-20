@@ -70,8 +70,7 @@
             <div class="form-group col-lg-6 ">
                 <label class="control-label col-md-3">${major.configName }产值</label>
                 <div class="col-md-8">
-                    <input type="hidden" name="yieldMajorDuties[${vs.index }].majorCode" value="${major.configCode }">
-                    <input type="text" name="yieldMajorDuties[${vs.index }].majorYield" data-majorcode="${major.configCode }" value="${yieldDuties[major.configCode].majorYield }" class="form-control eachMajorYield" readonly>
+                    <input type="text" name="stageMajorYield${vs.index }" data-majorcode="${major.configCode }" value="${yieldDuties[major.configCode].majorYield }" class="form-control eachMajorYield" readonly>
                 </div>
             </div>
         </c:forEach>
