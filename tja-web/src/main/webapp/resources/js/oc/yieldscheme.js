@@ -105,16 +105,14 @@ function calViewMYTotal(){
  * 专业比例列表更多展示
  */
 function viewRatioMore(){
-	$("#more-btn").on("click", function(){
-        $("#majorRatio tbody tr:not(.total)").toggle(function(){
-            if($(this).is(":visible")){
-            	$("#more-btn").removeClass("fa-chevron-down").addClass("fa-chevron-up");
-                $("#more-btn h6").text("收起");
-            }else{
-            	$("#more-btn").removeClass("fa-chevron-up").addClass("fa-chevron-down");
-            	$("#more-btn h6").text("展开");
-            }
-        });
+    $("#majorRatio tbody tr:not(.total)").toggle(function(){
+        if($(this).is(":visible")){
+        	$("#more-btn").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+            $("#more-btn h6").text("收起");
+        }else{
+        	$("#more-btn").removeClass("fa-chevron-up").addClass("fa-chevron-down");
+        	$("#more-btn h6").text("展开");
+        }
     });
 }
 
@@ -137,25 +135,27 @@ function loadBaseEdit(){
  * 保存基本信息
  */
 function saveBase(){
-	var datas = {};
-	datas.id = $("input[name='id']").val();
-	datas.schemeNo = $("input[name='schemeNo']").val();
-	datas.lastUpdate = $("input[name='lastUpdate']").val();
-	datas.landArea = $("input[name='landArea']").val();
-	datas.schemeBasis = $("input[name='schemeBasis']").val();
-	jQuery.ajax({
-		type : "POST",
-		url : context+"/admin/yield/scheme/ajax/baseSave",
-		data : datas,
-		dataType : "json",
-		success : function(data) {
-			if(data.flag == "true"){
-				loadBaseView();
-	 		}else{
-	 			$.jalert({"jatext":data.msg});
-	 		}
-		}
-	});
+	if (jQuery("#schemeForm").valid()) {
+		var datas = {};
+		datas.id = $("input[name='id']").val();
+		datas.schemeNo = $("input[name='schemeNo']").val();
+		datas.lastUpdate = $("input[name='lastUpdate']").val();
+		datas.landArea = $("input[name='landArea']").val();
+		datas.schemeBasis = $("input[name='schemeBasis']").val();
+		jQuery.ajax({
+			type : "POST",
+			url : context+"/admin/yield/scheme/ajax/baseSave",
+			data : datas,
+			dataType : "json",
+			success : function(data) {
+				if(data.flag == "true"){
+					loadBaseView();
+		 		}else{
+		 			$.jalert({"jatext":data.msg});
+		 		}
+			}
+		});
+	}
 }
 
 /**加载基本信息查看*/
@@ -193,25 +193,55 @@ function loadRatioEdit(){
  * 保存专业比例
  */
 function saveRatio(){
-	var datas = {};
-	datas.id = $("input[name='id']").val();
-	datas.schemeNo = $("input[name='schemeNo']").val();
-	datas.lastUpdate = $("input[name='lastUpdate']").val();
-	datas.landArea = $("input[name='landArea']").val();
-	datas.schemeBasis = $("input[name='schemeBasis']").val();
-	jQuery.ajax({
-		type : "POST",
-		url : context+"/admin/yield/scheme/ajax/ratioSave",
-		data : datas,
-		dataType : "json",
-		success : function(data) {
-			if(data.flag == "true"){
-				loadRationView();
-	 		}else{
-	 			$.jalert({"jatext":data.msg});
-	 		}
+	if (jQuery("#schemeForm").valid()) {
+		var datas = {};
+		datas.id = $("input[name='id']").val();
+		datas.proId = $("input[name='proId']").val();
+		
+		var canSave = true; //是否可以保存的标志
+		var major = null, ratioJson = null, yieldMajors = [];
+		var ratioTotal = new Number(0);
+		$("#majorRatio tbody tr:not(:last)").each(function(index, item){
+			major = {};
+			major.id = $(item).find("input[name^='id']").val();
+			major.name = $(item).find("input[name^='name']").val();
+			major.priceId = $(item).find("select[name^='priceId']").val();
+			major.buildArea = $(item).find("input[name^='buildArea']").val();
+			major.standardPrice = $(item).find("input[name^='standardPrice']").val();
+			
+			ratioJson = {};
+			ratioTotal = new Number(0);
+			$(item).find("input[name^='majorRate']").each(function(rIndex, rItem){
+				ratioTotal = ratioTotal + new Number($(rItem).val());
+				ratioJson[$(rItem).data("major")] = $(rItem).val();
+			});
+			major.ratioJson = JSON.stringify(ratioJson);
+			yieldMajors.push(major);
+			
+			if(ratioTotal.toFixed(2) != "100.00"){
+				$.jalert({"jatext":major.name + "的各专业比例之和不等于100%"});
+				canSave = false;
+				return false;
+			}
+		});
+		datas.yieldMajors = yieldMajors;
+		if(canSave){
+			jQuery.ajax({
+				type : "POST",
+				url : context+"/admin/yield/scheme/ajax/ratioSave",
+				data : JSON.stringify(datas),
+				dataType : "json",
+		        contentType : "application/json",
+				success : function(data) {
+					if(data.flag == "true"){
+						loadRatioView();
+			 		}else{
+			 			$.jalert({"jatext":data.msg});
+			 		}
+				}
+			});
 		}
-	});
+	}
 }
 
 /**加载专业比例查看*/
@@ -225,7 +255,153 @@ function loadRatioView(){
 			$("#ratio-info-div").html(data);
 		},
 		complete: function(XMLHttpRequest, textStatus){
-			
+			calViewYLTotal();
+		}
+	});
+}
+
+/**
+ * 加载土建产值编辑
+ */
+function loadCivilEdit(){
+	var schemeId = $("input[name='id']").val();
+	jQuery.ajax({
+		type : "POST",
+		url : context+"/admin/yield/scheme/ajax/civilEdit/"+schemeId,
+		dataType : "text",
+		success : function(data) {
+			$("#civil-info-div").html(data);
+		}
+	});
+}
+
+/**
+ * 保存土建产值
+ */
+function saveCivil(){
+	if (jQuery("#schemeForm").valid()) {
+		var datas = {};
+		datas.id = $("input[name='id']").val();
+		datas.contractAmount = $("input[name='contractAmount']").val();
+		datas.pkgAmount = $("input[name='pkgAmount']").val();
+		datas.schemeAmount = $("input[name='schemeAmount']").val();
+		datas.rebateAmount = $("input[name='rebateAmount']").val();
+		datas.principalRate = $("input[name='principalRate']").val();
+		datas.pmRate = $("input[name='pmRate']").val();
+		jQuery.ajax({
+			type : "POST",
+			url : context+"/admin/yield/scheme/ajax/civilSave",
+			data : JSON.stringify(datas),
+			dataType : "json",
+	        contentType : "application/json",
+			success : function(data) {
+				if(data.flag == "true"){
+					loadCivilView();
+		 		}else{
+		 			$.jalert({"jatext":data.msg});
+		 		}
+			}
+		});
+	}
+}
+
+/**加载土建产值查看*/
+function loadCivilView(){
+	var schemeId = $("input[name='id']").val();
+	jQuery.ajax({
+		type : "POST",
+		url : context+"/admin/yield/scheme/ajax/civilView/"+schemeId,
+		dataType : "text",
+		success : function(data) {
+			$("#civil-info-div").html(data);
+		},
+		complete: function(XMLHttpRequest, textStatus){
+
+		}
+	});
+}
+
+/**
+ * 加载各专业产值编辑
+ */
+function loadStageEdit(){
+	var schemeId = $("input[name='id']").val();
+	jQuery.ajax({
+		type : "POST",
+		url : context+"/admin/yield/scheme/ajax/stageEdit/"+schemeId,
+		dataType : "text",
+		success : function(data) {
+			$("#stage-info-div").html(data);
+		}
+	});
+}
+
+/**
+ * 保存各专业产值
+ */
+function saveStage(){
+	if (jQuery("#schemeForm").valid()) {
+		var datas = {};
+		datas.id = $("input[name='id']").val();
+		
+		var stageMajors = [], stageMajor = null;
+		var rows = $("#majorYield tbody tr").length;
+		var cols = $("#majorYield tbody tr:eq(0) td").length - 1;	//减1是去掉产值合计列
+		if(cols > 2 && rows > 0){
+			var cell = null;
+			for(var col = 1; col < cols; col = col + 2){
+				stageMajor = {};
+				for(var row = 0; row < rows; row++){
+					cell = $("#majorYield tbody").find("tr:eq("+row+") td:eq("+col+")");
+					if(row == 0){
+						stageMajor.majorCode = cell.find("input[name^='majorCode']").val();
+						stageMajor.preliminary = cell.find("input[name^='preliminary']").val();
+					}else if(row == 1){
+						stageMajor.drawing = cell.find("input[name^='drawing']").val();
+					}else if(row == 2){
+						stageMajor.subTotal = cell.find("input[name^='subTotal']").val();
+					}else if(row == 3){
+						stageMajor.coordination = cell.find("input[name^='coordination']").val();
+					}else if(row == 4){
+						stageMajor.cap = cell.find("input[name^='cap']").val();
+					}else if(row == 5){
+						stageMajor.check = cell.find("input[name^='check']").val();
+					}
+				}
+				stageMajors.push(stageMajor);
+			}
+		}
+		datas.yieldStageMajors = stageMajors;
+		
+		jQuery.ajax({
+			type : "POST",
+			url : context+"/admin/yield/scheme/ajax/stageSave",
+			data : JSON.stringify(datas),
+			dataType : "json",
+	        contentType : "application/json",
+			success : function(data) {
+				if(data.flag == "true"){
+					loadStageView();
+		 		}else{
+		 			$.jalert({"jatext":data.msg});
+		 		}
+			}
+		});
+	}
+}
+
+/**加载各专业产值查看*/
+function loadStageView(){
+	var schemeId = $("input[name='id']").val();
+	jQuery.ajax({
+		type : "POST",
+		url : context+"/admin/yield/scheme/ajax/stageView/"+schemeId,
+		dataType : "text",
+		success : function(data) {
+			$("#stage-info-div").html(data);
+		},
+		complete: function(XMLHttpRequest, textStatus){
+			calViewMYTotal();
 		}
 	});
 }
