@@ -12,15 +12,22 @@
 
 package com.df.tja.oc.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -151,6 +158,29 @@ public class SettleYieldController extends BaseController {
             throw ex;
         }
         return results;
+    }
+
+    @RequestMapping(value = "/down", method = RequestMethod.GET)
+    public void down(HttpServletRequest request, HttpServletResponse response) throws RuntimeException {
+
+        try {
+            ServletContext servletContext = request.getSession().getServletContext();
+            String rootPath = servletContext.getRealPath("\\");
+            String path = rootPath + "download\\settle_download.xlsx";
+            String fileName = "settle_download.xlsx";
+            File file = new File(path);
+            if (file.exists()) {
+                response.reset();
+                response.setContentType("application/force-download;charset=UTF-8");
+                response.addHeader("Content-Length", "" + file.length());
+                response.setHeader("Content-Disposition",
+                    "attachment; filename=\"" + new String(fileName.getBytes("UTF-8"), "ISO-8859-1") + "\"");
+                FileCopyUtils.copy(new FileInputStream(file), response.getOutputStream());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+
     }
 
 }

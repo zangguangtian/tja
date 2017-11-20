@@ -144,7 +144,7 @@
 						<label class="control-label col-md-3">所处状态<span class="required">※</span></label>
 						<div class="col-md-8 input-icon right">
 						    <i class="fa"></i>
-						    <tags:config type="select" cssClass="form-control" selectCode="${empty yieldSettle.itemStatus ? project.proStatus : yieldSettle.itemStatus}" parentCode="PM.STATUS" name="wfYieldSettle.itemStatus"></tags:config>
+						    <tags:config type="select" otherAttr="data-rule-required='true'" cssClass="form-control" selectCode="${empty yieldSettle.itemStatus ? project.proStatus : yieldSettle.itemStatus}" parentCode="PM.STATUS" name="wfYieldSettle.itemStatus"></tags:config>
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">

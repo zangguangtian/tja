@@ -36,7 +36,7 @@ function toImport(){
 }
 
 function download(){
-	window.location.href="${site}/download/settle_download.xlsx";
+	window.location.href="${site}/admin/oc/settle/down";
 }
 
 </script>
