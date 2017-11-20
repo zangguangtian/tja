@@ -12,8 +12,10 @@
 
 package com.df.tja.domain.cust;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
+import com.df.framework.util.ArithmeticUtil;
 import com.df.tja.domain.OcYieldMajor;
 import com.df.tja.domain.OcYieldMajorRatio;
 
@@ -104,4 +106,16 @@ public class CustOcYieldMajor extends OcYieldMajor {
         this.majorMap = majorMap;
     }
 
+    /**
+     * 
+     * 计算土建基准产值
+     */
+    public BigDecimal getStandardYield() {
+        BigDecimal standardYield = new BigDecimal(0);
+        if (getStandardPrice() != null && getBuildArea() != null) {
+            standardYield = ArithmeticUtil.multMul(getStandardPrice(), getBuildArea());
+            standardYield = ArithmeticUtil.round(standardYield, 2);
+        }
+        return standardYield;
+    }
 }

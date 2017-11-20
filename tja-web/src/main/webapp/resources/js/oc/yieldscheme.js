@@ -288,6 +288,16 @@ function saveCivil(){
 		datas.rebateAmount = $("input[name='rebateAmount']").val();
 		datas.principalRate = $("input[name='principalRate']").val();
 		datas.pmRate = $("input[name='pmRate']").val();
+		
+		var majorDuties = [], majorDuty = null;
+		$("#civil-info-div input[name^='stageMajorYield'][data-majorcode]").each(function(){
+			majorDuty = {};
+			majorDuty.majorCode = $(this).data("majorcode");
+			majorDuty.majorYield = $(this).val();
+			majorDuties.push(majorDuty);
+		});
+		datas.yieldMajorDuties = majorDuties;
+		
 		jQuery.ajax({
 			type : "POST",
 			url : context+"/admin/yield/scheme/ajax/civilSave",
@@ -402,6 +412,75 @@ function loadStageView(){
 		},
 		complete: function(XMLHttpRequest, textStatus){
 			calViewMYTotal();
+		}
+	});
+}
+
+
+
+/**
+ * 加载各专业部门负责人会签编辑
+ */
+function loadPrincipalEdit(){
+	var schemeId = $("input[name='id']").val();
+	jQuery.ajax({
+		type : "POST",
+		url : context+"/admin/yield/scheme/ajax/principalEdit/"+schemeId,
+		dataType : "text",
+		success : function(data) {
+			$("#principal-info-div").html(data);
+		}
+	});
+}
+
+/**
+ * 保存各专业部门负责人会签
+ */
+function savePrincipal(){
+	if (jQuery("#schemeForm").valid()) {
+		var datas = {};
+		datas.id = $("input[name='id']").val();
+		datas.principalId = $("input[name='principalId']").val();
+		datas.remark = $("textarea[name='remark']").val();
+		
+		var majorDuties = [], majorDuty = null;
+		$("#principal-info-div input[name^='principalId'][data-majorcode]").each(function(){
+			majorDuty = {};
+			majorDuty.majorCode = $(this).data("majorcode");
+			majorDuty.principalId = $(this).val();
+			majorDuties.push(majorDuty);
+		});
+		datas.yieldMajorDuties = majorDuties;
+		
+		jQuery.ajax({
+			type : "POST",
+			url : context+"/admin/yield/scheme/ajax/principalSave",
+			data : JSON.stringify(datas),
+			dataType : "json",
+	        contentType : "application/json",
+			success : function(data) {
+				if(data.flag == "true"){
+					loadPrincipalView();
+		 		}else{
+		 			$.jalert({"jatext":data.msg});
+		 		}
+			}
+		});
+	}
+}
+
+/**加载各专业部门负责人会签查看*/
+function loadPrincipalView(){
+	var schemeId = $("input[name='id']").val();
+	jQuery.ajax({
+		type : "POST",
+		url : context+"/admin/yield/scheme/ajax/principalView/"+schemeId,
+		dataType : "text",
+		success : function(data) {
+			$("#principal-info-div").html(data);
+		},
+		complete: function(XMLHttpRequest, textStatus){
+
 		}
 	});
 }

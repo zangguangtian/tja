@@ -12,7 +12,6 @@
 
 package com.df.tja.dao;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import com.df.framework.base.dao.IBaseDao;
@@ -64,24 +63,18 @@ public interface IOcYieldSchemeDao extends IBaseDao {
     List<OcYieldMajorRatio> selectMajorRatios(String priceId, String majorId);
 
     /**
-     * 查询专业比例中指定记录的土建基准单价
-     * @param priceId
-     * @param majorId
-     * @return
-     */
-    BigDecimal selectMajorPrice(String priceId, String majorId);
-
-    /**
-     * 删除页面上已经删除的专业比例
-     * @param majorIds 存在的专业比例ID
-     */
-    void deleteMajors(List<String> majorIds);
-
-    /**
      * 删除页面上已经删除的专业比例
      * @param schemeId 策划ID
      * @param majorIds 存在的专业比例ID
      */
-    void deleteMajorRatios(String schemeId, List<String> majorIds);
+    void deleteMajors(String schemeId, List<String> majorIds);
 
+    /**
+     * 
+     * <p>描述 : 根据策划ID，计算土建产值、各专业产值</p>
+     *
+     * @param schemeId
+     * @param opType
+     */
+    void calOtherYield(String schemeId, String opType);
 }

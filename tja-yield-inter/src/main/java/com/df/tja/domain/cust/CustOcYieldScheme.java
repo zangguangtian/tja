@@ -108,10 +108,47 @@ public class CustOcYieldScheme extends OcYieldScheme {
         this.yieldStageMajors = yieldStageMajors;
     }
 
+    public BigDecimal getPkgAmount() {
+        BigDecimal pkgAmount = super.getPkgAmount();
+        if (pkgAmount == null) {
+            pkgAmount = new BigDecimal(0);
+        }
+        return pkgAmount;
+    }
+
+    public BigDecimal getSchemeAmount() {
+        BigDecimal schemeAmount = super.getSchemeAmount();
+        if (schemeAmount == null) {
+            schemeAmount = new BigDecimal(0);
+        }
+        return super.getSchemeAmount();
+    }
+
+    public BigDecimal getRebateAmount() {
+        BigDecimal rebateAmount = super.getRebateAmount();
+        if (rebateAmount == null) {
+            rebateAmount = new BigDecimal(0);
+        }
+        return super.getRebateAmount();
+    }
+
     public BigDecimal getTotalAmount() {
         BigDecimal totalAmount = ArithmeticUtil.sub(getContractAmount(), getPkgAmount());
         totalAmount = ArithmeticUtil.sub(totalAmount, getSchemeAmount());
         totalAmount = ArithmeticUtil.sub(totalAmount, getRebateAmount());
         return totalAmount;
+    }
+
+    public BigDecimal getPrincipalYield() {
+        BigDecimal principalYield = new BigDecimal(0);
+        principalYield = ArithmeticUtil.div(ArithmeticUtil.mul(getMajorAmount(), getPrincipalRate()),
+            new BigDecimal(100), 2);
+        return principalYield;
+    }
+
+    public BigDecimal getPmYield() {
+        BigDecimal pmYield = new BigDecimal(0);
+        pmYield = ArithmeticUtil.div(ArithmeticUtil.mul(getMajorAmount(), getPmRate()), new BigDecimal(100), 2);
+        return pmYield;
     }
 }

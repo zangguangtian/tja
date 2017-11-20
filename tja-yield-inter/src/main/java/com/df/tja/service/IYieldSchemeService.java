@@ -28,49 +28,92 @@ import com.df.tja.domain.cust.CustOcYieldStageMajor;
 public interface IYieldSchemeService extends IBaseService {
 
     /**
-     * 插入或修改施工图产值策划
-     * @param custOcYieldScheme
-     * @throws RuntimeException
-     */
-    void createOrModifyYieldScheme(CustOcYieldScheme custOcYieldScheme) throws RuntimeException;
-
-    /**
-     * 按ID查询施工图产值策划
-     * @param id
+     * 
+     * <p>描述 : </p>
+     * @para proId
+     *
      * @return
      * @throws RuntimeException
      */
+    String createYieldScheme(String proId) throws RuntimeException;
+
+    /**
+      * 按ID查询施工图产值策划
+      * @param id
+      * @return
+      * @throws RuntimeException
+      */
+
     CustOcYieldScheme queryOcYieldSchemeById(String id) throws RuntimeException;
 
     /**
-     * 查询各专业部门产值及负责人
-     * @param schemeId
-     * @return
-     * @throws RuntimeException
-     */
+      * 查询各专业部门产值及负责人
+      * @param schemeId
+      * @return
+      * @throws RuntimeException
+      */
+
     Map<String, CustOcYieldMajorDuty> queryOcYieldMajorDutiesBySchemeId(String schemeId) throws RuntimeException;
 
     /**
-     * 查询各专业的阶段产值
-     * @param schemeId
-     * @return
-     * @throws RuntimeException
-     */
+      * 查询各专业的阶段产值
+      * @param schemeId
+      * @return
+      * @throws RuntimeException
+      */
+
     Map<String, CustOcYieldStageMajor> queryOcYieldStageMajorsBySchemeId(String schemeId) throws RuntimeException;
 
     /**
-     * 通过策划ID查询专业列表
-     * @param schemeId
-     * @return
-     * @throws RuntimeException
-     */
+      * 通过策划ID查询专业列表
+      * @param schemeId
+      * @return
+      * @throws RuntimeException
+      */
+
     List<CustOcYieldMajor> queryOcYieldMajors(String schemeId) throws RuntimeException;
 
     /**
-     * 查询所有的基准单价及专业比例，如果存在策划，则以当前记录的基准单价及专业比例为准
-     * @param schemeId
-     * @return
+      * 查询所有的基准单价及专业比例，如果存在策划，则以当前记录的基准单价及专业比例为准
+      * @param schemeId
+      * @return
+      * @throws RuntimeException
+      */
+    List<CustOcYieldMajor> queryMajorAllPrices(String schemeId) throws RuntimeException;
+
+    /**
+     * 
+     * <p>描述 : 保存施工图产值策划的专业比例</p>
+     *
+     * @param custOcYieldScheme
      * @throws RuntimeException
      */
-    List<CustOcYieldMajor> queryMajorAllPrices(String schemeId) throws RuntimeException;
+    void createYieldSchemeRatio(CustOcYieldScheme custOcYieldScheme) throws RuntimeException;
+
+    /**
+     * 
+     * <p>描述 : 保存施工图产值策划的土建产值</p>
+     *
+     * @param custOcYieldScheme
+     * @throws RuntimeException
+     */
+    void createYieldSchemeCivil(CustOcYieldScheme custOcYieldScheme) throws RuntimeException;
+
+    /**
+     * 
+     * <p>描述 : 保存施工图产值策划的各专业产值</p>
+     *
+     * @param custOcYieldScheme
+     * @throws RuntimeException
+     */
+    void createYieldSchemeStage(CustOcYieldScheme custOcYieldScheme) throws RuntimeException;
+
+    /**
+     * 
+     * <p>描述 : 保存施工图产值策划的各专业部门负责人会签</p>
+     *
+     * @param custOcYieldScheme
+     * @throws RuntimeException
+     */
+    void createYieldSchemePrincipal(CustOcYieldScheme custOcYieldScheme) throws RuntimeException;
 }

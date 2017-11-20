@@ -12,12 +12,14 @@
 
 package com.df.tja.dao.impl;
 
-import java.math.BigDecimal;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.hibernate.SQLQuery;
+import org.hibernate.jdbc.Work;
 import org.hibernate.transform.Transformers;
-import org.hibernate.type.StandardBasicTypes;
 import org.springframework.stereotype.Repository;
 
 import com.df.framework.base.dao.impl.BaseDaoHbmImpl;
@@ -132,42 +134,37 @@ public class OcYieldSchemeDaoHbmImpl extends BaseDaoHbmImpl implements IOcYieldS
         return query.list();
     }
 
-    public BigDecimal selectMajorPrice(String priceId, String majorId) {
-        StringBuffer sql = new StringBuffer("");
-
-        sql.append("select isnull(ym.standard_price, sp.unit_price) price");
-        sql.append(" from oc_standard_price sp                           ");
-        sql.append(" left join oc_yield_major ym on sp.id = ym.price_id  ");
-        if (StringUtil.isNotBlank(majorId)) {
-            sql.append("   and ym.id = :majorId                          ");
-        } else {
-            sql.append("   and ym.id is null                             ");
+    public void deleteMajors(String schemeId, List<String> majorIds) {
+        StringBuffer sql = new StringBuffer("delete from oc_yield_major where scheme_id = :schemeId");
+        if (majorIds != null && !majorIds.isEmpty()) {
+            sql.append(" and id not in(:majorIds)");
         }
-        sql.append(" where sp.id = :priceId                              ");
-        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
-        query.addScalar("price", StandardBasicTypes.BIG_DECIMAL);
-        if (StringUtil.isNotBlank(majorId)) {
-            query.setString("majorId", majorId);
-        }
-        query.setString("priceId", priceId);
-        return (BigDecimal) query.uniqueResult();
-    }
 
-    public void deleteMajors(List<String> majorIds) {
-        StringBuffer sql = new StringBuffer("delete from oc_yield_major where id not in(:majorIds)");
-        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
-        query.setParameterList("majorIds", majorIds);
-        query.executeUpdate();
-    }
-
-    public void deleteMajorRatios(String schemeId, List<String> majorIds) {
-        StringBuffer sql = new StringBuffer("");
-        sql.append("delete from oc_yield_major_ratio where scheme_id = :schemeId ");
-        sql.append(" and major_id not in(:majorIds)                              ");
         SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
         query.setString("schemeId", schemeId);
-        query.setParameterList("majorIds", majorIds);
+        if (majorIds != null && !majorIds.isEmpty()) {
+            query.setParameterList("majorIds", majorIds);
+        }
         query.executeUpdate();
+    }
+
+    public void calOtherYield(final String schemeId, final String opType) {
+        //刷新缓存
+        getCurrentSession().flush();
+
+        getCurrentSession().doWork(new Work() {
+            public void execute(Connection connection) throws SQLException {
+                CallableStatement cstmt;
+                try {
+                    cstmt = connection.prepareCall("{call usp_YIELD_SCHEME_CAL(?, ?)}");
+                    cstmt.setString(1, schemeId);
+                    cstmt.setString(2, opType);
+                    cstmt.execute();
+                } catch (SQLException ex) {
+                    throw ex;
+                }
+            }
+        });
     }
 
 }
