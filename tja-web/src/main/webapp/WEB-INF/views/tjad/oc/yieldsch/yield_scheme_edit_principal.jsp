@@ -53,7 +53,7 @@ $(function(){
 
 /**选择责任人后的回调方法*/
 function selectStaffCallBack(data){
-	$(principalObj).siblings("input[name$='principalId']").val(data[0].id);
+	$(principalObj).siblings("input[name^='principalId']").val(data[0].id);
 	$(principalObj).siblings("input[id$='principalName']").val(data[0].name);
 }
 </script>
