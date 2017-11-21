@@ -34,96 +34,98 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目编号</label>
 						<div class="col-md-8">
-							<input type="text" name="wfYieldSettle.proCode" class="form-control col-md-3" disabled value="${project.proCode}">
+							<input type="hidden" name="wfYieldSettle.proCode" class="form-control col-md-3" value="${project.proCode}">
+						    <label class="control-label">${project.proCode}</label>
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目名称</label>
 						<div class="col-md-8">
-							<input type="text" name="wfYieldSettle.proName" class="form-control" disabled value="${project.proName}">
+							<input type="hidden" name="wfYieldSettle.proName" class="form-control" value="${project.proName}">
+						    <label class="control-label">${project.proName}</label>
 						</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">合同编号</label>
-						<div class="col-md-8">
-							<input type="text" name="wfYieldSettle.contractCode" class="form-control" disabled value="${project.contractCode}">
+						<div class="col-md-9">
+							<input type="hidden" name="wfYieldSettle.contractCode" class="form-control" value="${project.contractCode}">
+						    <label class="control-label">${project.contractCode}</label>
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目类型</label>
 						<div class="col-md-8">
-							<input type="text" name="wfYieldSettle.proType" class="form-control" disabled value="${project.proType}">
+							<input type="hidden" name="wfYieldSettle.proType" class="form-control" value="${project.proType}">
+							<label class="control-label">${project.proType}</label>
 						</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">合同额(¥)</label>
 						<div class="col-md-8">
-								<input type="text" class="form-control" disabled
-									name="wfYieldSettle.contractAmount"
+								<input type="hidden" class="form-control" name="wfYieldSettle.contractAmount"
 									value="<fmt:formatNumber value='${empty yieldSettle.contractAmount?project.contractAmount:yieldSettle.contractAmount}' pattern='#,#00.00#'/>">
-							</div>
+						        <label class="control-label"><fmt:formatNumber value='${empty yieldSettle.contractAmount?project.contractAmount:yieldSettle.contractAmount}' pattern='#,#00.00#'/></label>
+						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">分包扣减(¥)</label>
 						<div class="col-md-8">
-								<input type="text" class="form-control" disabled
-									name="wfYieldSettle.pkgAmount"
+								<input type="hidden" class="form-control" name="wfYieldSettle.pkgAmount"
 									value="<fmt:formatNumber value='${empty yieldSettle.pkgAmount?project.pkgAmount:yieldSettle.pkgAmount}' pattern='#,#00.00#'/>">
-							</div>
+						        <label class="control-label"><fmt:formatNumber value='${empty yieldSettle.pkgAmount?project.pkgAmount:yieldSettle.pkgAmount}' pattern='#,#00.00#'/></label>
+						</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">方案扣减(¥)</label>
 						<div class="col-md-8">
-								<input type="text" class="form-control" disabled
-									name="wfYieldSettle.schemeAmount"
+								<input type="hidden" class="form-control" name="wfYieldSettle.schemeAmount"
 									value="<fmt:formatNumber value='${empty yieldSettle.schemeAmount?project.schemeAmount:yieldSettle.schemeAmount}' pattern='#,#00.00#'/>">
-							</div>
+						        <label class="control-label"><fmt:formatNumber value='${empty yieldSettle.schemeAmount?project.schemeAmount:yieldSettle.schemeAmount}' pattern='#,#00.00#'/></label>
+						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">其他扣减(¥)</label>
 						<div class="col-md-8">
-								<input type="text" class="form-control" disabled
-									name="wfYieldSettle.rebateAmount"
+								<input type="hidden" class="form-control" name="wfYieldSettle.rebateAmount"
 									value="<fmt:formatNumber value='${empty yieldSettle.rebateAmount?project.rebateAmount:yieldSettle.rebateAmount}' pattern='#,#00.00#'/>">
-							</div>
+						        <label class="control-label"><fmt:formatNumber value='${empty yieldSettle.rebateAmount?project.rebateAmount:yieldSettle.rebateAmount}' pattern='#,#00.00#'/></label>
+						</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目负责人</label>
-						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i>
-							<input type="text" class="form-control" disabled name="wfYieldSettle.pManagers" value="${project.pmLeaders}">
+						<div class="col-md-8">
+							<input type="hidden" class="form-control" name="wfYieldSettle.pManagers" value="${project.pmLeaders}">
+						    <label class="control-label">${project.pmLeaders}</label>
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目经理</label>
-						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i>
-			            	<input type="text" name="wfYieldSettle.pManagers" class="form-control col-md-3" value="${project.pManagers}" disabled>
+						<div class="col-md-8">
+			            	<input type="hidden" name="wfYieldSettle.pManagers" class="form-control col-md-3" value="${project.pManagers}">
+			            	<label class="control-label">${project.pManagers}</label>
 						</div>
 					</div>
 					
 					
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">当年可结算产值(¥)</label>
-						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i> <input type="text" class="form-control"
-									name="wfYieldSettle.yearYield"
-									value="<fmt:formatNumber value='${empty yieldSettle.yearYield ? project.yield : yieldSettle.yearYield}' pattern='#,#00.00#'/>"
-									disabled>
-							</div>
+						<div class="col-md-8">
+						    <input type="hidden" class="form-control" name="wfYieldSettle.yearYield"
+							value="<fmt:formatNumber value='${empty yieldSettle.yearYield ? project.yield : yieldSettle.yearYield}' pattern='#,#00.00#'/>">
+						    <label class="control-label"><fmt:formatNumber value='${empty yieldSettle.yearYield ? project.yield : yieldSettle.yearYield}' pattern='#,#00.00#'/></label>
+						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">历年已结算产值(¥)</label>
-						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i> <input type="text" class="form-control"
-									name="wfYieldSettle.hisyearYield"
-									value="<fmt:formatNumber value='${empty yieldSettle.hisyearYield ? hisyearYield : yieldSettle.hisyearYield}' pattern='#,#00.00#'/>"
-									disabled>
-							</div>
+						<div class="col-md-8">
+						    <input type="hidden" class="form-control" name="wfYieldSettle.hisyearYield"
+									value="<fmt:formatNumber value='${empty yieldSettle.hisyearYield ? hisyearYield : yieldSettle.hisyearYield}' pattern='#,#00.00#'/>">
+						    <label class="control-label"><fmt:formatNumber value='${empty yieldSettle.hisyearYield ? hisyearYield : yieldSettle.hisyearYield}' pattern='#,#00.00#'/></label>
+						</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
