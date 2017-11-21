@@ -63,6 +63,7 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
         try {
             OcYieldScheme entity = new OcYieldScheme();
             entity.setProId(proId);
+            entity.setRelationId(StringUtil.getUUID());
             //查询本项目的方案产值
             BigDecimal planYield = wfPlanSchemeService.queryPlanYieldByProId(proId);
             if (planYield == null) {

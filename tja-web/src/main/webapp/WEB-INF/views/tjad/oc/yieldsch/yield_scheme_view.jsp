@@ -33,6 +33,8 @@
                 <input type="hidden" id="ratioParam" value="${ratioParam }">
                 <input type="hidden" name="id" value="${yieldScheme.id }">
                 <input type="hidden" name="proId" value="${project.id }">
+                <input type="hidden" name="relationId" value="${yieldScheme.relationId }">
+				<input type="hidden" name="atturl" value="${site}/admin/sys/file/ajax/list/0/${yieldScheme.relationId}">
                 <div class="form-body clearfix" style="padding-bottom: 0">
                 	<div id="base-info-div" class="col-md-12">
                 		<jsp:include page="yield_scheme_view_base.jsp"/>
@@ -50,6 +52,9 @@
 						<jsp:include page="yield_scheme_view_principal.jsp"/>
 					</div>
 				</div>
+				<c:if test="${empty print }">
+					<jsp:include page="../../../framework/common/fileupload/include_attach.jsp"/>
+				</c:if>
 				<br><br><br>
             </form>
             <!-- END FORM-->

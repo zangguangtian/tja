@@ -96,6 +96,9 @@ public class OcYieldScheme extends BaseDomain {
     /** 属性：设计负责人。记录人员信息ID */
     private java.lang.String principalId;
 
+    /** 属性：设计负责人。记录人员信息ID */
+    private java.lang.String relationId;
+
     /** 属性：备注 */
     private String remark;
 
@@ -397,6 +400,25 @@ public class OcYieldScheme extends BaseDomain {
      */
     public void setPrincipalId(java.lang.String principalId) {
         this.principalId = principalId;
+    }
+
+    /**
+     * <p> 属性relationId的Getter方法. </p>
+     * 
+     * @return 返回relationId属性的值
+     */
+    @Column(name = "RELATION_ID")
+    public java.lang.String getRelationId() {
+        return relationId;
+    }
+
+    /**
+     * <p> 属性relationId的Setter方法. </p>
+     * 
+     * @param relationId 为属性relationId设置的值
+     */
+    public void setRelationId(java.lang.String relationId) {
+        this.relationId = relationId;
     }
 
     /**

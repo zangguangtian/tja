@@ -46,7 +46,7 @@ public class OcYieldSchemeDaoHbmImpl extends BaseDaoHbmImpl implements IOcYieldS
         sql.append("  ys.TOTAL_AMOUNT as totalAmount, ys.MAJOR_AMOUNT as majorAmount,                ");
         sql.append("  ys.PRINCIPAL_RATE as principalRate, ys.PRINCIPAL_YIELD as principalYield,      ");
         sql.append("  ys.PM_RATE as pmRate, ys.PM_YIELD as pmYield, ys.PRINCIPAL_ID as principalId,  ");
-        sql.append("  hs.name as principalName, ys.REMARK as remark                                  ");
+        sql.append("  hs.name as principalName, ys.REMARK as remark, ys.RELATION_ID as relationId    ");
         sql.append("from oc_yield_scheme ys                                                          ");
         sql.append("left join hr_staff_tm hs on ys.PRINCIPAL_ID = hs.id                              ");
         sql.append("where ys.id = ?                                                                  ");

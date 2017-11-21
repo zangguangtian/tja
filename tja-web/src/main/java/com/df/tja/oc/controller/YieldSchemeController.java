@@ -42,7 +42,6 @@ import com.df.tja.domain.cust.CustOcYieldMajor;
 import com.df.tja.domain.cust.CustOcYieldMajorDuty;
 import com.df.tja.domain.cust.CustOcYieldScheme;
 import com.df.tja.domain.cust.CustOcYieldStageMajor;
-import com.df.tja.service.IWfPlanSchemeService;
 import com.df.tja.service.IYieldSchemeService;
 import com.df.tja.service.IYmConfigService;
 
@@ -75,9 +74,6 @@ public class YieldSchemeController extends BaseController {
 
     @Autowired
     private IYieldSchemeService yieldSchemeService;
-
-    @Autowired
-    private IWfPlanSchemeService wfPlanSchemeService;
 
     private String[][] schemeStages = new String[][] {{"preliminary", "初设"}, {"drawing", "施工图"}, {"subTotal", "小计"},
         {"coordination", "施工配合"}, {"cap", "施工配合-封顶"}, {"check", "施工配合-验收"}};
