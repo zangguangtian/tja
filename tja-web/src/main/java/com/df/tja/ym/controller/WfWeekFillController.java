@@ -36,6 +36,7 @@ import com.df.framework.exception.LogicalException;
 import com.df.framework.sys.domain.SysUser;
 import com.df.framework.sys.service.ISysUserService;
 import com.df.framework.util.HttpUtil;
+import com.df.framework.util.StringUtil;
 import com.df.tja.constant.TjaConstant;
 import com.df.tja.domain.WfWeekFill;
 import com.df.tja.domain.cust.WfWeekFillMore;
@@ -162,8 +163,8 @@ public class WfWeekFillController extends WfBaseController {
      * @throws BusinessException
      */
     @RequestMapping(value = {"/toview/{operate}/{id}", "/toprint/{operate}/{id}"}, method = RequestMethod.GET)
-    public ModelAndView toViewOrApprove(@PathVariable("operate") String operate, @PathVariable("id") String id)
-        throws RuntimeException {
+    public ModelAndView toViewOrApprove(@PathVariable("operate") String operate, @PathVariable("id") String id,
+                                        String view) throws RuntimeException {
         Map<String, Object> modelMap = new HashMap<String, Object>();
 
         WfWeekFill week = weekFillService.queryByPrimaryKey(WfWeekFill.class, id);
@@ -187,8 +188,9 @@ public class WfWeekFillController extends WfBaseController {
         modelMap.put("executionId", weekFill.getProcId());
 
         ModelAndView modelAndView = new ModelAndView();
+        Integer viewType = StringUtil.isNotBlank(view) ? Integer.valueOf(view) : 10;
 
-        modelAndView.addObject("view", 10);
+        modelAndView.addObject("view", viewType);
         modelAndView.addAllObjects(modelMap);
         modelAndView.setViewName("/tjad/ym/weekfill/weekfill_view");
         return modelAndView;
