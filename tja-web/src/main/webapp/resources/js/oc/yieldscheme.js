@@ -101,6 +101,102 @@ function calViewMYTotal(){
 	});
 }
 
+/**专业比例列表更多展示*/
+$(document).on("click", "#more-btn", function(){
+	viewRatioMore();
+});
+
+/**打开基本信息编辑*/
+$(document).on("click", "#base-info-div .fa-edit", function(){
+	singleEdit(this);
+	loadBaseEdit();
+});
+
+/**基本信息编辑页面保存*/
+$(document).on("click", "#base-info-div #save-btn", function(){
+	saveBase();
+});
+
+/**基本信息编辑页面取消*/
+$(document).on("click", "#base-info-div #cancel-btn", function(){
+	loadBaseView();
+});
+
+/**打开专业比例编辑*/
+$(document).on("click", "#ratio-info-div .fa-edit", function(){
+	singleEdit(this);
+	loadRatioEdit();
+});
+
+/**专业比例编辑页面保存*/
+$(document).on("click", "#ratio-info-div #save-btn", function(){
+	saveRatio();
+});
+
+/**专业比例编辑页面取消*/
+$(document).on("click", "#ratio-info-div #cancel-btn", function(){
+	loadRatioView("cancel");
+});
+
+/**打开土建产值编辑*/
+$(document).on("click", "#civil-info-div .fa-edit", function(){
+	singleEdit(this);
+	loadCivilEdit();
+});
+
+/**土建产值编辑页面保存*/
+$(document).on("click", "#civil-info-div #save-btn", function(){
+	saveCivil();
+});
+
+/**土建产值编辑页面取消*/
+$(document).on("click", "#civil-info-div #cancel-btn", function(){
+	loadCivilView("cancel");
+});
+
+/**打开各专业产值编辑*/
+$(document).on("click", "#stage-info-div .fa-edit", function(){
+	singleEdit(this);
+	loadStageEdit();
+});
+
+/**各专业产值编辑页面保存*/
+$(document).on("click", "#stage-info-div #save-btn", function(){
+	saveStage();
+});
+
+/**各专业产值编辑页面取消*/
+$(document).on("click", "#stage-info-div #cancel-btn", function(){
+	loadStageView();
+});
+
+/**打开各专业部门负责人会签编辑*/
+$(document).on("click", "#principal-info-div .fa-edit", function(){
+	singleEdit(this);
+	loadPrincipalEdit();
+});
+
+/**各专业部门负责人会签编辑页面保存*/
+$(document).on("click", "#principal-info-div #save-btn", function(){
+	savePrincipal();
+});
+
+/**各专业部门负责人会签编辑页面取消*/
+$(document).on("click", "#principal-info-div #cancel-btn", function(){
+	loadPrincipalView();
+});
+
+/**
+ * 保证一次只能打开一个编辑部分
+ */
+function singleEdit(obj){
+	$(obj).closest("div[id$='info-div']").siblings("div").each(function(){
+		if($(this).find("[id='cancel-btn']").length > 0){
+			$(this).find("[id='cancel-btn']").click();
+		}
+	});
+}
+
 /**
  * 专业比例列表更多展示
  */
@@ -644,7 +740,7 @@ function saveRatio(){
 		        contentType : "application/json",
 				success : function(data) {
 					if(data.flag == "true"){
-						loadRatioView();
+						loadRatioView("save");
 			 		}else{
 			 			$.jalert({"jatext":data.msg});
 			 		}
@@ -655,7 +751,7 @@ function saveRatio(){
 }
 
 /**加载专业比例查看*/
-function loadRatioView(){
+function loadRatioView(opt){
 	var schemeId = $("input[name='id']").val();
 	jQuery.ajax({
 		type : "POST",
@@ -666,6 +762,9 @@ function loadRatioView(){
 		},
 		complete: function(XMLHttpRequest, textStatus){
 			calViewYLTotal();
+			if(opt == "save"){
+				loadCivilView(opt);
+			}
 		}
 	});
 }
@@ -716,7 +815,7 @@ function saveCivil(){
 	        contentType : "application/json",
 			success : function(data) {
 				if(data.flag == "true"){
-					loadCivilView();
+					loadCivilView("save");
 		 		}else{
 		 			$.jalert({"jatext":data.msg});
 		 		}
@@ -726,7 +825,7 @@ function saveCivil(){
 }
 
 /**加载土建产值查看*/
-function loadCivilView(){
+function loadCivilView(opt){
 	var schemeId = $("input[name='id']").val();
 	jQuery.ajax({
 		type : "POST",
@@ -736,7 +835,9 @@ function loadCivilView(){
 			$("#civil-info-div").html(data);
 		},
 		complete: function(XMLHttpRequest, textStatus){
-
+			if(opt == "save"){	//如果是保存，则需要重新加载各专业产值
+				loadStageView();
+			}
 		}
 	});
 }

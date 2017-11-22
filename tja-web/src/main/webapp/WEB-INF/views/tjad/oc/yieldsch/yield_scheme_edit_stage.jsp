@@ -98,3 +98,8 @@
         </div>
 	</div>
 </div>
+<script type="text/javascript">
+$(function(){
+	calEachStageYieldTotal();
+});
+</script>
