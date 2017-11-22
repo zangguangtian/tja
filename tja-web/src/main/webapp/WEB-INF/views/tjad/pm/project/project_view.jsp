@@ -2,6 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="df" uri="http://www.diligentfirst.com/" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -9,11 +10,14 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<df:readProp var="menu-path" value="pm.project.menu.path" scope="request" />
 	<title>项目信息管理-编辑</title>
-	<link href="/tja-web/resources/css/management.css?v=1509003163334" rel="Stylesheet" type="text/css">
+	<link href="/tja-web/resources/css/management.css?v=${buildVersion}" rel="Stylesheet" type="text/css">
 </head>
 <body>
 <div class="">
 	<center>
+		<sec:authorize url="/admin/pm/project/edit">
+			<input type="button" id="edit-btn" value="编辑" class="btn blue" style="float:right;position:absolute;right:55px;">
+		</sec:authorize>
 		<h3>项目信息管理</h3>
 	</center>
 	<div class=" ">
@@ -183,10 +187,14 @@
 												<td class="text-center col-lg-4">项目经理</td>
 												<td class="col-lg-8 text-right">${project.projectExtend.pmRate}</td>
 											</tr>
+											<tr class="form-group">
+												<td class="text-center col-lg-4">项目秘书</td>
+												<td class="col-lg-8 text-right">${project.projectExtend.secretRate}</td>
+											</tr>
 											<tr>
 												<td class="text-center col-lg-4">合计</td>
 												<td class="col-lg-8 text-right" id="rateSum">
-													${project.projectExtend.principalRate + project.projectExtend.pmRate}
+													${project.projectExtend.principalRate + project.projectExtend.pmRate + project.projectExtend.secretRate}
 												</td>
 											</tr>
 										</tbody>
@@ -262,7 +270,9 @@
 
 <script type="text/javascript">
 $(function(){
-	
+	$("#edit-btn").on("click", function(){
+		window.location.href = "${site}/admin/pm/project/edit/${project.id}";
+	})
 });
 </script>
 </body>

@@ -9,7 +9,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<df:readProp var="menu-path" value="pm.project.menu.path" scope="request" />
 	<title>项目信息管理-编辑</title>
-	<link href="/tja-web/resources/css/management.css?v=1509003163334" rel="Stylesheet" type="text/css">
+	<link href="/tja-web/resources/css/management.css?v=${buildVersion}" rel="Stylesheet" type="text/css">
 </head>
 <body>
 <div class="">
@@ -213,9 +213,25 @@
 														   class="text-right">
 												</td>
 											</tr>
+											<tr class="form-group">
+												<td class="text-center col-lg-4">项目秘书</td>
+												<td class="col-lg-8 input-icon left">
+													<i class="fa"></i>
+													<input name="projectExtend.secretRate" 
+														   value="${project.projectExtend.secretRate}" 
+														   onkeyup="rateAdd()" 
+														   type="text" 
+														   placeholder="0.00" 
+														   data-rule-required="true" 
+														   data-rule-number="true" 
+														   data-rule-max="100" 
+														   data-rule-min="0" 
+														   class="text-right">
+												</td>
+											</tr>
 											<tr>
 												<td class="text-center col-lg-4">合计</td>
-												<td class="col-lg-8 text-right" id="rateSum">${project.projectExtend.principalRate + project.projectExtend.pmRate}</td>
+												<td class="col-lg-8 text-right" id="rateSum">${project.projectExtend.principalRate + project.projectExtend.pmRate + project.projectExtend.secretRate}</td>
 											</tr>
 										</tbody>
 									</table>
@@ -334,7 +350,8 @@ $(function(){
 function rateAdd(){
 	var principalRate = parseFloat($("input[name='projectExtend.principalRate']").val())*100||0.00;
 	var pmRate = parseFloat($("input[name='projectExtend.pmRate']").val())*100||0.00;
-	var sum = ((principalRate + pmRate)/100).toFixed(2);
+	var secretRate = parseFloat($("input[name='projectExtend.secretRate']").val())*100||0.00;
+	var sum = ((principalRate + pmRate + secretRate)/100).toFixed(2);
 	$("#rateSum").text(sum);
 }
 
