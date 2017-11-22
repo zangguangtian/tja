@@ -170,12 +170,13 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
             Set<CustStaff> staffSets = new HashSet<CustStaff>();
             staffSets.addAll(staffs);
             outParams.put("staffs", staffSets);
-            if (staffs != null && staffs.size() > 0) {
-                CustStaff custStaff = staffs.get(0);
-                if (StringUtils.isNotBlank(custStaff.getMajorName())) {
-                    outParams.put("majorName", custStaff.getMajorName());
-                    outParams.put("majorCode", custStaff.getMajorCode());
-                }
+            outParams.put("majorCode", ocPermitYield.getMajorCode());
+            SysConfig entity = new SysConfig();
+            entity.setConfigCode(ocPermitYield.getMajorCode());
+            List<SysConfig> list = queryByCondition(SysConfig.class, entity);
+            if (list != null && list.size() > 0) {
+                SysConfig sysConfig = list.get(0);
+                outParams.put("majorName", sysConfig.getConfigName());
             }
         }
         outParams.put("project", project);
@@ -484,84 +485,7 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
         throws RuntimeException,
         LogicalException {
         if ("1000".equals(yieldSettle.getWfCategory().trim())) {
-            if (view == 2) {/*
-                            List<WfYieldMajorRoleRate> roleRates = settleModel.getMajorRoleRates(); //各专业负责人审批   年度产值专业角色结算比例
-                            List<WfYieldMajorRoleAllot> majorRoleAllots = settleModel.getMajorRoleAllots(); //年度产值专业角色人员
-                            BigDecimal totalAllotRate = null;
-                            String roleNames = null;
-                            Map<String, BigDecimal> cheackRate = null;
-                            Map<String, String> marjorRoleMap = null;
-                            if (roleRates != null && roleRates.size() > 0) {
-                            for (WfYieldMajorRoleRate majorRoleRate : roleRates) {
-                            totalAllotRate = new BigDecimal(0);
-                            cheackRate = new HashMap<String, BigDecimal>();
-                            marjorRoleMap = new HashMap<String, String>();
-                            majorRoleRate.setWfId(yieldSettle.getId());
-                            if (StringUtils.isNoneBlank(majorRoleRate.getId())) {
-                            modify(WfYieldMajorRoleRate.class, majorRoleRate);
-                            } else {
-                            addEntity(WfYieldMajorRoleRate.class, majorRoleRate);
-                            }
-                            //累加计算 检查 比例：校对人+审核人+设计人/制图人=100%；
-                            String marjor = majorRoleRate.getMajorName();
-                            if (cheackRate.containsKey(marjor)) {
-                            BigDecimal allotRate = cheackRate.get(marjor);
-                            totalAllotRate = ArithmeticUtil.add(allotRate, majorRoleRate.getAllotRate());
-                            } else {
-                            totalAllotRate = majorRoleRate.getAllotRate();
-                            }
-                            cheackRate.put(marjor, totalAllotRate);
-                            if (marjorRoleMap.containsKey(marjor)) {
-                            String roleName = marjorRoleMap.get(marjor);
-                            roleNames = roleName + "+" + majorRoleRate.getRoleName();
-                            } else {
-                            roleNames = majorRoleRate.getRoleName();
-                            }
-                            marjorRoleMap.put(marjor, roleNames);
-                            }
-                            if (!cheackRate.isEmpty()) {
-                            for (String marjorRoleKey : cheackRate.keySet()) {
-                            BigDecimal totalMarjorRoleAllotRate = cheackRate.get(marjorRoleKey);
-                            if ((totalMarjorRoleAllotRate.compareTo(new BigDecimal(0))) != 0) {
-                                throw new LogicalException(marjorRoleKey + marjorRoleMap.get(marjorRoleKey) + "=100%");
-                            }
-                            }
-                            }
-                            }
-                            if (majorRoleAllots != null && majorRoleAllots.size() > 0) {
-                            for (WfYieldMajorRoleAllot wfYieldMajorRoleAllot : majorRoleAllots) {
-                            totalAllotRate = new BigDecimal(0);
-                            cheackRate = new HashMap<String, BigDecimal>();
-                            marjorRoleMap = new HashMap<String, String>();
-                            wfYieldMajorRoleAllot.setWfId(yieldSettle.getId());
-                            if (StringUtils.isNoneBlank(wfYieldMajorRoleAllot.getId())) {
-                            modify(WfYieldMajorRoleAllot.class, wfYieldMajorRoleAllot);
-                            } else {
-                            addEntity(WfYieldMajorRoleAllot.class, wfYieldMajorRoleAllot);
-                            }
-                            String marjor = wfYieldMajorRoleAllot.getMajorCode() + wfYieldMajorRoleAllot.getRoleCode();
-                            if (cheackRate.containsKey(marjor)) {
-                            BigDecimal allotRate = cheackRate.get(marjor);
-                            totalAllotRate = ArithmeticUtil.add(allotRate, wfYieldMajorRoleAllot.getStaffRate());
-                            } else {
-                            totalAllotRate = wfYieldMajorRoleAllot.getStaffRate();
-                            }
-                            cheackRate.put(marjor, totalAllotRate);
-                            if (!marjorRoleMap.containsKey(marjor)) {
-                            roleNames = wfYieldMajorRoleAllot.getMajorName() + wfYieldMajorRoleAllot.getRoleName();
-                            marjorRoleMap.put(marjor, roleNames);
-                            }
-                            }
-                            if (!cheackRate.isEmpty()) {
-                            for (String marjorRoleKey : cheackRate.keySet()) {
-                            BigDecimal totalMarjorRoleAllotRate = cheackRate.get(marjorRoleKey);
-                            if ((totalMarjorRoleAllotRate.compareTo(new BigDecimal(100))) != 0) {
-                                throw new LogicalException(marjorRoleMap.get(marjorRoleKey) + "的工作量(%)合计必须达到100");
-                            }
-                            }
-                            }
-                            }
-                            */
+            if (view == 2) {
                 addOrEditOrdinSettleAdjust(settleModel, yieldSettle);
             }
         }
