@@ -151,4 +151,10 @@ public class CustOcYieldScheme extends OcYieldScheme {
         pmYield = ArithmeticUtil.div(ArithmeticUtil.mul(getMajorAmount(), getPmRate()), new BigDecimal(100), 2);
         return pmYield;
     }
+
+    public BigDecimal getSecretYield() {
+        BigDecimal secretYield = new BigDecimal(0);
+        secretYield = ArithmeticUtil.div(ArithmeticUtil.mul(getMajorAmount(), getSecretRate()), new BigDecimal(100), 2);
+        return secretYield;
+    }
 }

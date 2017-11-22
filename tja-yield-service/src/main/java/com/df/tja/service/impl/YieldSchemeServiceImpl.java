@@ -105,12 +105,11 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
         return majorDutyMap;
     }
 
-    public Map<String, CustOcYieldStageMajor> queryOcYieldStageMajorsBySchemeId(String schemeId)
-        throws RuntimeException {
+    public Map<String, CustOcYieldStageMajor> queryOcYieldStageMajorsBySchemeId(String id) throws RuntimeException {
         Map<String, CustOcYieldStageMajor> stageMajorMap = null;
         try {
             OcYieldStageMajor entity = new OcYieldStageMajor();
-            entity.setSchemeId(schemeId);
+            entity.setSchemeId(id);
             List<OcYieldStageMajor> stageMajors = ocYieldSchemeDao.selectByHQLCondition(OcYieldStageMajor.class, entity,
                 null);
 
@@ -259,13 +258,14 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
                 custOcYieldScheme.getId());
             if (ocYieldScheme != null) {
                 ObjectUtils.batchCopyProperties(custOcYieldScheme, ocYieldScheme, new String[] {"contractAmount",
-                    "pkgAmount", "schemeAmount", "rebateAmount", "principalRate", "pmRate"});
+                    "pkgAmount", "schemeAmount", "rebateAmount", "principalRate", "pmRate", "secretRate"});
                 ocYieldScheme.setTotalAmount(custOcYieldScheme.getTotalAmount());
                 BigDecimal rebateParam = ymConfigService.queryOcRebateParam();
                 ocYieldScheme.setMajorAmount(
                     ArithmeticUtil.round(ArithmeticUtil.mul(rebateParam, ocYieldScheme.getTotalAmount()), 2));
                 ocYieldScheme.setPrincipalYield(custOcYieldScheme.getPrincipalYield());
                 ocYieldScheme.setPmYield(custOcYieldScheme.getPmYield());
+                ocYieldScheme.setSecretYield(custOcYieldScheme.getSecretYield());
                 ocYieldSchemeDao.update(OcYieldScheme.class, ocYieldScheme);
 
                 //插入各专业的产值记录
@@ -343,8 +343,8 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
      * @param majorYieldTotal
      * @throws RuntimeException
      */
-    private void createOcYieldMajorRatio(OcYieldMajor yieldMajor, String proId, String ratioJson)
-        throws RuntimeException {
+    private void createOcYieldMajorRatio(OcYieldMajor yieldMajor, String proId,
+                                         String ratioJson) throws RuntimeException {
         try {
             JSONObject ratioJsonObj = new JSONObject(ratioJson);
             Set<String> majorCodes = ratioJsonObj.keySet();

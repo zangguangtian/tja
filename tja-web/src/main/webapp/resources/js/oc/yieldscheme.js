@@ -494,8 +494,15 @@ function calProUserYield(){
 		pmRate = "0";
 	}
 	
+	//项目秘书（%）
+	var secretRate = $("input[name='secretRate']").val();
+	if(secretRate == null || secretRate == ""){
+		secretRate = "0";
+	}
+	
 	$("input[name='principalYield']").val((new Number(majorAmount) * new Number(principalRate) / new Number(100)).toFixed(2));
 	$("input[name='pmYield']").val((new Number(majorAmount) * new Number(pmRate) / new Number(100)).toFixed(2));
+	$("input[name='secretYield']").val((new Number(majorAmount) * new Number(secretRate) / new Number(100)).toFixed(2));
 }
 
 /**计算土建产值中各专业的产值*/
@@ -797,6 +804,7 @@ function saveCivil(){
 		datas.rebateAmount = $("input[name='rebateAmount']").val();
 		datas.principalRate = $("input[name='principalRate']").val();
 		datas.pmRate = $("input[name='pmRate']").val();
+		datas.secretRate = $("input[name='secretRate']").val();
 		
 		var majorDuties = [], majorDuty = null;
 		$("#civil-info-div input[name^='stageMajorYield'][data-majorcode]").each(function(){

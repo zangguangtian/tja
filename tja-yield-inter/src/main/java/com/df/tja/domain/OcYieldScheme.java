@@ -93,6 +93,12 @@ public class OcYieldScheme extends BaseDomain {
     /** 属性：项目经理产值 */
     private BigDecimal pmYield;
 
+    /** 属性：项目秘书产值比例 */
+    private BigDecimal secretRate;
+
+    /** 属性：项目秘书产值 */
+    private BigDecimal secretYield;
+
     /** 属性：设计负责人。记录人员信息ID */
     private java.lang.String principalId;
 
@@ -381,6 +387,44 @@ public class OcYieldScheme extends BaseDomain {
      */
     public void setPmYield(BigDecimal pmYield) {
         this.pmYield = pmYield;
+    }
+
+    /**
+     * <p> 属性secretRate的Getter方法. </p>
+     * 
+     * @return 返回secretRate属性的值
+     */
+    @Column(name = "SECRET_RATE")
+    public BigDecimal getSecretRate() {
+        return secretRate;
+    }
+
+    /**
+     * <p> 属性secretRate的Setter方法. </p>
+     * 
+     * @param secretRate 为属性secretRate设置的值
+     */
+    public void setSecretRate(BigDecimal secretRate) {
+        this.secretRate = secretRate;
+    }
+
+    /**
+     * <p> 属性secretYield的Getter方法. </p>
+     * 
+     * @return 返回secretYield属性的值
+     */
+    @Column(name = "SECRET_YIELD")
+    public BigDecimal getSecretYield() {
+        return secretYield;
+    }
+
+    /**
+     * <p> 属性secretYield的Setter方法. </p>
+     * 
+     * @param secretYield 为属性secretYield设置的值
+     */
+    public void setSecretYield(BigDecimal secretYield) {
+        this.secretYield = secretYield;
     }
 
     /**

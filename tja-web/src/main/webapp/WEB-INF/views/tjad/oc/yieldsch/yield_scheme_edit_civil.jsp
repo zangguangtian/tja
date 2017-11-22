@@ -65,6 +65,18 @@
             <input type="text" name="pmYield" class="form-control" value="${yieldScheme.pmYield }" readonly>
         </div>
     </div>
+    <div class="form-group col-lg-6 ">
+        <label class="control-label col-md-3">项目秘书（%）<span class="required">※</span></label>
+        <div class="col-md-8">
+            <input type="text" name="secretRate" class="form-control twoProUser" value="${yieldScheme.secretRate }" data-rule-required="true">
+        </div>
+    </div>
+    <div class="form-group col-lg-6 ">
+        <label class="control-label col-md-3">项目秘书（产值）</label>
+        <div class="col-md-8">
+            <input type="text" name="secretYield" class="form-control" value="${yieldScheme.secretYield }" readonly>
+        </div>
+    </div>
     <c:if test="${not empty majors }">
 		<c:forEach items="${majors }" var="major" varStatus="vs">
             <div class="form-group col-lg-6 ">

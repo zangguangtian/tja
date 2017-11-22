@@ -66,6 +66,18 @@
 	        <label class="control-label">${yieldScheme.pmYield }</label>
 	    </div>
 	</div>
+	<div class="col-xs-6 ">
+	    <label class="control-label col-xs-4">项目秘书（%）</label>
+	    <div class="col-xs-8">
+	        <label class="control-label">${yieldScheme.secretRate }</label>
+	    </div>
+	</div>
+	<div class="col-xs-6 ">
+	    <label class="control-label col-xs-4">项目秘书（产值）</label>
+	    <div class="col-xs-8">
+	        <label class="control-label">${yieldScheme.secretYield }</label>
+	    </div>
+	</div>
 	<c:if test="${not empty majors }">
 		<c:forEach items="${majors }" var="major" varStatus="vs">
 	        <div class="col-xs-6 ">
