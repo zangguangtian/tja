@@ -71,8 +71,7 @@
 	        <div class="col-xs-6 ">
 	            <label class="control-label col-xs-4">${major.configName }产值</label>
 	            <div class="col-xs-8">
-	                <input type="hidden" name="yieldMajorDuties[${vs.index }].majorCode" value="${major.configCode }">
-	                <label class="control-label">${yieldDuties[major.configCode].majorYield }</label>
+	                <label class="control-label" data-majorcode="${major.configCode }">${yieldDuties[major.configCode].majorYield }</label>
 	            </div>
 	        </div>
 	    </c:forEach>
