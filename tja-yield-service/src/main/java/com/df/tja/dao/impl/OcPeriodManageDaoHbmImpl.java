@@ -12,6 +12,9 @@
 
 package com.df.tja.dao.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
@@ -68,6 +71,24 @@ public class OcPeriodManageDaoHbmImpl extends BaseDaoHbmImpl implements IOcPerio
         query.setParameter(0, id);
         query.setResultTransformer(Transformers.aliasToBean(OcPeriodManage.class));
         return (OcPeriodManage) query.uniqueResult();
+    }
+
+    /** 
+     * @see com.df.tja.dao.IOcPeriodManageDao#selectSettlePeriodForRp()
+     */
+    @Override
+    public List<OcPeriodManage> selectSettlePeriodForRp() {
+        List<OcPeriodManage> periodManages = new ArrayList<OcPeriodManage>();
+        StringBuilder sql = new StringBuilder();
+        sql.append(" SELECT ID AS id, PERIOD_NAME AS periodName      ");
+        sql.append(" FROM OC_PERIOD_MANAGE                           ");
+        sql.append(" WHERE TYPE_CODE = 'OC.PERIOD.TYPE.SETTLE'       ");
+        sql.append(" AND CAST(GETDATE() AS DATE) >= START_DATE       ");
+        sql.append(" ORDER BY RANGE_START DESC                       ");
+        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setResultTransformer(Transformers.aliasToBean(OcPeriodManage.class));
+        periodManages = query.list();
+        return periodManages;
     }
 
 }

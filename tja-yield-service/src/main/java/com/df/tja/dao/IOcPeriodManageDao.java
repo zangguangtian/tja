@@ -12,6 +12,8 @@
 
 package com.df.tja.dao;
 
+import java.util.List;
+
 import com.df.framework.base.dao.IBaseDao;
 import com.df.tja.domain.OcPeriodManage;
 
@@ -40,5 +42,12 @@ public interface IOcPeriodManageDao extends IBaseDao {
      * @return
      */
     OcPeriodManage queryPeriod(String id);
+
+    /**
+     * <p>描述 : </p>
+     *
+     * @return
+     */
+    List<OcPeriodManage> selectSettlePeriodForRp();
 
 }

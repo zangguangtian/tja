@@ -12,10 +12,25 @@
 
 package com.df.tja.rp.controller;
 
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.df.framework.base.controller.BaseController;
+import com.df.framework.hibernate.persistence.Pagination;
+import com.df.tja.service.IReportService;
 
 /**
  * <p>ReportController</p>
@@ -35,6 +50,9 @@ import com.df.framework.base.controller.BaseController;
 @Controller
 @RequestMapping("/admin/rp")
 public class ReportController extends BaseController {
+
+    @Autowired
+    private IReportService reportService;
 
     /**
      * <p>描述 : 施工图项目周报</p>
@@ -88,8 +106,45 @@ public class ReportController extends BaseController {
      * <p>描述 : 部门结算产值明细</p>
      */
     @RequestMapping(value = "/deptDetial")
-    public String deptDetial() {
+    public String deptDetial(@ModelAttribute("page") Pagination page, Model model, String orgId, String periodId,
+                             String orgName, HttpServletRequest request) {
+        if (page == null || page.getPageNo() == 0) {
+            page = new Pagination(1);
+        }
+        Map<String, Object> param = new HashMap<String, Object>();
+        param.put("orgId", orgId);
+        param.put("periodId", periodId);
+        param.put("orgName", orgName);
+        reportService.queryYieldDeptDetial(page, param);
+        model.addAttribute("page", page);
+        model.addAllAttributes(param);
         return "/tjad/rp/rp_dept_detial";
+    }
+
+    @RequestMapping(value = "/deptDetial/export")
+    public void exportDeptDetial(String orgId, String periodId,
+                                 HttpServletResponse response, HttpServletRequest request) {
+        try {
+            Map<String, Object> param = new HashMap<String, Object>();
+            param.put("orgId", orgId);
+            param.put("periodId", periodId);
+            HSSFWorkbook workbook = reportService.createExportDeptDetial(param, null);
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+            String time = format.format(new Date());
+            String filename = "部门结算产值明细_" + time + ".xls";
+            // 清空response
+            response.reset();
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-Disposition", "attachment; filename=\""
+                                                      + new String(filename.getBytes("GBK"), "ISO-8859-1") + "\"");
+            OutputStream output = response.getOutputStream();
+            workbook.write(output);
+            output.flush();
+            output.close();
+        } catch (Exception e) {
+            logger.error("导入出错:" + e);
+        }
     }
 
     /**
@@ -107,4 +162,5 @@ public class ReportController extends BaseController {
     public String stage() {
         return "/tjad/rp/rp_stage";
     }
+
 }
