@@ -139,29 +139,34 @@ public class ReportServiceImpl extends BaseServiceImpl implements IReportService
         params.put("proCode", "项目编号");
         params.put("proName", "项目名称");
 
-        for (Map.Entry<String, String> entry : staffs.entrySet()) {
-            params.put(entry.getKey(), entry.getValue());
+        if (staffs != null && staffs.size() > 0) {
+            for (Map.Entry<String, String> entry : staffs.entrySet()) {
+                params.put(entry.getKey(), entry.getValue());
+            }
+
+            if (custProjects != null && custProjects.size() > 0) {
+                for (int i = 0; i < custProjects.size(); i++) {
+                    CustProject custProject = custProjects.get(i);
+                    content = new HashMap<String, String>();
+                    content.put("index", i + "");
+                    content.put("proCode", custProject.getProCode());
+                    content.put("proName", custProject.getProName());
+                    Map<String, BigDecimal> staffYields = custProject.getStaffYields();
+                    for (Map.Entry<String, String> entry : staffs.entrySet()) {
+                        BigDecimal yield = null;
+                        if (staffYields != null && staffYields.size() > 0) {
+                            yield = staffYields.get(entry.getKey()) == null ? new BigDecimal(0) : staffYields.get(entry
+                                .getKey());
+                        } else {
+                            yield = new BigDecimal(0);
+                        }
+                        content.put(entry.getKey(), yield.toString());
+                    }
+                    sheetContents.add(content);
+                }
+            }
         }
 
-        for (int i = 0; i < custProjects.size(); i++) {
-            CustProject custProject = custProjects.get(i);
-            content = new HashMap<String, String>();
-            content.put("index", i + "");
-            content.put("proCode", custProject.getProCode());
-            content.put("proName", custProject.getProName());
-            Map<String, BigDecimal> staffYields = custProject.getStaffYields();
-            for (Map.Entry<String, String> entry : staffs.entrySet()) {
-                BigDecimal yield = null;
-                if (staffYields != null && staffYields.size() > 0) {
-                    yield = staffYields.get(entry.getKey()) == null ? new BigDecimal(0) : staffYields.get(entry
-                        .getKey());
-                } else {
-                    yield = new BigDecimal(0);
-                }
-                content.put(entry.getKey(), yield.toString());
-            }
-            sheetContents.add(content);
-        }
         HSSFWorkbook workbook = ExcelHelper.exportExcel(sheetContents, params);
         return workbook;
     }

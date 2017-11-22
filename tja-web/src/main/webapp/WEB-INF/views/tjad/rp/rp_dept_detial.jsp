@@ -96,6 +96,7 @@ function search(){
 function exportExec(){
 	jQuery("#frmSearch").attr("action","${site }/admin/rp/deptDetial/export");
 	jQuery("#frmSearch").submit();
+	jQuery("#frmSearch").attr("action","${site }/admin/rp/deptDetial");
 }
 
 </script>
