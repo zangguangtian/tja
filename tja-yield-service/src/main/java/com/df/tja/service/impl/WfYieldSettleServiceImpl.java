@@ -143,8 +143,9 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
         outParams.put("periodManage", periodManage);
         outParams.put("permitId", syId);
         if ("1000".equals(editType)) { //年度产值结算；
-            OcSettleYield ocSettleYield = queryByPrimaryKey(OcSettleYield.class, syId);
-            project.setYield(ocSettleYield.getSettleYield());
+            OcSettleYield ocSettleYield = wfYieldSettleDao.selectSettleYieldByProIdAndPeriodId(proId, periodId);
+            project.setYield(ocSettleYield != null ? ocSettleYield.getSettleYield() : new BigDecimal(0));
+
             //获取 项目负责人 和 项目经理 比例
             ProjectExtend projectExtend = queryByPrimaryKey(ProjectExtend.class, proId);
             outParams.put("projectExtend", projectExtend);

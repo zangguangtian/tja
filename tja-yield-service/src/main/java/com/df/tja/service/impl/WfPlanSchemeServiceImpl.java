@@ -101,7 +101,6 @@ public class WfPlanSchemeServiceImpl extends BaseServiceImpl implements IWfPlanS
                 CustProject custProject = projectService.queryProInfoById(scheme.getProId());
                 attributes.put("project", custProject);
             }
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -91,8 +91,14 @@ public class WfPlanScheme extends WfBaseDomain {
     @Comment(name = "备注")
     private String remark;
 
+    /** 属性：绩效结算年度 */
+    @Comment(name = "绩效结算年度")
+    private String perfPeriod;
+
     /** 属性：部门名称 */
     private String orgName;
+
+    private String perfPeriodName;
 
     private List<WfShemeTeam> shemeTeams;
 
@@ -264,6 +270,24 @@ public class WfPlanScheme extends WfBaseDomain {
      */
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    @Column(name = "PERF_PERIOD")
+    public String getPerfPeriod() {
+        return perfPeriod;
+    }
+
+    public void setPerfPeriod(String perfPeriod) {
+        this.perfPeriod = perfPeriod;
+    }
+
+    @Transient
+    public String getPerfPeriodName() {
+        return perfPeriodName;
+    }
+
+    public void setPerfPeriodName(String perfPeriodName) {
+        this.perfPeriodName = perfPeriodName;
     }
 
     /**

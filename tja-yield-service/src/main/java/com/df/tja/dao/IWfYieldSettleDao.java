@@ -16,6 +16,7 @@ import java.util.List;
 
 import com.df.framework.base.dao.IBaseDao;
 import com.df.hr.domain.cust.CustStaff;
+import com.df.tja.domain.OcSettleYield;
 import com.df.tja.domain.WfYieldMajorRate;
 import com.df.tja.domain.WfYieldMajorRoleAllot;
 import com.df.tja.domain.WfYieldMajorRoleRate;
@@ -141,5 +142,14 @@ public interface IWfYieldSettleDao extends IBaseDao {
      * @return
      */
     int selectYieldSettleListCount(String userId);
+
+    /**
+     * <p>描述 : </p>
+     *
+     * @param proId
+     * @param periodId
+     * @return
+     */
+    OcSettleYield selectSettleYieldByProIdAndPeriodId(String proId, String periodId);
 
 }

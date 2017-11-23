@@ -136,6 +136,18 @@
 						</div>
 					</div>
 					
+					<div class="form-group col-xs-6 ">
+						<label class="control-label col-xs-4">绩效结算年度</label>
+						<div class="col-xs-8">
+						<label class="control-label">${planScheme.perfPeriodName}</label>
+						</div>
+					</div>
+					<div class="form-group col-lg-6 ">
+						<label class="control-label col-md-3"></label>
+						<div class="col-md-8 input-icon right">
+						</div>
+					</div>
+					
 					<div class="form-group col-xs-12 ">
 						<label class="control-label col-xs-2">概况</label>
 						<div class="col-xs-10">

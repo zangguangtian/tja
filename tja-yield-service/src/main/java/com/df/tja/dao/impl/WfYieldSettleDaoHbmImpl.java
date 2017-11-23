@@ -22,6 +22,7 @@ import org.springframework.stereotype.Repository;
 import com.df.framework.base.dao.impl.BaseDaoHbmImpl;
 import com.df.hr.domain.cust.CustStaff;
 import com.df.tja.dao.IWfYieldSettleDao;
+import com.df.tja.domain.OcSettleYield;
 import com.df.tja.domain.WfYieldMajorRate;
 import com.df.tja.domain.WfYieldMajorRoleAllot;
 import com.df.tja.domain.WfYieldMajorRoleRate;
@@ -378,6 +379,39 @@ public class WfYieldSettleDaoHbmImpl extends BaseDaoHbmImpl implements IWfYieldS
         query.setString(0, userId);
         query.setString(1, userId);
         return (int) query.uniqueResult();
+    }
+
+    /** 
+     * @see com.df.tja.dao.IWfYieldSettleDao#selectSettleYieldByProIdAndPeriodId(java.lang.String, java.lang.String)
+     */
+    @Override
+    public OcSettleYield selectSettleYieldByProIdAndPeriodId(String proId, String periodId) {
+        List<OcSettleYield> ocSettleYields = new ArrayList<OcSettleYield>();
+        StringBuilder sql = new StringBuilder();
+        
+        sql.append("  SELECT SUM(SETTLE_YIELD) AS settleYield                                            ");
+        sql.append("  FROM(                                                                              ");
+        sql.append("      SELECT PERIOD_ID, T1.PRO_ID, SETTLE_YIELD + ISNULL(T2.PERF_YIELD, 0)           ");
+        sql.append("  AS SETTLE_YIELD FROM OC_SETTLE_YIELD T1                                            ");
+        sql.append("      LEFT JOIN V_WF_PLAN_SCHEME_PROYIELD T2 ON T1.PERIOD_ID = T2.PERF_PERIOD        ");
+        sql.append("  AND T1.PRO_ID = T2.PRO_ID WHERE SETTLE_YIELD > 0                                   ");
+        sql.append("      UNION                                                                          ");
+        sql.append("      SELECT T1.PERF_PERIOD, T1.PRO_ID, T1.PERF_YIELD + ISNULL(T2.SETTLE_YIELD, 0)   ");
+        sql.append("  AS SETTLE_YIELD FROM V_WF_PLAN_SCHEME_PROYIELD T1                                  ");
+        sql.append("      LEFT JOIN OC_SETTLE_YIELD T2 ON T2.PERIOD_ID = T1.PERF_PERIOD                  ");
+        sql.append("  AND T2.PRO_ID = T1.PRO_ID                                                          ");
+        sql.append("  ) R                                                                                ");
+        sql.append(" WHERE R.PERIOD_ID = ? AND R.PRO_ID = ?                                              ");
+        sql.append(" GROUP BY R.PERIOD_ID, R.PRO_ID                                                      ");
+        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setResultTransformer(Transformers.aliasToBean(OcSettleYield.class));
+        query.setString(0, periodId);
+        query.setString(1, proId);
+        ocSettleYields = query.list();
+        if (ocSettleYields != null && ocSettleYields.size() > 0) {
+            return ocSettleYields.get(0);
+        }
+        return null;
     }
 
 }

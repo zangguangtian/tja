@@ -13,6 +13,7 @@
 package com.df.tja.wf.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +36,7 @@ import com.df.framework.sys.domain.SysUser;
 import com.df.framework.sys.service.ISysUserService;
 import com.df.framework.util.HttpUtil;
 import com.df.tja.constant.TjaConstant;
+import com.df.tja.domain.OcPeriodManage;
 import com.df.tja.domain.WfPlanScheme;
 import com.df.tja.service.IWfPlanSchemeService;
 
@@ -94,6 +96,10 @@ public class WfPlanSchemeController extends WfBaseController {
             }
             model.addAllAttributes(attributes);
         }
+        OcPeriodManage manage = new OcPeriodManage();
+        manage.setTypeCode("OC.PERIOD.TYPE.SETTLE");
+        List<OcPeriodManage> list = wfPlanSchemeService.queryByCondition(OcPeriodManage.class, manage);
+        model.addAttribute("periodManages", list);
         return "/tjad/wf/planScheme/planScheme_edit";
     }
 

@@ -47,9 +47,10 @@
 				<input type="hidden" name="proId" value="${planScheme.proId}">
 				<div class="form-body clearfix">
 					<div class="form-group col-lg-6 ">
-						<label class="control-label col-md-3">项目编号</label>
-						<div class="col-md-8">
-							<input type="text" name="proCode" class="form-control col-md-3" disabled value="${project.proCode}">
+						<label class="control-label col-md-3">项目编号<span class="required">※</span></label>
+						<div class="col-md-8  input-icon right">
+						    <i class="fa"></i>
+							<input type="text" name="proCode" class="form-control col-md-3" data-rule-required="true" value="${project.proCode}">
 							<a id="selectPro" title="选择" href="javascript:void(0);" class="icon-select"></a>
 						</div>
 					</div>
@@ -119,7 +120,7 @@
 						<label class="control-label col-md-3">绩效类型</label>
 						<div class="col-md-8">
 						  <select name="perfType" class="form-control">
-						     <option>--请选择--</option>
+						     <option value="">--请选择--</option>
 						     <option  value="1000"  <c:if test="${planScheme.perfType == '1000'}">selected</c:if>>中标产值</option>
 						     <option  value="2000"  <c:if test="${planScheme.perfType == '2000'}">selected</c:if>>入围产值</option>
 						  </select>
@@ -129,6 +130,26 @@
 						<label class="control-label col-md-3">绩效产值</label>
 						<div class="col-md-8">
 							<input type="text" class="form-control" name="perfYield" value="<fmt:formatNumber value='${planScheme.perfYield}' pattern='#,#00.00#'/>">
+						</div>
+					</div>
+					
+					<div class="form-group col-lg-6 ">
+						<label class="control-label col-md-3">绩效结算年度</label>
+						<div class="col-md-8 input-icon right">
+						<i class="fa"></i> 
+						  <select name="perfPeriod" class="form-control">
+						     <option value="">--请选择--</option>
+						     <c:if test="${not empty periodManages}">
+						       <c:forEach items="${periodManages}" var="periodManage">
+						        <option  value="${periodManage.id}"  <c:if test="${planScheme.perfPeriod == periodManage.id}">selected</c:if>>${periodManage.periodName}</option>
+						       </c:forEach>
+						     </c:if>
+						  </select>
+						</div>
+					</div>
+					<div class="form-group col-lg-6 ">
+						<label class="control-label col-md-3"></label>
+						<div class="col-md-8 input-icon right">
 						</div>
 					</div>
 					
@@ -423,6 +444,12 @@
 	}
 	
 	function ajaxSave(flag,status){
+		var perfYield = jQuery("input[name='perfYield']").val();
+		var perfPeriod = jQuery("select[name='perfPeriod']").val();
+		if(perfYield !='' && (perfPeriod == '' || perfPeriod == null)){
+			$.jalert({"jatext":"绩效结算年度必填"});
+			flag = false;
+		}
 		var url ="${site}/admin/wf/planScheme/ajax/esave";
 	    if (flag) {
 	    	//千分位处理
