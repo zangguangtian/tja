@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import com.df.framework.base.service.impl.BaseServiceImpl;
 import com.df.framework.hibernate.persistence.Pagination;
+import com.df.framework.util.ArithmeticUtil;
 import com.df.framework.util.ExcelHelper;
 import com.df.project.domain.cust.CustProject;
 import com.df.tja.dao.IOcPeriodManageDao;
@@ -143,12 +144,13 @@ public class ReportServiceImpl extends BaseServiceImpl implements IReportService
             for (Map.Entry<String, String> entry : staffs.entrySet()) {
                 params.put(entry.getKey(), entry.getValue());
             }
-
+            params.put("total", "合计");
             if (custProjects != null && custProjects.size() > 0) {
                 for (int i = 0; i < custProjects.size(); i++) {
+                    BigDecimal total = new BigDecimal(0);
                     CustProject custProject = custProjects.get(i);
                     content = new HashMap<String, String>();
-                    content.put("index", i + "");
+                    content.put("index", i + 1 + "");
                     content.put("proCode", custProject.getProCode());
                     content.put("proName", custProject.getProName());
                     Map<String, BigDecimal> staffYields = custProject.getStaffYields();
@@ -161,7 +163,9 @@ public class ReportServiceImpl extends BaseServiceImpl implements IReportService
                             yield = new BigDecimal(0);
                         }
                         content.put(entry.getKey(), yield.toString());
+                        total = ArithmeticUtil.add(total, yield);
                     }
+                    content.put("total", total.toString());
                     sheetContents.add(content);
                 }
             }
