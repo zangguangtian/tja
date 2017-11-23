@@ -19,7 +19,7 @@ jQuery(function(){
 	jQuery.ajax({
 		type: "POST",
 		url:sUrl,
-		data:{"NO":"RP_STAGE", "MODEL":"RP"},
+		data:{"NO":"RP_PHASE_SETTLE", "MODEL":"RP"},
 		async: false,
 	    success: function(data) {
 	    	$("#content").empty();
