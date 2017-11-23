@@ -85,6 +85,9 @@ public class WfYieldSettle extends WfBaseDomain {
     /** 属性：项目经理结算比例 */
     private BigDecimal pmRate;
 
+    /** 属性：项目秘书结算比例 */
+    private BigDecimal secretRate;
+
     /** 属性：记录由哪个特批发起的流程 */
     private java.lang.String permitId;
 
@@ -319,6 +322,15 @@ public class WfYieldSettle extends WfBaseDomain {
      */
     public void setPmRate(BigDecimal pmRate) {
         this.pmRate = pmRate;
+    }
+
+    @Column(name = "SECRET_RATE")
+    public BigDecimal getSecretRate() {
+        return secretRate;
+    }
+
+    public void setSecretRate(BigDecimal secretRate) {
+        this.secretRate = secretRate;
     }
 
     /**

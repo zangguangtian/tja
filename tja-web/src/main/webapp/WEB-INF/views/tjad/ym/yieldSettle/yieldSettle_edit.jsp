@@ -48,96 +48,99 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目编号</label>
 						<div class="col-md-8">
-							<input type="text" name="wfYieldSettle.proCode" class="form-control col-md-3" disabled value="${project.proCode}">
+						    <input type="hidden" name="wfYieldSettle.proCode" class="form-control col-md-3" value="${project.proCode}">
+						    <label class="control-label">${project.proCode}</label>
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目名称</label>
 						<div class="col-md-8">
-							<input type="text" name="wfYieldSettle.proName" class="form-control" disabled value="${project.proName}">
+							<input type="hidden" name="wfYieldSettle.proName" class="form-control" value="${project.proName}">
+						    <label class="control-label">${project.proName}</label>
 						</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">合同编号</label>
 						<div class="col-md-8">
-							<input type="text" name="wfYieldSettle.contractCode" class="form-control" disabled value="${project.contractCode}">
+							<input type="hidden" name="wfYieldSettle.contractCode" class="form-control" value="${project.contractCode}">
+						    <label class="control-label">${project.contractCode}</label>
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目类型</label>
 						<div class="col-md-8">
-							<input type="text" name="wfYieldSettle.proType" class="form-control" disabled value="${project.proType}">
+							<input type="hidden" name="wfYieldSettle.proType" class="form-control" value="${project.proType}">
+							<label class="control-label">${project.proType}</label>
 						</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">合同额(¥)</label>
 						<div class="col-md-8">
-								<input type="text" class="form-control" disabled
-									name="wfYieldSettle.contractAmount"
+					            <input type="hidden" class="form-control" name="wfYieldSettle.contractAmount"
 									value="<fmt:formatNumber value='${empty yieldSettle.contractAmount?project.contractAmount:yieldSettle.contractAmount}' pattern='#,#00.00#'/>">
-							</div>
+						        <label class="control-label"><fmt:formatNumber value='${empty yieldSettle.contractAmount?project.contractAmount:yieldSettle.contractAmount}' pattern='#,#00.00#'/></label>
+					    
+					    </div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">分包扣减(¥)</label>
 						<div class="col-md-8">
-								<input type="text" class="form-control" disabled
-									name="wfYieldSettle.pkgAmount"
+								<input type="hidden" class="form-control" name="wfYieldSettle.pkgAmount"
 									value="<fmt:formatNumber value='${empty yieldSettle.pkgAmount?project.pkgAmount:yieldSettle.pkgAmount}' pattern='#,#00.00#'/>">
-							</div>
+						        <label class="control-label"><fmt:formatNumber value='${empty yieldSettle.pkgAmount?project.pkgAmount:yieldSettle.pkgAmount}' pattern='#,#00.00#'/></label>
+						</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">方案扣减(¥)</label>
 						<div class="col-md-8">
-								<input type="text" class="form-control" disabled
-									name="wfYieldSettle.schemeAmount"
+								<input type="hidden" class="form-control" name="wfYieldSettle.schemeAmount"
 									value="<fmt:formatNumber value='${empty yieldSettle.schemeAmount?project.schemeAmount:yieldSettle.schemeAmount}' pattern='#,#00.00#'/>">
-							</div>
+						        <label class="control-label"><fmt:formatNumber value='${empty yieldSettle.schemeAmount?project.schemeAmount:yieldSettle.schemeAmount}' pattern='#,#00.00#'/></label>
+						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">其他扣减(¥)</label>
 						<div class="col-md-8">
-								<input type="text" class="form-control" disabled
-									name="wfYieldSettle.rebateAmount"
+								<input type="hidden" class="form-control" name="wfYieldSettle.rebateAmount"
 									value="<fmt:formatNumber value='${empty yieldSettle.rebateAmount?project.rebateAmount:yieldSettle.rebateAmount}' pattern='#,#00.00#'/>">
+						        <label class="control-label"><fmt:formatNumber value='${empty yieldSettle.rebateAmount?project.rebateAmount:yieldSettle.rebateAmount}' pattern='#,#00.00#'/></label>
 							</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目负责人</label>
-						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i>
-							<input type="text" class="form-control" disabled name="wfYieldSettle.pManagers" value="${project.pmLeaders}">
+						<div class="col-md-8">
+						    <input type="hidden" class="form-control" name="wfYieldSettle.pManagers" value="${project.pmLeaders}">
+						    <label class="control-label">${project.pmLeaders}</label>
 						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">项目经理</label>
-						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i>
-			            	<input type="text" name="wfYieldSettle.pManagers" class="form-control col-md-3" value="${project.pManagers}" disabled>
+						<div class="col-md-8">
+						    <input type="hidden" name="wfYieldSettle.pManagers" class="form-control col-md-3" value="${project.pManagers}">
+			            	<label class="control-label">${project.pManagers}</label>
 						</div>
 					</div>
 					
 					
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">当年可结算产值(¥)</label>
-						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i> <input type="text" class="form-control"
-									name="wfYieldSettle.yearYield"
-									value="<fmt:formatNumber value='${empty yieldSettle.yearYield ? project.yield : yieldSettle.yearYield}' pattern='#,#00.00#'/>"
-									disabled>
-							</div>
+						<div class="col-md-8">
+						   <input type="hidden" class="form-control" name="wfYieldSettle.yearYield"
+							value="<fmt:formatNumber value='${empty yieldSettle.yearYield ? project.yield : yieldSettle.yearYield}' pattern='#,#00.00#'/>">
+						    <label class="control-label"><fmt:formatNumber value='${empty yieldSettle.yearYield ? project.yield : yieldSettle.yearYield}' pattern='#,#00.00#'/></label>
+						</div>
 					</div>
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-3">历年已结算产值(¥)</label>
-						<div class="col-md-8 input-icon right">
-						    <i class="fa"></i> <input type="text" class="form-control"
-									name="wfYieldSettle.hisyearYield"
-									value="<fmt:formatNumber value='${empty yieldSettle.hisyearYield ? hisyearYield : yieldSettle.hisyearYield}' pattern='#,#00.00#'/>"
-									disabled>
-							</div>
+						<div class="col-md-8">
+						     <input type="hidden" class="form-control" name="wfYieldSettle.hisyearYield"
+									value="<fmt:formatNumber value='${empty yieldSettle.hisyearYield ? hisyearYield : yieldSettle.hisyearYield}' pattern='#,#00.00#'/>">
+						    <label class="control-label"><fmt:formatNumber value='${empty yieldSettle.hisyearYield ? hisyearYield : yieldSettle.hisyearYield}' pattern='#,#00.00#'/></label>
+						</div>
 					</div>
 					
 					<div class="form-group col-lg-6 ">
@@ -257,8 +260,8 @@
 								  </c:if>
 									<tr class="total">
 										<td  class="text-center col-lg-4">合计</td>
-										<td  class="col-lg-4 text-right">${total_staffRate}</td>
-										<td  class="col-lg-4 text-right">${total_staffYield}</td>
+										<td  class="col-lg-4 text-right"><fmt:formatNumber value='${total_staffRate}' pattern='#,#00.00#'/></td>
+										<td  class="col-lg-4 text-right"><fmt:formatNumber value='${total_staffYield}' pattern='#,#00.00#'/></td>
 									</tr>
 								</tbody>
 							</table>
@@ -343,13 +346,105 @@
 								 </c:if>
 								 <tr class="total">
 									<td  class="text-center col-lg-4">合计</td>
-									<td  class="col-lg-4 text-right">${total_manager_rate}</td>
-									<td  class="col-lg-4 text-right">${total_manager_yield}</td>
+									<td  class="col-lg-4 text-right"><fmt:formatNumber value='${total_manager_rate}' pattern='#,#00.00#'/></td>
+									<td  class="col-lg-4 text-right"><fmt:formatNumber value='${total_manager_yield}' pattern='#,#00.00#'/></td>
 								 </tr>
 								</tbody>
 							</table>
 						</div>
 					</div>
+					
+					<div class="col-lg-12 form-group">
+						<div class="col-lg-6 ">
+							<div class="row clearfix">
+							    <div class="col-lg-4  col-md-4 col-sm-4 col-xs-4">项目秘书</div>
+							    <div class="col-lg-4  col-md-4 col-sm-4 col-xs-4 text-right">
+							      <label>比例：</label>
+							      <input type="text" class="ta_input keyupRate" name="wfYieldSettle.secretRate"  data-rule-number="true"  placeholder="0.00" value="${empty yieldSettle.secretRate?projectExtend.secretRate : yieldSettle.secretRate}" style="display: inline-block;">
+								</div>
+								<div class="col-lg-4 text-right  col-md-4 col-sm-4 col-xs-4">
+									<input type="button" class="btn blue btn_secret" value="添加"> 
+								</div>
+							</div>
+							
+							<table class="table table-bordered" id="secretary">
+								<thead>
+									<tr>
+										<th class="text-center col-lg-4">姓名</th>
+										<th class="text-center">工作量(%)<span class="required">※</span></th>
+										<th class="text-center">产值</th>
+									</tr>
+								</thead>
+								<tbody>
+								 <c:set var="total_secret_yield" value="0"></c:set>
+								 <c:set var="total_secret_rate" value="0"></c:set>
+								 <c:if test="${not empty proSecretarys}">
+								   <c:forEach items="${proSecretarys}" var="proSecretary" varStatus="st">
+									    <tr>
+											<td  class="text-center col-lg-4">${proSecretary.staffName}</td>
+											<td  class="col-lg-4 text-right input-icon left">
+											  <i class="fa"></i>
+											  <input type="hidden" name="principalAllots[${size}].id" value="${proSecretary.id}">
+											  <input type="hidden" name="principalAllots[${size}].wfId" value="${proSecretary.wfId}">
+											  <input type="hidden" name="principalAllots[${size}].staffCategory" value="${proSecretary.staffCategory}">
+											  <input type="hidden" name="principalAllots[${size}].staffSort" value="${proSecretary.staffSort}">
+											  <input type="hidden" name="principalAllots[${size}].staffId" value="${proSecretary.staffId}">
+											  <input type="hidden" name="principalAllots[${size}].staffYield" value="${proSecretary.staffYield}">
+											  <input type="text" class="form-control text-right"
+														name="principalAllots[${size}].staffRate"
+														value="${proSecretary.staffRate}"
+														data-rule-number="true" 
+														data-rule-max="100"
+														data-rule-min="0" 
+														placeholder="0.00"
+														data-rule-required="true">
+													</td>
+											<td  class="col-lg-4 text-right">
+											 <fmt:formatNumber value='${proSecretary.staffYield}' pattern='#,#00.00#'/>
+											</td>
+										</tr>
+										<c:set var="size" value="${size+1}"></c:set>
+										<c:set var="total_secret_yield" value="${total_secret_yield + proSecretary.staffYield}"></c:set>
+										<c:set var="total_secret_rate" value="${total_secret_rate + proSecretary.staffRate}"></c:set>
+								   </c:forEach>
+								  </c:if>
+								  
+								   <c:if test="${empty proSecretarys and not empty secretarys}">
+								   <c:forEach items="${secretarys}" var="secretary" varStatus="st">
+									    <tr>
+											<td  class="text-center col-lg-4">${secretarys.name}</td>
+											<td  class="col-lg-4 text-right input-icon left">
+											  <i class="fa"></i>
+											  <input type="hidden" name="principalAllots[${size}].id" value="">
+											  <input type="hidden" name="principalAllots[${size}].wfId" value="">
+											  <input type="hidden" name="principalAllots[${size}].staffCategory" value="${categorySecret}">
+											  <input type="hidden" name="principalAllots[${size}].staffSort" value="${st.index}">
+											  <input type="hidden" name="principalAllots[${size}].staffId" value="${secretarys.staffId}">
+											  <input type="hidden" name="principalAllots[${size}].staffYield" value="">
+											  <input type="text" class="form-control text-right"
+														name="principalAllots[${size}].staffRate" 
+														data-rule-number="true" 
+														data-rule-max="100"
+														data-rule-min="0" 
+														placeholder="0.00"
+														data-rule-required="true"
+														value="">
+													</td>
+											<td  class="col-lg-4 text-right"></td>
+										</tr>
+										<c:set var="size" value="${size+1}"></c:set>
+								   </c:forEach>
+								  </c:if>
+									<tr class="total">
+										<td  class="text-center col-lg-4">合计</td>
+										<td  class="col-lg-4 text-right"><fmt:formatNumber value='${total_secret_rate}' pattern='#,#00.00#'/></td>
+										<td  class="col-lg-4 text-right"><fmt:formatNumber value='${total_secret_yield}' pattern='#,#00.00#'/></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					
 					<div class="col-lg-12 form-group">
 						<div class="col-lg-5 ">
 						    <caption>当年专业结算比例</caption>
@@ -458,6 +553,7 @@
     var tIndex = ${size};
     var leaderCate = "${categoryLeader}";
     var pmCate = "${categoryPm}";
+    var secretCate = "${categorySecret}";
 	$(function(){
 		
 		jQuery(document).on("keyup","input[name$='staffRate']",function(){
@@ -478,6 +574,10 @@
 		
 		jQuery(".btn_pm").on("click",function(){
 			selectStaff(selectPm,'checkbox');
+		});
+		
+		jQuery(".btn_secret").on("click",function(){
+			selectStaff(selectSecret,'checkbox');
 		});
 	});
 
@@ -579,6 +679,10 @@
     function selectLeader(data){
     	selectStaffBack(data,"leader");
 	}
+    
+    function selectSecret(data){
+    	selectStaffBack(data,"secret");
+	}
 	
 	function selectStaffBack(data,type){
 		var _thisTable = jQuery("#leader");
@@ -586,6 +690,9 @@
 		if(type == "pm"){
 			_thisTable = jQuery("#pm");
 			staffCategory = pmCate;
+		}else if(type == "secret"){
+			_thisTable = jQuery("#secretary");
+			staffCategory = secretCate;
 		}
 		jQuery.each(data,function(index,item){
 			var info = $(item)[0];

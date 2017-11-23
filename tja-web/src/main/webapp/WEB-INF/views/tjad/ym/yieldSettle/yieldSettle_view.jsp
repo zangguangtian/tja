@@ -252,6 +252,56 @@
 							</table>
 						</div>
 					</div>
+					
+					<div class="col-lg-12">
+						<div class="col-lg-6 ">
+							<div class="row clearfix">
+							    <div class="col-lg-4  col-md-4 col-sm-4 col-xs-4">项目秘书</div>
+							    <div class="col-lg-4  col-md-4 col-sm-4 col-xs-4 text-right">
+							      <label>比例：</label>
+							      <input type="hidden" name="secretRate" value="${yieldSettle.secretRate}">
+							      ${yieldSettle.secretRate}
+								</div>
+							</div>
+							
+							<table class="table table-bordered" id="secretary">
+								<thead>
+									<tr>
+										<th class="text-center col-lg-4">姓名</th>
+										<th class="text-center">工作量(%)</th>
+										<th class="text-center">产值</th>
+									</tr>
+								</thead>
+								<tbody>
+								 <c:set var="size" value="0"></c:set>
+								 <c:set var="total_secret_rate" value="0"></c:set>
+								 <c:set var="total_secret_yield" value="0"></c:set>
+								 <c:if test="${not empty proSecretarys}">
+								   <c:forEach items="${proSecretarys}" var="proSecretary" varStatus="st">
+									    <tr>
+											<td  class="text-center col-lg-4">${proSecretary.staffName}</td>
+											<td  class="col-lg-4 text-right">
+											  <input type="text" class="form-control text-right" name="principalAllots[${size}].staffRate" value="${proSecretary.staffRate}" data-rule-number="true"  placeholder="0.00" disabled>
+											</td>
+											<td  class="col-lg-4 text-right">
+											  <fmt:formatNumber value='${proSecretary.staffYield}' pattern='#,#00.00#'/>
+											</td>
+										</tr>
+										<c:set var="size" value="${size+1}"></c:set>
+										<c:set var="total_secret_rate" value="${proSecretary.staffRate+total_secret_rate}"></c:set>
+								        <c:set var="total_secret_yield" value="${proSecretary.staffYield+total_secret_yield}"></c:set>
+								   </c:forEach>
+								  </c:if>
+								<tr class="total">
+									<td  class="text-center col-lg-4">合计</td>
+									<td  class="col-lg-4 text-right">${total_secret_rate}</td>
+									<td  class="col-lg-4 text-right"><fmt:formatNumber value='${total_secret_yield}' pattern='#,#00.00#'/></td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					
 					<div class="col-lg-12">
 						<div class="col-lg-5 ">
 						    <caption>当年专业结算比例</caption>

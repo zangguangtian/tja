@@ -92,6 +92,7 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
         String editType = (String) inParams.get("editType");
         outParams.put("categoryLeader", TjaConstant.SysCode.STAFF_CATEGORY_LEADER);
         outParams.put("categoryPm", TjaConstant.SysCode.STAFF_CATEGORY_PM);
+        outParams.put("categorySecret", TjaConstant.SysCode.STAFF_CATEGORY_SECRETARY);
         try {
             if ("0".equals(id)) { //新建
                 getYieldSettleInfo(outParams, proId, periodId, syId, editType);
@@ -113,6 +114,12 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
                     List<WfYieldPrincipalAllot> allotsPms = wfYieldSettleDao.selectPrincipalAllot(yieldSettle.getId(),
                         TjaConstant.SysCode.STAFF_CATEGORY_PM);
                     outParams.put("proManagers", allotsPms);
+
+                    //获取项目秘书下 的 人员 
+                    List<WfYieldPrincipalAllot> secretarys = wfYieldSettleDao.selectPrincipalAllot(yieldSettle.getId(),
+                        TjaConstant.SysCode.STAFF_CATEGORY_SECRETARY);
+                    outParams.put("proSecretarys", secretarys);
+
                     //当年专业结算比例
                     List<WfYieldMajorRate> majorRates = wfYieldSettleDao.selectMajorRate(yieldSettle.getId());
                     outParams.put("majorRates", majorRates);
@@ -157,6 +164,12 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
             List<CustStaff> pms = wfYieldSettleDao.selectBudgetStaffByRole(proId,
                 TjaConstant.SysCode.STAFF_CATEGORY_PM);
             outParams.put("proPms", pms);
+
+            //获取项目秘书下 的 人员 
+            List<CustStaff> secretarys = wfYieldSettleDao.selectBudgetStaffByRole(proId,
+                TjaConstant.SysCode.STAFF_CATEGORY_SECRETARY);
+            outParams.put("secretarys", secretarys);
+
             //当年专业结算比例
             List<WfYieldMajorRate> majorRateConfigs = wfYieldSettleDao.selectMajorByProId(proId);
             outParams.put("majorRateConfigs", majorRateConfigs);
@@ -317,6 +330,12 @@ public class WfYieldSettleServiceImpl extends BaseServiceImpl implements IWfYiel
             List<WfYieldPrincipalAllot> allotsPms = wfYieldSettleDao.selectPrincipalAllot(yieldSettle.getId(),
                 TjaConstant.SysCode.STAFF_CATEGORY_PM);
             modelMap.put("proManagers", allotsPms);
+
+            //获取项目秘书下 的 人员 
+            List<WfYieldPrincipalAllot> secretarys = wfYieldSettleDao.selectPrincipalAllot(yieldSettle.getId(),
+                TjaConstant.SysCode.STAFF_CATEGORY_SECRETARY);
+            modelMap.put("proSecretarys", secretarys);
+
             //当年专业结算比例
             List<WfYieldMajorRate> majorRates = wfYieldSettleDao.selectMajorRate(yieldSettle.getId());
             modelMap.put("majorRates", majorRates);

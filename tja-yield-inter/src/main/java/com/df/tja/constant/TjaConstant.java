@@ -49,14 +49,19 @@ public abstract class TjaConstant {
         public static final String PM_MAJOR_PARENT_CODE = "PM.MAJOR";
 
         /**
-         * 项目负责人角色代码
+         * 项目负责人代码
          */
         public static final String STAFF_CATEGORY_LEADER = "PM.TEAM.ROLE.LEADER";
 
         /**
-         * 项目经理角色代码
+         * 项目经理代码
          */
         public static final String STAFF_CATEGORY_PM = "PM.TEAM.ROLE.PM";
+
+        /**
+         * 项目秘书代码
+         */
+        public static final String STAFF_CATEGORY_SECRETARY = "PM.TEAM.ROLE.SECRETARY";
     }
 
     /**

@@ -118,7 +118,7 @@ public class WfYieldSettleDaoHbmImpl extends BaseDaoHbmImpl implements IWfYieldS
         sql.append(" YS.PKG_AMOUNT AS pkgAmount, YS.SCHEME_AMOUNT AS schemeAmount,                     ");
         sql.append(" YS.REBATE_AMOUNT AS rebateAmount, YS.YEAR_YIELD AS yearYield,                     ");
         sql.append(" YS.HISYEAR_YIELD AS hisyearYield, YS.ITEM_STATUS AS itemStatus,                   ");
-        sql.append(" YS.PRINCIPAL_RATE AS principalRate, YS.PM_RATE AS pmRate,                         ");
+        sql.append(" YS.PRINCIPAL_RATE AS principalRate,YS.PM_RATE AS pmRate,YS.SECRET_RATE AS secretRate,");
         sql.append(" YS.PERMIT_ID AS permitId, YS.REMARK AS remark,YS.CREATOR AS  creator,             ");
         sql.append(" YS.CREATE_DATE AS createDate, SU.REAL_NAME AS creatorName,                        ");
         sql.append(" FM.SEQ_NO AS seqNo,FM.WF_DESC AS wfDesc, FM.AUDIT_STATUS AS auditStatus,          ");
