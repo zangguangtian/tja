@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.df.framework.base.service.impl.BaseServiceImpl;
+import com.df.framework.sys.domain.SysConfig;
 import com.df.framework.sys.service.ISysConfigService;
 import com.df.framework.util.StringUtil;
 import com.df.tja.service.IYmConfigService;
@@ -45,10 +46,38 @@ public class YmConfigServiceImpl extends BaseServiceImpl implements IYmConfigSer
 
     @Override
     public BigDecimal queryOcRebateParam() {
-        String param = sysConfigService.querySysConfigByCode("OC.REBATE.PARAM").getConfigValue();
-        if (StringUtil.isBlank(param)) {
-            param = "0";
+        SysConfig sysConfig = sysConfigService.querySysConfigByCode("OC.REBATE.PARAM");
+        if (sysConfig == null || StringUtil.isBlank(sysConfig.getConfigValue())) {
+            return new BigDecimal("0");
         }
-        return new BigDecimal(param);
+        return new BigDecimal(sysConfig.getConfigValue());
     }
+
+    @Override
+    public BigDecimal queryDDStageParam() {
+        SysConfig sysConfig = sysConfigService.querySysConfigByCode("OC.DDSTAGE.PARAM");
+        if (sysConfig == null || StringUtil.isBlank(sysConfig.getConfigValue())) {
+            return new BigDecimal("0");
+        }
+        return new BigDecimal(sysConfig.getConfigValue());
+    }
+
+    @Override
+    public BigDecimal queryCCOStageParam() {
+        SysConfig sysConfig = sysConfigService.querySysConfigByCode("OC.CCOSTAGE.PARAM");
+        if (sysConfig == null || StringUtil.isBlank(sysConfig.getConfigValue())) {
+            return new BigDecimal("0");
+        }
+        return new BigDecimal(sysConfig.getConfigValue());
+    }
+
+    @Override
+    public BigDecimal queryCCTStageParam() {
+        SysConfig sysConfig = sysConfigService.querySysConfigByCode("OC.CCTSTAGE.PARAM");
+        if (sysConfig == null || StringUtil.isBlank(sysConfig.getConfigValue())) {
+            return new BigDecimal("0");
+        }
+        return new BigDecimal(sysConfig.getConfigValue());
+    }
+
 }

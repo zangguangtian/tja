@@ -35,8 +35,32 @@ public interface IYmConfigService extends IBaseService {
 
     /**
      * 
-     * @return 产值计算系数，取什小于1
+     * @return 产值计算系数，取值小于1
      */
     BigDecimal queryOcRebateParam();
+
+    /**
+     * 
+     * <p>描述 : 初设施工图阶段比例</p>
+     *
+     * @return
+     */
+    BigDecimal queryDDStageParam();
+
+    /**
+     * 
+     * <p>描述 : 施工配合阶段1比例</p>
+     *
+     * @return
+     */
+    BigDecimal queryCCOStageParam();
+
+    /**
+     * 
+     * <p>描述 : 施工配合阶段2比例</p>
+     *
+     * @return
+     */
+    BigDecimal queryCCTStageParam();
 
 }

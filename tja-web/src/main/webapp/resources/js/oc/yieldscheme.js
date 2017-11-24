@@ -170,6 +170,22 @@ $(document).on("click", "#stage-info-div #cancel-btn", function(){
 	loadStageView();
 });
 
+/**打开项目管理产值编辑*/
+$(document).on("click", "#project-info-div .fa-edit", function(){
+	singleEdit(this);
+	loadProjectEdit();
+});
+
+/**项目管理产值编辑页面保存*/
+$(document).on("click", "#project-info-div #save-btn", function(){
+	saveProject();
+});
+
+/**项目管理产值编辑页面取消*/
+$(document).on("click", "#project-info-div #cancel-btn", function(){
+	loadProjectView();
+});
+
 /**打开各专业部门负责人会签编辑*/
 $(document).on("click", "#principal-info-div .fa-edit", function(){
 	singleEdit(this);
@@ -466,9 +482,6 @@ function fourAmountChange(){
 	}
 	$("input[name='majorAmount']").val(totalAmount.toFixed(2));
 	
-	/**计算项目负责人、项目经理的产值*/
-	calProUserYield();
-	
 	/**计算土建产值中各专业的产值*/
 	calEachMajorYield();
 }
@@ -477,32 +490,50 @@ function fourAmountChange(){
 /**计算项目负责人、项目经理的产值*/
 function calProUserYield(){
 	//各专业产值
-	var majorAmount = $("input[name='majorAmount']").val();
+	var majorAmount = $("label#majorAmountLabel").text();
 	if(majorAmount == null || majorAmount == ""){
 		majorAmount = "0";
 	}
 	
-	//项目负责人（%）
-	var principalRate = $("input[name='principalRate']").val();
-	if(principalRate == null || principalRate == ""){
-		principalRate = "0";
+	var ddStageParam = $("#ddStageParam").val();
+	if(ddStageParam == null || ddStageParam == ""){
+		ddStageParam = "0";
 	}
 	
-	//项目经理（%）
-	var pmRate = $("input[name='pmRate']").val();
-	if(pmRate == null || pmRate == ""){
-		pmRate = "0";
+	var ccoStageParam = $("#ccoStageParam").val();
+	if(ccoStageParam == null || ccoStageParam == ""){
+		ccoStageParam = "0";
 	}
 	
-	//项目秘书（%）
-	var secretRate = $("input[name='secretRate']").val();
-	if(secretRate == null || secretRate == ""){
-		secretRate = "0";
+	var cctStageParam = $("#cctStageParam").val();
+	if(cctStageParam == null || cctStageParam == ""){
+		cctStageParam = "0";
 	}
 	
-	$("input[name='principalYield']").val((new Number(majorAmount) * new Number(principalRate) / new Number(100)).toFixed(2));
-	$("input[name='pmYield']").val((new Number(majorAmount) * new Number(pmRate) / new Number(100)).toFixed(2));
-	$("input[name='secretYield']").val((new Number(majorAmount) * new Number(secretRate) / new Number(100)).toFixed(2));
+	var userRate = $(this).val();
+	if(userRate == null || userRate == ""){
+		userRate = "0";
+	}
+	
+	var userYield = "0";
+	var otherYield = "0";
+	$(this).closest("tr").find("td:gt(1)").each(function(index, item){
+		if(index == 0){
+			userYield = (new Number(majorAmount) * new Number(userRate) / new Number(100)).toFixed(2);
+			$(item).text(userYield);
+		}else {
+			if(index == 1){
+				otherYield = (new Number(userYield) * new Number(ddStageParam)).toFixed(2);
+			}else if(index == 2){
+				otherYield = (new Number(userYield) * (new Number(1) - new Number(ddStageParam)) * new Number(ccoStageParam)).toFixed(2);
+			}else if(index == 3){
+				otherYield = (new Number(userYield) * (new Number(1) - new Number(ddStageParam)) * new Number(cctStageParam)).toFixed(2);
+			}else{
+				otherYield = "0";
+			}
+			$(item).text(otherYield);
+		}
+	});
 }
 
 /**计算土建产值中各专业的产值*/
@@ -845,6 +876,7 @@ function loadCivilView(opt){
 		complete: function(XMLHttpRequest, textStatus){
 			if(opt == "save"){	//如果是保存，则需要重新加载各专业产值
 				loadStageView();
+				loadProjectView();
 			}
 		}
 	});
@@ -931,6 +963,65 @@ function loadStageView(){
 		},
 		complete: function(XMLHttpRequest, textStatus){
 			calViewMYTotal();
+		}
+	});
+}
+
+/**
+ * 加载项目管理产值编辑
+ */
+function loadProjectEdit(){
+	var schemeId = $("input[name='id']").val();
+	jQuery.ajax({
+		type : "POST",
+		url : context+"/admin/yield/scheme/ajax/projectEdit/"+schemeId,
+		dataType : "text",
+		success : function(data) {
+			$("#project-info-div").html(data);
+		}
+	});
+}
+
+/**
+ * 保存项目管理产值
+ */
+function saveProject(){
+	if (jQuery("#schemeForm").valid()) {
+		var datas = {};
+		datas.id = $("input[name='id']").val();
+		datas.principalRate = $("input[name='principalRate']").val();
+		datas.pmRate = $("input[name='pmRate']").val();
+		datas.secretRate = $("input[name='secretRate']").val();
+		
+		jQuery.ajax({
+			type : "POST",
+			url : context+"/admin/yield/scheme/ajax/projectSave",
+			data : JSON.stringify(datas),
+			dataType : "json",
+	        contentType : "application/json",
+			success : function(data) {
+				if(data.flag == "true"){
+					loadProjectView();
+		 		}else{
+		 			$.jalert({"jatext":data.msg});
+		 		}
+			}
+		});
+	}
+}
+
+/**加载项目管理产值查看*/
+function loadProjectView(){
+	var schemeId = $("input[name='id']").val();
+	jQuery.ajax({
+		type : "POST",
+		url : context+"/admin/yield/scheme/ajax/projectView/"+schemeId,
+		dataType : "text",
+		success : function(data) {
+			$("#project-info-div").html(data);
+		},
+		complete: function(XMLHttpRequest, textStatus){
+			
 		}
 	});
 }

@@ -43,6 +43,15 @@ public class CustOcYieldScheme extends OcYieldScheme {
     /** 属性： 设计负责人*/
     private java.lang.String principalName;
 
+    /** 属性：初设施工图阶段比例 */
+    private java.math.BigDecimal ddStageParam;
+
+    /** 属性：施工配合阶段1比例 */
+    private java.math.BigDecimal ccoStageParam;
+
+    /** 属性：施工配合阶段2比例 */
+    private java.math.BigDecimal cctStageParam;
+
     /** 属性：专业比例集合 */
     private List<CustOcYieldMajor> yieldMajors;
 
@@ -64,6 +73,60 @@ public class CustOcYieldScheme extends OcYieldScheme {
      */
     public void setPrincipalName(java.lang.String principalName) {
         this.principalName = principalName;
+    }
+
+    /**
+     * <p> 属性ddStageParam的Getter方法. </p>
+     * 
+     * @return 返回ddStageParam属性的值
+     */
+    public java.math.BigDecimal getDdStageParam() {
+        return ddStageParam;
+    }
+
+    /**
+     * <p> 属性ddStageParam的Setter方法. </p>
+     * 
+     * @param ddStageParam 为属性ddStageParam设置的值
+     */
+    public void setDdStageParam(java.math.BigDecimal ddStageParam) {
+        this.ddStageParam = ddStageParam;
+    }
+
+    /**
+     * <p> 属性ccoStageParam的Getter方法. </p>
+     * 
+     * @return 返回ccoStageParam属性的值
+     */
+    public java.math.BigDecimal getCcoStageParam() {
+        return ccoStageParam;
+    }
+
+    /**
+     * <p> 属性ccoStageParam的Setter方法. </p>
+     * 
+     * @param ccoStageParam 为属性ccoStageParam设置的值
+     */
+    public void setCcoStageParam(java.math.BigDecimal ccoStageParam) {
+        this.ccoStageParam = ccoStageParam;
+    }
+
+    /**
+     * <p> 属性cctStageParam的Getter方法. </p>
+     * 
+     * @return 返回cctStageParam属性的值
+     */
+    public java.math.BigDecimal getCctStageParam() {
+        return cctStageParam;
+    }
+
+    /**
+     * <p> 属性cctStageParam的Setter方法. </p>
+     * 
+     * @param cctStageParam 为属性cctStageParam设置的值
+     */
+    public void setCctStageParam(java.math.BigDecimal cctStageParam) {
+        this.cctStageParam = cctStageParam;
     }
 
     /**
@@ -156,5 +219,112 @@ public class CustOcYieldScheme extends OcYieldScheme {
         BigDecimal secretYield = new BigDecimal(0);
         secretYield = ArithmeticUtil.div(ArithmeticUtil.mul(getMajorAmount(), getSecretRate()), new BigDecimal(100), 2);
         return secretYield;
+    }
+
+    /**
+     * 
+     * <p>描述 : 计算项目负责人初设施工图阶段</p>
+     *
+     * @return
+     */
+    public BigDecimal getPrincipalDDStageYield() {
+        BigDecimal principalDDStageYield = ArithmeticUtil
+            .round(ArithmeticUtil.mul(getPrincipalYield(), getDdStageParam()), 2);
+        return principalDDStageYield;
+    }
+
+    /**
+     * 
+     * <p>描述 : 计算项目负责人施工配合阶段1</p>
+     *
+     * @return
+     */
+    public BigDecimal getPrincipalCCOStageYield() {
+        BigDecimal principalCCOStageYield = ArithmeticUtil.round(ArithmeticUtil.multMul(getPrincipalYield(),
+            ArithmeticUtil.sub(new BigDecimal(1), getDdStageParam()), getCcoStageParam()), 4);
+        return principalCCOStageYield;
+    }
+
+    /**
+     * 
+     * <p>描述 : 计算项目负责人施工配合阶段2</p>
+     *
+     * @return
+     */
+    public BigDecimal getPrincipalCCTStageYield() {
+        BigDecimal principalCCTStageYield = ArithmeticUtil.round(ArithmeticUtil.multMul(getPrincipalYield(),
+            ArithmeticUtil.sub(new BigDecimal(1), getDdStageParam()), getCctStageParam()), 4);
+        return principalCCTStageYield;
+    }
+
+    /**
+     * 
+     * <p>描述 : 计算项目负责人初设施工图阶段</p>
+     *
+     * @return
+     */
+    public BigDecimal getPmDDStageYield() {
+        BigDecimal principalDDStageYield = ArithmeticUtil.round(ArithmeticUtil.mul(getPmYield(), getDdStageParam()), 2);
+        return principalDDStageYield;
+    }
+
+    /**
+     * 
+     * <p>描述 : 计算项目负责人施工配合阶段1</p>
+     *
+     * @return
+     */
+    public BigDecimal getPmCCOStageYield() {
+        BigDecimal principalCCOStageYield = ArithmeticUtil.round(ArithmeticUtil.multMul(getPmYield(),
+            ArithmeticUtil.sub(new BigDecimal(1), getDdStageParam()), getCcoStageParam()), 4);
+        return principalCCOStageYield;
+    }
+
+    /**
+     * 
+     * <p>描述 : 计算项目负责人施工配合阶段2</p>
+     *
+     * @return
+     */
+    public BigDecimal getPmCCTStageYield() {
+        BigDecimal principalCCTStageYield = ArithmeticUtil.round(ArithmeticUtil.multMul(getPmYield(),
+            ArithmeticUtil.sub(new BigDecimal(1), getDdStageParam()), getCctStageParam()), 4);
+        return principalCCTStageYield;
+    }
+
+    /**
+     * 
+     * <p>描述 : 计算项目负责人初设施工图阶段</p>
+     *
+     * @return
+     */
+    public BigDecimal getSecretDDStageYield() {
+        BigDecimal principalDDStageYield = ArithmeticUtil.round(ArithmeticUtil.mul(getSecretYield(), getDdStageParam()),
+            2);
+        return principalDDStageYield;
+    }
+
+    /**
+     * 
+     * <p>描述 : 计算项目负责人施工配合阶段1</p>
+     *
+     * @return
+     */
+    public BigDecimal getSecretCCOStageYield() {
+        BigDecimal principalCCOStageYield = ArithmeticUtil.round(ArithmeticUtil.multMul(getSecretYield(),
+            ArithmeticUtil.sub(new BigDecimal(1), getDdStageParam()), getCcoStageParam()), 4);
+        return principalCCOStageYield;
+    }
+
+    /**
+     * 
+     * <p>描述 : 计算项目负责人施工配合阶段2</p>
+     *
+     * @return
+     */
+    public BigDecimal getSecretCCTStageYield() {
+        BigDecimal principalCCTStageYield = ArithmeticUtil.round(ArithmeticUtil.multMul(getSecretYield(),
+            ArithmeticUtil.sub(new BigDecimal(1), getDdStageParam()), getCctStageParam()), 4);
+        return principalCCTStageYield;
     }
 }

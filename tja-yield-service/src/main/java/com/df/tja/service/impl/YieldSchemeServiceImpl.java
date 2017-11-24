@@ -81,6 +81,15 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
         CustOcYieldScheme custOcYieldScheme = null;
         try {
             custOcYieldScheme = ocYieldSchemeDao.selectOcYieldSchemeById(id);
+
+            BigDecimal ddStageParam = ymConfigService.queryDDStageParam();
+            custOcYieldScheme.setDdStageParam(ddStageParam);
+
+            BigDecimal ccoStageParam = ymConfigService.queryCCOStageParam();
+            custOcYieldScheme.setCcoStageParam(ccoStageParam);
+
+            BigDecimal cctStageParam = ymConfigService.queryCCTStageParam();
+            custOcYieldScheme.setCctStageParam(cctStageParam);
         } catch (Exception ex) {
             LoggerUtil.error(YieldSchemeServiceImpl.class, "", ex);
             throw new RuntimeException(ex);
@@ -257,8 +266,8 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
             OcYieldScheme ocYieldScheme = ocYieldSchemeDao.selectByPrimaryKey(OcYieldScheme.class,
                 custOcYieldScheme.getId());
             if (ocYieldScheme != null) {
-                ObjectUtils.batchCopyProperties(custOcYieldScheme, ocYieldScheme, new String[] {"contractAmount",
-                    "pkgAmount", "schemeAmount", "rebateAmount", "principalRate", "pmRate", "secretRate"});
+                ObjectUtils.batchCopyProperties(custOcYieldScheme, ocYieldScheme,
+                    new String[] {"contractAmount", "pkgAmount", "schemeAmount", "rebateAmount"});
                 ocYieldScheme.setTotalAmount(custOcYieldScheme.getTotalAmount());
                 BigDecimal rebateParam = ymConfigService.queryOcRebateParam();
                 ocYieldScheme.setMajorAmount(
@@ -312,6 +321,26 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
 
                 //调用存储过程修改其他几张关联表
                 ocYieldSchemeDao.calOtherYield(custOcYieldScheme.getId(), "STAGE");
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public void createYieldSchemeProject(CustOcYieldScheme custOcYieldScheme) throws RuntimeException {
+        try {
+            OcYieldScheme ocYieldScheme = ocYieldSchemeDao.selectByPrimaryKey(OcYieldScheme.class,
+                custOcYieldScheme.getId());
+            if (ocYieldScheme != null) {
+                custOcYieldScheme.setMajorAmount(ocYieldScheme.getMajorAmount());
+
+                ocYieldScheme.setPrincipalRate(custOcYieldScheme.getPrincipalRate());
+                ocYieldScheme.setPrincipalYield(custOcYieldScheme.getPrincipalYield());
+                ocYieldScheme.setPmRate(custOcYieldScheme.getPmRate());
+                ocYieldScheme.setPmYield(custOcYieldScheme.getPmYield());
+                ocYieldScheme.setSecretRate(custOcYieldScheme.getSecretRate());
+                ocYieldScheme.setSecretYield(custOcYieldScheme.getSecretYield());
+                ocYieldSchemeDao.update(OcYieldScheme.class, ocYieldScheme);
             }
         } catch (Exception ex) {
             throw new RuntimeException(ex);

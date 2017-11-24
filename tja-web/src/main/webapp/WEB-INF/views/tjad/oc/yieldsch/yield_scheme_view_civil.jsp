@@ -39,43 +39,7 @@
 	<div class="col-xs-6 ">
 	    <label class="control-label col-xs-4">各专业产值</label>
 	    <div class="col-xs-8">
-	        <label class="control-label">${yieldScheme.majorAmount }</label>
-	    </div>
-	</div>
-	<div class="col-xs-6 ">
-	    <label class="control-label col-xs-4">项目负责人（%）</label>
-	    <div class="col-xs-8">
-	        <label class="control-label">${yieldScheme.principalRate }</label>
-	    </div>
-	</div>
-	<div class="col-xs-6 ">
-	    <label class="control-label col-xs-4">项目负责人（产值）</label>
-	    <div class="col-xs-8">
-	        <label class="control-label">${yieldScheme.principalYield }</label>
-	    </div>
-	</div>
-	<div class="col-xs-6 ">
-	    <label class="control-label col-xs-4">项目经理（%）</label>
-	    <div class="col-xs-8">
-	        <label class="control-label">${yieldScheme.pmRate }</label>
-	    </div>
-	</div>
-	<div class="col-xs-6 ">
-	    <label class="control-label col-xs-4">项目经理（产值）</label>
-	    <div class="col-xs-8">
-	        <label class="control-label">${yieldScheme.pmYield }</label>
-	    </div>
-	</div>
-	<div class="col-xs-6 ">
-	    <label class="control-label col-xs-4">项目秘书（%）</label>
-	    <div class="col-xs-8">
-	        <label class="control-label">${yieldScheme.secretRate }</label>
-	    </div>
-	</div>
-	<div class="col-xs-6 ">
-	    <label class="control-label col-xs-4">项目秘书（产值）</label>
-	    <div class="col-xs-8">
-	        <label class="control-label">${yieldScheme.secretYield }</label>
+	        <label class="control-label" id="majorAmountLabel">${yieldScheme.majorAmount }</label>
 	    </div>
 	</div>
 	<c:if test="${not empty majors }">

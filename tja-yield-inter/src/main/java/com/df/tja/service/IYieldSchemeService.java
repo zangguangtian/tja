@@ -110,6 +110,15 @@ public interface IYieldSchemeService extends IBaseService {
 
     /**
      * 
+     * <p>描述 : 保存施工图产值策划的项目管理产值</p>
+     *
+     * @param custOcYieldScheme
+     * @throws RuntimeException
+     */
+    void createYieldSchemeProject(CustOcYieldScheme custOcYieldScheme) throws RuntimeException;
+
+    /**
+     * 
      * <p>描述 : 保存施工图产值策划的各专业部门负责人会签</p>
      *
      * @param custOcYieldScheme

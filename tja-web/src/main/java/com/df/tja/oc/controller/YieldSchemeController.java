@@ -101,7 +101,7 @@ public class YieldSchemeController extends BaseController {
     @RequestMapping(value = "/ajax/baseEdit/{id}", method = RequestMethod.POST)
     public String baseEdit(@PathVariable("id") String id, Model model) {
         //取策划主表
-        OcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
+        CustOcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
         model.addAttribute("yieldScheme", yieldScheme);
 
         //项目信息
@@ -143,7 +143,7 @@ public class YieldSchemeController extends BaseController {
     @RequestMapping(value = "/ajax/baseView/{id}", method = RequestMethod.POST)
     public String baseView(@PathVariable("id") String id, Model model) {
         //取策划主表
-        OcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
+        CustOcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
         model.addAttribute("yieldScheme", yieldScheme);
 
         //项目信息
@@ -232,7 +232,7 @@ public class YieldSchemeController extends BaseController {
     @RequestMapping(value = "/ajax/civilEdit/{id}", method = RequestMethod.POST)
     public String civilEdit(@PathVariable("id") String id, Model model) {
         ///取策划主表
-        OcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
+        CustOcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
         model.addAttribute("yieldScheme", yieldScheme);
 
         //取专业
@@ -280,7 +280,7 @@ public class YieldSchemeController extends BaseController {
     @RequestMapping(value = "/ajax/civilView/{id}", method = RequestMethod.POST)
     public String civilView(@PathVariable("id") String id, Model model) {
         ///取策划主表
-        OcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
+        CustOcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
         model.addAttribute("yieldScheme", yieldScheme);
 
         //取专业
@@ -367,6 +367,61 @@ public class YieldSchemeController extends BaseController {
 
     /**
      * 
+     * <p>描述 : 加载项目管理产值编辑页面</p>
+     *
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/ajax/projectEdit/{id}", method = RequestMethod.POST)
+    public String projectEdit(@PathVariable("id") String id, Model model) {
+        ///取策划主表
+        CustOcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
+        model.addAttribute("yieldScheme", yieldScheme);
+        return "/tjad/oc/yieldsch/yield_scheme_edit_project";
+    }
+
+    /**
+     * 
+     * <p>描述 : 保存项目管理产值 </p>
+     *
+     * @param yieldScheme
+     * @return
+     */
+    @RequestMapping(value = "/ajax/projectSave", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, String> projectSave(@RequestBody CustOcYieldScheme yieldScheme) {
+        Map<String, String> result = new HashMap<String, String>(0);
+        try {
+            yieldSchemeService.createYieldSchemeProject(yieldScheme);
+            result.put("flag", "true");
+            result.put("msg", SAVE_SUCCESS);
+        } catch (RuntimeException ex) {
+            LoggerUtil.error(YieldSchemeController.class, null, ex);
+            result.put("flag", "false");
+            result.put("msg", SAVE_ERROR);
+        }
+        return result;
+    }
+
+    /**
+     * 
+     * <p>描述 : 加载项目管理产值查看页面</p>
+     *
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/ajax/projectView/{id}", method = RequestMethod.POST)
+    public String projectView(@PathVariable("id") String id, Model model) {
+        ///取策划主表
+        CustOcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
+        model.addAttribute("yieldScheme", yieldScheme);
+        return "/tjad/oc/yieldsch/yield_scheme_view_project";
+    }
+
+    /**
+     * 
      * <p>描述 : 加载各专业产值编辑页面</p>
      *
      * @param id
@@ -376,7 +431,7 @@ public class YieldSchemeController extends BaseController {
     @RequestMapping(value = "/ajax/principalEdit/{id}", method = RequestMethod.POST)
     public String principalEdit(@PathVariable("id") String id, Model model) {
         //取策划主表
-        OcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
+        CustOcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
         model.addAttribute("yieldScheme", yieldScheme);
 
         //取专业
@@ -425,7 +480,7 @@ public class YieldSchemeController extends BaseController {
     @RequestMapping(value = "/ajax/principalView/{id}", method = RequestMethod.POST)
     public String principalView(@PathVariable("id") String id, Model model) {
         //取策划主表
-        OcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
+        CustOcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
         model.addAttribute("yieldScheme", yieldScheme);
 
         //取专业
@@ -469,9 +524,6 @@ public class YieldSchemeController extends BaseController {
 
         //取90%
         BigDecimal ratioParam = ymConfigService.queryOcRebateParam();
-        if (ratioParam == null) {
-            ratioParam = new BigDecimal("0");
-        }
         model.addAttribute("ratioParam", ratioParam);
 
         //取专业
@@ -480,7 +532,7 @@ public class YieldSchemeController extends BaseController {
         model.addAttribute("majors", majors);
 
         //取策划主表
-        OcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
+        CustOcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
         model.addAttribute("yieldScheme", yieldScheme);
 
         //项目信息

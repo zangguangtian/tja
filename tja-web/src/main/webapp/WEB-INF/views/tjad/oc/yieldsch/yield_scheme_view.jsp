@@ -31,6 +31,9 @@
             <!-- BEGIN FORM-->
             <form id="schemeForm" method="post">
                 <input type="hidden" id="ratioParam" value="${ratioParam }">
+                <input type="hidden" id="ddStageParam" value="${yieldScheme.ddStageParam }">
+                <input type="hidden" id="ccoStageParam" value="${yieldScheme.ccoStageParam }">
+                <input type="hidden" id="cctStageParam" value="${yieldScheme.cctStageParam }">
                 <input type="hidden" name="id" value="${yieldScheme.id }">
                 <input type="hidden" name="proId" value="${project.id }">
                 <input type="hidden" name="relationId" value="${yieldScheme.relationId }">
@@ -47,6 +50,9 @@
 	                </div>
 	                <div id="stage-info-div" class="col-md-12">    
 	                    <jsp:include page="yield_scheme_view_stage.jsp"/>
+					</div>
+					<div id="project-info-div" class="col-md-12">
+						<jsp:include page="yield_scheme_view_project.jsp"/>
 					</div>
 					<div id="principal-info-div" class="col-md-12">
 						<jsp:include page="yield_scheme_view_principal.jsp"/>
