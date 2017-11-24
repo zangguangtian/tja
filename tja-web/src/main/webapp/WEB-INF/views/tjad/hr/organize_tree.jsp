@@ -13,7 +13,7 @@ if( StringUtils.isBlank(loadUser)){
 	<input type="hidden" id="loadUser" value="<%=loadUser  %>" />
 	<input type="hidden" id="node_orgId" value="" />
 	<input type="hidden" id="node_orgName" value="" />
-    <ul id="orgTree" class="ztree"></ul>
+    <ul id="orgTree" class="ztree" style="overflow-y: auto; width: 98%; height: 100%;"></ul>
 </div>
 <link rel="stylesheet" href="${site}/resources/css/zTreeStyle/zTreeStyle.css?v=${buildVersion}" type="text/css">
 <script type="text/javascript" src="${site}/resources/js/plugins/ztree/jquery.ztree.all.js?v=${buildVersion}"></script>

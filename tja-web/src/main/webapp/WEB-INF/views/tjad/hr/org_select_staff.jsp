@@ -31,40 +31,10 @@ ul,ol,li{list-style-type:none;}
 				</div>
 			</div>
 			<div class="" style="margin-left: 230px;">
-				<!-- 这个表单是放查询的条件 -->
-				<input id="treeNodeId" type="hidden" name="orgId" /> <input
-					type="hidden" value="${vo.positiveFlag }" name="positiveFlag" />
-				<div class="search-customer mt20" style="height: 40px;">
-					<ul class="search-ul pt10 fl-l">
-						<li>姓名 <input type="text" id="name" /></li>
-						<li>组织名称<input type="text" id="orgName" /></li>
-					</ul>
-					<div class="fl-l">
-						<span><input type="button" id="btnSearch"
-							class="set-current mr10" value="查询" /></span>
-					</div>
-					<div class="cl"></div>
-				</div>
-				<div style="overflow-x: auto; width: 98%; max-height: 280px;">
-					<c:if test="${openType=='radio' or openType=='checkbox'}">
-						<table class="tb-customer mt10">
-							<thead class="tb-list-head">
-								<tr class="tb-head-center">
-									<td nowrap="nowrap" style="text-align: center;">
-									<c:if test="${openType=='checkbox'}">
-									<input type="checkbox" id="chooseAll" />
-									</c:if>
-									</td>
-									<td nowrap="nowrap">姓名</td>
-									<td nowrap="nowrap">组织名称</td>
-									<td nowrap="nowrap">设计定级</td>
-									<td nowrap="nowrap">性别</td>
-								</tr>
-							</thead>
-							<tbody id="orgStaffList" class="tb-list-body"></tbody>
-						</table>
-					</c:if>
-				</div>
+			
+				<div id="selectUser"></div>
+				
+				
 				<c:if test="${openType=='checkbox'}">
 					<div style="width: 98%;">
 						<table class="tb-customer mt20  user-grant-tb">
@@ -95,7 +65,6 @@ ul,ol,li{list-style-type:none;}
 			</div>
 		</div>
 	</div>
-	<form id="frmSearch"></form>
 	<script type="text/javascript" src="${site}/resources/js/hr/select_staff.js?v=${buildVersion}"></script>
 	<script type="application/javascript">
 	var openType = "${openType}";

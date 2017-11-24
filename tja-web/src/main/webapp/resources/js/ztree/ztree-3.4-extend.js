@@ -38,29 +38,44 @@
 						var orgStaff = {};
 						var _this = $(item);
 						var _input = _this.find("input[type='hidden']");
-						orgStaff.id = _input.data("id");
-						orgStaff.name = _input.data("name");
-						orgStaff.orgname = _input.data("orgname");
-						orgStaff.entrydate = _input.data("entrydate");
-						orgStaff.sex = _input.data("sex");
-						orgStaff.office = _input.data("office");
-						orgStaff.orgid = _input.data("orgid");
-						orgStaff.jobnum = _input.data("jobnum");
-						orgStaff.clublevelcode = _input.data("clublevelcode");
+						
+						var data_val = _input.attr("data-val");
+						data_val = data_val.replace(/=/gm,'":"');
+						data_val = data_val.replace(/,/gm,'","');
+						data_val = data_val.replace('{','{"');
+						data_val = data_val.replace('}','"}');
+						data_val = data_val.replace(/[ ]/g,"");
+						data_val = eval("("+data_val+")");
+				        
+						orgStaff.id = data_val.id;
+						orgStaff.name = data_val.name;
+						orgStaff.orgname = data_val.orgName;
+						orgStaff.entrydate = data_val.entryDate;
+						orgStaff.sex = data_val.sex;
+						orgStaff.office = data_val.office;
+						orgStaff.orgid = data_val.orgId;
+						orgStaff.jobnum = data_val.jobNum;
 						data.push(orgStaff);
 					});
 				}else if(openType == 'radio'){
-					var _input = body.find("#orgStaffList input[type='radio']:checked");
+					var _input = body.find("#selectUser tbody  input[type='radio']:checked");
 					var orgStaff = {};
-					orgStaff.id = _input.data("id");
-					orgStaff.name = _input.data("name");
-					orgStaff.orgname = _input.data("orgname");
-					orgStaff.entrydate = _input.data("entrydate");
-					orgStaff.sex = _input.data("sex");
-					orgStaff.office = _input.data("office");
-					orgStaff.orgid = _input.data("orgid");
-					orgStaff.jobnum = _input.data("jobnum");
-					orgStaff.clublevelcode = _input.data("clublevelcode");
+					var data_val = _input.attr("data-val");
+					data_val = data_val.replace(/=/gm,'":"');
+					data_val = data_val.replace(/,/gm,'","');
+					data_val = data_val.replace('{','{"');
+					data_val = data_val.replace('}','"}');
+					data_val = data_val.replace(/[ ]/g,"");
+					data_val = eval("("+data_val+")");
+			        
+					orgStaff.id = data_val.id;
+					orgStaff.name = data_val.name;
+					orgStaff.orgname = data_val.orgName;
+					orgStaff.entrydate = data_val.entryDate;
+					orgStaff.sex = data_val.sex;
+					orgStaff.office = data_val.office;
+					orgStaff.orgid = data_val.orgId;
+					orgStaff.jobnum = data_val.jobNum;
 					data.push(orgStaff);
 				}
 				if(typeof callback === "function"){
@@ -132,12 +147,9 @@
 					$.fn.zTree.init($("#orgTree"), checkuserSetting, zNodes);
 				}else if(settingType == "checkbox"){//选择人员类型2
 					$.fn.zTree.init($("#orgTree"), checkuserSetting, zNodes);
-				}else if(settingType == "random"){//选择人员类型3
-					$.fn.zTree.init($("#orgTree"), checkuserSetting, zNodes);
 				}else{
 					$.fn.zTree.init($("#orgTree"), checkSetting, zNodes);
 				}
-				
 				if(rootId == "PRO0001I"){
 					var zTree = $.fn.zTree.getZTreeObj("orgTree");
 					var node = zTree.getNodes()[0];  
@@ -258,24 +270,46 @@
 	}
 
 	/**
-	 * 通过ajax获取子组织列表
+	 * 通过ajax获取子组织列表 点击树的某一结点 加载该节点的人员信息
 	 */
 	function searchOrgs(event, treeId, treeNode){
 		var id = treeNode.id;
 		jQuery("#treeNodeId").val(id);//为了页面查询传一个当前选中节点
-		if(id == null && id == ""){
+		if(id == null && id == ""){ //org ID
 			alert("请先选择一个左边的组织!");
 			return;
 		}
-		var nodeName = currNodeName(treeId);
+		//var nodeName = currNodeName(treeId);
 		//加载组织
 		if(jQuery(".next-div div#choose-one").hasClass("currents")){
 			loadOrg(id);
 		}else{//加载组织中的员工
-			orgPeopleList(id);
+			loadStaff(id);
 		}
+		
 	}
 
+	function loadStaff(orgId){
+		var NO = "SELECT_STAFF_CHECKBOX";
+		if(openType == "radio"){
+			NO = "SELECT_STAFF_RADIO";
+		}
+		var loadUser = $("#loadUser").val();
+		if(loadUser == "1"){
+			var sUrl =context+"/config/query";
+		    jQuery.ajax({
+		        type: "POST",
+		        url:sUrl,
+		        data:{"NO":NO, "MODEL":"HR","qarg.orgId" : "%"+orgId+"%"},
+		        async: false,
+		        success: function(data) {
+		        	jQuery("#selectUser").empty();
+		        	jQuery("#selectUser").append(data); 
+		        }
+		    });
+		}
+	}
+	
 	/**
 	 * 获取组织列表
 	 * @param orgId
@@ -309,66 +343,6 @@
 		});
 	}
 
-	//加载组织下的人员
-	function orgPeopleList(orgId){
-		var settingType = $("#settingType").val();
-		var loadUser = $("#loadUser").val();
-		//只有需要加载用户的时候才加载
-		if(loadUser == "1"){
-			jQuery.ajax({
-				type : "POST",
-				url : context+"/admin/hr/org/ajax/searchstaff/"+orgId,
-				data:jQuery("#userForm").serialize(),
-				dataType : "json",
-				beforeSend: function(){
-					addcloud();
-			    },
-				success : function(data, status) {
-					var $data = eval(data);
-					appendContent($data, settingType);
-				},
-				error : function(req, status, ex) {
-					alert("获取组织人员列表出错!");
-				},
-				complete: function(XMLHttpRequest, textStatus){
-					removecloud();
-				}
-			});
-		}
-	}
-
-	function appendContent($data, settingType){
-		if(settingType == "checkbox"){
-			jQuery("#chooseAll").removeAttr("checked");
-		}
-		jQuery("#orgStaffList").empty();
-		jQuery.each($data, function(index){
-			if(settingType == "radio" || settingType == "checkbox"){
-				jQuery("#orgStaffList").append(
-					jQuery('<tr/>')
-						.append(jQuery('<td nowrap="nowrap"/>')
-							.append(jQuery('<input/>').attr(
-									{"type":settingType,"name":"selectStaff", "data-id":this.id, "data-name":this.name,
-										"data-orgName":this.orgName, "data-entryDate":this.entryDate, "data-sex":this.sex, "data-office":this.office, "data-jobTitle":this.jobTitle,
-										"data-school":this.school, "data-endDate":this.endDate, "data-designLevel":this.designLevel,
-										"data-designSubLevel":this.designSubLevel, "data-clubLevel":this.clubLevel, "data-clubSubLevel":this.clubSubLevel,
-										"data-orgId": this.orgId, "data-ratingValue":this.ratingValue, "data-jobNum": this.jobNum, "data-clubLevelCode":this.clubLevelCode, "data-designLevelCode": this.designLevelCode})))
-						.append(jQuery('<td nowrap="nowrap"/>').text(this.name))
-						.append(jQuery('<td nowrap="nowrap"/>').text(this.orgName==null?"":this.orgName))
-						.append(jQuery('<td nowrap="nowrap"/>').text(this.designLevel==null?"":this.designLevel))
-						.append(jQuery('<td nowrap="nowrap"/>').text(this.sex == null?"":(this.sex == "1"?"男":"女")))
-				);
-			}
-		});
-
-		if(jQuery("#treeNodeId").length > 0){
-			//选中节点
-			var treeObj = getTreeObj(treeElemId);
-			var id = jQuery("#treeNodeId").val().trim();
-			var node = treeObj.getNodeByParam("id", id, null);
-			treeObj.selectNode(node, false);
-		}
-	}
 
 	/**
 	 * 始终不显示修改按钮

@@ -22,26 +22,5 @@
 		</div>
 	</div>
 </div>
-<script type="application/javascript">
-jQuery(document).ready(function(){
-	jQuery("#confirmBtn").on("click", function(){
-		var $targetId = jQuery("#targetId").val();
-		var $targetName = jQuery("#targetName").val();
-		var $orgId = jQuery("#orgId");
-		if($orgId != undefined && $orgId != null){
-			jQuery("#"+$targetId, window.opener.document).val($orgId.val());
-		}
-		var $orgName = jQuery("#orgName");
-		if($orgName != undefined && $orgName != null){
-			jQuery("#"+$targetName, window.opener.document).val($orgName.val());
-		}
-		window.close();
-	})
-	
-	jQuery("#closeBtn").on("click", function(){
-		window.close();
-	})
-});
-</script>
 </body>
 </html>
