@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="df" uri="http://www.diligentfirst.com/" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
     <meta charset="utf-8"/>
@@ -12,6 +13,9 @@
 <div class="wrapBox ">
 	<div class="col-md-12">
 		<div class="tabbable-line boxless tabbable-reversed">
+			<c:set var="allAuth" value="MONTHFILL_HIS_LIST" />
+			<sec:authorize url="/admin/ym/monthFill/toedit">
+			<c:set var="allAuth" value="MONTHFILL_LIST" />
 	    	<ul class="nav nav-tabs">
 	        	<li class="active">
 	            	<a href="#tab_0" data-toggle="tab" aria-expanded="true">当期</a>
@@ -20,17 +24,11 @@
 	                <a href="#tab_1" data-toggle="tab" aria-expanded="false">历史</a>
 	            </li>
 	        </ul>
+	        </sec:authorize>
 	       	<div class="tab-content">
-	       		<!-- 当期 -->
 	            <div class="tab-pane active" id="tab_0">
 	            	<div class="col-lg-12" id="content">
 
-					</div>
-				</div>
-	       		<!-- 历史 -->
-	       		<div class="tab-pane" id="tab_1">
-	       			<div class="col-lg-12" id="content2">
-	
 					</div>
 				</div>
 			</div>
@@ -39,12 +37,12 @@
 </div>
 <script type="text/javascript">
 jQuery(function(){
-	loadList("MONTHFILL_LIST", $("#content"));
+	loadList("${allAuth}", $("#content"));
 	$("a[href='#tab_0']").on("click", function(){
 		loadList("MONTHFILL_LIST", $("#content"));
 	});
 	$("a[href='#tab_1']").on("click", function(){
-		loadList("MONTHFILL_HIS_LIST", $("#content2"));
+		loadList("MONTHFILL_HIS_LIST", $("#content"));
 	});
 });
 
