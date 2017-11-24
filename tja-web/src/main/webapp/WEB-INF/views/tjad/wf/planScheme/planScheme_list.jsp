@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="df" uri="http://www.diligentfirst.com/" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
     <meta charset="utf-8"/>
@@ -12,6 +13,10 @@
 <div class="wrapBox ">
     <div id="content">
     </div>
+    <c:set value="false" var="allAuth"></c:set>
+    <sec:authorize url="/admin/wf/planScheme/toedit">
+      <c:set value="true" var="allAuth"></c:set>
+    </sec:authorize>
 </div>
 <script type="text/javascript">
 jQuery(function(){
@@ -26,7 +31,9 @@ jQuery(function(){
             $("#content").append(data); 
         }
     });
-    $("ul[name='rul']").after('<span class="o-btn"><input type=button value="发起" onclick="toadd();" ></span>');
+    if(${allAuth}){
+    	$("ul[name='rul']").after('<span class="o-btn"><input type=button value="发起" onclick="toadd();" ></span>');
+    }
 });
 
 function  toadd(){
