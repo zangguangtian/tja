@@ -46,9 +46,9 @@ public class WfWeekFillMore extends WfWeekFill {
     /** 所处状态 */
     private String proStatus;
     /** 项目负责人 名称 */
-    private String proFzrName;
+    private String pmLeaders;
     /** 项目经理 名称 */
-    private String proJlName;
+    private String pManagers;
     /** 期间名称 */
     private String periodName;
     /** 期间范围起 */
@@ -147,39 +147,39 @@ public class WfWeekFillMore extends WfWeekFill {
     }
 
     /**
-     * <p> 属性proFzrName的Getter方法. </p>
+     * <p> 属性pmLeaders的Getter方法. </p>
      * 
-     * @return 返回proFzrName属性的值
+     * @return 返回pmLeaders属性的值
      */
-    public String getProFzrName() {
-        return proFzrName;
+    public String getPmLeaders() {
+        return pmLeaders;
     }
 
     /**
-     * <p> 属性proFzrName的Setter方法. </p>
+     * <p> 属性pmLeaders的Setter方法. </p>
      * 
-     * @param proFzrName 为属性proFzrName设置的值
+     * @param pmLeaders 为属性pmLeaders设置的值
      */
-    public void setProFzrName(String proFzrName) {
-        this.proFzrName = proFzrName;
+    public void setPmLeaders(String pmLeaders) {
+        this.pmLeaders = pmLeaders;
     }
 
     /**
-     * <p> 属性proJlName的Getter方法. </p>
+     * <p> 属性pManagers的Getter方法. </p>
      * 
-     * @return 返回proJlName属性的值
+     * @return 返回pManagers属性的值
      */
-    public String getProJlName() {
-        return proJlName;
+    public String getpManagers() {
+        return pManagers;
     }
 
     /**
-     * <p> 属性proJlName的Setter方法. </p>
+     * <p> 属性pManagers的Setter方法. </p>
      * 
-     * @param proJlName 为属性proJlName设置的值
+     * @param pManagers 为属性pManagers设置的值
      */
-    public void setProJlName(String proJlName) {
-        this.proJlName = proJlName;
+    public void setpManagers(String pManagers) {
+        this.pManagers = pManagers;
     }
 
     /**

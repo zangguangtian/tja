@@ -68,7 +68,8 @@
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-xs-4">项目类型</label>
 					<div class="col-xs-8">
-						<tags:config type="label" code="${weekFill.proType}"/>
+						<input type="text" class="form-control" value="${weekFill.proType}" disabled="disabled">
+						<%-- <tags:config type="label" code="${weekFill.proType}"/> --%>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
@@ -104,13 +105,13 @@
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-xs-4">项目负责人</label>
 					<div class="col-xs-8">
-						<label class="control-label">${weekFill.proFzrName}</label>
+						<label class="control-label">${weekFill.pmLeaders}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
 					<label class="control-label col-xs-4">项目经理</label>
 					<div class="col-xs-8">
-						<label class="control-label">${weekFill.proJlName}</label>
+						<label class="control-label">${weekFill.pManagers}</label>
 					</div>
 				</div>
 				<div class="form-group col-xs-6 ">
