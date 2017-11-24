@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="df" uri="http://www.diligentfirst.com/" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <html>
 <head>
@@ -59,7 +60,13 @@
 					</div>
 				</div>
 				<c:if test="${empty print }">
-					<jsp:include page="../../../framework/common/fileupload/include_attach.jsp"/>
+					<c:set var="attachBtn" value="view"/>
+					<sec:authorize url="/admin/yield/scheme/ajax/baseSave">
+						<c:set var="attachBtn" value="show"/>
+					</sec:authorize>
+					<jsp:include page="../../../framework/common/fileupload/include_attach.jsp">
+						<jsp:param name="attachBtn" value="${attachBtn }"/>
+					</jsp:include>
 				</c:if>
 				<br><br><br>
             </form>

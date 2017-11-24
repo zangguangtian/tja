@@ -1,12 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="df" uri="http://www.diligentfirst.com/" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 	<div class="col-xs-12">
 		<h5 class="form-tit">专业比例
 			<span class="control-label" style="font-size:12px;">（比例：%  产值：元）</span>
-			<i class="fa fa-edit"></i>
+			<sec:authorize url="/admin/yield/scheme/ajax/ratioEdit"><i class="fa fa-edit"/></sec:authorize>
 			<i id="more-btn" class="fa fa-chevron-down font-icon"><h6>展开</h6></i>
 		</h5>
 	</div>

@@ -2,9 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="df" uri="http://www.diligentfirst.com/" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 	<div class="col-xs-12">
-		<h5 class="form-tit">基本信息<i class="fa fa-edit"></i></h5>
+		<h5 class="form-tit">基本信息<sec:authorize url="/admin/yield/scheme/ajax/baseEdit"><i class="fa fa-edit"/></sec:authorize></h5>
 	</div>
 	<div class="col-xs-6 ">
 		<label class="control-label col-xs-4">策划编号</label>
