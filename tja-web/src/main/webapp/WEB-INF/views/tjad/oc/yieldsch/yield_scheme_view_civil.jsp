@@ -6,7 +6,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 	<div class="col-xs-12">
 		<h5 class="form-tit">土建产值<span class="control-label" style="font-size:12px;">（元）</span>
-			<sec:authorize url="/admin/yield/scheme/ajax/civilEdit"><i class="fa fa-edit"/></sec:authorize></h5>
+			<sec:authorize url="/admin/yield/scheme/ajax/civilEdit"><i class="fa fa-edit"></i></sec:authorize></h5>
 	</div>
 	<div class="col-xs-6 ">
 	    <label class="control-label col-xs-4">实际合同额</label>

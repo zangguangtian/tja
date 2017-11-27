@@ -5,7 +5,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 	<div class="col-xs-12">
-		<h5 class="form-tit">各专业部门负责人会签<sec:authorize url="/admin/yield/scheme/ajax/principalEdit"><i class="fa fa-edit"/></sec:authorize></h5>
+		<h5 class="form-tit">各专业部门负责人会签<sec:authorize url="/admin/yield/scheme/ajax/principalEdit"><i class="fa fa-edit"></i></sec:authorize></h5>
 	</div>
 	<div class="col-xs-6 ">
 	    <label class="control-label col-xs-4">设计负责人</label>
