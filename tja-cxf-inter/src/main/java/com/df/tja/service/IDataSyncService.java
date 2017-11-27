@@ -101,4 +101,15 @@ public interface IDataSyncService extends IBaseService {
      * @throws RuntimeException
      */
     void syncEpibolyContractOfItem(String value, boolean isLastRow) throws RuntimeException;
+
+    /**
+     * 
+     * <p>描述 : 用户登录 </p>
+     *
+     * @param userName
+     * @param password
+     * @return
+     * @throws RuntimeException
+     */
+    boolean execUserLogin(String userName, String password) throws RuntimeException;
 }

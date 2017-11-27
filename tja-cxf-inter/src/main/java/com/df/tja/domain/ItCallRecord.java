@@ -25,6 +25,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
 
+import com.df.framework.annotation.IgnoreWriteLog;
 import com.df.framework.base.domain.BaseDomain;
 
 /**
@@ -46,6 +47,7 @@ import com.df.framework.base.domain.BaseDomain;
 @Table(name = "IT_CALL_RECORD")
 @DynamicInsert(true)
 @DynamicUpdate(true)
+@IgnoreWriteLog(isIgnore = true)
 public class ItCallRecord extends BaseDomain {
     /**
      * 属性： serialVersionUID 

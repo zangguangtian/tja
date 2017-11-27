@@ -101,6 +101,10 @@ public class DataSyncServiceImpl extends BaseServiceImpl implements IDataSyncSer
                     itCallRecord.setReqArgs(itArgs[0]);
                     result = tjaWsClient.getItemWbsInfo(itArgs[0]);
                     break;
+                case "userLogin":
+                    itCallRecord.setReqArgs("username: " + itArgs[0]);
+                    result = tjaWsClient.userLogin(itArgs[0], itArgs[1]);
+                    break;
                 default:
                     break;
             }
@@ -338,6 +342,16 @@ public class DataSyncServiceImpl extends BaseServiceImpl implements IDataSyncSer
             if (isLastRow) {
                 dataSyncDao.writeBackSyncData("syncContract");
             }
+        } catch (Exception ex) {
+            LoggerUtil.error(DataSyncServiceImpl.class, ex.getMessage());
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public boolean execUserLogin(String userName, String password) throws RuntimeException {
+        try {
+            String flag = createAndQuerySyncData("userLogin", userName, password);
+            return new Boolean(flag);
         } catch (Exception ex) {
             LoggerUtil.error(DataSyncServiceImpl.class, ex.getMessage());
             throw new RuntimeException(ex);
