@@ -24,6 +24,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
+import com.df.framework.annotation.IgnoreWriteLog;
 import com.df.framework.base.domain.SuperDomain;
 
 /**
@@ -45,6 +46,7 @@ import com.df.framework.base.domain.SuperDomain;
 @Table(name = "IT_STAFF_INFO")
 @DynamicInsert(true)
 @DynamicUpdate(true)
+@IgnoreWriteLog(isIgnore = true)
 public class ItStaffInfo extends SuperDomain {
     /**
      * 属性： serialVersionUID 

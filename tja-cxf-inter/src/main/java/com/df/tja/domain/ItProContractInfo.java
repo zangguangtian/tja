@@ -23,6 +23,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.df.framework.annotation.IgnoreWriteLog;
 import com.df.framework.base.domain.BaseDomain;
 
 /**
@@ -44,6 +45,7 @@ import com.df.framework.base.domain.BaseDomain;
 @Table(name = "IT_PRO_CONTRACT_INFO")
 @DynamicInsert(true)
 @DynamicUpdate(true)
+@IgnoreWriteLog(isIgnore = true)
 public class ItProContractInfo extends BaseDomain {
 
     /**
