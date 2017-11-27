@@ -42,9 +42,9 @@
 	  		</div>
 	</div>
 </div>
-<script type="text/javascript">
+<script type="text/javascript">  
 jQuery(function(){
-	loadList("YM_SETTLE_LIST", $("#content"));
+	loadList("${allAuth}", $("#content"));
 	$("a[href='#tab_0']").on("click", function(){
 		loadList("YM_SETTLE_LIST", $("#content"));
 	});
