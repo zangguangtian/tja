@@ -98,6 +98,7 @@ public class WfPlanSchemeController extends WfBaseController {
         }
         OcPeriodManage manage = new OcPeriodManage();
         manage.setTypeCode("OC.PERIOD.TYPE.SETTLE");
+        manage.setOrderBy("PERIOD_NAME DESC");
         List<OcPeriodManage> list = wfPlanSchemeService.queryByCondition(OcPeriodManage.class, manage);
         model.addAttribute("periodManages", list);
         return "/tjad/wf/planScheme/planScheme_edit";
