@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -75,48 +76,49 @@ public class ReportServiceImpl extends BaseServiceImpl implements IReportService
         param.put("orgId", orgId);
         param.put("orgName", orgName);
 
-        //查询项目
-        List<CustProject> custProjects = reportDao.selectProByperiod(periodId, page);
-        List<String> proIds = new ArrayList<String>();
-        for (CustProject custProject : custProjects) {
-            proIds.add(custProject.getId());
-        }
-        if (proIds != null && proIds.size() > 0) {
-            //项目团队 人员和产值
-            List<YieldDeptDetial> deptDetials = reportDao.selectStaffYield(orgId, periodId, proIds);
-            //项目 员工 产值 map
-            Map<String, Map<String, BigDecimal>> proStaffYields = new HashMap<String, Map<String, BigDecimal>>();
+        if (StringUtils.isNoneBlank(orgId)) {
+            //查询项目
+            List<CustProject> custProjects = reportDao.selectProByperiod(periodId, page);
+            List<String> proIds = new ArrayList<String>();
+            for (CustProject custProject : custProjects) {
+                proIds.add(custProject.getId());
+            }
+            if (proIds != null && proIds.size() > 0) {
+                //项目团队 人员和产值
+                List<YieldDeptDetial> deptDetials = reportDao.selectStaffYield(orgId, periodId, proIds);
+                //项目 员工 产值 map
+                Map<String, Map<String, BigDecimal>> proStaffYields = new HashMap<String, Map<String, BigDecimal>>();
 
-            if (deptDetials != null && deptDetials.size() > 0) {
-                //员工id和姓名  map
-                TreeMap<String, String> staffs = new TreeMap<String, String>();
-                for (YieldDeptDetial deptDetial : deptDetials) {
-                    if (deptDetial != null) {
-                        staffs.put(deptDetial.getStaffId(), deptDetial.getName());
-                        Map<String, BigDecimal> staffYields = null;
-                        if (proStaffYields.containsKey(deptDetial.getProId())) {
-                            //map中包含项目 取出 项目的 员工 和 产值
-                            staffYields = proStaffYields.get(deptDetial.getProId());
-                        } else {
-                            //map中没有包含项目 新加一个 员工 和 产值的map
-                            staffYields = new HashMap<String, BigDecimal>();
+                if (deptDetials != null && deptDetials.size() > 0) {
+                    //员工id和姓名  map
+                    TreeMap<String, String> staffs = new TreeMap<String, String>();
+                    for (YieldDeptDetial deptDetial : deptDetials) {
+                        if (deptDetial != null) {
+                            staffs.put(deptDetial.getStaffId(), deptDetial.getName());
+                            Map<String, BigDecimal> staffYields = null;
+                            if (proStaffYields.containsKey(deptDetial.getProId())) {
+                                //map中包含项目 取出 项目的 员工 和 产值
+                                staffYields = proStaffYields.get(deptDetial.getProId());
+                            } else {
+                                //map中没有包含项目 新加一个 员工 和 产值的map
+                                staffYields = new HashMap<String, BigDecimal>();
+                            }
+                            staffYields.put(deptDetial.getStaffId(), deptDetial.getStaffYield());
+                            proStaffYields.put(deptDetial.getProId(), staffYields);
                         }
-                        staffYields.put(deptDetial.getStaffId(), deptDetial.getStaffYield());
-                        proStaffYields.put(deptDetial.getProId(), staffYields);
                     }
-                }
-                //把员工产值 设置到项目中
-                for (CustProject project : custProjects) {
-                    Map<String, BigDecimal> staffYields = proStaffYields.get(project.getId());
-                    if (staffYields != null && staffYields.size() > 0) {
-                        project.setStaffYields(staffYields);
+                    //把员工产值 设置到项目中
+                    for (CustProject project : custProjects) {
+                        Map<String, BigDecimal> staffYields = proStaffYields.get(project.getId());
+                        if (staffYields != null && staffYields.size() > 0) {
+                            project.setStaffYields(staffYields);
+                        }
                     }
+                    param.put("staffs", staffs);
+                    param.put("custProjects", custProjects);
                 }
-                param.put("staffs", staffs);
-                param.put("custProjects", custProjects);
             }
         }
-
     }
 
     /** 
