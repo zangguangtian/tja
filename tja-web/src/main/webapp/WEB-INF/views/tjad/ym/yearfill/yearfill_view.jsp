@@ -212,13 +212,14 @@
 var ocRebate = "${ocRebate}"; //产值计算系数
 var principalRate = "${principalRate}"||0; //项目负责人分配比例
 var pmRate = "${pmRate}"||0; //项目经理分配比例
+var secretRate = "${secretRate}"||0; //项目秘书分配比例
 
 var contractAmount = parseFloat($("label[name='contractAmount']").text())||0; //实际合同额
 var pkgAmount = parseFloat($("label[name='pkgAmount']").text())||0; //分包扣减
 var schemeAmount = parseFloat($("label[name='schemeAmount']").text())||0; //方案扣减
 var rebateAmount = parseFloat($("label[name='rebateAmount']").text())||0; //其他扣减
 
-var YIELDCAL = ((contractAmount-pkgAmount-schemeAmount-rebateAmount)*ocRebate*(100-principalRate-pmRate)/100).toFixed(2);
+var YIELDCAL = ((contractAmount-pkgAmount-schemeAmount-rebateAmount)*ocRebate*(100-principalRate-pmRate-secretRate)/100).toFixed(2);
 //对应产值(¥) = YIELDCAL*专业分配比例/100*当月完成进度比例/100
 //剩余产值(¥) = YIELDCAL*专业分配比例/100-累计产值
 

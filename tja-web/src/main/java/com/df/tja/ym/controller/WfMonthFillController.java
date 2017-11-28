@@ -105,6 +105,7 @@ public class WfMonthFillController extends WfBaseController {
         if (projectExtend != null) {
             model.addAttribute("principalRate", projectExtend.getPrincipalRate()); // 项目负责人分配比例
             model.addAttribute("pmRate", projectExtend.getPmRate()); // 项目经理分配比例
+            model.addAttribute("secretRate", projectExtend.getSecretRate()); // 项目秘书分配比例
         }
 
         return "/tjad/ym/monthfill/monthfill_edit";
@@ -195,6 +196,7 @@ public class WfMonthFillController extends WfBaseController {
         if (projectExtend != null) {
             modelAndView.addObject("principalRate", projectExtend.getPrincipalRate()); // 项目负责人分配比例
             modelAndView.addObject("pmRate", projectExtend.getPmRate()); // 项目经理分配比例
+            modelAndView.addObject("secretRate", projectExtend.getSecretRate()); // 项目秘书分配比例
         }
 
         modelAndView.addObject("view", 10);
