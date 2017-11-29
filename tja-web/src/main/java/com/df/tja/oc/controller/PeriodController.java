@@ -196,6 +196,7 @@ public class PeriodController extends BaseController {
             if (StringUtils.isNotBlank(parameter)) {
                 ocPeriodManage.setTypeCode(parameter);
             }
+            ocPeriodManage.setOrderBy("PERIOD_NAME DESC");
             periodSelect = periodService.queryByCondition(OcPeriodManage.class, ocPeriodManage);
             resultmap.put("periodSelect", periodSelect);
             resultmap.put("flag", "true");
