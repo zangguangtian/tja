@@ -19,7 +19,7 @@ jQuery(function(){
 	jQuery.ajax({
 		type: "POST",
 		url:sUrl,
-		data:{"NO":"RP_PHASE_MAJOR_SETTLE", "MODEL":"RP"},
+		data:{"NO":"RP_PHASE_MAJOR_SETTLE", "MODEL":"RP", "qarg.userId":"${SysUser.id}"},
 		async: false,
 	    success: function(data) {
 	    	$("#content").empty();

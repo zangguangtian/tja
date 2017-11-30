@@ -19,7 +19,7 @@ jQuery(function(){
 	jQuery.ajax({
 		type: "POST",
 		url:sUrl,
-		data:{"NO":"PROJECT_LIST", "MODEL":"PM"},
+		data:{"NO":"PROJECT_LIST", "MODEL":"PM", "qarg.userId":"${SysUser.id}"},
 		async: false,
 	    success: function(data) {
 	    	$("#content").empty();
