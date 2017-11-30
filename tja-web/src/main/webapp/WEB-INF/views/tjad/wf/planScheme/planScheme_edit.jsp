@@ -195,7 +195,7 @@
 										<input type="hidden" name="shemeTeams[${st.index}].staffSort" class="text-right" value="${shemeTeam.staffSort }">
 										<input type="hidden" name="shemeTeams[${st.index}].refYield" class="text-right" value="${shemeTeam.refYield }">
 										<input type="text" name="shemeTeams[${st.index}].refRate"
-													class="text-right twoDigits"
+													class="text-right twoNum"
 													data-rule-number="true" 
 													data-rule-max="100"
 													data-rule-min="0" 
@@ -237,7 +237,7 @@
 					<input type="hidden" name="shemeTeams[{0}].staffSort" class="text-right">
 					<input type="hidden" name="shemeTeams[{0}].refYield" class="text-right" value="">
 					<input type="text" name="shemeTeams[{0}].refRate"
-							class="text-right twoDigits"
+							class="text-right twoNum"
 							data-rule-number="true" 
 							data-rule-max="100"
 							data-rule-min="0" 
