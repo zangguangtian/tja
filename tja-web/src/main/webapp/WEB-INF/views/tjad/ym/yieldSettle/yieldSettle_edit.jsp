@@ -587,21 +587,19 @@
 			  jQuery.each(_tr,function(index,item){
 				  var $item = $(item);
 				  var staffRate = $item.find("input[name$='staffRate']").val();
-				  if(staffRate!='' && staffRate.charAt(staffRate.length-1) !='.'){
-					  staffRate = new Number(new Number(staffRate).toFixed(2));
-					  $item.find("input[name$='staffRate']").val(staffRate);
+				  if(staffRate!='' && staffRate.substring(staffRate.lastIndexOf("."),staffRate.length-1).length>2){
+					  $item.find("input[name$='staffRate']").val(new Number(staffRate).toFixed(2));
 				  }
 				  //项目负责人 项目经理 比例
 				  var rate = $item.closest("table").prev().find("input[name^='wfYieldSettle']").val();
-				  if(rate!='' && rate.charAt(rate.length-1) !='.'){
-					  rate = new Number(new Number(rate).toFixed(2));
-					  $item.closest("table").prev().find("input[name^='wfYieldSettle']").val(rate);
+				  if(rate!='' && rate.substring(rate.lastIndexOf("."),rate.length-1).length>2){
+					  $item.closest("table").prev().find("input[name^='wfYieldSettle']").val(new Number(rate).toFixed(2));
 				  }
 				  
 				  //当年可结算产值
 				  var yearYield =getNumValue(delcommafy(jQuery("input[name$='.yearYield']").val()));
 				  //=当年可结算产值×比例×工作量/10000
-				  var staffYield =new Number(yearYield) * new Number(rate) * staffRate/10000;
+				  var staffYield =new Number(yearYield) * new Number(rate) * new Number(staffRate)/10000;
 				  var _td = $item.find("td:last");
 				  _td.text(toThousands(new Number(staffYield).toFixed(2)));
 				  $item.find("input[name$='staffYield']").val(new Number(staffYield).toFixed(2));

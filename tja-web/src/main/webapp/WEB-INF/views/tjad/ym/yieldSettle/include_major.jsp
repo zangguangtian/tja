@@ -191,14 +191,14 @@ function countOutputValue(_tr){
 			var _this = $(item).find("input[name$='.staffRate']");
 			var staffRate = _this.val();
 			
-			 if(staffRate!='' && staffRate.charAt(staffRate.length-1) !='.'){
+			 if(staffRate!='' && staffRate.substring(staffRate.lastIndexOf("."),staffRate.length-1).length>2){
 				  staffRate = new Number(new Number(staffRate).toFixed(2));
 				  _this.val(staffRate);
 			  }
 			  //专业角色  比例
 			  var rate = _this.closest("table").prev().find("input[name$='allotRate']").val();
 			  
-			  if(rate!='' && rate.charAt(rate.length-1) !='.'){
+			  if(rate!='' && rate.substring(rate.lastIndexOf("."),rate.length-1).length>2){
 				  rate = new Number(new Number(rate).toFixed(2));
 				  _this.closest("table").prev().find("input[name$='allotRate']").val(rate);
 			  }

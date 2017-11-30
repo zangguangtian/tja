@@ -433,16 +433,16 @@
 			  jQuery.each(_tr,function(index,item){
 				  var $item = $(item);
 				  var staffRate = $item.find("input[name$='staffRate']").val();
-				  if(staffRate!='' && staffRate.charAt(staffRate.length-1) !='.'){
+				  if(staffRate!='' && staffRate.substring(staffRate.lastIndexOf("."),staffRate.length-1).length>2){
 					  staffRate =new Number(staffRate);
-					  $item.find("input[name$='staffRate']").val(staffRate);
+					  $item.find("input[name$='staffRate']").val(staffRate.toFixed(2));
 				  }
 				  //项目负责人 项目经理 比例
 				  var rate_input = $item.closest("table").prev().find("input[type='text']");
 				  var rate = rate_input.val();
-				  if(rate!='' && rate.charAt(rate.length-1) !='.'){
+				  if(rate!='' && rate.substring(rate.lastIndexOf("."),rate.length-1).length>2){
 					  rate = new Number(rate);
-					  rate_input.val(rate);
+					  rate_input.val(rate.toFixed(2));
 				  }
 				  
 				  //当年可结算产值
@@ -484,9 +484,9 @@
 		jQuery.each($("#majorSettleRate tbody tr:not(:last)"),function(index,item){
 			var _this = $(item);
 			var settleRate = _this.find("input[name$='.settleRate']").val();
-			if(settleRate!='' && settleRate.charAt(settleRate.length-1) !='.'){
+			if(settleRate!='' && settleRate.substring(settleRate.lastIndexOf("."),settleRate.length-1).length>2){
 				  settleRate = new Number(settleRate);
-				  _this.find("input[name$='.settleRate']").val(settleRate);
+				  _this.find("input[name$='.settleRate']").val(settleRate.toFixed(2));
 			  }
 			totalsettleRate = new Number(totalsettleRate) + new Number(settleRate);
 		});
