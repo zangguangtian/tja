@@ -213,7 +213,7 @@
 											  <input type="hidden" name="principalAllots[${size}].staffSort" value="${leader.staffSort}">
 											  <input type="hidden" name="principalAllots[${size}].staffId" value="${leader.staffId}">
 											  <input type="hidden" name="principalAllots[${size}].staffYield" value="${leader.staffYield}">
-											  <input type="text" class="form-control text-right"
+											  <input type="text" class="form-control text-right twoNum"
 														name="principalAllots[${size}].staffRate"
 														value="${leader.staffRate}"
 														data-rule-number="true" 
@@ -244,7 +244,7 @@
 											  <input type="hidden" name="principalAllots[${size}].staffSort" value="${st.index}">
 											  <input type="hidden" name="principalAllots[${size}].staffId" value="${leader.staffId}">
 											  <input type="hidden" name="principalAllots[${size}].staffYield" value="">
-											  <input type="text" class="form-control text-right"
+											  <input type="text" class="form-control text-right twoNum"
 														name="principalAllots[${size}].staffRate" 
 														data-rule-number="true" 
 														data-rule-max="100"
@@ -300,7 +300,7 @@
 											  <input type="hidden" name="principalAllots[${size}].staffSort" value="${manager.staffSort}">
 											  <input type="hidden" name="principalAllots[${size}].staffId" value="${manager.staffId}">
 											  <input type="hidden" name="principalAllots[${size}].staffYield" value="${manager.staffYield}">
-											  <input type="text" class="form-control text-right"
+											  <input type="text" class="form-control text-right twoNum"
 														name="principalAllots[${size}].staffRate"
 														data-rule-number="true" 
 														data-rule-max="100"
@@ -330,7 +330,7 @@
 											  <input type="hidden" name="principalAllots[${size}].staffSort" value="${st.index}">
 											  <input type="hidden" name="principalAllots[${size}].staffId" value="${proPm.id}">
 											  <input type="hidden" name="principalAllots[${size}].staffYield" value="">
-											  <input type="text" class="form-control text-right"
+											  <input type="text" class="form-control text-right twoNum"
 														name="principalAllots[${size}].staffRate"
 														data-rule-number="true" 
 														data-rule-max="100"
@@ -390,7 +390,7 @@
 											  <input type="hidden" name="principalAllots[${size}].staffSort" value="${proSecretary.staffSort}">
 											  <input type="hidden" name="principalAllots[${size}].staffId" value="${proSecretary.staffId}">
 											  <input type="hidden" name="principalAllots[${size}].staffYield" value="${proSecretary.staffYield}">
-											  <input type="text" class="form-control text-right"
+											  <input type="text" class="form-control text-right twoNum"
 														name="principalAllots[${size}].staffRate"
 														value="${proSecretary.staffRate}"
 														data-rule-number="true" 
@@ -421,7 +421,7 @@
 											  <input type="hidden" name="principalAllots[${size}].staffSort" value="${st.index}">
 											  <input type="hidden" name="principalAllots[${size}].staffId" value="${secretarys.staffId}">
 											  <input type="hidden" name="principalAllots[${size}].staffYield" value="">
-											  <input type="text" class="form-control text-right"
+											  <input type="text" class="form-control text-right twoNum"
 														name="principalAllots[${size}].staffRate" 
 														data-rule-number="true" 
 														data-rule-max="100"
@@ -469,7 +469,7 @@
 											   <input type="hidden" name="majorRates[${st.index}].wfId" value="${majorRate.wfId}">
 											   <input type="hidden" name="majorRates[${st.index}].majorCode" value="${majorRate.majorCode}">
 											   <input type="hidden" name="majorRates[${st.index}].majorSort" value="${majorRate.majorSort}">
-											   <input type="text" class="form-control text-right"
+											   <input type="text" class="form-control text-right twoNum"
 														name="majorRates[${st.index}].settleRate"
 														data-rule-number="true" 
 														data-rule-max="100"
@@ -495,7 +495,7 @@
 											   <input type="hidden" name="majorRates[${st.index}].wfId" value="">
 											   <input type="hidden" name="majorRates[${st.index}].majorCode" value="${majorRateConfig.majorCode}">
 											   <input type="hidden" name="majorRates[${st.index}].majorSort" value="${st.index}">
-											   <input type="text" class="form-control text-right"
+											   <input type="text" class="form-control text-right twoNum"
 														name="majorRates[${st.index}].settleRate"
 														data-rule-number="true"
 														placeholder="0.00" 
@@ -531,7 +531,7 @@
 				  <input type="hidden" name="principalAllots[{0}].staffSort" value="">
 				  <input type="hidden" name="principalAllots[{0}].staffId" value="">
 				  <input type="hidden" name="principalAllots[{0}].staffYield" value="">
-				  <input type="text" class="form-control text-right"
+				  <input type="text" class="form-control text-right twoNum"
 							name="principalAllots[{0}].staffRate" 
 							data-rule-number="true" 
 						    data-rule-max="100"
@@ -587,14 +587,14 @@
 			  jQuery.each(_tr,function(index,item){
 				  var $item = $(item);
 				  var staffRate = $item.find("input[name$='staffRate']").val();
-				  if(staffRate!='' && staffRate.substring(staffRate.lastIndexOf("."),staffRate.length-1).length>2){
+				  /* if(staffRate!='' && staffRate.substring(staffRate.lastIndexOf("."),staffRate.length-1).length>2){
 					  $item.find("input[name$='staffRate']").val(new Number(staffRate).toFixed(2));
-				  }
+				  } */
 				  //项目负责人 项目经理 比例
 				  var rate = $item.closest("table").prev().find("input[name^='wfYieldSettle']").val();
-				  if(rate!='' && rate.substring(rate.lastIndexOf("."),rate.length-1).length>2){
+				  /* if(rate!='' && rate.substring(rate.lastIndexOf("."),rate.length-1).length>2){
 					  $item.closest("table").prev().find("input[name^='wfYieldSettle']").val(new Number(rate).toFixed(2));
-				  }
+				  } */
 				  
 				  //当年可结算产值
 				  var yearYield =getNumValue(delcommafy(jQuery("input[name$='.yearYield']").val()));
@@ -635,10 +635,10 @@
 		jQuery.each($("#majorSettleRate tbody tr:not(:last)"),function(index,item){
 			var _this = $(item);
 			var settleRate = _this.find("input[name$='.settleRate']").val();
-			if(settleRate!='' && settleRate.charAt(settleRate.length-1) !='.'){
+			/* if(settleRate!='' && settleRate.charAt(settleRate.length-1) !='.'){
 				  settleRate = new Number(new Number(settleRate).toFixed(2));
 				  _this.find("input[name$='.settleRate']").val(settleRate);
-			  }
+			  } */
 			totalsettleRate = new Number(totalsettleRate) + new Number(settleRate);
 		});
 		$("#majorSettleRate tr.total").find("td:eq(1)").text(new Number(totalsettleRate).toFixed(2));

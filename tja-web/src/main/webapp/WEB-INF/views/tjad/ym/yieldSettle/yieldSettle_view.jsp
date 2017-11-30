@@ -362,7 +362,7 @@
 					placeholder="0.00"
 					data-rule-number="true"
 					data-rule-required="true"
-					class="form-control text-right" 
+					class="form-control text-right twoNum" 
 					data-rule-max="100"
 					data-rule-min="0" 
 					value="">

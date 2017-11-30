@@ -184,8 +184,15 @@
 										<input type="hidden" name="majorRoleAllots[${st.index}].majorCode" class="text-right" value="${majorRoleAllot.majorCode}">
 										<input type="hidden" name="majorRoleAllots[${st.index}].staffSort" class="text-right" value="${majorRoleAllot.staffSort}">
 										<input type="hidden" name="majorRoleAllots[${st.index}].staffYield" value="${majorRoleAllot.staffYield}">
-										<input type="text" name="majorRoleAllots[${st.index}].staffRate" data-rule-number="true"  placeholder="0.00" class="text-right" value="${majorRoleAllot.staffRate}">
-										</td>
+										<input type="text"
+											        name="majorRoleAllots[${st.index}].staffRate"
+													data-rule-number="true"
+												    placeholder="0.00"
+												    data-rule-max="100"
+						                            data-rule-min="0" 
+						                            data-rule-required="true"
+													class="text-right twoNum" value="${majorRoleAllot.staffRate}">
+												</td>
 										<td  class=" col-lg-4 text-right"><fmt:formatNumber value='${majorRoleAllot.staffYield}' pattern='#,#00.00#'/></td>
 									</tr>
 							      </c:forEach>
@@ -203,8 +210,16 @@
 										<input type="hidden" name="majorRoleAllots[${st.index}].majorCode" class="text-right" value="${majorCode}">
 										<input type="hidden" name="majorRoleAllots[${st.index}].staffSort" class="text-right" value="${st.index}">
 										<input type="hidden" name="majorRoleAllots[${st.index}].staffYield" value="">
-										<input type="text" name="majorRoleAllots[${st.index}].staffRate" data-rule-number="true"  placeholder="0.00" class="text-right" value="">
-										</td>
+										<input type="text"
+													name="majorRoleAllots[${st.index}].staffRate"
+													data-rule-number="true" 
+													placeholder="0.00"
+													data-rule-max="100"
+						                            data-rule-min="0" 
+						                            data-rule-required="true"
+													class="text-right twoNum" 
+													value="">
+												</td>
 										<td  class=" col-lg-4 text-right"></td>
 									</tr>
 							      </c:forEach>
@@ -232,8 +247,15 @@
 					<input type="hidden" name="majorRoleAllots[{0}].majorCode" class="text-right" value="${majorCode}">
 					<input type="hidden" name="majorRoleAllots[{0}].staffSort" class="text-right" value="">
 					<input type="hidden" name="majorRoleAllots[{0}].staffYield" value="">
-					<input type="text" name="majorRoleAllots[{0}].staffRate" data-rule-number="true"  placeholder="0.00" class="text-right" value="">
-					</td>
+					<input type="text" name="majorRoleAllots[{0}].staffRate"
+							data-rule-number="true" 
+							placeholder="0.00" 
+							data-rule-max="100"
+						    data-rule-min="0" 
+						    data-rule-required="true"
+						    class="text-right twoNum" 
+							value="">
+						</td>
 					<td  class=" col-lg-4 text-right"></td>
 				</tr>
 			</table>
@@ -249,10 +271,6 @@
 			  var _this = $(this);
 			  var staffRate = _this.val();
 			  var yearYield =delcommafy($("input[name$='yearYield']").val());
-			  if(staffRate!='' && staffRate.charAt(staffRate.length-1) !='.'){
-				  staffRate = new Number(new Number(staffRate).toFixed(2));
-				  _this.val(staffRate);
-			  }
 			  var _td = _this.closest("tr").find("td:last");
 			  var staffYield = new Number(yearYield) * new Number(staffRate)/100;
 			  var yield = new Number(staffYield).toFixed(2)

@@ -46,7 +46,7 @@
 									<div class="col-lg-4 text-right col-md-4 col-sm-4 col-xs-4">
 										比例：
 										<c:if test="${view == 2 }">
-											<input type="text" class="ta_input"
+											<input type="text" class="ta_input twoNum"
 												name="majorRoleRates[${roleSize}].allotRate"
 												placeholder="0.00"
 												data-rule-number="true"
@@ -101,7 +101,7 @@
 												    <i class="fa"></i>
 													<input type="text"
 														name="majorRoleAllots[${rateSize}].staffRate"
-														class="form-control text-right"
+														class="form-control text-right twoNum"
 														placeholder="0.00"
 													    data-rule-number="true"
 													    data-rule-required="true"
@@ -191,17 +191,8 @@ function countOutputValue(_tr){
 			var _this = $(item).find("input[name$='.staffRate']");
 			var staffRate = _this.val();
 			
-			 if(staffRate!='' && staffRate.substring(staffRate.lastIndexOf("."),staffRate.length-1).length>2){
-				  staffRate = new Number(new Number(staffRate).toFixed(2));
-				  _this.val(staffRate);
-			  }
 			  //专业角色  比例
 			  var rate = _this.closest("table").prev().find("input[name$='allotRate']").val();
-			  
-			  if(rate!='' && rate.substring(rate.lastIndexOf("."),rate.length-1).length>2){
-				  rate = new Number(new Number(rate).toFixed(2));
-				  _this.closest("table").prev().find("input[name$='allotRate']").val(rate);
-			  }
 			  
 			  //当年可结算产值(¥)
 			  var yearYield = getNumValue(delcommafy(jQuery("input[name$='yearYield']").val()));
