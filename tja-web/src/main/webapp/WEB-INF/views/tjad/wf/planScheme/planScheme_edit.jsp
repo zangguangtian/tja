@@ -195,7 +195,7 @@
 										<input type="hidden" name="shemeTeams[${st.index}].staffSort" class="text-right" value="${shemeTeam.staffSort }">
 										<input type="hidden" name="shemeTeams[${st.index}].refYield" class="text-right" value="${shemeTeam.refYield }">
 										<input type="text" name="shemeTeams[${st.index}].refRate"
-													class="text-right"
+													class="text-right twoDigits"
 													data-rule-number="true" 
 													data-rule-max="100"
 													data-rule-min="0" 
@@ -237,7 +237,7 @@
 					<input type="hidden" name="shemeTeams[{0}].staffSort" class="text-right">
 					<input type="hidden" name="shemeTeams[{0}].refYield" class="text-right" value="">
 					<input type="text" name="shemeTeams[{0}].refRate"
-							class="text-right"
+							class="text-right twoDigits"
 							data-rule-number="true" 
 							data-rule-max="100"
 							data-rule-min="0" 
@@ -265,10 +265,6 @@
 		jQuery(document).on("keyup","#designTeam tbody input[name$='refRate']",function(){
 			  var _this = $(this);
 			  var refRate = _this.val();
-			  if(refRate.charAt(refRate.length-1) !='.'){
-				  refRate = new Number(new Number(refRate).toFixed(2));
-				  _this.val(refRate);
-			  }
 			  var schemeYield =	delcommafy($("input[name='schemeYield']").val());
 			  if(schemeYield == '' || typeof schemeYield == 'undefined' || isNaN(schemeYield)){
 				  schemeYield = 0;
