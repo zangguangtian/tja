@@ -49,18 +49,18 @@
 			<type>war</type>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.df</groupId>
+			<artifactId>df-hr-web</artifactId>
+			<version>1.0</version>
+			<type>war</type>
+			<scope>compile</scope>
+		</dependency>
         <dependency>
             <groupId>com.df</groupId>
-            <artifactId>df-hr-service</artifactId>
+            <artifactId>df-pro-web</artifactId>
             <version>1.0</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.df</groupId>
-            <artifactId>df-pro-service</artifactId>
-            <version>1.0</version>
-            <type>jar</type>
+            <type>war</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -85,6 +85,14 @@
                         <overlay>
                             <groupId>com.df</groupId>
                             <artifactId>df-sys-web</artifactId>
+                        </overlay>
+                        <overlay>
+                            <groupId>com.df</groupId>
+                            <artifactId>df-hr-web</artifactId>
+                        </overlay>
+                        <overlay>
+                            <groupId>com.df</groupId>
+                            <artifactId>df-pro-web</artifactId>
                         </overlay>
                     </overlays>
                 </configuration>
