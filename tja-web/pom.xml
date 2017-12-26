@@ -85,16 +85,26 @@
                         <overlay>
                             <groupId>com.df</groupId>
                             <artifactId>df-sys-web</artifactId>
+                            <excludes>
+								<exclude>WEB-INF/libs/df*-1.1.jar</exclude>
+							</excludes>
                         </overlay>
                         <overlay>
                             <groupId>com.df</groupId>
                             <artifactId>df-hr-web</artifactId>
+                            <excludes>
+								<exclude>WEB-INF/libs/df*-1.1.jar</exclude>
+							</excludes>
                         </overlay>
                         <overlay>
                             <groupId>com.df</groupId>
                             <artifactId>df-pro-web</artifactId>
+                            <excludes>
+								<exclude>WEB-INF/libs/df*-1.1.jar</exclude>
+							</excludes>
                         </overlay>
                     </overlays>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
             <plugin>
