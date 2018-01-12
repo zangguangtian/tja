@@ -154,7 +154,7 @@
 						<label class="control-label col-xs-4">创建时间</label>
 						<div class="col-xs-8">
 						 <jsp:useBean id="currentDate" class="java.util.Date"/>
-	            		 <fmt:formatDate value="${yieldSettle.createDate}" pattern="yyyy-MM-dd" var="currentDate"/>
+	            		 <fmt:formatDate value="${yieldSettle.createDate}" pattern="yyyy-MM-dd HH:mm:ss" var="currentDate"/>
 						 <label class="control-label">${currentDate }</label>
 						</div>
 					</div>

@@ -153,8 +153,7 @@
 						<label class="control-label col-md-3">创建时间</label>
 						<div class="col-md-8 input-icon right">
 						 <jsp:useBean id="currentDate" class="java.util.Date"/>
-	            		 <fmt:formatDate value="${empty yieldSettle.createDate? currentDate : yieldSettle.createDate}" pattern="yyyy-MM-dd" var="currentDate"/>
-						 <input type="hidden" name="wfYieldSettle.createDate" value='${currentDate}' />
+	            		 <fmt:formatDate value="${empty yieldSettle.createDate? currentDate : yieldSettle.createDate}" pattern="yyyy-MM-dd HH:mm:ss" var="currentDate"/>
 						 <label class="control-label">${currentDate }</label>
 						</div>
 					</div>
