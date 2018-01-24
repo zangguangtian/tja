@@ -98,7 +98,7 @@ public class YieldSchemeController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/ajax/baseEdit/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/ajaxhtml/baseEdit/{id}", method = RequestMethod.POST)
     public String baseEdit(@PathVariable("id") String id, Model model) {
         //取策划主表
         CustOcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
@@ -140,7 +140,7 @@ public class YieldSchemeController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/ajax/baseView/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/ajaxhtml/baseView/{id}", method = RequestMethod.POST)
     public String baseView(@PathVariable("id") String id, Model model) {
         //取策划主表
         CustOcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
@@ -160,7 +160,7 @@ public class YieldSchemeController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/ajax/ratioEdit/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/ajaxhtml/ratioEdit/{id}", method = RequestMethod.POST)
     public String ratioEdit(@PathVariable("id") String id, Model model) {
         //查询所有土建基准单价及专业比例 
         List<CustOcYieldMajor> prices = yieldSchemeService.queryMajorAllPrices(id);
@@ -208,7 +208,7 @@ public class YieldSchemeController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/ajax/ratioView/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/ajaxhtml/ratioView/{id}", method = RequestMethod.POST)
     public String ratioView(@PathVariable("id") String id, Model model) {
         //取专业
         List<SysConfig> majors = sysConfigService.querySysConfigsByParentCode(TjaConstant.SGTMajor.MAJORPARENT,
@@ -229,7 +229,7 @@ public class YieldSchemeController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/ajax/civilEdit/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/ajaxhtml/civilEdit/{id}", method = RequestMethod.POST)
     public String civilEdit(@PathVariable("id") String id, Model model) {
         ///取策划主表
         CustOcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
@@ -277,7 +277,7 @@ public class YieldSchemeController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/ajax/civilView/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/ajaxhtml/civilView/{id}", method = RequestMethod.POST)
     public String civilView(@PathVariable("id") String id, Model model) {
         ///取策划主表
         CustOcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
@@ -302,7 +302,7 @@ public class YieldSchemeController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/ajax/stageEdit/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/ajaxhtml/stageEdit/{id}", method = RequestMethod.POST)
     public String stageEdit(@PathVariable("id") String id, Model model) {
 
         model.addAttribute("schemeStages", schemeStages);
@@ -350,7 +350,7 @@ public class YieldSchemeController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/ajax/stageView/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/ajaxhtml/stageView/{id}", method = RequestMethod.POST)
     public String stageView(@PathVariable("id") String id, Model model) {
         model.addAttribute("schemeStages", schemeStages);
 
@@ -373,7 +373,7 @@ public class YieldSchemeController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/ajax/projectEdit/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/ajaxhtml/projectEdit/{id}", method = RequestMethod.POST)
     public String projectEdit(@PathVariable("id") String id, Model model) {
         ///取策划主表
         CustOcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
@@ -412,7 +412,7 @@ public class YieldSchemeController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/ajax/projectView/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/ajaxhtml/projectView/{id}", method = RequestMethod.POST)
     public String projectView(@PathVariable("id") String id, Model model) {
         ///取策划主表
         CustOcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
@@ -428,7 +428,7 @@ public class YieldSchemeController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/ajax/principalEdit/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/ajaxhtml/principalEdit/{id}", method = RequestMethod.POST)
     public String principalEdit(@PathVariable("id") String id, Model model) {
         //取策划主表
         CustOcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);
@@ -477,7 +477,7 @@ public class YieldSchemeController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "/ajax/principalView/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/ajaxhtml/principalView/{id}", method = RequestMethod.POST)
     public String principalView(@PathVariable("id") String id, Model model) {
         //取策划主表
         CustOcYieldScheme yieldScheme = yieldSchemeService.queryOcYieldSchemeById(id);

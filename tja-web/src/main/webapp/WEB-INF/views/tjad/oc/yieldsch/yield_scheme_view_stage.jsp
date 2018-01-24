@@ -6,7 +6,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 	<div class="col-xs-12">
 		<h5 class="form-tit">各专业产值<span class="control-label" style="font-size:12px;">（比例：%  产值：元）</span>
-			<sec:authorize url="/admin/yield/scheme/ajax/stageEdit"><i class="fa fa-edit"></i></sec:authorize></h5>
+			<sec:authorize url="/admin/yield/scheme/ajaxhtml/stageEdit"><i class="fa fa-edit"></i></sec:authorize></h5>
 	</div>
 	<div class="col-xs-12">
 	    <table id="majorYield" class="table table-striped table-bordered table-advance table-hover dataTable">

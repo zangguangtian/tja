@@ -7,7 +7,7 @@
 	<div class="col-xs-12">
 		<h5 class="form-tit">专业比例
 			<span class="control-label" style="font-size:12px;">（比例：%  产值：元）</span>
-			<sec:authorize url="/admin/yield/scheme/ajax/ratioEdit"><i class="fa fa-edit"></i></sec:authorize>
+			<sec:authorize url="/admin/yield/scheme/ajaxhtml/ratioEdit"><i class="fa fa-edit"></i></sec:authorize>
 			<i id="more-btn" class="fa fa-chevron-down font-icon"><h6>展开</h6></i>
 		</h5>
 	</div>

@@ -667,7 +667,7 @@ function loadBaseEdit(){
 	var schemeId = $("input[name='id']").val();
 	jQuery.ajax({
 		type : "POST",
-		url : context+"/admin/yield/scheme/ajax/baseEdit/"+schemeId,
+		url : context+"/admin/yield/scheme/ajaxhtml/baseEdit/"+schemeId,
 		dataType : "text",
 		success : function(data) {
 			$("#base-info-div").html(data);
@@ -707,7 +707,7 @@ function loadBaseView(){
 	var schemeId = $("input[name='id']").val();
 	jQuery.ajax({
 		type : "POST",
-		url : context+"/admin/yield/scheme/ajax/baseView/"+schemeId,
+		url : context+"/admin/yield/scheme/ajaxhtml/baseView/"+schemeId,
 		dataType : "text",
 		success : function(data) {
 			$("#base-info-div").html(data);
@@ -725,7 +725,7 @@ function loadRatioEdit(){
 	var schemeId = $("input[name='id']").val();
 	jQuery.ajax({
 		type : "POST",
-		url : context+"/admin/yield/scheme/ajax/ratioEdit/"+schemeId,
+		url : context+"/admin/yield/scheme/ajaxhtml/ratioEdit/"+schemeId,
 		dataType : "text",
 		success : function(data) {
 			$("#ratio-info-div").html(data);
@@ -793,7 +793,7 @@ function loadRatioView(opt){
 	var schemeId = $("input[name='id']").val();
 	jQuery.ajax({
 		type : "POST",
-		url : context+"/admin/yield/scheme/ajax/ratioView/"+schemeId,
+		url : context+"/admin/yield/scheme/ajaxhtml/ratioView/"+schemeId,
 		dataType : "text",
 		success : function(data) {
 			$("#ratio-info-div").html(data);
@@ -814,7 +814,7 @@ function loadCivilEdit(){
 	var schemeId = $("input[name='id']").val();
 	jQuery.ajax({
 		type : "POST",
-		url : context+"/admin/yield/scheme/ajax/civilEdit/"+schemeId,
+		url : context+"/admin/yield/scheme/ajaxhtml/civilEdit/"+schemeId,
 		dataType : "text",
 		success : function(data) {
 			$("#civil-info-div").html(data);
@@ -868,7 +868,7 @@ function loadCivilView(opt){
 	var schemeId = $("input[name='id']").val();
 	jQuery.ajax({
 		type : "POST",
-		url : context+"/admin/yield/scheme/ajax/civilView/"+schemeId,
+		url : context+"/admin/yield/scheme/ajaxhtml/civilView/"+schemeId,
 		dataType : "text",
 		success : function(data) {
 			$("#civil-info-div").html(data);
@@ -889,7 +889,7 @@ function loadStageEdit(){
 	var schemeId = $("input[name='id']").val();
 	jQuery.ajax({
 		type : "POST",
-		url : context+"/admin/yield/scheme/ajax/stageEdit/"+schemeId,
+		url : context+"/admin/yield/scheme/ajaxhtml/stageEdit/"+schemeId,
 		dataType : "text",
 		success : function(data) {
 			$("#stage-info-div").html(data);
@@ -956,7 +956,7 @@ function loadStageView(){
 	var schemeId = $("input[name='id']").val();
 	jQuery.ajax({
 		type : "POST",
-		url : context+"/admin/yield/scheme/ajax/stageView/"+schemeId,
+		url : context+"/admin/yield/scheme/ajaxhtml/stageView/"+schemeId,
 		dataType : "text",
 		success : function(data) {
 			$("#stage-info-div").html(data);
@@ -974,7 +974,7 @@ function loadProjectEdit(){
 	var schemeId = $("input[name='id']").val();
 	jQuery.ajax({
 		type : "POST",
-		url : context+"/admin/yield/scheme/ajax/projectEdit/"+schemeId,
+		url : context+"/admin/yield/scheme/ajaxhtml/projectEdit/"+schemeId,
 		dataType : "text",
 		success : function(data) {
 			$("#project-info-div").html(data);
@@ -1015,7 +1015,7 @@ function loadProjectView(){
 	var schemeId = $("input[name='id']").val();
 	jQuery.ajax({
 		type : "POST",
-		url : context+"/admin/yield/scheme/ajax/projectView/"+schemeId,
+		url : context+"/admin/yield/scheme/ajaxhtml/projectView/"+schemeId,
 		dataType : "text",
 		success : function(data) {
 			$("#project-info-div").html(data);
@@ -1035,7 +1035,7 @@ function loadPrincipalEdit(){
 	var schemeId = $("input[name='id']").val();
 	jQuery.ajax({
 		type : "POST",
-		url : context+"/admin/yield/scheme/ajax/principalEdit/"+schemeId,
+		url : context+"/admin/yield/scheme/ajaxhtml/principalEdit/"+schemeId,
 		dataType : "text",
 		success : function(data) {
 			$("#principal-info-div").html(data);
@@ -1084,7 +1084,7 @@ function loadPrincipalView(){
 	var schemeId = $("input[name='id']").val();
 	jQuery.ajax({
 		type : "POST",
-		url : context+"/admin/yield/scheme/ajax/principalView/"+schemeId,
+		url : context+"/admin/yield/scheme/ajaxhtml/principalView/"+schemeId,
 		dataType : "text",
 		success : function(data) {
 			$("#principal-info-div").html(data);

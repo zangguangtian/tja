@@ -5,7 +5,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 	<div class="col-xs-12">
-		<h5 class="form-tit">基本信息<sec:authorize url="/admin/yield/scheme/ajax/baseEdit"><i class="fa fa-edit"></i></sec:authorize></h5>
+		<h5 class="form-tit">基本信息<sec:authorize url="/admin/yield/scheme/ajaxhtml/baseEdit"><i class="fa fa-edit"></i></sec:authorize></h5>
 	</div>
 	<div class="row">
 		<div class="col-xs-6 ">
