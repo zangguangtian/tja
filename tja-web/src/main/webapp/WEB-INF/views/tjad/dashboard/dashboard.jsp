@@ -9,7 +9,7 @@
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <title>首页</title>
     <%--每个jsp页面所在菜单的treePath属性值 --%>
-    <df:readProp var="menu-path" value="ym.home.menu.path" scope="request"  />
+    <df:readProp var="menu-path" value="go.home.menu.path" scope="request"  />
   	<style type="text/css">
   	.common-message {
 	    width: 98%;
@@ -119,7 +119,7 @@
             </div>
         </div>
         
-        <sec:authorize url="/admin/ym/weekFill/list">
+        <%-- <sec:authorize url="/admin/ym/weekFill/list">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 bg-red-pink ">
             <div class="col-lg-3">
                 <a href="${site}/admin/ym/weekFill/list" class="icon-btn">
@@ -201,7 +201,7 @@
             </c:if>
             </div>
         </div>
-        </sec:authorize>
+        </sec:authorize> --%>
 
     </div>
 </div>

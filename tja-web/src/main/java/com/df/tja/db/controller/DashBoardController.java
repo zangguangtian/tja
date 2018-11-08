@@ -86,20 +86,20 @@ public class DashBoardController extends BaseController {
         model.addAttribute("readPage", readPage);
 
         //项目周报列表
-        model.addAttribute("weeks", weekFillService.queryWeekList(userId));
-        model.addAttribute("weekCount", weekFillService.queryWeekListCount(userId));
+        /*model.addAttribute("weeks", weekFillService.queryWeekList(userId));
+        model.addAttribute("weekCount", weekFillService.queryWeekListCount(userId));*/
 
         //项目月报列表
-        model.addAttribute("months", yearMonthFillService.queryYmList(userId, "1000"));
-        model.addAttribute("monthCount", yearMonthFillService.queryYmListCount(userId, "1000"));
+        /*model.addAttribute("months", yearMonthFillService.queryYmList(userId, "1000"));
+        model.addAttribute("monthCount", yearMonthFillService.queryYmListCount(userId, "1000"));*/
 
         //项目年报列表
-        model.addAttribute("years", yearMonthFillService.queryYmList(userId, "2000"));
-        model.addAttribute("yearCount", yearMonthFillService.queryYmListCount(userId, "2000"));
+        /*model.addAttribute("years", yearMonthFillService.queryYmList(userId, "2000"));
+        model.addAttribute("yearCount", yearMonthFillService.queryYmListCount(userId, "2000"));*/
 
         //年度产值结算
-        model.addAttribute("yieldSettles", wfYieldSettleService.queryYieldSettleList(userId));
-        model.addAttribute("yieldSettleCount", wfYieldSettleService.queryYieldSettleListCount(userId));
+        /*model.addAttribute("yieldSettles", wfYieldSettleService.queryYieldSettleList(userId));
+        model.addAttribute("yieldSettleCount", wfYieldSettleService.queryYieldSettleListCount(userId));*/
 
         return "/tjad/dashboard/dashboard";
     }
