@@ -65,7 +65,7 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
             entity.setProId(proId);
             entity.setRelationId(StringUtil.getUUID());
             //查询本项目的方案产值
-            BigDecimal planYield = wfPlanSchemeService.queryPlanYieldByProId(proId);
+            BigDecimal planYield = new BigDecimal(0);//wfPlanSchemeService.queryPlanYieldByProId(proId);
             if (planYield == null) {
                 planYield = new BigDecimal(0);
             }
