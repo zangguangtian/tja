@@ -153,7 +153,7 @@ $(function(){
 
 /**添加专业比例*/
 function addMajorRatio(){
-	var trSize = $("#majorRatio tbody tr:not(:last)").length;
+	var trSize = $("#majorRatio tbody tr:not(:last):not(.minus)").length;
 	var $item = $("#majorRatio_clone tr").clone();
 	$item.find("input,select").removeAttr("disabled");
 	$item.html($item.html().format(trSize));

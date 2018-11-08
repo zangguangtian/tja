@@ -270,7 +270,7 @@ function delMajor(obj){
 	$.jalert({"jatype":"confirm", "jatext":"确定要删除吗", "onConfirm":function(){
 		var nameVal = null;
 		var thisIndex = $(obj).closest("tr").index();
-		$(obj).closest("tr").nextAll("tr:not(.total)").each(function(index, item){
+		$(obj).closest("tr").nextAll("tr:not(.total):not(.minus)").each(function(index, item){
 			$(item).find("td:eq(0)").text(thisIndex + index + 1);
 			//此处删除只管处理序号，input元素的下标无需处理
 		});
@@ -799,9 +799,8 @@ function saveRatio(){
 		var canSave = true; //是否可以保存的标志
 		var major = null, ratioJson = null, yieldMajors = [], duty = null, yieldDuties = [];
 		var ratioTotal = new Number(0);
-		var majorLength = $("#majorRatio tbody tr").length - 2;
 		//取tbody中除最后两行以外的其他行
-		$("#majorRatio tbody tr:lt("+ majorLength +")").each(function(index, item){
+		$("#majorRatio tbody tr:not(.total):not(.minus)").each(function(index, item){
 			major = {};
 			major.id = $(item).find("input[name^='id']").val();
 			major.name = $(item).find("input[name^='name']").val();
