@@ -51,11 +51,17 @@ function calViewYLTotal(){
 		}
 		totalYield += new Number(thisVal);
 	});
+	//所有专业的总产值减去所有专业扣减
+	$("#majorRatio tr.minus td[data-major]").each(function(){
+		thisVal = $(this).text() || 0;
+		totalYield -= new Number(thisVal);
+	});
 	
 	//每个专业的总产值
 	var totalMajorYield = null;
 	//用于处理尾差
 	var tempTotalYield = new Number(0);
+	var majorMinu = null;
 	//针对每个专业，计算院内合计
 	$("#majorRatio tr.total td[data-major]").each(function(){
 		totalMajorYield = new Number(0);
@@ -69,6 +75,12 @@ function calViewYLTotal(){
 				}
 				totalMajorYield += new Number(thisVal);
 			});
+			
+			//专业扣减
+			majorMinu = $($("#majorRatio tr.minus td[data-major='"+ $(this).data("major") +"']")[0]).text() || 0;
+			//减去此专业的专业扣减
+			totalMajorYield -= new Number(majorMinu);
+			
 			totalMajorYield = totalMajorYield * new Number(100);
 			totalMajorYield = totalMajorYield / totalYield;
 			
@@ -241,6 +253,9 @@ $(document).on("blur", "#majorRatio input[name^='buildArea']", otherFactorChange
 $(document).on("blur", "#majorRatio input[name^='standardPrice']", otherFactorChange);
 $(document).on("blur", "#majorRatio input[name^='majorRate']", otherFactorChange);
 
+//专业比例中专业扣减失去焦点事件
+$(document).on("blur", "#majorRatio input[name^='minusYield']", majorMinuChange);
+
 //土建产值中四个金额事件绑定
 $(document).on("blur", "input.fourAmount", fourAmountChange);
 
@@ -313,6 +328,24 @@ function otherFactorChange(){
     calYLTotal();
 }
 
+/**专业比例中的专业扣减修改*/
+function majorMinuChange(){
+	var majorCode = $(this).data("major");
+	var thisVal = null;
+	var totalYield = new Number(0);
+	$("#majorRatio td[id^='majorYield'][data-major='"+ majorCode +"']").each(function(){
+		thisVal = $(this).text() || 0;
+		totalYield += new Number(thisVal);
+	});
+	
+	var temp = new Number($(this).val()) - totalYield;
+	if(temp > 0){
+		$.jalert({"jatext":"专业扣减值不能超过本专业的产值之和："+totalYield.toFixed(2)});
+		return;
+	}
+	calYLMinu();
+}
+
 /**计算专业比例列表中土建基准产值、各专业产值*/
 function calSYield(currtr, uprice, barea){
 	if(uprice == null){
@@ -372,6 +405,65 @@ function calMajorYield(currtr, ratioJson){
     });
 }
 
+/**
+ * 计算专业比例列表中专业扣减后的院内合计
+ * @returns
+ */
+function calYLMinu(){
+	var thisVal = null;
+	//所有专业的总产值
+	var totalYield = new Number(0);
+	$("#majorRatio td[id^='majorYield']").each(function(){
+		thisVal = $(this).text();
+		if(thisVal == null){
+			thisVal = "0";
+		}
+		totalYield += new Number(thisVal);
+	});
+	//所有专业的总产值减去所有专业扣减
+	$("#majorRatio tr.minus input[name^='minusYield']").each(function(){
+		thisVal = $(this).val() || 0;
+		totalYield -= new Number(thisVal);
+	});
+	
+	//每个专业的总产值
+	var totalMajorYield = null, majorMinu = null;
+	//用于处理尾差
+	var tempTotalYield = new Number(0);
+	//针对每个专业，计算院内合计
+	$("#majorRatio tr.total td[data-major]").each(function(){
+		totalMajorYield = new Number(0);
+		//所有专业的产值和大于0
+		if(totalYield > 0){
+			//计算各专业的产值和
+			$("#majorRatio td[id^='majorYield'][data-major='"+ $(this).data("major") +"']").each(function(){
+				thisVal = $(this).text();
+				if(thisVal == null){
+					thisVal = "0";
+				}
+				totalMajorYield += new Number(thisVal);
+			});
+			
+			//专业扣减
+			majorMinu = $($("#majorRatio input[name^='minusYield'][data-major='"+ $(this).data("major") +"']")[0]).val() || 0;
+			//减去此专业的专业扣减
+			totalMajorYield -= new Number(majorMinu);
+			
+			//计算合计比例
+			totalMajorYield = totalMajorYield * new Number(100);
+			totalMajorYield = totalMajorYield / totalYield;
+			
+			//处理尾差
+			if((tempTotalYield + new Number(totalMajorYield.toFixed(2))) < new Number(100)){
+				tempTotalYield += new Number(totalMajorYield.toFixed(2));
+			}else{
+				totalMajorYield = new Number(100) - tempTotalYield;
+			}
+		}
+		$(this).text(totalMajorYield.toFixed(2));
+	});
+}
+
 /**计算专业比例列表中的院内合计*/
 function calYLTotal(){
 	var thisVal = null;
@@ -416,45 +508,7 @@ function calYLTotal(){
 	$("#totalUnitPrice").text(totalUPrice.toFixed(2));
 	
 	//计算每个专业的院内合计
-	//所有专业的总产值
-	var totalYield = new Number(0);
-	$("#majorRatio td[id^='majorYield']").each(function(){
-		thisVal = $(this).text();
-		if(thisVal == null){
-			thisVal = "0";
-		}
-		totalYield += new Number(thisVal);
-	});
-	
-	//每个专业的总产值
-	var totalMajorYield = null;
-	//用于处理尾差
-	var tempTotalYield = new Number(0);
-	//针对每个专业，计算院内合计
-	$("#majorRatio tr.total td[data-major]").each(function(){
-		totalMajorYield = new Number(0);
-		//所有专业的产值和大于0
-		if(totalYield > 0){
-			//计算各专业的产值和
-			$("#majorRatio td[id^='majorYield'][data-major='"+ $(this).data("major") +"']").each(function(){
-				thisVal = $(this).text();
-				if(thisVal == null){
-					thisVal = "0";
-				}
-				totalMajorYield += new Number(thisVal);
-			});
-			totalMajorYield = totalMajorYield * new Number(100);
-			totalMajorYield = totalMajorYield / totalYield;
-			
-			//处理尾差
-			if((tempTotalYield + new Number(totalMajorYield.toFixed(2))) < new Number(100)){
-				tempTotalYield += new Number(totalMajorYield.toFixed(2));
-			}else{
-				totalMajorYield = new Number(100) - tempTotalYield;
-			}
-		}
-		$(this).text(totalMajorYield.toFixed(2));
-	});
+	calYLMinu();
 }
 
 /**土建产值四个金额修改*/

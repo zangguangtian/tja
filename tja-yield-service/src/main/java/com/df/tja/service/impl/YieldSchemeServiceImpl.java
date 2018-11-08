@@ -449,7 +449,11 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
                         majorDuty.setPrincipalId(custMajorDuty.getPrincipalId());
                         addEntity(OcYieldMajorDuty.class, majorDuty);
                     } else {
-                        if ("principal".equalsIgnoreCase(opType)) { //只有各专业部门负责人会签保存时才会去修改各专业的负责人
+                        if ("RATIO".equalsIgnoreCase(opType)) { //只有专业比例保存时才会去修改各专业的专业扣减
+                            majorDuty = duties.get(0);
+                            majorDuty.setMinusYield(custMajorDuty.getMinusYield());
+                            ocYieldSchemeDao.update(OcYieldMajorDuty.class, majorDuty);
+                        } else if ("principal".equalsIgnoreCase(opType)) { //只有各专业部门负责人会签保存时才会去修改各专业的负责人
                             majorDuty = duties.get(0);
                             majorDuty.setPrincipalId(custMajorDuty.getPrincipalId());
                             ocYieldSchemeDao.update(OcYieldMajorDuty.class, majorDuty);
