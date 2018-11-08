@@ -130,7 +130,7 @@ public class WfPlanSchemeServiceImpl extends BaseServiceImpl implements IWfPlanS
     @Override
     public void addWriteBackPlanScheme(String id) throws RuntimeException {
         try {
-            wfPlanSchemeDao.writeBack(id, TjaConstant.WriteBackOpType.OCWRITEBACKTYPE[0],
+            wfPlanSchemeDao.writeBack(id, TjaConstant.WriteBackOpType.OCWRITEBACKTYPE[0], null,
                 TjaConstant.WriteBackFunc.WF_FUNC);
         } catch (Exception e) {
             throw new RuntimeException(e);
