@@ -743,9 +743,11 @@ function saveRatio(){
 		datas.proId = $("input[name='proId']").val();
 		
 		var canSave = true; //是否可以保存的标志
-		var major = null, ratioJson = null, yieldMajors = [];
+		var major = null, ratioJson = null, yieldMajors = [], duty = null, yieldDuties = [];
 		var ratioTotal = new Number(0);
-		$("#majorRatio tbody tr:not(:last)").each(function(index, item){
+		var majorLength = $("#majorRatio tbody tr").length - 2;
+		//取tbody中除最后两行以外的其他行
+		$("#majorRatio tbody tr:lt("+ majorLength +")").each(function(index, item){
 			major = {};
 			major.id = $(item).find("input[name^='id']").val();
 			major.name = $(item).find("input[name^='name']").val();
@@ -769,6 +771,16 @@ function saveRatio(){
 			}
 		});
 		datas.yieldMajors = yieldMajors;
+		
+		//取专业扣减
+		$("#majorRatio tbody tr.minus input[name^='minusYield']").each(function(index, item){
+			duty = {};
+			duty.majorCode = $(item).data("major");
+			duty.minusYield = $(item).val();
+			yieldDuties.push(duty);
+		});
+		datas.yieldMajorDuties = yieldDuties;
+		
 		if(canSave){
 			jQuery.ajax({
 				type : "POST",

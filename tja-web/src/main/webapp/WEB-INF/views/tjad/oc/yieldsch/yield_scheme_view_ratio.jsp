@@ -56,6 +56,23 @@
 	        		</c:forEach>
 	        	</c:if>
 	        	
+	            <tr style="display:none;">
+	                <td nowrap="nowrap" colspan="2" style="text-align:center;">专业扣减</td>
+	                <td nowrap="nowrap"></td>
+	                <td nowrap="nowrap"></td>
+	                <td nowrap="nowrap"></td>
+	                <td nowrap="nowrap"></td>
+	                <c:if test="${not empty yieldDuties }">
+	                   <c:forEach items="${yieldDuties }" var="yieldDuty" >
+	                       <td nowrap="nowrap" data-major="${yieldDuty.majorCode}">${yieldDuty.minusYield }</td>
+	                   </c:forEach>
+	                </c:if>
+	                <c:if test="${empty yieldDuties }">
+	                   <c:forEach items="${majors }" var="major" >
+	                       <td nowrap="nowrap" data-major="${major.configCode}"></td>
+	                   </c:forEach>
+	                </c:if>
+	            </tr>
 	            <tr class="total">
 	                <td nowrap="nowrap" colspan="2" style="text-align:center;">院内合计</td>
 	                <td nowrap="nowrap" id="totalArea"></td>

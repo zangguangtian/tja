@@ -74,6 +74,21 @@
 					</tr>
 					</c:forEach>
 				</c:if>
+            	<tr class="minus">
+	                <td nowrap="nowrap" colspan="3" style="text-align:center;">专业扣减</td>
+	                <td nowrap="nowrap"></td>
+	                <td nowrap="nowrap"></td>
+	                <td nowrap="nowrap"></td>
+	                <td nowrap="nowrap"></td>
+	                <c:if test="${not empty majors }">
+	                   <c:forEach items="${majors }" var="major" varStatus="vs">
+	                       <td nowrap="nowrap" colspan="2">
+	                       	 <input type="text" name="minusYield${vs.index}.${major.configCode }" value="" data-major="${major.configCode }" data-rule-number="true" data-rule-required="true" class="form-control">
+	                       </td>
+	                   </c:forEach>
+	                </c:if>
+	                <td>&nbsp;</td>
+            	</tr>
             	<tr class="total">
 	                <td nowrap="nowrap" colspan="3" style="text-align:center;">院内合计</td>
 	                <td nowrap="nowrap" id="totalArea"></td>

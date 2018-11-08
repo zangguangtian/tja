@@ -254,6 +254,9 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
             //删除已经删掉的专业比例
             ocYieldSchemeDao.deleteMajors(custOcYieldScheme.getId(), majorIds);
 
+            //保存专业扣减
+            createOcYieldMajorDuty(custOcYieldScheme, "RATIO");
+
             //调用存储过程修改其他几张关联表
             ocYieldSchemeDao.calOtherYield(custOcYieldScheme.getId(), "RATIO");
         } catch (Exception ex) {
@@ -441,6 +444,7 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
                         majorDuty = new OcYieldMajorDuty();
                         majorDuty.setSchemeId(custOcYieldScheme.getId());
                         majorDuty.setMajorCode(custMajorDuty.getMajorCode());
+                        majorDuty.setMinusYield(custMajorDuty.getMinusYield());
                         majorDuty.setMajorYield(new BigDecimal(0)); //通过存储过程计算
                         majorDuty.setPrincipalId(custMajorDuty.getPrincipalId());
                         addEntity(OcYieldMajorDuty.class, majorDuty);
