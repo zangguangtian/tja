@@ -31,21 +31,21 @@
         <dependency>
             <groupId>com.df</groupId>
             <artifactId>df-hbm-base</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.df</groupId>
             <artifactId>df-activiti</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
 		<dependency>
 			<groupId>com.df</groupId>
 			<artifactId>df-sys-web</artifactId>
-			<version>1.0</version>
+			<version>1.1</version>
 			<type>war</type>
 			<scope>compile</scope>
 		</dependency>
