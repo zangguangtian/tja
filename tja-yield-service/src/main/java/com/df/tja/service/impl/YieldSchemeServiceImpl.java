@@ -275,9 +275,9 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
                 BigDecimal rebateParam = ymConfigService.queryOcRebateParam();
                 ocYieldScheme.setMajorAmount(
                     ArithmeticUtil.round(ArithmeticUtil.mul(rebateParam, ocYieldScheme.getTotalAmount()), 2));
-                ocYieldScheme.setPrincipalYield(custOcYieldScheme.getPrincipalYield());
+                /*ocYieldScheme.setPrincipalYield(custOcYieldScheme.getPrincipalYield());
                 ocYieldScheme.setPmYield(custOcYieldScheme.getPmYield());
-                ocYieldScheme.setSecretYield(custOcYieldScheme.getSecretYield());
+                ocYieldScheme.setSecretYield(custOcYieldScheme.getSecretYield());*/
                 ocYieldSchemeDao.update(OcYieldScheme.class, ocYieldScheme);
 
                 //插入各专业的产值记录
@@ -335,7 +335,11 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
             OcYieldScheme ocYieldScheme = ocYieldSchemeDao.selectByPrimaryKey(OcYieldScheme.class,
                 custOcYieldScheme.getId());
             if (ocYieldScheme != null) {
-                custOcYieldScheme.setMajorAmount(ocYieldScheme.getMajorAmount());
+                //用于下面的项目负责人、项目经理、项目秘书的产值计算
+                custOcYieldScheme.setContractAmount(ocYieldScheme.getContractAmount());
+                custOcYieldScheme.setPkgAmount(ocYieldScheme.getPkgAmount());
+                custOcYieldScheme.setSchemeAmount(ocYieldScheme.getSchemeAmount());
+                custOcYieldScheme.setRebateAmount(ocYieldScheme.getRebateAmount());
 
                 ocYieldScheme.setPrincipalRate(custOcYieldScheme.getPrincipalRate());
                 ocYieldScheme.setPrincipalYield(custOcYieldScheme.getPrincipalYield());

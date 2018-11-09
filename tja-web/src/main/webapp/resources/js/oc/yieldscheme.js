@@ -259,7 +259,7 @@ $(document).on("blur", "#majorRatio input[name^='minusYield']", majorMinuChange)
 //土建产值中四个金额事件绑定
 $(document).on("blur", "input.fourAmount", fourAmountChange);
 
-//土建产值中项目负责人、项目经理事件绑定
+//项目管理产值中项目负责人、项目经理、项目秘书事件绑定
 $(document).on("blur", "input.twoProUser", calProUserYield);
 
 //各专业产值中比例事件绑定
@@ -544,7 +544,7 @@ function fourAmountChange(){
 /**计算项目负责人、项目经理的产值*/
 function calProUserYield(){
 	//各专业产值
-	var majorAmount = $("label#majorAmountLabel").text();
+	var majorAmount = $("label#totalAmountLabel").text();
 	if(majorAmount == null || majorAmount == ""){
 		majorAmount = "0";
 	}
@@ -579,9 +579,9 @@ function calProUserYield(){
 			if(index == 1){
 				otherYield = (new Number(userYield) * new Number(ddStageParam)).toFixed(2);
 			}else if(index == 2){
-				otherYield = (new Number(userYield) * (new Number(1) - new Number(ddStageParam)) * new Number(ccoStageParam)).toFixed(2);
+				otherYield = (new Number(userYield) * (new Number(1) - new Number(ddStageParam)) * new Number(ccoStageParam)).toFixed(4);
 			}else if(index == 3){
-				otherYield = (new Number(userYield) * (new Number(1) - new Number(ddStageParam)) * new Number(cctStageParam)).toFixed(2);
+				otherYield = (new Number(userYield) * (new Number(1) - new Number(ddStageParam)) * new Number(cctStageParam)).toFixed(4);
 			}else{
 				otherYield = "0";
 			}
@@ -898,9 +898,9 @@ function saveCivil(){
 		datas.pkgAmount = $("input[name='pkgAmount']").val();
 		datas.schemeAmount = $("input[name='schemeAmount']").val();
 		datas.rebateAmount = $("input[name='rebateAmount']").val();
-		datas.principalRate = $("input[name='principalRate']").val();
+		/*datas.principalRate = $("input[name='principalRate']").val();
 		datas.pmRate = $("input[name='pmRate']").val();
-		datas.secretRate = $("input[name='secretRate']").val();
+		datas.secretRate = $("input[name='secretRate']").val();*/
 		
 		var majorDuties = [], majorDuty = null;
 		$("#civil-info-div input[name^='stageMajorYield'][data-majorcode]").each(function(){
