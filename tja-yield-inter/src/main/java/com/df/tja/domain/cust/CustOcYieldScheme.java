@@ -204,20 +204,20 @@ public class CustOcYieldScheme extends OcYieldScheme {
 
     public BigDecimal getPrincipalYield() {
         BigDecimal principalYield = new BigDecimal(0);
-        principalYield = ArithmeticUtil.div(ArithmeticUtil.mul(getMajorAmount(), getPrincipalRate()),
+        principalYield = ArithmeticUtil.div(ArithmeticUtil.mul(getTotalAmount(), getPrincipalRate()),
             new BigDecimal(100), 2);
         return principalYield;
     }
 
     public BigDecimal getPmYield() {
         BigDecimal pmYield = new BigDecimal(0);
-        pmYield = ArithmeticUtil.div(ArithmeticUtil.mul(getMajorAmount(), getPmRate()), new BigDecimal(100), 2);
+        pmYield = ArithmeticUtil.div(ArithmeticUtil.mul(getTotalAmount(), getPmRate()), new BigDecimal(100), 2);
         return pmYield;
     }
 
     public BigDecimal getSecretYield() {
         BigDecimal secretYield = new BigDecimal(0);
-        secretYield = ArithmeticUtil.div(ArithmeticUtil.mul(getMajorAmount(), getSecretRate()), new BigDecimal(100), 2);
+        secretYield = ArithmeticUtil.div(ArithmeticUtil.mul(getTotalAmount(), getSecretRate()), new BigDecimal(100), 2);
         return secretYield;
     }
 

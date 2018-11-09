@@ -51,11 +51,17 @@ function calViewYLTotal(){
 		}
 		totalYield += new Number(thisVal);
 	});
+	//所有专业的总产值减去所有专业扣减
+	$("#majorRatio tr.minus td[data-major]").each(function(){
+		thisVal = $(this).text() || 0;
+		totalYield -= new Number(thisVal);
+	});
 	
 	//每个专业的总产值
 	var totalMajorYield = null;
 	//用于处理尾差
 	var tempTotalYield = new Number(0);
+	var majorMinu = null;
 	//针对每个专业，计算院内合计
 	$("#majorRatio tr.total td[data-major]").each(function(){
 		totalMajorYield = new Number(0);
@@ -69,6 +75,12 @@ function calViewYLTotal(){
 				}
 				totalMajorYield += new Number(thisVal);
 			});
+			
+			//专业扣减
+			majorMinu = $($("#majorRatio tr.minus td[data-major='"+ $(this).data("major") +"']")[0]).text() || 0;
+			//减去此专业的专业扣减
+			totalMajorYield -= new Number(majorMinu);
+			
 			totalMajorYield = totalMajorYield * new Number(100);
 			totalMajorYield = totalMajorYield / totalYield;
 			
@@ -241,10 +253,13 @@ $(document).on("blur", "#majorRatio input[name^='buildArea']", otherFactorChange
 $(document).on("blur", "#majorRatio input[name^='standardPrice']", otherFactorChange);
 $(document).on("blur", "#majorRatio input[name^='majorRate']", otherFactorChange);
 
+//专业比例中专业扣减失去焦点事件
+$(document).on("blur", "#majorRatio input[name^='minusYield']", majorMinuChange);
+
 //土建产值中四个金额事件绑定
 $(document).on("blur", "input.fourAmount", fourAmountChange);
 
-//土建产值中项目负责人、项目经理事件绑定
+//项目管理产值中项目负责人、项目经理、项目秘书事件绑定
 $(document).on("blur", "input.twoProUser", calProUserYield);
 
 //各专业产值中比例事件绑定
@@ -255,7 +270,7 @@ function delMajor(obj){
 	$.jalert({"jatype":"confirm", "jatext":"确定要删除吗", "onConfirm":function(){
 		var nameVal = null;
 		var thisIndex = $(obj).closest("tr").index();
-		$(obj).closest("tr").nextAll("tr:not(.total)").each(function(index, item){
+		$(obj).closest("tr").nextAll("tr:not(.total):not(.minus)").each(function(index, item){
 			$(item).find("td:eq(0)").text(thisIndex + index + 1);
 			//此处删除只管处理序号，input元素的下标无需处理
 		});
@@ -311,6 +326,24 @@ function otherFactorChange(){
     
     /**计算院内合计*/
     calYLTotal();
+}
+
+/**专业比例中的专业扣减修改*/
+function majorMinuChange(){
+	var majorCode = $(this).data("major");
+	var thisVal = null;
+	var totalYield = new Number(0);
+	$("#majorRatio td[id^='majorYield'][data-major='"+ majorCode +"']").each(function(){
+		thisVal = $(this).text() || 0;
+		totalYield += new Number(thisVal);
+	});
+	
+	var temp = new Number($(this).val()) - totalYield;
+	if(temp > 0){
+		$.jalert({"jatext":"专业扣减值不能超过本专业的产值之和："+totalYield.toFixed(2)});
+		return;
+	}
+	calYLMinu();
 }
 
 /**计算专业比例列表中土建基准产值、各专业产值*/
@@ -372,6 +405,65 @@ function calMajorYield(currtr, ratioJson){
     });
 }
 
+/**
+ * 计算专业比例列表中专业扣减后的院内合计
+ * @returns
+ */
+function calYLMinu(){
+	var thisVal = null;
+	//所有专业的总产值
+	var totalYield = new Number(0);
+	$("#majorRatio td[id^='majorYield']").each(function(){
+		thisVal = $(this).text();
+		if(thisVal == null){
+			thisVal = "0";
+		}
+		totalYield += new Number(thisVal);
+	});
+	//所有专业的总产值减去所有专业扣减
+	$("#majorRatio tr.minus input[name^='minusYield']").each(function(){
+		thisVal = $(this).val() || 0;
+		totalYield -= new Number(thisVal);
+	});
+	
+	//每个专业的总产值
+	var totalMajorYield = null, majorMinu = null;
+	//用于处理尾差
+	var tempTotalYield = new Number(0);
+	//针对每个专业，计算院内合计
+	$("#majorRatio tr.total td[data-major]").each(function(){
+		totalMajorYield = new Number(0);
+		//所有专业的产值和大于0
+		if(totalYield > 0){
+			//计算各专业的产值和
+			$("#majorRatio td[id^='majorYield'][data-major='"+ $(this).data("major") +"']").each(function(){
+				thisVal = $(this).text();
+				if(thisVal == null){
+					thisVal = "0";
+				}
+				totalMajorYield += new Number(thisVal);
+			});
+			
+			//专业扣减
+			majorMinu = $($("#majorRatio input[name^='minusYield'][data-major='"+ $(this).data("major") +"']")[0]).val() || 0;
+			//减去此专业的专业扣减
+			totalMajorYield -= new Number(majorMinu);
+			
+			//计算合计比例
+			totalMajorYield = totalMajorYield * new Number(100);
+			totalMajorYield = totalMajorYield / totalYield;
+			
+			//处理尾差
+			if((tempTotalYield + new Number(totalMajorYield.toFixed(2))) < new Number(100)){
+				tempTotalYield += new Number(totalMajorYield.toFixed(2));
+			}else{
+				totalMajorYield = new Number(100) - tempTotalYield;
+			}
+		}
+		$(this).text(totalMajorYield.toFixed(2));
+	});
+}
+
 /**计算专业比例列表中的院内合计*/
 function calYLTotal(){
 	var thisVal = null;
@@ -416,45 +508,7 @@ function calYLTotal(){
 	$("#totalUnitPrice").text(totalUPrice.toFixed(2));
 	
 	//计算每个专业的院内合计
-	//所有专业的总产值
-	var totalYield = new Number(0);
-	$("#majorRatio td[id^='majorYield']").each(function(){
-		thisVal = $(this).text();
-		if(thisVal == null){
-			thisVal = "0";
-		}
-		totalYield += new Number(thisVal);
-	});
-	
-	//每个专业的总产值
-	var totalMajorYield = null;
-	//用于处理尾差
-	var tempTotalYield = new Number(0);
-	//针对每个专业，计算院内合计
-	$("#majorRatio tr.total td[data-major]").each(function(){
-		totalMajorYield = new Number(0);
-		//所有专业的产值和大于0
-		if(totalYield > 0){
-			//计算各专业的产值和
-			$("#majorRatio td[id^='majorYield'][data-major='"+ $(this).data("major") +"']").each(function(){
-				thisVal = $(this).text();
-				if(thisVal == null){
-					thisVal = "0";
-				}
-				totalMajorYield += new Number(thisVal);
-			});
-			totalMajorYield = totalMajorYield * new Number(100);
-			totalMajorYield = totalMajorYield / totalYield;
-			
-			//处理尾差
-			if((tempTotalYield + new Number(totalMajorYield.toFixed(2))) < new Number(100)){
-				tempTotalYield += new Number(totalMajorYield.toFixed(2));
-			}else{
-				totalMajorYield = new Number(100) - tempTotalYield;
-			}
-		}
-		$(this).text(totalMajorYield.toFixed(2));
-	});
+	calYLMinu();
 }
 
 /**土建产值四个金额修改*/
@@ -490,7 +544,7 @@ function fourAmountChange(){
 /**计算项目负责人、项目经理的产值*/
 function calProUserYield(){
 	//各专业产值
-	var majorAmount = $("label#majorAmountLabel").text();
+	var majorAmount = $("label#totalAmountLabel").text();
 	if(majorAmount == null || majorAmount == ""){
 		majorAmount = "0";
 	}
@@ -525,9 +579,9 @@ function calProUserYield(){
 			if(index == 1){
 				otherYield = (new Number(userYield) * new Number(ddStageParam)).toFixed(2);
 			}else if(index == 2){
-				otherYield = (new Number(userYield) * (new Number(1) - new Number(ddStageParam)) * new Number(ccoStageParam)).toFixed(2);
+				otherYield = (new Number(userYield) * (new Number(1) - new Number(ddStageParam)) * new Number(ccoStageParam)).toFixed(4);
 			}else if(index == 3){
-				otherYield = (new Number(userYield) * (new Number(1) - new Number(ddStageParam)) * new Number(cctStageParam)).toFixed(2);
+				otherYield = (new Number(userYield) * (new Number(1) - new Number(ddStageParam)) * new Number(cctStageParam)).toFixed(4);
 			}else{
 				otherYield = "0";
 			}
@@ -743,9 +797,10 @@ function saveRatio(){
 		datas.proId = $("input[name='proId']").val();
 		
 		var canSave = true; //是否可以保存的标志
-		var major = null, ratioJson = null, yieldMajors = [];
+		var major = null, ratioJson = null, yieldMajors = [], duty = null, yieldDuties = [];
 		var ratioTotal = new Number(0);
-		$("#majorRatio tbody tr:not(:last)").each(function(index, item){
+		//取tbody中除最后两行以外的其他行
+		$("#majorRatio tbody tr:not(.total):not(.minus)").each(function(index, item){
 			major = {};
 			major.id = $(item).find("input[name^='id']").val();
 			major.name = $(item).find("input[name^='name']").val();
@@ -769,6 +824,16 @@ function saveRatio(){
 			}
 		});
 		datas.yieldMajors = yieldMajors;
+		
+		//取专业扣减
+		$("#majorRatio tbody tr.minus input[name^='minusYield']").each(function(index, item){
+			duty = {};
+			duty.majorCode = $(item).data("major");
+			duty.minusYield = $(item).val();
+			yieldDuties.push(duty);
+		});
+		datas.yieldMajorDuties = yieldDuties;
+		
 		if(canSave){
 			jQuery.ajax({
 				type : "POST",
@@ -833,9 +898,9 @@ function saveCivil(){
 		datas.pkgAmount = $("input[name='pkgAmount']").val();
 		datas.schemeAmount = $("input[name='schemeAmount']").val();
 		datas.rebateAmount = $("input[name='rebateAmount']").val();
-		datas.principalRate = $("input[name='principalRate']").val();
+		/*datas.principalRate = $("input[name='principalRate']").val();
 		datas.pmRate = $("input[name='pmRate']").val();
-		datas.secretRate = $("input[name='secretRate']").val();
+		datas.secretRate = $("input[name='secretRate']").val();*/
 		
 		var majorDuties = [], majorDuty = null;
 		$("#civil-info-div input[name^='stageMajorYield'][data-majorcode]").each(function(){

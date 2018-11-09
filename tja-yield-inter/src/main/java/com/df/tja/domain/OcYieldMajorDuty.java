@@ -54,6 +54,9 @@ public class OcYieldMajorDuty extends BaseDomain {
     /** 属性：专业代码。参考系统配置表 */
     private java.lang.String majorCode;
 
+    /** 属性：专业扣减 */
+    private BigDecimal minusYield;
+
     /** 属性：专业产值 */
     private BigDecimal majorYield;
 
@@ -96,6 +99,25 @@ public class OcYieldMajorDuty extends BaseDomain {
      */
     public void setMajorCode(java.lang.String majorCode) {
         this.majorCode = majorCode;
+    }
+
+    /**
+     * <p> 属性minusYield的Getter方法. </p>
+     * 
+     * @return 返回minusYield属性的值
+     */
+    @Column(name = "MINUS_YIELD")
+    public BigDecimal getMinusYield() {
+        return minusYield;
+    }
+
+    /**
+     * <p> 属性minusYield的Setter方法. </p>
+     * 
+     * @param minusYield 为属性minusYield设置的值
+     */
+    public void setMinusYield(BigDecimal minusYield) {
+        this.minusYield = minusYield;
     }
 
     /**

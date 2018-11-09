@@ -76,10 +76,10 @@ public class OcYieldSchemeDaoHbmImpl extends BaseDaoHbmImpl implements IOcYieldS
     public List<CustOcYieldMajorDuty> selectOcYieldMajorDutiesBySchemeId(String schemeId) {
         StringBuffer sql = new StringBuffer();
         sql.append("select ymd.id as id, ymd.scheme_id as schemeId, ymd.major_code as majorCode,  ");
-        sql.append("  ymd.MAJOR_YIELD as majorYield, ymd.PRINCIPAL_ID as principalId,             ");
-        sql.append("  hs.name as principalName                                                    ");
+        sql.append("  ymd.MAJOR_YIELD as majorYield, ymd.MINUS_YIELD as minusYield,               ");
+        sql.append("  ymd.PRINCIPAL_ID as principalId, hs.name as principalName                   ");
         sql.append("FROM OC_YIELD_MAJOR_DUTY ymd                                                  ");
-        sql.append("left join hr_staff_tm hs on ymd.PRINCIPAL_ID = hs.id                          ");
+        sql.append("left join v_hr_staff_all hs on ymd.PRINCIPAL_ID = hs.id                       ");
         sql.append("where ymd.scheme_id = ?                                                       ");
         SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
         query.setString(0, schemeId);

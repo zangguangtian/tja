@@ -35,7 +35,7 @@
 	<div class="col-xs-6 ">
 	    <label class="control-label col-xs-4">土建总产值</label>
 	    <div class="col-xs-8">
-	        <label class="control-label">${yieldScheme.totalAmount }</label>
+	        <label class="control-label" id="totalAmountLabel">${yieldScheme.totalAmount }</label>
 	    </div>
 	</div>
 	<div class="col-xs-6 ">

@@ -174,6 +174,10 @@ public class YieldSchemeController extends BaseController {
         //查询专业及比例
         List<CustOcYieldMajor> yieldMajors = yieldSchemeService.queryOcYieldMajors(id);
         model.addAttribute("yieldMajors", yieldMajors);
+
+        //查询各专业部门产值及负责人
+        Map<String, CustOcYieldMajorDuty> duties = yieldSchemeService.queryOcYieldMajorDutiesBySchemeId(id);
+        model.addAttribute("yieldDuties", duties);
         return "/tjad/oc/yieldsch/yield_scheme_edit_ratio";
     }
 
@@ -218,6 +222,10 @@ public class YieldSchemeController extends BaseController {
         //查询专业及比例
         List<CustOcYieldMajor> yieldMajors = yieldSchemeService.queryOcYieldMajors(id);
         model.addAttribute("yieldMajors", yieldMajors);
+
+        //查询各专业部门产值及负责人
+        Map<String, CustOcYieldMajorDuty> duties = yieldSchemeService.queryOcYieldMajorDutiesBySchemeId(id);
+        model.addAttribute("yieldDuties", duties);
         return "/tjad/oc/yieldsch/yield_scheme_view_ratio";
     }
 

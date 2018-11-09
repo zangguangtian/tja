@@ -33,28 +33,28 @@
                         <c:if test="${not empty majors }">
                            <c:forEach items="${majors }" var="major" varStatus="vs" >
                            	   <c:set var="ssKey" value="1000.${major.configCode }" />
-                               <td nowrap="nowrap" style="width:80px;">
+                               <td nowrap="nowrap" class="form-group" style="width:80px;">
                                	   <c:if test="${ssVs.index == 0 }">
                                        <input type="hidden" name="majorCode${vs.index*2 }" value="${major.configCode }">
                                	   </c:if>
                                    <c:choose>
                                        <c:when test="${schemeStage[0] == 'preliminary' }">
-                                           <input type="text" name="preliminary${vs.index*2 }" value="${stageMajors[ssKey].preliminary }"  data-smcode="${major.configCode }" class="form-control majorratio">
+                                           <input type="text" name="preliminary${vs.index*2 }" value="${stageMajors[ssKey].preliminary }"  data-smcode="${major.configCode }" data-rule-number="true" data-rule-required="true" class="form-control majorratio">
                                        </c:when>
                                        <c:when test="${schemeStage[0] == 'drawing' }">
-                                           <input type="text" name="drawing${vs.index*2 }" value="${stageMajors[ssKey].drawing }"  data-smcode="${major.configCode }" class="form-control majorratio">
+                                           <input type="text" name="drawing${vs.index*2 }" value="${stageMajors[ssKey].drawing }"  data-smcode="${major.configCode }" data-rule-number="true" data-rule-required="true" class="form-control majorratio">
                                        </c:when>
                                        <c:when test="${schemeStage[0] == 'subTotal' }">
                                            <input type="text" name="subTotal${vs.index*2 }" value="${stageMajors[ssKey].subTotal }"  data-smcode="${major.configCode }" readonly class="form-control majorratio">
                                        </c:when>
                                        <c:when test="${schemeStage[0] == 'coordination' }">
-                                           <input type="text" name="coordination${vs.index*2 }" value="${stageMajors[ssKey].coordination }"  data-smcode="${major.configCode }" class="form-control majorratio">
+                                           <input type="text" name="coordination${vs.index*2 }" value="${stageMajors[ssKey].coordination }"  data-smcode="${major.configCode }" data-rule-number="true" data-rule-required="true" class="form-control majorratio">
                                        </c:when>
                                        <c:when test="${schemeStage[0] == 'cap' }">
-                                           <input type="text" name="cap${vs.index*2 }" value="${stageMajors[ssKey].cap }"  data-smcode="${major.configCode }" class="form-control majorratio">
+                                           <input type="text" name="cap${vs.index*2 }" value="${stageMajors[ssKey].cap }"  data-smcode="${major.configCode }" data-rule-number="true" data-rule-required="true" class="form-control majorratio">
                                        </c:when>
                                        <c:when test="${schemeStage[0] == 'check' }">
-                                           <input type="text" name="check${vs.index*2 }" value="${stageMajors[ssKey].check }"  data-smcode="${major.configCode }" class="form-control majorratio">
+                                           <input type="text" name="check${vs.index*2 }" value="${stageMajors[ssKey].check }"  data-smcode="${major.configCode }" data-rule-number="true" data-rule-required="true" class="form-control majorratio">
                                        </c:when>
                                    </c:choose>
                                </td>

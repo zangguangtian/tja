@@ -254,6 +254,9 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
             //删除已经删掉的专业比例
             ocYieldSchemeDao.deleteMajors(custOcYieldScheme.getId(), majorIds);
 
+            //保存专业扣减
+            createOcYieldMajorDuty(custOcYieldScheme, "RATIO");
+
             //调用存储过程修改其他几张关联表
             ocYieldSchemeDao.calOtherYield(custOcYieldScheme.getId(), "RATIO");
         } catch (Exception ex) {
@@ -272,9 +275,9 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
                 BigDecimal rebateParam = ymConfigService.queryOcRebateParam();
                 ocYieldScheme.setMajorAmount(
                     ArithmeticUtil.round(ArithmeticUtil.mul(rebateParam, ocYieldScheme.getTotalAmount()), 2));
-                ocYieldScheme.setPrincipalYield(custOcYieldScheme.getPrincipalYield());
+                /*ocYieldScheme.setPrincipalYield(custOcYieldScheme.getPrincipalYield());
                 ocYieldScheme.setPmYield(custOcYieldScheme.getPmYield());
-                ocYieldScheme.setSecretYield(custOcYieldScheme.getSecretYield());
+                ocYieldScheme.setSecretYield(custOcYieldScheme.getSecretYield());*/
                 ocYieldSchemeDao.update(OcYieldScheme.class, ocYieldScheme);
 
                 //插入各专业的产值记录
@@ -332,7 +335,11 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
             OcYieldScheme ocYieldScheme = ocYieldSchemeDao.selectByPrimaryKey(OcYieldScheme.class,
                 custOcYieldScheme.getId());
             if (ocYieldScheme != null) {
-                custOcYieldScheme.setMajorAmount(ocYieldScheme.getMajorAmount());
+                //用于下面的项目负责人、项目经理、项目秘书的产值计算
+                custOcYieldScheme.setContractAmount(ocYieldScheme.getContractAmount());
+                custOcYieldScheme.setPkgAmount(ocYieldScheme.getPkgAmount());
+                custOcYieldScheme.setSchemeAmount(ocYieldScheme.getSchemeAmount());
+                custOcYieldScheme.setRebateAmount(ocYieldScheme.getRebateAmount());
 
                 ocYieldScheme.setPrincipalRate(custOcYieldScheme.getPrincipalRate());
                 ocYieldScheme.setPrincipalYield(custOcYieldScheme.getPrincipalYield());
@@ -441,11 +448,16 @@ public class YieldSchemeServiceImpl extends BaseServiceImpl implements IYieldSch
                         majorDuty = new OcYieldMajorDuty();
                         majorDuty.setSchemeId(custOcYieldScheme.getId());
                         majorDuty.setMajorCode(custMajorDuty.getMajorCode());
+                        majorDuty.setMinusYield(custMajorDuty.getMinusYield());
                         majorDuty.setMajorYield(new BigDecimal(0)); //通过存储过程计算
                         majorDuty.setPrincipalId(custMajorDuty.getPrincipalId());
                         addEntity(OcYieldMajorDuty.class, majorDuty);
                     } else {
-                        if ("principal".equalsIgnoreCase(opType)) { //只有各专业部门负责人会签保存时才会去修改各专业的负责人
+                        if ("RATIO".equalsIgnoreCase(opType)) { //只有专业比例保存时才会去修改各专业的专业扣减
+                            majorDuty = duties.get(0);
+                            majorDuty.setMinusYield(custMajorDuty.getMinusYield());
+                            ocYieldSchemeDao.update(OcYieldMajorDuty.class, majorDuty);
+                        } else if ("principal".equalsIgnoreCase(opType)) { //只有各专业部门负责人会签保存时才会去修改各专业的负责人
                             majorDuty = duties.get(0);
                             majorDuty.setPrincipalId(custMajorDuty.getPrincipalId());
                             ocYieldSchemeDao.update(OcYieldMajorDuty.class, majorDuty);
