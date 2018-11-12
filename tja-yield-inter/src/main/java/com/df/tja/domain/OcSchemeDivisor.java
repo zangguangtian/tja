@@ -79,6 +79,9 @@ public class OcSchemeDivisor extends BaseDomain {
     /** 属性：因子ID树。项目ID@阶段ID@专业ID@子项ID@任务ID@人员角色ID */
     private java.lang.String treePath;
 
+    /** 属性：备注 */
+    private java.lang.String remark;
+
     /**
      * <p> 属性：schemeId的Getter方法. </p>
      *
@@ -306,6 +309,25 @@ public class OcSchemeDivisor extends BaseDomain {
     public void setTreePath(java.lang.String treePath)
     {
         this.treePath = treePath;
+    }
+
+    /**
+     * <p> 属性remark的Getter方法. </p>
+     * 
+     * @return 返回remark属性的值
+     */
+    @Column(name = "REMARK")
+    public java.lang.String getRemark() {
+        return remark;
+    }
+
+    /**
+     * <p> 属性remark的Setter方法. </p>
+     * 
+     * @param remark 为属性remark设置的值
+     */
+    public void setRemark(java.lang.String remark) {
+        this.remark = remark;
     }
 
     /**
