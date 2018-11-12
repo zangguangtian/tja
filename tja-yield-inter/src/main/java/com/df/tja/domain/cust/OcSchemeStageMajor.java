@@ -2,6 +2,8 @@ package com.df.tja.domain.cust;
 
 import com.df.framework.base.domain.SuperDomain;
 
+import java.math.BigDecimal;
+
 /**
  * 
  * <p>OcSchemeStageMajor</p>
@@ -49,10 +51,10 @@ public class OcSchemeStageMajor extends SuperDomain {
     private String schemeStageName;
 
     /** 属性：策划阶段比例*/
-    private String schemeStageRatio;
+    private BigDecimal schemeStageRatio;
 
     /** 属性：策划阶段下面的专业数量 */
-    private String schemeStageCount;
+    private Integer schemeStageCount;
 
     /** 属性：策划专业ID*/
     private String schemeMajorId;
@@ -64,7 +66,7 @@ public class OcSchemeStageMajor extends SuperDomain {
     private String schemeMajorName;
 
     /** 属性：策划专业比例*/
-    private String schemeMajorRatio;
+    private BigDecimal schemeMajorRatio;
 
     /**
      * <p> 属性schemeId的Getter方法. </p>
@@ -215,7 +217,7 @@ public class OcSchemeStageMajor extends SuperDomain {
      * 
      * @return 返回schemeStageRatio属性的值
      */
-    public String getSchemeStageRatio() {
+    public BigDecimal getSchemeStageRatio() {
         return schemeStageRatio;
     }
 
@@ -224,7 +226,7 @@ public class OcSchemeStageMajor extends SuperDomain {
      * 
      * @param schemeStageRatio 为属性schemeStageRatio设置的值
      */
-    public void setSchemeStageRatio(String schemeStageRatio) {
+    public void setSchemeStageRatio(BigDecimal schemeStageRatio) {
         this.schemeStageRatio = schemeStageRatio;
     }
 
@@ -233,7 +235,7 @@ public class OcSchemeStageMajor extends SuperDomain {
      * 
      * @return 返回schemeStageCount属性的值
      */
-    public String getSchemeStageCount() {
+    public Integer getSchemeStageCount() {
         return schemeStageCount;
     }
 
@@ -242,7 +244,7 @@ public class OcSchemeStageMajor extends SuperDomain {
      * 
      * @param schemeStageCount 为属性schemeStageCount设置的值
      */
-    public void setSchemeStageCount(String schemeStageCount) {
+    public void setSchemeStageCount(Integer schemeStageCount) {
         this.schemeStageCount = schemeStageCount;
     }
 
@@ -305,7 +307,7 @@ public class OcSchemeStageMajor extends SuperDomain {
      * 
      * @return 返回schemeMajorRatio属性的值
      */
-    public String getSchemeMajorRatio() {
+    public BigDecimal getSchemeMajorRatio() {
         return schemeMajorRatio;
     }
 
@@ -314,7 +316,7 @@ public class OcSchemeStageMajor extends SuperDomain {
      * 
      * @param schemeMajorRatio 为属性schemeMajorRatio设置的值
      */
-    public void setSchemeMajorRatio(String schemeMajorRatio) {
+    public void setSchemeMajorRatio(BigDecimal schemeMajorRatio) {
         this.schemeMajorRatio = schemeMajorRatio;
     }
 

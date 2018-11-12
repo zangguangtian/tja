@@ -6,6 +6,7 @@ import com.df.tja.domain.OcScheme;
 import org.hibernate.SQLQuery;
 import org.hibernate.Transaction;
 import org.hibernate.transform.Transformers;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>OcSchemeDaoHbmImpl </p>
@@ -19,6 +20,7 @@ import org.hibernate.transform.Transformers;
  * @author deng.jiayan
  * @version 1.0.0
  */
+@Repository
 public class OcSchemeDaoHbmImpl extends BaseDaoHbmImpl implements IOcSchemeDao {
 
     @Override

@@ -5,6 +5,7 @@ import com.df.tja.dao.IOcSchemeStageMajorDao;
 import com.df.tja.domain.cust.OcSchemeStageMajor;
 import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -20,20 +21,22 @@ import java.util.List;
  * @author deng.jiayan
  * @version 1.0.0
  */
+@Repository
 public class OcSchemeStageMajorDaoHbmImpl extends BaseDaoHbmImpl implements IOcSchemeStageMajorDao {
 
     @Override
     public List<OcSchemeStageMajor> queryFullList(String proId) {
         StringBuilder sql = new StringBuilder();
 
-        sql.append("  SELECT SCHEME_STAGE_ID,SCHEME_STAGE_NAME,     ");
-        sql.append("      SCHEME_STAGE_RATIO,STAGE_MAJOR_COUNT,     ");
-        sql.append("      SCHEME_MAJOR_ID,SCHEME_MAJOR_CODE,        ");
-        sql.append("      SCHEME_MAJOR_NAME,SCHEME_MAJOR_RATIO      ");
+        sql.append("  SELECT SCHEME_STAGE_ID as schemeStageId,SCHEME_STAGE_NAME as schemeStageName,     ");
+        sql.append("      SCHEME_STAGE_RATIO as schemeStageRatio,STAGE_MAJOR_COUNT as schemeStageCount,     ");
+        sql.append("      SCHEME_MAJOR_ID as schemeMajorId,SCHEME_MAJOR_CODE as schemeMajorCode,        ");
+        sql.append("      SCHEME_MAJOR_NAME as schemeMajorName,SCHEME_MAJOR_RATIO as schemeMajorRatio      ");
         sql.append("  FROM                                          ");
         sql.append("      V_OC_SCHEME_STAGE_MAJOR                   ");
         sql.append("  WHERE                                         ");
         sql.append("      PRO_ID = ?                                ");
+        sql.append("  ORDER BY SCHEME_STAGE_ID                      ");
         SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
         query.setParameter(0, proId);
         query.setResultTransformer(Transformers.aliasToBean(OcSchemeStageMajor.class));

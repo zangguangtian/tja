@@ -77,7 +77,7 @@
                     </div>
                     <div class="form_group">
                         <label class="control-label col-md-2" style="font-weight: bold">项目WBS&nbsp&nbsp&nbsp&nbsp</label>
-                        <tags:config type="select" name="proWbs" cssClass="form-control" parentCode="OC.PROJECT.WBS" selectCode="${ocScheme.proWbs}"/>
+                        <tags:config type="select" name="proWbs" otherAttr="style='width: 100px'" cssClass="form-control" parentCode="OC.PROJECT.WBS" selectCode="${ocScheme.proWbs}"/>
                     </div>
                     <div class="tab-content">
                         <!-- 简化模式 -->
@@ -117,24 +117,38 @@
                                 <table class="table table-bordered edit">
                                     <thead>
                                     <tr class="form-group">
-                                        <th class="text-center col-lg-2">序号</th>
-                                        <th class="text-center col-lg-2">选择</th>
-                                        <th class="text-center col-lg-2">阶段</th>
+                                        <th class="text-center col-lg-1">序号</th>
+                                        <th class="text-center col-lg-1">选择</th>
+                                        <th class="text-center col-lg-3">阶段</th>
                                         <th class="text-center col-lg-2">比例</th>
-                                        <th class="text-center col-lg-2">专业</th>
+                                        <th class="text-center col-lg-3">专业</th>
                                         <th class="text-center col-lg-2">比例</th>
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    <c:set var="span" value="i"/>
+                                    <c:set var="no" value="1"/>
                                     <c:forEach items="${ocSchemeStageMajorList}" var="ocSchemeStageMajor">
-                                    <tr class="form-group">
-                                        <td class="text-center col-lg-2"></td>
-                                        <td class="col-lg-2 text-right"><input type="radio" name="full" class="text-center"/></td>
-                                        <td class="col-lg-2 text-right">${ocSchemeStageMajor.schemeStageName}</td>
-                                        <td class="col-lg-2 text-right">${ocSchemeStageMajor.schemeStageRatio}</td>
-                                        <td class="col-lg-2 text-right">${ocSchemeStageMajor.schemeMajorName}</td>
-                                        <td class="col-lg-2 text-right">${ocSchemeStageMajor.schemeMajorRatio}</td>
-                                    </tr>
+                                        <c:if test="${ocSchemeStageMajor.schemeStageId != span}">
+                                            <tr class="form-group">
+                                                <td class="text-center col-lg-1">${no}</td>
+                                                <td class="col-lg-1 text-right" rowspan="${ocSchemeStageMajor.schemeStageCount}"><input type="radio" name="full" class="text-center"/></td>
+                                                <td class="col-lg-3 text-right" rowspan="${ocSchemeStageMajor.schemeStageCount}">${ocSchemeStageMajor.schemeStageName}</td>
+                                                <td class="col-lg-2 text-right">${ocSchemeStageMajor.schemeStageRatio}</td>
+                                                <td class="col-lg-3 text-right">${ocSchemeStageMajor.schemeMajorName}</td>
+                                                <td class="col-lg-2 text-right">${ocSchemeStageMajor.schemeMajorRatio}</td>
+                                            </tr>
+                                        </c:if>
+                                        <c:if test="${ocSchemeStageMajor.schemeStageId == span}">
+                                            <tr class="form-group">
+                                                <td class="text-center col-lg-1"><c:out value="${no}"/></td>
+                                                <td class="col-lg-2 text-right">${ocSchemeStageMajor.schemeStageRatio}</td>
+                                                <td class="col-lg-3 text-right">${ocSchemeStageMajor.schemeMajorName}</td>
+                                                <td class="col-lg-2 text-right">${ocSchemeStageMajor.schemeMajorRatio}</td>
+                                            </tr>
+                                        </c:if>
+                                        <c:set var="span" value="${ocSchemeStageMajor.schemeStageId}"/>
+                                        <c:set var="no" value="${no+1}"/>
                                     </c:forEach>
                                     </tbody>
                                 </table>
@@ -243,6 +257,15 @@
 <script type="text/javascript">
 
     jQuery(function () {
+        jQuery("select[name='proWbs'] option:first").remove();
+        var proWbs = jQuery("select[name=proWbs]").val();
+        if(proWbs == 'OC.PROJECT.WBS.SIMPLE'){
+            jQuery("#tab_1").hide();
+            jQuery("#tab_0").show();
+        }else{
+            jQuery("#tab_1").show();
+            jQuery("#tab_0").hide();
+        }
         var upd = ${upd};
         if(upd === false){
             jQuery('select[name="proWbs"]').disabled = true;
@@ -250,7 +273,7 @@
     });
 
     function save() {
-
+        
     }
     
     //添加节点
@@ -275,15 +298,16 @@
             jQuery("#tab_0").show();
         }
     }
-    function switchNode(data) {
-        if(data==1){
-            jQuery("#node_1").show();
-            jQuery("#node_0").hide();
+    jQuery("select[name=proWbs]").on("click",function () {
+        var proWbs = jQuery("select[name=proWbs]").val();
+        if(proWbs == 'OC.PROJECT.WBS.SIMPLE'){
+            jQuery("#tab_1").hide();
+            jQuery("#tab_0").show();
         }else{
-            jQuery("#node_1").hide();
-            jQuery("#node_0").show();
+            jQuery("#tab_1").show();
+            jQuery("#tab_0").hide();
         }
-    }
+    });
 </script>
 </body>
 </html>

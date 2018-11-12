@@ -6,6 +6,7 @@ import com.df.tja.dao.IOcSchemeStageMajorDao;
 import com.df.tja.domain.cust.OcSchemeStageMajor;
 import com.df.tja.service.IOcSchemeStageMajorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ import java.util.List;
  * @author deng.jiayan
  * @version 1.0.0
  */
+@Service("ocSchemeStageMajorService")
 public class OcSchemeStageMajorServiceImpl extends BaseServiceImpl implements IOcSchemeStageMajorService {
 
     @Autowired

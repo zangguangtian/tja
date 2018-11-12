@@ -8,6 +8,7 @@ import com.df.tja.service.IOcSchemeService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
 
@@ -23,6 +24,7 @@ import java.lang.reflect.InvocationTargetException;
  * @author deng.jiayan
  * @version 1.0.0
  */
+@Service("ocSchemeService")
 public class OcSchemeServiceImpl extends BaseServiceImpl implements IOcSchemeService {
 
     @Autowired

@@ -36,13 +36,13 @@ public class ProjectPlanningController extends BaseController {
 
 
     @Autowired
-    IProjectService projectService;
+    private IProjectService projectService;
 
     @Autowired
-    IOcSchemeService ocSchemeService;
+    private IOcSchemeService ocSchemeService;
 
     @Autowired
-    IOcSchemeStageMajorService ocSchemeStageMajorService;
+    private IOcSchemeStageMajorService ocSchemeStageMajorService;
 
     /**
      *
