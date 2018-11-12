@@ -86,6 +86,7 @@
                         <!-- 完整模式 -->
                         <div class="tab-pane active" id="tab_1">
                             <div class="col-lg-5 ">
+                                <button class="btn green" id="addNode">节点</button>
                                 <table class="table table-bordered edit">
                                     <thead>
                                     <tr class="form-group">
@@ -156,8 +157,105 @@
             <!-- END FORM-->
         </div>
     </div>
+    <div style="display: none">
+        <div class="em_con1 " id="template_return">
+            <div class="em_form form">
+                <form method="post">
+                    <div class="form_group">
+                        <label class="control-label col-md-2" style="font-weight: bold">节点类型&nbsp&nbsp&nbsp&nbsp</label>
+                        <select name="" class="form-control" style="width: 100px">
+                            <option onclick="switchNode(0)">阶段</option>
+                            <option onclick="switchNode(1)">专业</option>
+                        </select>
+                    </div>
+                    <div class="tab-content">
+                        <!-- 阶段 -->
+                        <div class="tab-pane active" id="node_0">
+                            <div class="col-lg-5 ">
+                                <div class="form-group col-lg-6">
+                                    <label class="control-label col-md-4">序号</label>
+                                    <div class="col-md-7">
+                                        <input class="form-control"  type="text" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-6 ">
+                                    <label class="control-label col-md-4">名称</label>
+                                    <div class="col-md-7">
+                                        <select name="" class="form-control" style="width: 100px">
+                                            <option onclick="">阶段</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-6 ">
+                                    <label class="control-label col-md-4">比例</label>
+                                    <div class="col-md-7">
+                                        <input class="form-control"  type="text" value="">
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-6 ">
+                                    <label class="control-label col-md-4">专业负责人</label>
+                                    <div class="col-md-7">
+                                        <input class="form-control"  type="text" value="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-1"></div>
+                        </div>
+                    </div>
+                        <div class="tab-content">
+                            <!-- 专业 -->
+                            <div class="tab-pane active" id="node_1">
+                                <div class="col-lg-5 ">
+                                    <div class="form-group col-lg-6">
+                                        <label class="control-label col-md-4">序号</label>
+                                        <div class="col-md-7">
+                                            <input class="form-control"  type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-6 ">
+                                        <label class="control-label col-md-4">名称</label>
+                                        <div class="col-md-7">
+                                            <input class="form-control"  type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-6 ">
+                                        <label class="control-label col-md-4">比例</label>
+                                        <div class="col-md-7">
+                                            <input class="form-control"  type="text" value="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-lg-6 ">
+                                    </div>
+                                </div>
+                                <div class="col-lg-1"></div>
+                                <div class="col-lg-1"></div>
+                            </div>
+                        </div>
+                    <div class="clearfix">
+                        <div class="em_sub">
+                            <button type="button" class="btn blue" onclick="saveReturn(this)">保存</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 <script type="text/javascript">
+
+    //添加节点
+    jQuery("#addNode").on("click",function(){
+        var returnHtml = $("#template_return").parent().html();
+        layer.open({
+            type: 1,
+            title: "复职",
+            area: ['600px', '320px'], //宽高
+            shade: [0.5, "#393D49"],
+            closeBtn: 2,
+            content: returnHtml
+        });
+    });
+
     function switchTable(data) {
         if(data==1){
             jQuery("#tab_1").show();
@@ -165,6 +263,15 @@
         }else{
             jQuery("#tab_1").hide();
             jQuery("#tab_0").show();
+        }
+    }
+    function switchNode(data) {
+        if(data==1){
+            jQuery("#node_1").show();
+            jQuery("#node_0").hide();
+        }else{
+            jQuery("#node_1").hide();
+            jQuery("#node_0").show();
         }
     }
 </script>
