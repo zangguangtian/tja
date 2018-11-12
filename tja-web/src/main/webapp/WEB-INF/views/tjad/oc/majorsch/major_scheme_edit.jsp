@@ -54,160 +54,100 @@
 						<label class="control-label">${project.pManagers}</label>
 					</div>
 				</div>
+				<div class="form-group col-lg-6 ">
+					<label class="control-label col-md-4">所属阶段</label>
+					<div class="col-md-7">
+						<label class="control-label">${stageMajor.schemeStageName}</label>
+					</div>
+				</div>
+				<div class="form-group col-lg-6 ">
+					<label class="control-label col-md-4">策划专业</label>
+					<div class="col-md-7">
+						<label class="control-label">${stageMajor.schemeMajorName}</label>
+					</div>
+				</div>
+				<div class="form-group col-lg-12 ">
+					<label class="control-label col-md-2"><strong>项目WBS</strong></label>
+					<div class="col-md-7">
+						<label class="control-label">${stageMajor.wbsName}</label>
+					</div>
+				</div>
 
 				<div class="col-md-12">
 					<div class="tabbable-line boxless tabbable-reversed">
-				    	<ul class="nav nav-tabs">
-				        	<li class="active">
-				            	<a href="#tab_0" data-toggle="tab" aria-expanded="true">项目角色</a>
-				            </li>
-				            <li class="">
-				                <a href="#tab_1" data-toggle="tab" aria-expanded="false">专业角色</a>
-				            </li>
-				            <li class="">
-				                <a href="#tab_2" data-toggle="tab" aria-expanded="false">专业比例</a>
-				        	</li>
-				        </ul>
-				       	<div class="tab-content">
-				       		<!-- 项目角色 -->
-				            <div class="tab-pane active" id="tab_0">
-				            	<div class="col-lg-5 ">
-									<table class="table table-bordered edit">
-										<thead>
-											<tr class="form-group">
-												<th class="text-center col-lg-4">角色</th>
-												<th class="text-center">分配比例(%)<span class="required">※</span></th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr class="form-group">
-												<td class="text-center col-lg-4">项目负责人</td>
-												<td class="col-lg-8 input-icon left">
-													<i class="fa"></i>
-													<input name="projectExtend.principalRate" 
-														   value="${project.projectExtend.principalRate}" 
-														   onkeyup="rateAdd()" 
-														   type="text" 
-														   placeholder="0.00" 
-														   data-rule-required="true" 
-														   data-rule-number="true" 
-														   data-rule-max="100" 
-														   data-rule-min="0" 
-														   class="text-right">
-												</td>
-											</tr>
-											<tr class="form-group">
-												<td class="text-center col-lg-4">项目经理</td>
-												<td class="col-lg-8 input-icon left">
-													<i class="fa"></i>
-													<input name="projectExtend.pmRate" 
-														   value="${project.projectExtend.pmRate}" 
-														   onkeyup="rateAdd()" 
-														   type="text" 
-														   placeholder="0.00" 
-														   data-rule-required="true" 
-														   data-rule-number="true" 
-														   data-rule-max="100" 
-														   data-rule-min="0" 
-														   class="text-right">
-												</td>
-											</tr>
-											<tr class="form-group">
-												<td class="text-center col-lg-4">项目秘书</td>
-												<td class="col-lg-8 input-icon left">
-													<i class="fa"></i>
-													<input name="projectExtend.secretRate" 
-														   value="${project.projectExtend.secretRate}" 
-														   onkeyup="rateAdd()" 
-														   type="text" 
-														   placeholder="0.00" 
-														   data-rule-required="true" 
-														   data-rule-number="true" 
-														   data-rule-max="100" 
-														   data-rule-min="0" 
-														   class="text-right">
-												</td>
-											</tr>
-											<tr>
-												<td class="text-center col-lg-4">合计</td>
-												<td class="col-lg-8 text-right" id="rateSum">${project.projectExtend.principalRate + project.projectExtend.pmRate + project.projectExtend.secretRate}</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-								<div class="col-lg-1"></div>
-							</div>
-				       		<!-- 专业角色 -->
-				       		<div class="tab-pane" id="tab_1">
-				       			<div class="col-lg-5 ">
-									<table class="table table-bordered edit">
-										<thead>
-											<tr class="form-group">
-												<th class="text-center col-lg-4">角色</th>
-												<th class="text-center">分配比例(%)<span class="required">※</span></th>
-											</tr>
-										</thead>
-										<tbody>
-											<c:set var="rateIndex" value="0"/>
-											<c:forEach items="${project.majorRoleRateList }" var="rate" varStatus="s">
-											<c:if test="${rate.allotCategory eq '1000'}">
-												<tr class="form-group">
-													<td class="text-center col-lg-4">${rate.allotName }</td>
-													<td class="col-lg-8 input-icon left">
-														<i class="fa"></i>
-														<input name="majorRoleRateList[${rateIndex}].id" type="hidden" value="${rate.id }">
-														<input name="majorRoleRateList[${rateIndex}].proId" type="hidden" value="${project.id }">
-														<input name="majorRoleRateList[${rateIndex}].allotCategory" type="hidden" value="1000">
-														<input name="majorRoleRateList[${rateIndex}].allotCode" type="hidden" value="${rate.allotCode }">
-														<input name="majorRoleRateList[${rateIndex}].allotRate" 
-															   value="${rate.allotRate }" 
-															   type="text" 
-															   placeholder="0.00" 
-															   data-rule-required="true" 
-															   data-rule-number="true" 
-															   data-rule-max="100" 
-														   	   data-rule-min="0" 
-															   class="text-right">
-													</td>
-												</tr>
-												<c:set var="rateIndex" value="${rateIndex+1}"/>
-											</c:if>
-											</c:forEach>
-										</tbody>
-									</table>
-								</div>
-								<div class="col-lg-1"></div>
-							</div>
+				       	<div class="tab-content" style="padding-top:10px;">
+				       		<label class="btn blue" style="margin-bottom:10px;margin-left:15px;"><i class="fa fa-plus"></i>节点</label>
+				       		<label class="btn blue" style="margin-bottom:10px;"><i class="fa fa-plus"></i>人员</label>
 				       		<!-- 专业比例 -->
-				       		<div class="tab-pane" id="tab_2">
-				       			<div class="col-lg-5 ">
-									<table class="table table-bordered edit">
-										<thead>
-											<tr>
-												<th class="text-center col-lg-4">专业</th>
-												<th class="text-center">分配比例(%)</th>
-											</tr>
-										</thead>
-										<tbody>
-											<c:set var="rateSum" value="0"/>
-											<c:forEach items="${project.majorRoleRateList }" var="rate" varStatus="s">
-											<c:if test="${rate.allotCategory eq '2000'}">
+			       			<div class="col-lg-12 ">
+								<table class="table table-bordered edit">
+									<thead>
+										<tr>
+											<th class="text-center">选择</th>
+											<th class="text-center">子项</th>
+											<th class="text-center">比例(%)</th>
+											<th class="text-center">任务</th>
+											<th class="text-center">比例(%)</th>
+											<th class="text-center">项目角色</th>
+											<th class="text-center">姓名</th>
+											<th class="text-center">比例(%)</th>
+											<th class="text-center">任职部门</th>
+											<th class="text-center">备注</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:set var="subId" value="A"/>
+										<c:set var="taskId" value="A"/>
+										<c:forEach items="${subTasks }" var="task">
+											<%--既不同子项又不同任务 --%>
+											<c:if test="${subId != task.subId && taskId != task.taskId }">
 												<tr>
-													<td class="text-center col-lg-4">${rate.allotName }</td>
-													<td class="col-lg-8 text-right">${rate.allotRate }</td>
+													<td class="text-center" rowspan="${task.taskUserCount }">
+														<input type="radio" name="task">
+													</td>
+													<td rowspan="${task.subTaskCount }">${task.subName }</td>
+													<td rowspan="${task.subTaskCount }" class="text-right">${task.subRatio }</td>
+													<td rowspan="${task.taskUserCount }">${task.taskName }</td>
+													<td rowspan="${task.taskUserCount }" class="text-right">${task.taskRatio }</td>
+													<td>${task.userRoleName }</td>
+													<td>${task.staffName }</td>
+													<td class="text-right">${task.userRatio }</td>
+													<td>${task.orgName }</td>
+													<td>${task.remark }</td>
 												</tr>
-											<c:set var="rateSum" value="${rateSum + rate.allotRate }"/>
 											</c:if>
-											</c:forEach>
+											<%--既同子项又不同任务 --%>
+											<c:if test="${subId == task.subId && taskId != task.taskId }">
 												<tr>
-													<td class="text-center col-lg-4">合计</td>
-													<td class="col-lg-8 text-right">${rateSum }</td>
+													<td class="text-center" rowspan="${task.taskUserCount }">
+														<input type="radio" name="task">
+													</td>
+													<td rowspan="${task.taskUserCount }">${task.taskName }</td>
+													<td rowspan="${task.taskUserCount }" class="text-right">${task.taskRatio }</td>
+													<td>${task.userRoleName }</td>
+													<td>${task.staffName }</td>
+													<td class="text-right">${task.userRatio }</td>
+													<td>${task.orgName }</td>
+													<td>${task.remark }</td>
 												</tr>
-										</tbody>
-									</table>
-								</div>
-								<div class="col-lg-1"></div>
+											</c:if>
+											<%--既同子项又同任务 --%>
+											<c:if test="${subId == task.subId && taskId == task.taskId }">
+												<tr>
+													<td>${task.userRoleName }</td>
+													<td>${task.staffName }</td>
+													<td class="text-right">${task.userRatio }</td>
+													<td>${task.orgName }</td>
+													<td>${task.remark }</td>
+												</tr>
+											</c:if>
+											<c:set var="subId" value="${task.subId }"/>
+											<c:set var="taskId" value="${task.taskId }"/>
+										</c:forEach>
+									</tbody>
+								</table>
 							</div>
+							<div class="col-lg-1"></div>
 						</div>
 			   		</div>
 			   	</div>
