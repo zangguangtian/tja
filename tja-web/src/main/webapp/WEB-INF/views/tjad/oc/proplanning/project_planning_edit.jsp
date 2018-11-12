@@ -77,41 +77,9 @@
                     </div>
                     <div class="form_group">
                         <label class="control-label col-md-2" style="font-weight: bold">项目WBS&nbsp&nbsp&nbsp&nbsp</label>
-                        <select name="" class="form-control" style="width: 100px">
-                            <option onclick="switchTable(0)">简化模式</option>
-                            <option onclick="switchTable(1)">完整模式</option>
-                        </select>
+                        <tags:config type="select" name="proWbs" cssClass="form-control" parentCode="OC.PROJECT.WBS" selectCode="${ocScheme.proWbs}"/>
                     </div>
                     <div class="tab-content">
-                        <!-- 完整模式 -->
-                        <div class="tab-pane active" id="tab_1">
-                            <div class="col-lg-5 ">
-                                <button class="btn green" id="addNode">节点</button>
-                                <table class="table table-bordered edit">
-                                    <thead>
-                                    <tr class="form-group">
-                                        <th class="text-center col-lg-2">序号</th>
-                                        <th class="text-center col-lg-2">选择</th>
-                                        <th class="text-center col-lg-2">阶段</th>
-                                        <th class="text-center col-lg-2">比例</th>
-                                        <th class="text-center col-lg-2">专业</th>
-                                        <th class="text-center col-lg-2">比例</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr class="form-group">
-                                        <td class="text-center col-lg-2"></td>
-                                        <td class="col-lg-2 text-right"></td>
-                                        <td class="col-lg-2 text-right"></td>
-                                        <td class="col-lg-2 text-right"></td>
-                                        <td class="col-lg-2 text-right"></td>
-                                        <td class="col-lg-2 text-right"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-lg-1"></div>
-                        </div>
                         <!-- 简化模式 -->
                         <div class="tab-pane" id="tab_0">
                             <div class="col-lg-5 ">
@@ -137,6 +105,37 @@
                                         <td class="col-lg-2 text-right"></td>
                                         <td class="col-lg-2 text-right"></td>
                                     </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-lg-1"></div>
+                        </div>
+                        <!-- 完整模式 -->
+                        <div class="tab-pane active" id="tab_1">
+                            <div class="col-lg-5 ">
+                                <button class="btn green" id="addNode">节点</button>
+                                <table class="table table-bordered edit">
+                                    <thead>
+                                    <tr class="form-group">
+                                        <th class="text-center col-lg-2">序号</th>
+                                        <th class="text-center col-lg-2">选择</th>
+                                        <th class="text-center col-lg-2">阶段</th>
+                                        <th class="text-center col-lg-2">比例</th>
+                                        <th class="text-center col-lg-2">专业</th>
+                                        <th class="text-center col-lg-2">比例</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach items="${ocSchemeStageMajorList}" var="ocSchemeStageMajor">
+                                    <tr class="form-group">
+                                        <td class="text-center col-lg-2"></td>
+                                        <td class="col-lg-2 text-right"><input type="radio" name="full" class="text-center"/></td>
+                                        <td class="col-lg-2 text-right">${ocSchemeStageMajor.schemeStageName}</td>
+                                        <td class="col-lg-2 text-right">${ocSchemeStageMajor.schemeStageRatio}</td>
+                                        <td class="col-lg-2 text-right">${ocSchemeStageMajor.schemeMajorName}</td>
+                                        <td class="col-lg-2 text-right">${ocSchemeStageMajor.schemeMajorRatio}</td>
+                                    </tr>
+                                    </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
@@ -221,7 +220,7 @@
                                     <div class="form-group col-lg-6 ">
                                         <label class="control-label col-md-4">比例</label>
                                         <div class="col-md-7">
-                                            <input class="form-control"  type="text" value="">
+                                            <input class="form-control" type="text" value="">
                                         </div>
                                     </div>
                                     <div class="form-group col-lg-6 ">
@@ -233,7 +232,7 @@
                         </div>
                     <div class="clearfix">
                         <div class="em_sub">
-                            <button type="button" class="btn blue" onclick="saveReturn(this)">保存</button>
+                            <button type="button" class="btn blue" onclick="saveReturn()">保存</button>
                         </div>
                     </div>
                 </form>
@@ -243,6 +242,17 @@
 </div>
 <script type="text/javascript">
 
+    jQuery(function () {
+        var upd = ${upd};
+        if(upd === false){
+            jQuery('select[name="proWbs"]').disabled = true;
+        }
+    });
+
+    function save() {
+
+    }
+    
     //添加节点
     jQuery("#addNode").on("click",function(){
         var returnHtml = $("#template_return").parent().html();

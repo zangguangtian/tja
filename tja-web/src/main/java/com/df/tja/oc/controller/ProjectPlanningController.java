@@ -1,15 +1,20 @@
 package com.df.tja.oc.controller;
 
-import com.df.project.domain.Project;
+import com.df.framework.base.controller.BaseController;
 import com.df.project.domain.cust.CustProject;
 import com.df.project.service.IProjectService;
 import com.df.tja.domain.OcScheme;
+import com.df.tja.domain.cust.OcSchemeStageMajor;
+import com.df.tja.service.IOcSchemeService;
+import com.df.tja.service.IOcSchemeStageMajorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.List;
 
 /**
  * <p>ProjectPlanningController</p>
@@ -27,11 +32,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 @RequestMapping("/admin/project/planning")
-public class ProjectPlanningController {
+public class ProjectPlanningController extends BaseController {
 
 
     @Autowired
     IProjectService projectService;
+
+    @Autowired
+    IOcSchemeService ocSchemeService;
+
+    @Autowired
+    IOcSchemeStageMajorService ocSchemeStageMajorService;
 
     /**
      *
@@ -40,7 +51,7 @@ public class ProjectPlanningController {
      * @return
      * @throws RuntimeException
      */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = {RequestMethod.GET, RequestMethod.POST})
     public String list() throws RuntimeException {
         return "/tjad/oc/proplanning/project_planning_list";
     }
@@ -48,18 +59,26 @@ public class ProjectPlanningController {
     /**
      * <p>描述 : 项目策划信息编辑页面  </p>
      *
-     * @return
+     * @return proId
      * @throws RuntimeException
      */
-    @RequestMapping(value = "/{proId}",method = RequestMethod.GET)
+    @RequestMapping(value = "/{proId}",method = {RequestMethod.GET, RequestMethod.POST})
     public String toedit(@PathVariable("proId") String proId, Model model) throws  RuntimeException {
         CustProject project = projectService.queryByProId(proId);
         model.addAttribute("project",project);
-        /** 是否策划 */
-        Integer isOcScheme = projectService.queryCountByCondition(OcScheme.class,project);
-        if(isOcScheme != null && isOcScheme != 0){
-
+        /** 策划 */
+        OcScheme ocScheme = ocSchemeService.queryByProId(proId);
+        if(ocScheme!=null){
+            model.addAttribute("upd",true);
+            model.addAttribute("ocScheme",ocScheme);
+        }else{
+            model.addAttribute("upd",false);
         }
+
+        /** 完整模式 */
+        List<OcSchemeStageMajor> ocSchemeStageMajorList = ocSchemeStageMajorService.queryFullList(proId);
+        model.addAttribute("ocSchemeStageMajorList",ocSchemeStageMajorList);
+
         return "/tjad/oc/proplanning/project_planning_edit";
     }
 
