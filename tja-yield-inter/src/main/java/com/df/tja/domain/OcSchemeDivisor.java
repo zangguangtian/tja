@@ -9,15 +9,18 @@ package com.df.tja.domain;
  * 2017 上海一勤信息技术有限公司-版权所有
  */
 
-import com.df.framework.base.domain.BaseDomain;
-import java.util.*;
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import com.df.framework.base.domain.BaseDomain;
 
 /**
  * <p>OcSchemeDivisor </p>
@@ -62,10 +65,13 @@ public class OcSchemeDivisor extends BaseDomain {
     private java.lang.String staffId;
 
     /** 属性：策划比例 */
-    private Double schemeRatio;
+    private BigDecimal schemeRatio;
 
     /** 属性：因子负责人(主要指专业负责人) */
     private java.lang.String divisorDirector;
+
+    /** 属性：因子级别。1：阶段；2：专业；3：子项；4：任务；5：人员角色； */
+    private Integer divisorSort;
 
     /** 属性：因子级别。1：阶段；2：专业；3：子项；4：任务；5：人员角色； */
     private Integer divisorGrade;
@@ -205,7 +211,7 @@ public class OcSchemeDivisor extends BaseDomain {
      * @return 返回策划比例属性的值
      */
     @Column(name="SCHEME_RATIO")
-    public Double getSchemeRatio()
+    public BigDecimal getSchemeRatio()
     {
         return schemeRatio;
     }
@@ -215,7 +221,7 @@ public class OcSchemeDivisor extends BaseDomain {
      *
      * @param schemeRatio 为属性schemeRatio设置的值
      */
-    public void setSchemeRatio(Double schemeRatio)
+    public void setSchemeRatio(BigDecimal schemeRatio)
     {
         this.schemeRatio = schemeRatio;
     }
@@ -239,6 +245,25 @@ public class OcSchemeDivisor extends BaseDomain {
     public void setDivisorDirector(java.lang.String divisorDirector)
     {
         this.divisorDirector = divisorDirector;
+    }
+
+    /**
+     * <p> 属性divisorSort的Getter方法. </p>
+     * 
+     * @return 返回divisorSort属性的值
+     */
+    @Column(name = "DIVISOR_SORT")
+    public Integer getDivisorSort() {
+        return divisorSort;
+    }
+
+    /**
+     * <p> 属性divisorSort的Setter方法. </p>
+     * 
+     * @param divisorSort 为属性divisorSort设置的值
+     */
+    public void setDivisorSort(Integer divisorSort) {
+        this.divisorSort = divisorSort;
     }
 
     /**
