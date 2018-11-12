@@ -30,6 +30,9 @@ public class OcSchemeStageMajor extends SuperDomain {
     /** 属性：项目WBS*/
     private String proWbs;
 
+    /** 属性：项目WBS名称*/
+    private String wbsName;
+
     /** 属性：项目ID*/
     private String proId;
 
@@ -53,6 +56,9 @@ public class OcSchemeStageMajor extends SuperDomain {
 
     /** 属性：策划专业ID*/
     private String schemeMajorId;
+
+    /** 属性：策划专业代码*/
+    private String schemeMajorCode;
 
     /** 属性：策划专业名称*/
     private String schemeMajorName;
@@ -94,6 +100,24 @@ public class OcSchemeStageMajor extends SuperDomain {
      */
     public void setProWbs(String proWbs) {
         this.proWbs = proWbs;
+    }
+
+    /**
+     * <p> 属性wbsName的Getter方法. </p>
+     * 
+     * @return 返回wbsName属性的值
+     */
+    public String getWbsName() {
+        return wbsName;
+    }
+
+    /**
+     * <p> 属性wbsName的Setter方法. </p>
+     * 
+     * @param wbsName 为属性wbsName设置的值
+     */
+    public void setWbsName(String wbsName) {
+        this.wbsName = wbsName;
     }
 
     /**
@@ -238,6 +262,24 @@ public class OcSchemeStageMajor extends SuperDomain {
      */
     public void setSchemeMajorId(String schemeMajorId) {
         this.schemeMajorId = schemeMajorId;
+    }
+
+    /**
+     * <p> 属性schemeMajorCode的Getter方法. </p>
+     * 
+     * @return 返回schemeMajorCode属性的值
+     */
+    public String getSchemeMajorCode() {
+        return schemeMajorCode;
+    }
+
+    /**
+     * <p> 属性schemeMajorCode的Setter方法. </p>
+     * 
+     * @param schemeMajorCode 为属性schemeMajorCode设置的值
+     */
+    public void setSchemeMajorCode(String schemeMajorCode) {
+        this.schemeMajorCode = schemeMajorCode;
     }
 
     /**
