@@ -12,7 +12,9 @@
 
 package com.df.tja.oc.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,10 +22,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.df.framework.base.controller.BaseController;
+import com.df.framework.exception.LogicalException;
 import com.df.project.domain.cust.CustProject;
 import com.df.project.service.IProjectService;
+import com.df.tja.domain.cust.CustSchemeMajorNode;
 import com.df.tja.domain.cust.OcSchemeMajorTask;
 import com.df.tja.domain.cust.OcSchemeStageMajor;
 import com.df.tja.service.IMajorSchemeService;
@@ -66,7 +71,7 @@ public class MajorSchemeController extends BaseController {
 
     /**
      * 
-     * <p>描述 : 专业策划编辑</p>
+     * <p>描述 : 专业策划编辑 </p>
      *
      * @param proId
      * @param schemeId
@@ -88,5 +93,47 @@ public class MajorSchemeController extends BaseController {
         model.addAttribute("subTasks", subTasks);
 
         return "/tjad/oc/majorsch/major_scheme_edit";
+    }
+
+    /**
+     * 
+     * <p>描述 : 打开添加节点页面 </p>
+     *
+     * @param id
+     * @param model
+     * @return
+     * @throws RuntimeException
+     */
+    @RequestMapping(value = "/ajax/addnode/{majorId}/{subId}", method = RequestMethod.GET)
+    public String toAddNode(@PathVariable("majorId") String majorId, @PathVariable("subId") String subId, Model model)
+            throws RuntimeException {
+        model.addAttribute("majorId", majorId);
+        model.addAttribute("subId", subId);
+        return "/tjad/oc/majorsch/major_scheme_addnode";
+    }
+
+    /**
+     * 
+     * <p>描述 : </p>
+     *
+     * @param sysConfig
+     * @return
+     */
+    @RequestMapping(value = "/ajax/addnode", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, String> addNode(CustSchemeMajorNode schemeNode) {
+        Map<String, String> mess = new HashMap<String, String>();
+        try {
+            majorSchemeService.createSchemeMajorNode(schemeNode);
+            mess.put("success", "true");
+            mess.put("mess", "保存成功!");
+        } catch (LogicalException ex) {
+            mess.put("success", "false");
+            mess.put("mess", ex.getMess());
+        } catch (RuntimeException ex) {
+            mess.put("success", "false");
+            mess.put("mess", "保存失败!");
+        }
+        return mess;
     }
 }

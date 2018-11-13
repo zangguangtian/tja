@@ -17,6 +17,7 @@
 		<div class="form">
 			<!-- BEGIN FORM-->
 			<form action="" class="" id="majorSchForm">
+			<input type="hidden" name="majorId" value="${stageMajor.schemeMajorId }">
 			<div class="form-body clearfix">
 				<div class="form-group col-lg-6 ">
 					<label class="control-label col-md-4">项目编号</label>
@@ -76,11 +77,11 @@
 				<div class="col-md-12">
 					<div class="tabbable-line boxless tabbable-reversed">
 				       	<div class="tab-content" style="padding-top:10px;">
-				       		<label class="btn blue" style="margin-bottom:10px;margin-left:15px;"><i class="fa fa-plus"></i>节点</label>
-				       		<label class="btn blue" style="margin-bottom:10px;"><i class="fa fa-plus"></i>人员</label>
+				       		<label id="add-node" class="btn blue" style="margin-bottom:10px;margin-left:15px;"><i class="fa fa-plus"></i>节点</label>
+				       		<label id="add-person" class="btn blue" style="margin-bottom:10px;"><i class="fa fa-plus"></i>人员</label>
 				       		<!-- 专业比例 -->
 			       			<div class="col-lg-12 ">
-								<table class="table table-bordered edit">
+								<table id="majorSchemeTab" class="table table-bordered edit">
 									<thead>
 										<tr>
 											<th class="text-center">选择</th>
@@ -103,7 +104,7 @@
 											<c:if test="${subId != task.subId && taskId != task.taskId }">
 												<tr>
 													<td class="text-center" rowspan="${task.taskUserCount }">
-														<input type="radio" name="task">
+														<input type="radio" name="task" data-subid="${task.subId }">
 													</td>
 													<td rowspan="${task.subTaskCount }">${task.subName }</td>
 													<td rowspan="${task.subTaskCount }" class="text-right">${task.subRatio }</td>
@@ -120,7 +121,7 @@
 											<c:if test="${subId == task.subId && taskId != task.taskId }">
 												<tr>
 													<td class="text-center" rowspan="${task.taskUserCount }">
-														<input type="radio" name="task">
+														<input type="radio" name="task" data-subid="${task.subId }">
 													</td>
 													<td rowspan="${task.taskUserCount }">${task.taskName }</td>
 													<td rowspan="${task.taskUserCount }" class="text-right">${task.taskRatio }</td>
@@ -169,7 +170,42 @@
 </div>
 <div class="clearfix"></div>
 <script type="text/javascript">
+$(function(){
+	/**添加节点*/
+    jQuery("#add-node").click(addNode);
+    
+	/**添加人员*/
+    jQuery("#add-persion").click(addPerson);
+});
 
+function addNode(){
+	var nodeLen = $("#majorSchemeTab tbody input[type='radio']:checked").length;
+	if(nodeLen == 0){
+		$.jalert({"jatext":"请在列表中选择一个任务!"});
+		return false;
+	}
+	var majorId = $("input[name='majorId']").val();
+	var subId = $("#majorSchemeTab tbody input[type='radio']:checked").data("subid");
+	layer.open({
+        type: 2,
+        shade: [0.5, "#393D49"],
+        closeBtn: 2,
+        title: "添加节点", //不显示标
+        area: ["600px", "350px"],
+        content: "${site}/admin/major/scheme/ajax/addnode/"+majorId+"/"+subId
+    })
+}
+
+function addPerson(){
+	layer.open({
+        type: 2,
+        shade: [0.5, "#393D49"],
+        closeBtn: 2,
+        title: "添加用户", //不显示标
+        area: ["400px", "550px"],
+        content: "${site}/admin/sys/config/ajax/toadd/${empty sysconfig? '0':sysconfig.id}"
+    })
+}
 </script>
 </body>
 </html>

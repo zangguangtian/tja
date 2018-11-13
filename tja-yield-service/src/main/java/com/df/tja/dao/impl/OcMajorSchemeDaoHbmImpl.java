@@ -18,9 +18,9 @@ public class OcMajorSchemeDaoHbmImpl extends BaseDaoHbmImpl implements IOcMajorS
     @Override
     public OcSchemeStageMajor selectOcSchemeStageMajorById(String majorId) {
         StringBuffer sql = new StringBuffer("");
-        sql.append("SELECT T.WBS_NAME AS wbsName, T.SCHEME_STAGE_NAME AS schemeStageName,  ");
-        sql.append(" T.SCHEME_MAJOR_NAME AS schemeMajorName FROM V_OC_SCHEME_STAGE_MAJOR T ");
-        sql.append(" WHERE T.SCHEME_MAJOR_ID = ?                                           ");
+        sql.append("SELECT T.WBS_NAME AS wbsName, T.SCHEME_STAGE_NAME AS schemeStageName,       ");
+        sql.append(" T.SCHEME_MAJOR_NAME AS schemeMajorName, T.SCHEME_MAJOR_ID AS schemeMajorId ");
+        sql.append(" FROM V_OC_SCHEME_STAGE_MAJOR T WHERE T.SCHEME_MAJOR_ID = ?                 ");
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
         sqlQuery.setString(0, majorId);
         sqlQuery.setResultTransformer(Transformers.aliasToBean(OcSchemeStageMajor.class));

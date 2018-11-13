@@ -3,6 +3,8 @@ package com.df.tja.service;
 import java.util.List;
 
 import com.df.framework.base.service.IBaseService;
+import com.df.framework.exception.LogicalException;
+import com.df.tja.domain.cust.CustSchemeMajorNode;
 import com.df.tja.domain.cust.OcSchemeMajorTask;
 import com.df.tja.domain.cust.OcSchemeStageMajor;
 
@@ -40,4 +42,12 @@ public interface IMajorSchemeService extends IBaseService {
      * @return
      */
     List<OcSchemeMajorTask> queryMajorTaskById(String majorId);
+
+    /**
+     * 
+     * <p>描述 : 专业策划增加节点 </p>
+     *
+     * @param majorNode
+     */
+    void createSchemeMajorNode(CustSchemeMajorNode majorNode) throws LogicalException;
 }
