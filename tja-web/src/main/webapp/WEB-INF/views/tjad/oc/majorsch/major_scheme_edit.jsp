@@ -103,8 +103,8 @@
 											<%--既不同子项又不同任务 --%>
 											<c:if test="${subId != task.subId && taskId != task.taskId }">
 												<tr>
-													<td class="text-center" rowspan="${task.taskUserCount }">
-														<input type="radio" name="task" data-subid="${task.subId }">
+													<td class="text-center" data-subid="${task.subId }" rowspan="${task.taskUserCount }">
+														<input type="radio" name="task" data-subid="${task.subId }" data-taskid="${task.taskId }">
 													</td>
 													<td rowspan="${task.subTaskCount }">${task.subName }</td>
 													<td rowspan="${task.subTaskCount }" class="text-right">${task.subRatio }</td>
@@ -121,7 +121,7 @@
 											<c:if test="${subId == task.subId && taskId != task.taskId }">
 												<tr>
 													<td class="text-center" rowspan="${task.taskUserCount }">
-														<input type="radio" name="task" data-subid="${task.subId }">
+														<input type="radio" name="task" data-subid="${task.subId }" data-taskid="${task.taskId }">
 													</td>
 													<td rowspan="${task.taskUserCount }">${task.taskName }</td>
 													<td rowspan="${task.taskUserCount }" class="text-right">${task.taskRatio }</td>
@@ -184,15 +184,28 @@ function addNode(){
 		$.jalert({"jatext":"请在列表中选择一个任务!"});
 		return false;
 	}
+	
 	var majorId = $("input[name='majorId']").val();
-	var subId = $("#majorSchemeTab tbody input[type='radio']:checked").data("subid");
+	var checkedRadio = $("#majorSchemeTab tbody input[type='radio']:checked");
+	var subId = checkedRadio.data("subid");
+	
+	//子项数量
+	var subIndexs = $("#majorSchemeTab tbody td[data-subid]").length;
+	//选中的任务的子项下，任务的数
+	var taskIndexs = checkedRadio.closest("td").prop("rowspan");
+	//如果子项下面还没有任务，则下标从0开始
+	if(taskIndexs == 1 && (checkedRadio.data("taskid") == null ||
+			checkedRadio.data("taskid") == "")){
+		taskIndexs = 0;
+	}
+	
 	layer.open({
         type: 2,
         shade: [0.5, "#393D49"],
         closeBtn: 2,
         title: "添加节点", //不显示标
         area: ["600px", "350px"],
-        content: "${site}/admin/major/scheme/ajax/addnode/"+majorId+"/"+subId
+        content: "${site}/admin/major/scheme/ajax/addnode/"+majorId+"/"+subId+"/"+subIndexs+"/"+taskIndexs
     })
 }
 

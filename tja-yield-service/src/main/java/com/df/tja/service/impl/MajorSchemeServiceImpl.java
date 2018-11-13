@@ -31,10 +31,13 @@ public class MajorSchemeServiceImpl extends BaseServiceImpl implements IMajorSch
 
     public void createSchemeMajorNode(CustSchemeMajorNode majorNode) throws LogicalException {
         try {
+            Integer divisorSort = null;
             OcSchemeDivisor ocSchemeDivisor = null;
             if ("s".equals(majorNode.getNodeType())) { //子项
+                divisorSort = majorNode.getSubSort();
                 ocSchemeDivisor = majorSchemeDao.selectByPrimaryKey(OcSchemeDivisor.class, majorNode.getMajorId());
             } else if ("t".equals(majorNode.getNodeType())) { //节点
+                divisorSort = majorNode.getTaskSort();
                 ocSchemeDivisor = majorSchemeDao.selectByPrimaryKey(OcSchemeDivisor.class, majorNode.getSubId());
             }
 
@@ -48,6 +51,7 @@ public class MajorSchemeServiceImpl extends BaseServiceImpl implements IMajorSch
             schemeDivisor.setDivisorName(majorNode.getDivisorName());
             schemeDivisor.setSchemeRatio(majorNode.getSchemeRatio());
             schemeDivisor.setDivisorGrade(ocSchemeDivisor.getDivisorGrade() + 1);
+            schemeDivisor.setDivisorSort(divisorSort);
             majorSchemeDao.insert(OcSchemeDivisor.class, schemeDivisor);
 
             schemeDivisor.setTreePath(ocSchemeDivisor.getTreePath() + schemeDivisor.getId() + "@");

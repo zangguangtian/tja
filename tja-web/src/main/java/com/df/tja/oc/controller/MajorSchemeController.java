@@ -104,9 +104,19 @@ public class MajorSchemeController extends BaseController {
      * @return
      * @throws RuntimeException
      */
-    @RequestMapping(value = "/ajax/addnode/{majorId}/{subId}", method = RequestMethod.GET)
-    public String toAddNode(@PathVariable("majorId") String majorId, @PathVariable("subId") String subId, Model model)
+    @RequestMapping(value = "/ajax/addnode/{majorId}/{subId}/{subSort}/{taskSort}", method = RequestMethod.GET)
+    public String toAddNode(@PathVariable("majorId") String majorId, @PathVariable("subId") String subId,
+                            @PathVariable("subSort") Integer subSort, @PathVariable("taskSort") Integer taskSort,
+                            Model model)
             throws RuntimeException {
+        if (subSort == null) {
+            subSort = 0;
+        }
+        if (taskSort == null) {
+            taskSort = 0;
+        }
+        model.addAttribute("subSort", subSort + 1);
+        model.addAttribute("taskSort", taskSort + 1);
         model.addAttribute("majorId", majorId);
         model.addAttribute("subId", subId);
         return "/tjad/oc/majorsch/major_scheme_addnode";

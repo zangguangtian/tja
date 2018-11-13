@@ -15,7 +15,9 @@
 			<!-- BEGIN FORM-->
 			<form action="" class="" id="majorSchAddNodeForm">
 				<input type="hidden" name="majorId" value="${majorId }"> 
+				<input type="hidden" name="subSort" value="${subSort }"> 
 				<input type="hidden" name="subId" value="${subId }"> 
+				<input type="hidden" name="taskSort" value="${taskSort }"> 
 				<div class="form-body clearfix">
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-4">节点类型</label>
@@ -70,7 +72,7 @@ $(function(){
             	jQuery.jalert({"jatype":"refresh", "jatext": data.mess, "onConfirm":function(){
                     if(data.success == "true"){
                         parent.layer.closeAll();
-                        parent.reload();
+                        parent.location.reload();
                     }
                 }});
             },
