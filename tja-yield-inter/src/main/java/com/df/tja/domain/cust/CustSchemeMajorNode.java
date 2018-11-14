@@ -18,7 +18,7 @@ public class CustSchemeMajorNode extends SuperDomain {
     private String subId;
 
     /** 属性：节点类型*/
-    private String nodeType;
+    private String nodeCategory;
 
     /** 属性：子项排序号*/
     private Integer subSort;
@@ -69,21 +69,21 @@ public class CustSchemeMajorNode extends SuperDomain {
     }
 
     /**
-     * <p> 属性nodeType的Getter方法. </p>
+     * <p> 属性nodeCategory的Getter方法. </p>
      * 
-     * @return 返回nodeType属性的值
+     * @return 返回nodeCategory属性的值
      */
-    public String getNodeType() {
-        return nodeType;
+    public String getNodeCategory() {
+        return nodeCategory;
     }
 
     /**
-     * <p> 属性nodeType的Setter方法. </p>
+     * <p> 属性nodeCategory的Setter方法. </p>
      * 
-     * @param nodeType 为属性nodeType设置的值
+     * @param nodeCategory 为属性nodeCategory设置的值
      */
-    public void setNodeType(String nodeType) {
-        this.nodeType = nodeType;
+    public void setNodeCategory(String nodeCategory) {
+        this.nodeCategory = nodeCategory;
     }
 
     /**

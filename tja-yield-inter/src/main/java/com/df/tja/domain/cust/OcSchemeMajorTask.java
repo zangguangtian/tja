@@ -44,7 +44,10 @@ public class OcSchemeMajorTask extends SuperDomain {
     /** 属性：子项比例*/
     private BigDecimal subRatio;
 
-    /** 属性：子项下任务数量*/
+    /** 属性：子项下任务及人员数量*/
+    private Integer subChildCount;
+
+    /** 属性：子项下任务及人员数量*/
     private Integer subTaskCount;
 
     /** 属性：任务ID*/
@@ -189,6 +192,24 @@ public class OcSchemeMajorTask extends SuperDomain {
      */
     public void setSubRatio(BigDecimal subRatio) {
         this.subRatio = subRatio;
+    }
+
+    /**
+     * <p> 属性subChildCount的Getter方法. </p>
+     * 
+     * @return 返回subChildCount属性的值
+     */
+    public Integer getSubChildCount() {
+        return subChildCount;
+    }
+
+    /**
+     * <p> 属性subChildCount的Setter方法. </p>
+     * 
+     * @param subChildCount 为属性subChildCount设置的值
+     */
+    public void setSubChildCount(Integer subChildCount) {
+        this.subChildCount = subChildCount;
     }
 
     /**

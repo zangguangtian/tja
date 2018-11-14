@@ -9,11 +9,13 @@
     <title>添加节点</title>
 </head>
 <body>
-<div class="">
-	<div class=" ">
+<!-- BEGIN CONTENT BODY -->
+<div class="page-content">
+    <!-- BEGIN PAGE HEADER-->
+	<div class="">
 		<div class="form">
 			<!-- BEGIN FORM-->
-			<form action="" class="" id="majorSchAddNodeForm">
+			<form id="majorNodeFrm" method="post">
 				<input type="hidden" name="majorId" value="${majorId }"> 
 				<input type="hidden" name="subSort" value="${subSort }"> 
 				<input type="hidden" name="subId" value="${subId }"> 
@@ -22,7 +24,7 @@
 					<div class="form-group col-lg-6 ">
 						<label class="control-label col-md-4">节点类型</label>
 						<div class="col-md-7">
-							<select name="nodeType" class="form-control">
+							<select name="nodeCategory" class="form-control">
 								<option value="s">子项</option>
 								<option value="t">任务</option>
 							</select>
@@ -59,14 +61,14 @@
 <script type="text/javascript">
 $(function(){
     $("#save-btn").on("click", function(){
-    	/*if(!jQuery("#majorSchAddNodeForm").valid()){
+    	if(!jQuery("#majorNodeFrm").valid()){
             return;
-        }*/
+        }
     	var url = "${site }/admin/major/scheme/ajax/addnode";
         jQuery.ajax({
             type : "POST",
             url : url,
-            data : jQuery("#majorSchAddNodeForm").serialize(),
+            data : jQuery("#majorNodeFrm").serialize(),
             dataType : "json",
             success : function(data, status) {
             	jQuery.jalert({"jatype":"refresh", "jatext": data.mess, "onConfirm":function(){

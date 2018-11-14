@@ -33,10 +33,10 @@ public class MajorSchemeServiceImpl extends BaseServiceImpl implements IMajorSch
         try {
             Integer divisorSort = null;
             OcSchemeDivisor ocSchemeDivisor = null;
-            if ("s".equals(majorNode.getNodeType())) { //子项
+            if ("s".equals(majorNode.getNodeCategory())) { //子项
                 divisorSort = majorNode.getSubSort();
                 ocSchemeDivisor = majorSchemeDao.selectByPrimaryKey(OcSchemeDivisor.class, majorNode.getMajorId());
-            } else if ("t".equals(majorNode.getNodeType())) { //节点
+            } else if ("t".equals(majorNode.getNodeCategory())) { //节点
                 divisorSort = majorNode.getTaskSort();
                 ocSchemeDivisor = majorSchemeDao.selectByPrimaryKey(OcSchemeDivisor.class, majorNode.getSubId());
             }
