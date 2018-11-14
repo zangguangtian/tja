@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>施工图产值策划</title>
+    <title>产值策划</title>
     <%--每个jsp页面所在菜单的treePath属性值 --%>
     <df:readProp var="menu-path" value="oc.yield.scheme.menu.path" scope="request"  />
 </head>

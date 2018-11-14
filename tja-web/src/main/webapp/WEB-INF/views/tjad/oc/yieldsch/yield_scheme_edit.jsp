@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>施工图产值策划</title>
+    <title>产值策划</title>
     <%--每个jsp页面所在菜单的treePath属性值 --%>
     <df:readProp var="menu-path" value="oc.yield.scheme.menu.path" scope="request"  />
     <link href="${site }/resources/css/management.css?v=${buildVersion}" rel="Stylesheet" type="text/css">
@@ -19,7 +19,7 @@
 <div class="">
     <center>
     	<input type="button" id="print-btn" value="打印" class="btn blue" style="float:right;position:absolute;right:55px;">
-        <h3>施工图产值策划</h3>
+        <h3>产值策划</h3>
     </center>
     <div class="  ">
         <div class="form">
