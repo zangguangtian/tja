@@ -1,5 +1,6 @@
 package com.df.tja.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.df.framework.base.service.impl.BaseServiceImpl;
 import com.df.framework.exception.LogicalException;
+import com.df.framework.sys.domain.SysConfig;
+import com.df.framework.sys.service.ISysConfigService;
+import com.df.framework.util.ArithmeticUtil;
 import com.df.framework.util.HttpUtil;
 import com.df.tja.dao.IOcMajorSchemeDao;
 import com.df.tja.domain.OcSchemeDivisor;
@@ -18,6 +22,9 @@ import com.df.tja.service.IMajorSchemeService;
 
 @Service
 public class MajorSchemeServiceImpl extends BaseServiceImpl implements IMajorSchemeService {
+
+    @Autowired
+    private ISysConfigService sysConfigService;
 
     @Autowired
     private IOcMajorSchemeDao majorSchemeDao;
@@ -59,12 +66,30 @@ public class MajorSchemeServiceImpl extends BaseServiceImpl implements IMajorSch
                 majorSchemeDao.insert(OcSchemeDivisor.class, schemeDivisor);
 
                 schemeDivisor.setTreePath(ocSchemeDivisor.getTreePath() + schemeDivisor.getId() + "@");
+
+                BigDecimal schemeRatio = majorSchemeDao.selectTotalSchemeRatioByPid(ocSchemeDivisor.getId());
+                schemeRatio = ArithmeticUtil.add(schemeRatio, majorNode.getSchemeRatio());
+                if (schemeRatio.compareTo(new BigDecimal(100)) > 0) {
+                    LogicalException ratioException = null;
+                    if ("s".equals(majorNode.getNodeCategory())) {
+                        SysConfig sysconfig = sysConfigService.querySysConfigByCode(ocSchemeDivisor.getDivisorName());
+
+                        ratioException = new LogicalException(
+                            sysconfig.getConfigName() + "专业下的子项策划比例之和不能超过100%!");
+                    } else {
+                        ratioException = new LogicalException(
+                            ocSchemeDivisor.getDivisorName() + "子项下的任务策划比例之和不能超过100%!");
+                    }
+                    throw ratioException;
+                }
             } else {
                 List<OcSchemeDivisor> userDivisors = majorNode.getUserDivisors();
                 if (userDivisors != null && !userDivisors.isEmpty()) {
                     int i = 0;
                     String userId = HttpUtil.getUser().getId();
                     Date createDate = new Date();
+
+                    BigDecimal schemeRatio = majorSchemeDao.selectTotalSchemeRatioByPid(ocSchemeDivisor.getId());
                     for (OcSchemeDivisor divisor : userDivisors) {
                         divisor.setSchemeId(ocSchemeDivisor.getSchemeId());
                         divisor.setProId(ocSchemeDivisor.getProId());
@@ -76,7 +101,14 @@ public class MajorSchemeServiceImpl extends BaseServiceImpl implements IMajorSch
                         divisor.setModifier(userId);
                         divisor.setModifyDate(createDate);
                         i++;
+
+                        schemeRatio = ArithmeticUtil.add(schemeRatio, divisor.getSchemeRatio());
                     }
+
+                    if (schemeRatio.compareTo(new BigDecimal(100)) > 0) {
+                        throw new LogicalException(ocSchemeDivisor.getDivisorName() + "任务下的人员策划比例之和不能超过100%!");
+                    }
+
                     //批量插入
                     majorSchemeDao.batchInsert(OcSchemeDivisor.class, userDivisors);
 

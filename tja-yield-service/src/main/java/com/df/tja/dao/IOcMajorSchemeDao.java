@@ -1,5 +1,6 @@
 package com.df.tja.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.df.framework.base.dao.IBaseDao;
@@ -34,4 +35,13 @@ public interface IOcMajorSchemeDao extends IBaseDao {
      * @param sort 从第几个排序号开始更新子记录的tree_path
      */
     void updateMajorTreePath(String parentId, Integer sort);
+
+    /**
+     * 
+     * <p>描述 : 查询父因子下的所有子因子的比例之和</p>
+     *
+     * @param parentId
+     * @return
+     */
+    BigDecimal selectTotalSchemeRatioByPid(String parentId);
 }

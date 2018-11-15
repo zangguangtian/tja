@@ -1,6 +1,7 @@
 package com.df.tja.dao.impl;
 
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.hibernate.SQLQuery;
@@ -55,5 +56,14 @@ public class OcMajorSchemeDaoHbmImpl extends BaseDaoHbmImpl implements IOcMajorS
         sqlQuery.setInteger(0, sort);
         sqlQuery.setString(1, parentId);
         sqlQuery.executeUpdate();
+    }
+
+    public BigDecimal selectTotalSchemeRatioByPid(String parentId) {
+        StringBuffer sql = new StringBuffer("");
+        sql.append("SELECT ISNULL(SUM(SCHEME_RATIO),0)            ");
+        sql.append("FROM OC_SCHEME_DIVISOR_TM WHERE PARENT_ID = ? ");
+        SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
+        sqlQuery.setString(0, parentId);
+        return (BigDecimal) sqlQuery.uniqueResult();
     }
 }
