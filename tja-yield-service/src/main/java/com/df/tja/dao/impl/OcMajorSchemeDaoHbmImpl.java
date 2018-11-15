@@ -38,7 +38,7 @@ public class OcMajorSchemeDaoHbmImpl extends BaseDaoHbmImpl implements IOcMajorS
         sql.append("  T.USER_ROLE_NAME AS userRoleName, T.STAFF_ID AS staffId, T.STAFF_NAME AS           ");
         sql.append("  staffName, T.ORG_NAME AS orgName, T.USER_RATIO AS userRatio, T.REMARK AS remark    ");
         sql.append("FROM V_OC_SCHEME_MAJOR_TASK T                                                        ");
-        sql.append("WHERE T.MAJOR_ID = ? ORDER BY T.SUB_SORT, T.TASK_SORT, T.USER_SORT                   ");
+        sql.append("WHERE T.MAJOR_ID = ? ORDER BY T.SUB_SORT, T.TASK_SORT, T.USER_ROLE_CODE, T.USER_SORT ");
         SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
         sqlQuery.setString(0, majorId);
         sqlQuery.setResultTransformer(Transformers.aliasToBean(OcSchemeMajorTask.class));

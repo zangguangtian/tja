@@ -44,7 +44,7 @@ public class OcSchemeMajorTask extends SuperDomain {
     /** 属性：子项比例*/
     private BigDecimal subRatio;
 
-    /** 属性：子项下任务及人员数量*/
+    /** 属性：子项下任务数量*/
     private Integer subChildCount;
 
     /** 属性：子项下任务及人员数量*/

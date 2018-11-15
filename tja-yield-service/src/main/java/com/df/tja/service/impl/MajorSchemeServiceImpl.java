@@ -62,7 +62,7 @@ public class MajorSchemeServiceImpl extends BaseServiceImpl implements IMajorSch
             } else {
                 List<OcSchemeDivisor> userDivisors = majorNode.getUserDivisors();
                 if (userDivisors != null && !userDivisors.isEmpty()) {
-                    int i = 1;
+                    int i = 0;
                     String userId = HttpUtil.getUser().getId();
                     Date createDate = new Date();
                     for (OcSchemeDivisor divisor : userDivisors) {
