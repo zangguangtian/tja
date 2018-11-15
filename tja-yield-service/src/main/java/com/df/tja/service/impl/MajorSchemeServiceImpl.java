@@ -1,5 +1,6 @@
 package com.df.tja.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.df.framework.base.service.impl.BaseServiceImpl;
 import com.df.framework.exception.LogicalException;
+import com.df.framework.util.HttpUtil;
 import com.df.tja.dao.IOcMajorSchemeDao;
 import com.df.tja.domain.OcSchemeDivisor;
 import com.df.tja.domain.cust.CustSchemeMajorNode;
@@ -39,22 +41,49 @@ public class MajorSchemeServiceImpl extends BaseServiceImpl implements IMajorSch
             } else if ("t".equals(majorNode.getNodeCategory())) { //节点
                 divisorSort = majorNode.getTaskSort();
                 ocSchemeDivisor = majorSchemeDao.selectByPrimaryKey(OcSchemeDivisor.class, majorNode.getSubId());
+            } else if ("u".equals(majorNode.getNodeCategory())) { //员工
+                ocSchemeDivisor = majorSchemeDao.selectByPrimaryKey(OcSchemeDivisor.class, majorNode.getTaskId());
             }
-
             if (ocSchemeDivisor == null) {
                 throw new LogicalException("未选择节点!");
             }
-            OcSchemeDivisor schemeDivisor = new OcSchemeDivisor();
-            schemeDivisor.setSchemeId(ocSchemeDivisor.getSchemeId());
-            schemeDivisor.setProId(ocSchemeDivisor.getProId());
-            schemeDivisor.setParentId(ocSchemeDivisor.getId());
-            schemeDivisor.setDivisorName(majorNode.getDivisorName());
-            schemeDivisor.setSchemeRatio(majorNode.getSchemeRatio());
-            schemeDivisor.setDivisorGrade(ocSchemeDivisor.getDivisorGrade() + 1);
-            schemeDivisor.setDivisorSort(divisorSort);
-            majorSchemeDao.insert(OcSchemeDivisor.class, schemeDivisor);
+            if (!"u".equals(majorNode.getNodeCategory())) {
+                OcSchemeDivisor schemeDivisor = new OcSchemeDivisor();
+                schemeDivisor.setSchemeId(ocSchemeDivisor.getSchemeId());
+                schemeDivisor.setProId(ocSchemeDivisor.getProId());
+                schemeDivisor.setParentId(ocSchemeDivisor.getId());
+                schemeDivisor.setDivisorName(majorNode.getDivisorName());
+                schemeDivisor.setSchemeRatio(majorNode.getSchemeRatio());
+                schemeDivisor.setDivisorGrade(ocSchemeDivisor.getDivisorGrade() + 1);
+                schemeDivisor.setDivisorSort(divisorSort);
+                majorSchemeDao.insert(OcSchemeDivisor.class, schemeDivisor);
 
-            schemeDivisor.setTreePath(ocSchemeDivisor.getTreePath() + schemeDivisor.getId() + "@");
+                schemeDivisor.setTreePath(ocSchemeDivisor.getTreePath() + schemeDivisor.getId() + "@");
+            } else {
+                List<OcSchemeDivisor> userDivisors = majorNode.getUserDivisors();
+                if (userDivisors != null && !userDivisors.isEmpty()) {
+                    int i = 1;
+                    String userId = HttpUtil.getUser().getId();
+                    Date createDate = new Date();
+                    for (OcSchemeDivisor divisor : userDivisors) {
+                        divisor.setSchemeId(ocSchemeDivisor.getSchemeId());
+                        divisor.setProId(ocSchemeDivisor.getProId());
+                        divisor.setParentId(ocSchemeDivisor.getId());
+                        divisor.setDivisorSort(majorNode.getUserSort() + i);
+                        divisor.setDivisorGrade(ocSchemeDivisor.getDivisorGrade() + 1);
+                        divisor.setCreator(userId);
+                        divisor.setCreateDate(createDate);
+                        divisor.setModifier(userId);
+                        divisor.setModifyDate(createDate);
+                        i++;
+                    }
+                    //批量插入
+                    majorSchemeDao.batchInsert(OcSchemeDivisor.class, userDivisors);
+
+                    //批量更新tree_path
+                    majorSchemeDao.updateMajorTreePath(ocSchemeDivisor.getId(), majorNode.getUserSort());
+                }
+            }
         } catch (LogicalException ex) {
             throw ex;
         } catch (Exception ex) {

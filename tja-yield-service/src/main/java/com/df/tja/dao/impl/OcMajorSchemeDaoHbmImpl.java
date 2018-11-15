@@ -44,4 +44,16 @@ public class OcMajorSchemeDaoHbmImpl extends BaseDaoHbmImpl implements IOcMajorS
         sqlQuery.setResultTransformer(Transformers.aliasToBean(OcSchemeMajorTask.class));
         return sqlQuery.list();
     }
+
+    public void updateMajorTreePath(String parentId, Integer sort) {
+        StringBuffer sql = new StringBuffer("");
+
+        sql.append("UPDATE A SET A.TREE_PATH = B.TREE_PATH + A.ID + '@'           ");
+        sql.append("FROM OC_SCHEME_DIVISOR_TM A, OC_SCHEME_DIVISOR_TM B           ");
+        sql.append("WHERE A.PARENT_ID = B.ID AND A.DIVISOR_SORT > ? AND B.ID = ?  ");
+        SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
+        sqlQuery.setInteger(0, sort);
+        sqlQuery.setString(1, parentId);
+        sqlQuery.executeUpdate();
+    }
 }

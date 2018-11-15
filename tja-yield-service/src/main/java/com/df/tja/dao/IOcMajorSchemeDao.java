@@ -25,4 +25,13 @@ public interface IOcMajorSchemeDao extends IBaseDao {
      * @return
      */
     List<OcSchemeMajorTask> selectMajorTaskById(String majorId);
+
+    /**
+     * 
+     * <p>描述 : 更新子记录的tree_path </p>
+     *
+     * @param parentId
+     * @param sort 从第几个排序号开始更新子记录的tree_path
+     */
+    void updateMajorTreePath(String parentId, Integer sort);
 }

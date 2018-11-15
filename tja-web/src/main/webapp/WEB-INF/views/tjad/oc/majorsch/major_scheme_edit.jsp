@@ -177,7 +177,7 @@ $(function(){
     jQuery("#add-node").click(addNode);
     
 	/**添加人员*/
-    jQuery("#add-persion").click(addPerson);
+    jQuery("#add-person").click(addPerson);
 });
 
 function addNode(){
@@ -207,14 +207,13 @@ function addNode(){
 }
 
 function addPerson(){
-	layer.open({
-        type: 2,
-        shade: [0.5, "#393D49"],
-        closeBtn: 2,
-        title: "添加用户", //不显示标
-        area: ["400px", "550px"],
-        content: "${site}/admin/sys/config/ajax/toadd/${empty sysconfig? '0':sysconfig.id}"
-    })
+	var nodeLen = $("#majorSchemeTab tbody input[type='radio']:checked").length;
+	if(nodeLen == 0){
+		$.jalert({"jatext":"请在列表中选择一个任务!"});
+		return false;
+	}
+	var taskId = $("#majorSchemeTab tbody input[type='radio']:checked").data("taskid");
+	openWindow("${site}/admin/major/scheme/ajax/adduser/"+taskId+"/"+0, "添加用户", "1000", "600", true, true);
 }
 </script>
 </body>

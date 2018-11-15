@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -124,7 +125,7 @@ public class MajorSchemeController extends BaseController {
 
     /**
      * 
-     * <p>描述 : </p>
+     * <p>描述 : 添加节点保存</p>
      *
      * @param sysConfig
      * @return
@@ -135,6 +136,53 @@ public class MajorSchemeController extends BaseController {
         Map<String, String> mess = new HashMap<String, String>();
         try {
             majorSchemeService.createSchemeMajorNode(schemeNode);
+            mess.put("success", "true");
+            mess.put("mess", "保存成功!");
+        } catch (LogicalException ex) {
+            mess.put("success", "false");
+            mess.put("mess", ex.getMess());
+        } catch (RuntimeException ex) {
+            mess.put("success", "false");
+            mess.put("mess", "保存失败!");
+        }
+        return mess;
+    }
+
+    /**
+     * 
+     * <p>描述 : 打开添加用户页面 </p>
+     *
+     * @param id
+     * @param model
+     * @return
+     * @throws RuntimeException
+     */
+    @RequestMapping(value = "/ajax/adduser/{taskId}/{userSort}", method = RequestMethod.GET)
+    public String toAddUser(@PathVariable("taskId") String taskId, @PathVariable("userSort") Integer userSort,
+                            Model model)
+            throws RuntimeException {
+        if (userSort == null) {
+            userSort = 0;
+        }
+        model.addAttribute("userSort", userSort + 1);
+        model.addAttribute("taskId", taskId);
+        return "/tjad/oc/majorsch/major_scheme_adduser";
+    }
+
+    /**
+     * 
+     * <p>描述 : 添加节点保存</p>
+     *
+     * @param sysConfig
+     * @return
+     */
+    @RequestMapping(value = "/ajax/adduser", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, String> addUser(@RequestBody CustSchemeMajorNode schemeUser) {
+        Map<String, String> mess = new HashMap<String, String>();
+        try {
+            schemeUser.setNodeCategory("u");
+            majorSchemeService.createSchemeMajorNode(schemeUser);
             mess.put("success", "true");
             mess.put("mess", "保存成功!");
         } catch (LogicalException ex) {

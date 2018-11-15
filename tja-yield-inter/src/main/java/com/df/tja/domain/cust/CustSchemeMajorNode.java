@@ -1,8 +1,10 @@
 package com.df.tja.domain.cust;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.df.framework.base.domain.SuperDomain;
+import com.df.tja.domain.OcSchemeDivisor;
 
 public class CustSchemeMajorNode extends SuperDomain {
 
@@ -17,6 +19,9 @@ public class CustSchemeMajorNode extends SuperDomain {
     /** 属性：子项ID*/
     private String subId;
 
+    /** 属性：任务ID*/
+    private String taskId;
+
     /** 属性：节点类型*/
     private String nodeCategory;
 
@@ -26,11 +31,17 @@ public class CustSchemeMajorNode extends SuperDomain {
     /** 属性：任务排序号*/
     private Integer taskSort;
 
+    /** 属性：用户排序号*/
+    private Integer userSort;
+
     /** 属性：节点因子名称*/
     private String divisorName;
 
     /** 属性：策划比例*/
     private BigDecimal schemeRatio;
+
+    /** 添加用户因子*/
+    private List<OcSchemeDivisor> userDivisors;
 
     /**
      * <p> 属性majorId的Getter方法. </p>
@@ -66,6 +77,24 @@ public class CustSchemeMajorNode extends SuperDomain {
      */
     public void setSubId(String subId) {
         this.subId = subId;
+    }
+
+    /**
+     * <p> 属性taskId的Getter方法. </p>
+     * 
+     * @return 返回taskId属性的值
+     */
+    public String getTaskId() {
+        return taskId;
+    }
+
+    /**
+     * <p> 属性taskId的Setter方法. </p>
+     * 
+     * @param taskId 为属性taskId设置的值
+     */
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
     }
 
     /**
@@ -123,6 +152,24 @@ public class CustSchemeMajorNode extends SuperDomain {
     }
 
     /**
+     * <p> 属性userSort的Getter方法. </p>
+     * 
+     * @return 返回userSort属性的值
+     */
+    public Integer getUserSort() {
+        return userSort;
+    }
+
+    /**
+     * <p> 属性userSort的Setter方法. </p>
+     * 
+     * @param userSort 为属性userSort设置的值
+     */
+    public void setUserSort(Integer userSort) {
+        this.userSort = userSort;
+    }
+
+    /**
      * <p> 属性divisorName的Getter方法. </p>
      * 
      * @return 返回divisorName属性的值
@@ -156,6 +203,24 @@ public class CustSchemeMajorNode extends SuperDomain {
      */
     public void setSchemeRatio(BigDecimal schemeRatio) {
         this.schemeRatio = schemeRatio;
+    }
+
+    /**
+     * <p> 属性userDivisors的Getter方法. </p>
+     * 
+     * @return 返回userDivisors属性的值
+     */
+    public List<OcSchemeDivisor> getUserDivisors() {
+        return userDivisors;
+    }
+
+    /**
+     * <p> 属性userDivisors的Setter方法. </p>
+     * 
+     * @param userDivisors 为属性userDivisors设置的值
+     */
+    public void setUserDivisors(List<OcSchemeDivisor> userDivisors) {
+        this.userDivisors = userDivisors;
     }
 
 }
