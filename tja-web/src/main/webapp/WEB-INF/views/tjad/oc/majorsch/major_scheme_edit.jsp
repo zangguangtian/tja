@@ -81,7 +81,7 @@
 				       		<label id="add-person" class="btn blue" style="margin-bottom:10px;"><i class="fa fa-plus"></i>人员</label>
 				       		<!-- 专业比例 -->
 			       			<div class="col-lg-12 ">
-								<table id="majorSchemeTab" class="table table-bordered">
+								<table id="majorSchemeTab" class="table table-bordered edit">
 									<thead>
 										<tr class="form-group">
 											<th class="text-center">选择</th>
