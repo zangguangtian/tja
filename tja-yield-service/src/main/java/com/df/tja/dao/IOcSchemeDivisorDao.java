@@ -1,6 +1,9 @@
 package com.df.tja.dao;
 
 import com.df.framework.base.dao.IBaseDao;
+import com.df.tja.domain.cust.OcSchemeDivisorModel;
+
+import java.util.List;
 
 /**
  * <p>IOcSchemeDivisorDao </p>
@@ -16,6 +19,12 @@ import com.df.framework.base.dao.IBaseDao;
  */
 public interface IOcSchemeDivisorDao extends IBaseDao{
 
-
+    /**
+     * <p>描述 : 简化模式</p>
+     *
+     * @param
+     * @return
+     */
+    List<OcSchemeDivisorModel> querySimpleList(String proId);
 
 }

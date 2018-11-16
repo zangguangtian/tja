@@ -27,8 +27,10 @@ public class OcSchemeDaoHbmImpl extends BaseDaoHbmImpl implements IOcSchemeDao {
     public OcScheme queryByProId(String proId) {
         StringBuilder sql = new StringBuilder();
 
-        sql.append("  SELECT PRO_WBS FROM OC_SCHEME_TM    ");
-        sql.append("  WHERE PRO_ID = ?                    ");
+        sql.append("  SELECT ID as id, PRO_WBS as proWbs    ");
+        sql.append("  FROM OC_SCHEME_TM                     ");
+        sql.append("    OC_SCHEME_TM                        ");
+        sql.append("  WHERE PRO_ID = ?                      ");
         SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
         query.setParameter(0,proId );
         query.setResultTransformer(Transformers.aliasToBean(OcScheme.class));

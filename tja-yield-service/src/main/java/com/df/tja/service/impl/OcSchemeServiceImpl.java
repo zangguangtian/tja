@@ -34,4 +34,29 @@ public class OcSchemeServiceImpl extends BaseServiceImpl implements IOcSchemeSer
     public OcScheme queryByProId(String proId) {
         return ocSchemeDao.queryByProId(proId);
     }
+
+    @Override
+    public void modifyOcScheme(OcScheme ocScheme) {
+        try {
+            OcScheme ocScheme1 = queryByPrimaryKey(OcScheme.class,ocScheme.getId());
+            ocScheme1.setProWbs(ocScheme.getProWbs());
+            modify(OcScheme.class,ocScheme1);
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public OcScheme addOcScheme(String proId) {
+        try {
+            OcScheme ocScheme = new OcScheme();
+            ocScheme.setProId(proId);
+            ocScheme.setProWbs("OC.PROJECT.WBS.SIMPLE");
+            ocScheme.setDelFlag(false);
+            addEntity(OcScheme.class,ocScheme);
+            return ocScheme;
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
 }
