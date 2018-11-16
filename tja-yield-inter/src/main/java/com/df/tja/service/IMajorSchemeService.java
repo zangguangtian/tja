@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.df.framework.base.service.IBaseService;
 import com.df.framework.exception.LogicalException;
+import com.df.tja.domain.OcSchemeDivisor;
 import com.df.tja.domain.cust.CustSchemeMajorNode;
 import com.df.tja.domain.cust.OcSchemeMajorTask;
 import com.df.tja.domain.cust.OcSchemeStageMajor;
@@ -50,4 +51,12 @@ public interface IMajorSchemeService extends IBaseService {
      * @param majorNode
      */
     void createSchemeMajorNode(CustSchemeMajorNode majorNode) throws LogicalException;
+
+    /**
+     * 
+     * <p>描述 : 批量修改专业策划中的比例 </p>
+     *
+     * @param majorNode
+     */
+    void modifySchemeMajorByBatch(List<OcSchemeDivisor> divisors) throws LogicalException;
 }

@@ -29,6 +29,7 @@ import com.df.framework.base.controller.BaseController;
 import com.df.framework.exception.LogicalException;
 import com.df.project.domain.cust.CustProject;
 import com.df.project.service.IProjectService;
+import com.df.tja.domain.OcSchemeDivisor;
 import com.df.tja.domain.cust.CustSchemeMajorNode;
 import com.df.tja.domain.cust.OcSchemeMajorTask;
 import com.df.tja.domain.cust.OcSchemeStageMajor;
@@ -183,6 +184,31 @@ public class MajorSchemeController extends BaseController {
         try {
             schemeUser.setNodeCategory("u");
             majorSchemeService.createSchemeMajorNode(schemeUser);
+            mess.put("success", "true");
+            mess.put("mess", "保存成功!");
+        } catch (LogicalException ex) {
+            mess.put("success", "false");
+            mess.put("mess", ex.getMess());
+        } catch (RuntimeException ex) {
+            mess.put("success", "false");
+            mess.put("mess", "保存失败!");
+        }
+        return mess;
+    }
+
+    /**
+     * 
+     * <p>描述 : 批量修改专业策划的比例</p>
+     *
+     * @param sysConfig
+     * @return
+     */
+    @RequestMapping(value = "/ajax/batchsave", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, String> batchSave(@RequestBody List<OcSchemeDivisor> divisors) {
+        Map<String, String> mess = new HashMap<String, String>();
+        try {
+            majorSchemeService.modifySchemeMajorByBatch(divisors);
             mess.put("success", "true");
             mess.put("mess", "保存成功!");
         } catch (LogicalException ex) {
