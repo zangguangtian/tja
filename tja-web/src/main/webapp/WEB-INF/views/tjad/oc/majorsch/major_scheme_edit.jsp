@@ -111,17 +111,29 @@
 													<td rowspan="${task.subTaskCount }" class="form-group">
 														<input type="text" name="schemeRatio" value="${task.subRatio }" data-id="${task.subId }" data-pid="${stageMajor.schemeMajorId }" class="form-control text-right" data-rule-min="0" data-rule-max="100" data-rule-required="true" data-rule-number="true">
 													</td>
-													<td rowspan="${task.taskUserCount }">${task.taskName }</td>
+													<td rowspan="${task.taskUserCount }">
+													<c:if test="${not empty task.taskId }">
+														${task.taskName }
+													</c:if>
+													</td>
 													<td rowspan="${task.taskUserCount }" class="form-group">
+													<c:if test="${not empty task.taskId }">
 														<input type="text" name="schemeRatio" value="${task.taskRatio }" data-id="${task.taskId }" data-pid="${task.subId }" class="form-control text-right" data-rule-min="0" data-rule-max="100" data-rule-required="true" data-rule-number="true">
+													</c:if>
 													</td>
 													<td>${task.userRoleName }</td>
 													<td>${task.staffName }</td>
 													<td class="form-group">
+													<c:if test="${not empty task.userId }">
 														<input type="text" name="schemeRatio" value="${task.userRatio }" data-id="${task.userId }" data-pid="${task.taskId }" class="form-control text-right userscheme" data-rule-min="0" data-rule-max="100" data-rule-required="true" data-rule-number="true">
+													</c:if>
 													</td>
 													<td>${task.orgName }</td>
-													<td><input type="text" name="remark" value="${task.remark }" class="form-control userscheme"></td>
+													<td>
+													<c:if test="${not empty task.userId }">
+														<input type="text" name="remark" value="${task.remark }" class="form-control userscheme">
+													</c:if>
+													</td>
 												</tr>
 											</c:if>
 											<%--既同子项又不同任务 --%>
@@ -131,9 +143,15 @@
 													<td rowspan="${task.taskUserCount }" class="text-center" data-subchildcount="${task.subChildCount }">
 														<input type="radio" name="task" data-subid="${task.subId }" data-taskid="${task.taskId }">
 													</td>
-													<td rowspan="${task.taskUserCount }">${task.taskName }</td>
+													<td rowspan="${task.taskUserCount }">
+													<c:if test="${not empty task.taskId }">
+														${task.taskName }
+													</c:if>
+													</td>
 													<td rowspan="${task.taskUserCount }" class="form-group">
+													<c:if test="${not empty task.taskId }">
 														<input type="text" name="schemeRatio" value="${task.taskRatio }" data-id="${task.taskId }" data-pid="${task.subId }" class="form-control text-right" data-rule-min="0" data-rule-max="100" data-rule-required="true" data-rule-number="true">
+													</c:if>
 													</td>
 													<td>${task.userRoleName }</td>
 													<td>${task.staffName }</td>
@@ -205,20 +223,14 @@ $(function(){
 
 
 function addNode(){
-	var nodeLen = $("#majorSchemeTab tbody input[type='radio']:checked").length;
-	if(nodeLen == 0){
-		$.jalert({"jatext":"请在列表中选择一个任务!"});
-		return false;
-	}
-	
 	var majorId = $("input[name='majorId']").val();
 	var checkedRadio = $("#majorSchemeTab tbody input[type='radio']:checked");
-	var subId = checkedRadio.data("subid");
+	var subId = checkedRadio.data("subid")||0;
 	
 	//子项数量
-	var subIndexs = $("#majorSchemeTab tbody td[data-subid]").length;
+	var subIndexs = $("#majorSchemeTab tbody td[data-subid]").length||0;
 	//选中的任务的子项下，任务的数
-	var taskIndexs = checkedRadio.closest("td").data("subchildcount");
+	var taskIndexs = checkedRadio.closest("td").data("subchildcount")||0;
 	
 	layer.open({
         type: 2,
