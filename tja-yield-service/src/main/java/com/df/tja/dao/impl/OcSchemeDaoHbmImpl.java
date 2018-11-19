@@ -1,12 +1,12 @@
 package com.df.tja.dao.impl;
 
+import org.hibernate.SQLQuery;
+import org.hibernate.transform.Transformers;
+import org.springframework.stereotype.Repository;
+
 import com.df.framework.base.dao.impl.BaseDaoHbmImpl;
 import com.df.tja.dao.IOcSchemeDao;
 import com.df.tja.domain.OcScheme;
-import org.hibernate.SQLQuery;
-import org.hibernate.Transaction;
-import org.hibernate.transform.Transformers;
-import org.springframework.stereotype.Repository;
 
 /**
  * <p>OcSchemeDaoHbmImpl </p>
@@ -29,8 +29,7 @@ public class OcSchemeDaoHbmImpl extends BaseDaoHbmImpl implements IOcSchemeDao {
 
         sql.append("  SELECT ID as id, PRO_WBS as proWbs    ");
         sql.append("  FROM OC_SCHEME_TM                     ");
-        sql.append("    OC_SCHEME_TM                        ");
-        sql.append("  WHERE PRO_ID = ?                      ");
+        sql.append("  WHERE DEL_FLAG = 0 AND PRO_ID = ?     ");
         SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
         query.setParameter(0,proId );
         query.setResultTransformer(Transformers.aliasToBean(OcScheme.class));
