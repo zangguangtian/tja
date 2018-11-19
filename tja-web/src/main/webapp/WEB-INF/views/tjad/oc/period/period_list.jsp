@@ -26,7 +26,7 @@ jQuery(function(){
 			$("#content").append(data); 
 	    }
 	});
-	$("ul[name='rul']").after('<span class="o-btn"><input type=button value="添加期间" onclick="toadd();" ><input type=button value="提前上报" style="margin-left: 10px;" onclick="report();" ></span>');
+	$("ul[name='rul']").after('<span class="o-btn"><input type=button value="添加期间" onclick="toadd();" ></span>');
 });
 
 function toadd(){
