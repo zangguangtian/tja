@@ -34,10 +34,10 @@
 									</thead>
 									<tbody>
 										<tr>
-											<td><tags:config type="select" parentCode="PM.MAJORROLE" ignoreCodes="PrjMajorLeader" name="staffRole" cssClass="form-control" /></td>
-											<td><input type="hidden" name="staffId"><input type="text" id="staffName" class="form-control" placeholder="请选择" readonly="readonly"></td>
+											<td><tags:config type="select" parentCode="PM.MAJORROLE" ignoreCodes="PrjMajorLeader" name="staffRole" cssClass="form-control" otherAttr="data-rule-required='true'"/></td>
+											<td><input type="hidden" name="staffId"><input type="text" data-rule-required="true" id="staffName" class="form-control" placeholder="请选择" readonly="readonly"></td>
 											<td><input type="text" class="form-control" id="orgName" readonly="readonly"></td>
-											<td><input type="text" name="schemeRatio" class="form-control" data-rule-number="true"></td>
+											<td><input type="text" name="schemeRatio" class="form-control" data-rule-required="true" data-rule-number="true"></td>
 										</tr>
 									</tbody>
 								</table>
@@ -85,9 +85,9 @@ function selectStaffCallBack(data){
 
 function saveRole(){
    	if(!jQuery("#userForm").valid()){
+   	    jQuery.jalert({"jatext":"请填写完整信息"});
 		return;
 	}
-   	console.log(jQuery("#userForm").serialize());
    	var url = "${site }/admin/project/planning/ajax/usersave";
     jQuery.ajax({
         type : "POST",

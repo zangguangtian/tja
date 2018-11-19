@@ -2,7 +2,9 @@ package com.df.tja.dao;
 
 import com.df.framework.base.dao.IBaseDao;
 import com.df.tja.domain.cust.OcSchemeDivisorModel;
+import org.apache.poi.hwpf.model.FFData;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -27,4 +29,11 @@ public interface IOcSchemeDivisorDao extends IBaseDao{
      */
     List<OcSchemeDivisorModel> querySimpleList(String proId);
 
+    /**
+     * <p>描述 : 查询比例</p>
+     *
+     * @param
+     * @return
+     */
+    BigDecimal queryRatioSum(String proId,String parentId);
 }

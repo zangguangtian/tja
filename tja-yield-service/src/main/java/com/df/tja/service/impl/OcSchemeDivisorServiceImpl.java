@@ -44,21 +44,36 @@ public class OcSchemeDivisorServiceImpl extends BaseServiceImpl implements IOcSc
     }
 
     @Override
-    public void addNode(OcSchemeDivisor ocSchemeDivisor) {
+    public void addNode(OcSchemeDivisor ocSchemeDivisor) throws LogicalException {
         try {
             if(ocSchemeDivisor!=null){
                 String treePath = null;
                 if(StringUtil.isNotBlank(ocSchemeDivisor.getParentId())){
+                    //查询比例
+                    BigDecimal ratioSum = ocSchemeDivisorDao.queryRatioSum(ocSchemeDivisor.getProId(),ocSchemeDivisor.getParentId());
+                    BigDecimal sum = ArithmeticUtil.add(ratioSum, ocSchemeDivisor.getSchemeRatio());
+                    if(sum.compareTo(new BigDecimal(100)) > 0){
+                        throw new LogicalException("专业比例之和不能超过100%!");
+                    }
+
                     OcSchemeDivisor parent = queryByPrimaryKey(OcSchemeDivisor.class,ocSchemeDivisor.getParentId());
                     treePath = parent.getTreePath();
                     ocSchemeDivisor.setDivisorGrade(2);
                 }else{
+                    //查询比例
+                    BigDecimal ratioSum = ocSchemeDivisorDao.queryRatioSum(ocSchemeDivisor.getProId(),null);
+                    BigDecimal sum = ArithmeticUtil.add(ratioSum, ocSchemeDivisor.getSchemeRatio());
+                    if(sum.compareTo(new BigDecimal(100)) > 0){
+                        throw new LogicalException("阶段比例之和不能超过100%!");
+                    }
                     treePath = ocSchemeDivisor.getProId()+"@";
                     ocSchemeDivisor.setDivisorGrade(1);
                 }
                 String id = addEntity(OcSchemeDivisor.class,ocSchemeDivisor);
                 ocSchemeDivisor.setTreePath(treePath+id+"@");
             }
+        }catch (LogicalException ex) {
+            throw ex;
         }catch (Exception e){
             throw new RuntimeException(e);
         }
@@ -110,12 +125,21 @@ public class OcSchemeDivisorServiceImpl extends BaseServiceImpl implements IOcSc
     }
 
     @Override
-    public void addUser(OcSchemeDivisor ocSchemeDivisor) {
+    public void addUser(OcSchemeDivisor ocSchemeDivisor) throws LogicalException {
         try{
             if(ocSchemeDivisor != null){
+                //查询比例
+                BigDecimal ratioSum = ocSchemeDivisorDao.queryRatioSum(ocSchemeDivisor.getProId(),null);
+                BigDecimal sum = ArithmeticUtil.add(ratioSum, ocSchemeDivisor.getSchemeRatio());
+                if(sum.compareTo(new BigDecimal(100)) > 0){
+                    throw new LogicalException("人员比例之和不能超过100%!");
+                }
+
                 ocSchemeDivisor.setDivisorGrade(5);
                 addEntity(OcSchemeDivisor.class,ocSchemeDivisor);
             }
+        }catch (LogicalException ex) {
+            throw ex;
         }catch(Exception e){
             throw new RuntimeException(e);
         }

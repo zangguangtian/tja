@@ -24,11 +24,11 @@ public interface IOcSchemeDivisorService extends IBaseService {
 
     List<OcSchemeDivisorModel> querySimpleList(String proId);
 
-    void addNode(OcSchemeDivisor ocSchemeDivisor);
+    void addNode(OcSchemeDivisor ocSchemeDivisor) throws LogicalException;
 
     void modifyRatio(List<OcSchemeStageMajor> ocSchemeStageMajors)throws LogicalException;
 
-    void addUser(OcSchemeDivisor ocSchemeDivisor);
+    void addUser(OcSchemeDivisor ocSchemeDivisor) throws LogicalException;
 
     void modifySimple(List<OcSchemeDivisor> ocSchemeDivisors);
 

@@ -14,6 +14,7 @@ import com.df.tja.domain.cust.OcSchemeStageMajor;
 import com.df.tja.service.IOcSchemeDivisorService;
 import com.df.tja.service.IOcSchemeService;
 import com.df.tja.service.IOcSchemeStageMajorService;
+import com.df.tja.service.IProjectPlanningService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,6 +54,9 @@ public class ProjectPlanningController extends BaseController {
 
     @Autowired
     private IOcSchemeDivisorService ocSchemeDivisorService;
+
+    @Autowired
+    private IProjectPlanningService projectPlanningService;
 
     /**
      *
@@ -108,29 +112,7 @@ public class ProjectPlanningController extends BaseController {
     public Map<String,String> save(@ModelAttribute OcSchemeMode ocSchemeMode){
         Map<String, String> result = new HashMap<>();
         try {
-            /** 项目扩展 */
-            ProjectExtend projectExtend = new ProjectExtend();
-            projectExtend.setSchemeFlag(ocSchemeMode.getSchemeFlag());
-            projectExtend.setId(ocSchemeMode.getPeid());
-            projectExtend.setSchemeAmount(ocSchemeMode.getSchemeAmount());
-            projectService.modifyProjectExtend(projectExtend);
-
-            /** 项目WBS */
-            OcScheme ocScheme = new OcScheme();
-            ocScheme.setId(ocSchemeMode.getSid());
-            ocScheme.setProWbs(ocSchemeMode.getProWbs());
-            ocSchemeService.modifyOcScheme(ocScheme);
-
-            /** 完整模式 */
-            if(ocSchemeMode.getOcSchemeStageMajors() != null && ocSchemeMode.getOcSchemeStageMajors().size() > 0){
-                ocSchemeDivisorService.modifyRatio(ocSchemeMode.getOcSchemeStageMajors());
-            }
-
-            /** 简化模式 */
-            if(ocSchemeMode.getOcSchemeDivisors() != null && ocSchemeMode.getOcSchemeDivisors().size() > 0){
-                ocSchemeDivisorService.modifySimple(ocSchemeMode.getOcSchemeDivisors());
-            }
-
+            projectPlanningService.submitProjectPlanning(ocSchemeMode);
             result.put("flag", "true");
             result.put("msg", "保存成功");
         } catch (RuntimeException e) {
@@ -181,6 +163,9 @@ public class ProjectPlanningController extends BaseController {
             result.put("flag", "false");
             result.put("msg", "保存失败");
             throw new RuntimeException(e);
+        }catch (LogicalException ex) {
+            result.put("flag", "false");
+            result.put("msg", ex.getMess());
         }
         return result;
     }
@@ -204,7 +189,7 @@ public class ProjectPlanningController extends BaseController {
     }
 
     /**
-     * <p>描述 : 节点保存</p>
+     * <p>描述 : 人员保存</p>
      *
      * @param
      * @return
@@ -221,6 +206,9 @@ public class ProjectPlanningController extends BaseController {
             result.put("flag", "false");
             result.put("msg", "保存失败");
             throw new RuntimeException(e);
+        }catch (LogicalException ex) {
+            result.put("flag", "false");
+            result.put("msg", ex.getMess());
         }
         return result;
     }

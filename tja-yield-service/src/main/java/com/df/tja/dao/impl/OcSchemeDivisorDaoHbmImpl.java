@@ -8,6 +8,7 @@ import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import javax.xml.crypto.dsig.Transform;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -40,5 +41,23 @@ public class OcSchemeDivisorDaoHbmImpl extends BaseDaoHbmImpl implements IOcSche
         query.setParameter(0, proId);
         query.setResultTransformer(Transformers.aliasToBean(OcSchemeDivisorModel.class));
         return query.list();
+    }
+
+    @Override
+    public BigDecimal queryRatioSum(String proId, String parentId) {
+        StringBuffer sql = new StringBuffer("");
+        sql.append("SELECT ISNULL(SUM(SCHEME_RATIO), 0)             ");
+        sql.append("FROM OC_SCHEME_DIVISOR_TM WHERE PRO_ID = ?      ");
+        if(parentId == null){
+            sql.append("AND PARENT_ID IS NULL                       ");
+        }else{
+            sql.append("AND PARENT_ID = ?                           ");
+        }
+        SQLQuery sqlQuery = getCurrentSession().createSQLQuery(sql.toString());
+        sqlQuery.setString(0, proId);
+        if(parentId != null){
+            sqlQuery.setString(1,parentId);
+        }
+        return (BigDecimal) sqlQuery.uniqueResult();
     }
 }

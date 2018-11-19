@@ -21,7 +21,7 @@
 					<div class="form_group col-lg-6">
 						<label class="control-label col-md-2" style="font-weight: bold">节点类型&nbsp&nbsp&nbsp&nbsp</label>
 						<div class="col-md-7">
-							<select name="isPanent" class="form-control" style="width: 100px">
+							<select name="isParent" class="form-control" style="width: 100px">
 								<option value="phase">阶段</option>
 								<option value="professional">专业</option>
 							</select>
@@ -43,7 +43,8 @@
 					<div class="form-group col-lg-6" id="isProfessional">
 						<label class="control-label col-md-2">专业负责人</label>
 						<div class="col-md-7">
-							<input type="hidden" name="divisorDirector"><input type="text" id="director" class="form-control" placeholder="请选择" readonly="readonly">
+							<input type="hidden" name="divisorDirector">
+							<input type="text" id="director" class="form-control" placeholder="请选择" readonly="readonly">
 						</div>
 					</div>
 					<div class="">
@@ -60,20 +61,19 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript" src="${site}/resources/js/ztree/ztree-3.4-extend.js?v=${buildVersion}"></script>
 <script type="text/javascript">
 $(function(){
     jQuery("#isProfessional").hide();
     jQuery("select[name='divisorName']").hide();
 
-
-    var isParent = jQuery("input[name='parentId']").val();
-    if(typeof(isParent) == 'undefined'){
-        jQuery("select[name='isPanent']").attr("disabled","disabled");
+    if(jQuery("input[name='parentId']").val() == "undefined"){
+        jQuery("select[name='isParent']").attr("disabled","disabled");
     }
 
-    jQuery("select[name='isPanent']").on("change",function () {
-        var isPanent = $(this).val();
-        if(isPanent == 'phase'){
+    jQuery("select[name='isParent']").on("change",function () {
+        var isParent = $(this).val();
+        if(isParent == 'phase'){
             jQuery("#isProfessional").hide();
             jQuery("select[name='divisorName']").hide();
             jQuery("input[name='divisorName']").show();
@@ -87,29 +87,35 @@ $(function(){
 	// 选择专业负责人
     $("#director").on("click",function(){
         userObj = this;
-        selectStaff(selectStaffCallBack, "radio");
+        selectStaff(selectStaffBack, "radio");
     });
 
     /**选择专业负责人后的回调方法*/
-    function selectStaffCallBack(data){
+    function selectStaffBack(data){
         $(userObj).siblings("input[name='divisorDirector']").val(data[0].id);
         $(userObj).val(data[0].name);
     }
 
     $("#save-btn").on("click", function(){
-    	/*if(!jQuery("#majorSchAddNodeForm").valid()){
+    	var _sel = jQuery("select[name='isParent']");
+    	var isParent = _sel.find("option:selected").val();
+    	if(isParent == 'professional'){
+    	    console.log(1)
+			jQuery("input[name='divisorName']").attr("data-rule-required","false");
+		}
+    	if(!jQuery("#nodeForm").valid()){
+    	    jQuery.jalert({"jatext":"请填写完整信息！"});
+            jQuery("input[name='divisorName']").attr("data-rule-required","true");
             return;
-        }*/
-    	var _sel = jQuery("select[name='isPanent']");
-    	var isPanent = _sel.find("option:selected").val();
-    	if(isPanent == 'phase'){
+        }
+    	if(isParent == 'phase'){
             jQuery("input[name='parentId']").attr("disabled","disabled");
             jQuery("input[name='divisorDirector']").attr("disabled","disabled");
             jQuery("select[name='divisorName']").attr("disabled","disabled");
 		}else{
             jQuery("input[name='divisorName']").attr("disabled","disabled");
 		}
-        var form = jQuery("#nodeForm").serialize();
+
         var url = "${site}/admin/project/planning/ajax/nodesave";
         jQuery.ajax({
             type : "POST",

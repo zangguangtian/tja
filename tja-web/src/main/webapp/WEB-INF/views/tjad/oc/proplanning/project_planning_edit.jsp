@@ -158,7 +158,11 @@
                                                     <input type="text" data-rule-number="true" name="ocSchemeStageMajors[${no}].schemeStageRatio" value="${ocSchemeStageMajor.schemeStageRatio}">
                                                 </td>
                                                 <td class="col-lg-3 text-right"><input type="hidden" name="ocSchemeStageMajors[${no}].schemeMajorId" value="${ocSchemeStageMajor.schemeMajorId}"/> ${ocSchemeStageMajor.schemeMajorName}</td>
-                                                <td class="col-lg-2 text-right"><input type="text" data-rule-number="true" name="ocSchemeStageMajors[${no}].schemeMajorRatio" value="${ocSchemeStageMajor.schemeMajorRatio}"></td>
+                                                <td class="col-lg-2 text-right">
+                                                    <c:if test="${ocSchemeStageMajor.schemeMajorRatio != null}">
+                                                        <input type="text" data-rule-number="true" name="ocSchemeStageMajors[${no}].schemeMajorRatio" value="${ocSchemeStageMajor.schemeMajorRatio}">
+                                                    </c:if>
+                                                </td>
                                             </tr>
                                         </c:if>
                                         <c:if test="${ocSchemeStageMajor.schemeStageId == span}">
@@ -168,7 +172,11 @@
                                                 </td>
                                                 <%--<td class="col-lg-2 text-right"><input type="text" name="ocSchemeStageMajors.schemeStageRatio" value="${ocSchemeStageMajor.schemeStageRatio}"></td>--%>
                                                 <td class="col-lg-3 text-right"><input type="hidden" name="ocSchemeStageMajors[${no}].schemeMajorId" value="${ocSchemeStageMajor.schemeMajorId}"/>${ocSchemeStageMajor.schemeMajorName}</td>
-                                                <td class="col-lg-2 text-right"><input type="text" data-rule-number="true" name="ocSchemeStageMajors[${no}].schemeMajorRatio" value="${ocSchemeStageMajor.schemeMajorRatio}"></td>
+                                                <td class="col-lg-2 text-right">
+                                                    <c:if test="${ocSchemeStageMajor.schemeMajorRatio != null}">
+                                                        <input type="text" data-rule-number="true" name="ocSchemeStageMajors[${no}].schemeMajorRatio" value="${ocSchemeStageMajor.schemeMajorRatio}">
+                                                    </c:if>
+                                                </td>
                                             </tr>
                                         </c:if>
                                         <c:set var="span" value="${ocSchemeStageMajor.schemeStageId}"/>
@@ -212,20 +220,7 @@
             jQuery('select[name="proWbs"]').attr("disabled","disabled");
         }
 
-        simpleRatio();
-
     });
-
-    /*function simpleRatio() {
-        var schemeRatioSimple = 0;
-        jQuery.each($("#projectForm #tab_0 tbody tr"),function(index){
-            var stageRatio = new Number(jQuery("input[name='ocSchemeDivisors["+index+"].schemeRatio").val());
-            if(!isNaN(stageRatio)){
-                schemeRatioSimple += stageRatio;
-            }
-        });
-        jquery("#schemeRatioSimple").html("<label id='schemeRatioSimple'>"+schemeRatioSimple.toString()+"</label>");
-    };*/
 
     function save() {
         var url = "${site}/admin/project/planning/ajax/save";
@@ -233,7 +228,7 @@
         var _sel = jQuery("select[name='proWbs']");
         var proWbs = _sel.find("option:selected").val();
         if(proWbs == 'OC.PROJECT.WBS.SIMPLE'){
-            jQuery('#tab_1').attr("disabled","disabled");
+            jQuery('#tab_1 input').attr("disabled","disabled");
 
             //人员比例
             var schemeRatioSimple = 0;
@@ -248,7 +243,7 @@
                 return;
             }
         }else{
-            jQuery('#tab_0').attr("disabled","disabled");
+            jQuery('#tab_0 input').attr("disabled","disabled");
 
             //阶段比例
             var stageRatioSum = 0;
@@ -286,16 +281,6 @@
         var parentId = $("input[name='full']:checked").val();
         var proId = jQuery("input[name='pid']").val();
         var schemeId = jQuery("input[name='sid']").val();
-        /*var url = "${site}/admin/project/planning/ajax/addnode/"+proId+"/"+schemeId+"/"+parentId;
-        layer.open({
-            type: 2,
-            title: "添加节点",
-            area: ['800px', '600px'], //宽高
-            shade: [0.5, "#393D49"],
-            closeBtn: 2,
-            content: url
-        });*/
-
         openWindow("${site}/admin/project/planning/ajax/addnode/"+proId+"/"+schemeId+"/"+parentId, "添加节点", "1000", "600", true, true);
     });
 
@@ -303,16 +288,6 @@
     jQuery("#addUser").on("click",function(){
         var proId = jQuery("input[name='pid']").val();
         var schemeId = jQuery("input[name='sid']").val();
-        /*var url = "${site}/admin/project/planning/ajax/adduser/"+proId+"/"+schemeId;
-        layer.open({
-            type: 2,
-            title: "添加人员",
-            area: ['800px', '600px'], //宽高
-            shade: [0.5, "#393D49"],
-            closeBtn: 2,
-            content: url
-        });*/
-
         openWindow("${site}/admin/project/planning/ajax/adduser/"+proId+"/"+schemeId, "添加人员", "1000", "600", true, true);
     });
 
@@ -326,10 +301,7 @@
             jQuery("#tab_0").hide();
         }
     });
-    
-    jQuery("#addTr").on("click",function () {
 
-    });
 </script>
 </body>
 </html>
