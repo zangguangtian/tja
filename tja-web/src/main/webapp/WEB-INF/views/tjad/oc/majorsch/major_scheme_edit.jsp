@@ -100,7 +100,7 @@
 										<c:set var="subId" value="A"/>
 										<c:set var="taskId" value="A"/>
 										<c:forEach items="${subTasks }" var="task">
-											<%--既不同子项又不同任务 --%>
+											<%--既不同子项又不同任务，需要考虑两个子项都没有子专业的情况 --%>
 											<c:if test="${subId != task.subId && (taskId != task.taskId || empty task.taskId) }">
 												<tr>
 													<%--data-subid放在td上面主要用于统计子项数量 --%>
