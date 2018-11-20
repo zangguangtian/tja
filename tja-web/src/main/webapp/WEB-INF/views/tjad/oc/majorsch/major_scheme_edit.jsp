@@ -101,7 +101,7 @@
 										<c:set var="taskId" value="A"/>
 										<c:forEach items="${subTasks }" var="task">
 											<%--既不同子项又不同任务 --%>
-											<c:if test="${subId != task.subId && taskId != task.taskId }">
+											<c:if test="${subId != task.subId && (taskId != task.taskId || empty task.taskId) }">
 												<tr>
 													<%--data-subid放在td上面主要用于统计子项数量 --%>
 													<td rowspan="${task.taskUserCount }" class="text-center" data-subid="${task.subId }" data-subchildcount="${task.subChildCount }">
@@ -187,7 +187,9 @@
 												</tr>
 											</c:if>
 											<c:set var="subId" value="${task.subId }"/>
-											<c:set var="taskId" value="${task.taskId }"/>
+											<c:if test="${not empty task.taskId }">
+												<c:set var="taskId" value="${task.taskId }"/>
+											</c:if>
 										</c:forEach>
 									</tbody>
 								</table>
