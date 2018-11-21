@@ -17,7 +17,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.df.framework.base.service.impl.BaseServiceImpl;
+import com.df.framework.log.LoggerProxy;
 import com.df.tja.dao.IOcDesignScheduleDao;
+import com.df.tja.domain.OcScheduleFill;
 import com.df.tja.domain.cust.CustOcDesignSchedule;
 import com.df.tja.service.IOcDesignScheduleService;
 
@@ -36,13 +39,42 @@ import com.df.tja.service.IOcDesignScheduleService;
  * 
  */
 @Service
-public class OcDesignScheduleServiceImpl implements IOcDesignScheduleService {
+public class OcDesignScheduleServiceImpl extends BaseServiceImpl implements IOcDesignScheduleService {
 
     @Autowired
     private IOcDesignScheduleDao designScheduleDao;
     
     public List<CustOcDesignSchedule> queryDesignSchedulesById(String phaseId) {
         return designScheduleDao.selectDesignSchedulesById(phaseId);
+    }
+    
+    public void createDesignSchedules(CustOcDesignSchedule designSchedule) {
+        try {
+            String scheduleId = designSchedule.getScheduleId();
+            //先删除
+            OcScheduleFill entity = new OcScheduleFill();
+            entity.setScheduleId(scheduleId);
+            designScheduleDao.deleteByObject(OcScheduleFill.class, entity);
+            
+            List<CustOcDesignSchedule> schedules = designSchedule.getSchedules();
+            if(schedules != null && !schedules.isEmpty()) {
+                OcScheduleFill fill = null;
+                for(CustOcDesignSchedule schedule : schedules) {
+                    fill = new OcScheduleFill();
+                    fill.setProId(designSchedule.getProId());
+                    fill.setScheduleId(designSchedule.getScheduleId());
+                    fill.setSchemeId(designSchedule.getSchemeId());
+                    fill.setDivisorId(schedule.getUserId());
+                    fill.setCurrSchedule(schedule.getCurrSchedule());
+                    fill.setScheduleStatus(schedule.getScheduleStatus());
+                    fill.setRemark(schedule.getRemark());
+                    addEntity(OcScheduleFill.class, fill);
+                }
+            }
+        }catch(Exception ex) {
+            LoggerProxy.error(ex.getMessage(), ex);
+            throw new RuntimeException(ex);
+        }
     }
 
 }

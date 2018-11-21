@@ -14,6 +14,7 @@ package com.df.tja.service;
 
 import java.util.List;
 
+import com.df.framework.base.service.IBaseService;
 import com.df.tja.domain.cust.CustOcDesignSchedule;
 
 /**
@@ -31,7 +32,7 @@ import com.df.tja.domain.cust.CustOcDesignSchedule;
  * 
  */
 
-public interface IOcDesignScheduleService {
+public interface IOcDesignScheduleService extends IBaseService {
 
     /**
      * 
@@ -41,4 +42,12 @@ public interface IOcDesignScheduleService {
      * @return
      */
     List<CustOcDesignSchedule> queryDesignSchedulesById(String phaseId);
+    
+    /**
+     * 
+     * <p>描述 : 设计师填报工作进展</p>
+     *
+     * @param designSchedule
+     */
+    void createDesignSchedules(CustOcDesignSchedule designSchedule);
 }

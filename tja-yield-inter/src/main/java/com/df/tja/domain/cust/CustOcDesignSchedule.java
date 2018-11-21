@@ -13,6 +13,7 @@
 package com.df.tja.domain.cust;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * <p>CustOcDesignSchedule</p>
@@ -30,9 +31,15 @@ import java.math.BigDecimal;
  */
 
 public class CustOcDesignSchedule {
+    
+    /** 属性：项目ID*/
+    private String proId;
 
     /** 属性：策划ID*/
     private String schemeId;
+    
+    /** 属性：进度主ID*/
+    private String scheduleId;
     
     /** 属性：专业ID*/
     private String majorId;
@@ -78,6 +85,26 @@ public class CustOcDesignSchedule {
 
     /** 属性：备注*/
     private String remark;
+    
+    private List<CustOcDesignSchedule> schedules;
+
+    /**
+     * <p> 属性proId的Getter方法. </p>
+     * 
+     * @return 返回proId属性的值
+     */
+    public String getProId() {
+        return proId;
+    }
+
+    /**
+     * <p> 属性proId的Setter方法. </p>
+     * 
+     * @param proId 为属性proId设置的值
+     */
+    public void setProId(String proId) {
+        this.proId = proId;
+    }
 
     /**
      * <p> 属性schemeId的Getter方法. </p>
@@ -95,6 +122,24 @@ public class CustOcDesignSchedule {
      */
     public void setSchemeId(String schemeId) {
         this.schemeId = schemeId;
+    }
+
+    /**
+     * <p> 属性scheduleId的Getter方法. </p>
+     * 
+     * @return 返回scheduleId属性的值
+     */
+    public String getScheduleId() {
+        return scheduleId;
+    }
+
+    /**
+     * <p> 属性scheduleId的Setter方法. </p>
+     * 
+     * @param scheduleId 为属性scheduleId设置的值
+     */
+    public void setScheduleId(String scheduleId) {
+        this.scheduleId = scheduleId;
     }
 
     /**
@@ -365,6 +410,24 @@ public class CustOcDesignSchedule {
      */
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    /**
+     * <p> 属性schedules的Getter方法. </p>
+     * 
+     * @return 返回schedules属性的值
+     */
+    public List<CustOcDesignSchedule> getSchedules() {
+        return schedules;
+    }
+
+    /**
+     * <p> 属性schedules的Setter方法. </p>
+     * 
+     * @param schedules 为属性schedules设置的值
+     */
+    public void setSchedules(List<CustOcDesignSchedule> schedules) {
+        this.schedules = schedules;
     }
     
 }

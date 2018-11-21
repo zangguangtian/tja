@@ -14,19 +14,20 @@ package com.df.tja.oc.controller;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.df.framework.base.controller.BaseController;
-import com.df.framework.log.LoggerProxy;
-import com.df.framework.rest.vo.BaseResponse;
 import com.df.framework.sys.domain.SysConfig;
 import com.df.framework.sys.service.ISysConfigService;
 import com.df.framework.util.DateUtil;
@@ -155,12 +156,13 @@ public class WorkScheduleController extends BaseController {
             // 查简化列表
         }
         
+        String scheduleId = null;
         //检查本周是否存在填报主记录
         OcSchedule entity = new OcSchedule();
         entity.setProId(proId);
         entity.setOtherCondition(" GETDATE() BETWEEN WEEK_START AND WEEK_END");
-        Integer count = ocScheduleService.queryCountByCondition(OcSchedule.class, entity);
-        if (count == 0) {
+        List<OcSchedule> list = ocScheduleService.queryByCondition(OcSchedule.class, entity);
+        if (list == null || list.isEmpty()) {
             SysConfig sysConfig = sysConfigService.querySysConfigByCode("OC.SCHEDULE.WEEK.START");
             int firstDay = Calendar.MONDAY;
             if(sysConfig != null && StringUtil.isNotBlank(sysConfig.getConfigValue())) {
@@ -176,8 +178,28 @@ public class WorkScheduleController extends BaseController {
             entity.setWeekStart(weekStart);
             entity.setWeekEnd(weekEnd);
             ocScheduleService.addEntity(OcSchedule.class, entity);
+            scheduleId = entity.getId();
+        }else {
+            scheduleId = list.get(0).getId();
         }
+        
+        model.addAttribute("scheduleId", scheduleId);
         return "/tjad/oc/schedule/schedule_of_design";
+    }
+    
+    @RequestMapping(value = "/design/save", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, String> saveDesignFill(@RequestBody CustOcDesignSchedule designSchedule) throws RuntimeException {
+        Map<String, String> resultMap = new HashMap<String, String>(0);
+        try {
+            designScheduleService.createDesignSchedules(designSchedule);
+            resultMap.put("success", "true");
+            resultMap.put("mess", "保存成功!");
+        } catch (RuntimeException ex) {
+            resultMap.put("success", "false");
+            resultMap.put("mess", "保存失败!");
+        }
+        return resultMap;
     }
 
     /**
@@ -186,19 +208,14 @@ public class WorkScheduleController extends BaseController {
      * @return
      * @throws RuntimeException
      */
-    @RequestMapping(value = "/design/ajaxload/{phaseId}", method = RequestMethod.GET)
-    @ResponseBody
-    public BaseResponse loadFull(@PathVariable("phaseId") String phaseId){
-        BaseResponse response = null;
-        try {
-            List<CustOcDesignSchedule> designs = designScheduleService.queryDesignSchedulesById(phaseId);
-            response = new BaseResponse("true", "加载成功");
-            response.putDataValue("designs", designs);
-        } catch (RuntimeException ex) {
-            LoggerProxy.error(ex.getMessage(), ex);
-            response = new BaseResponse("false", "加载失败");
-        }
-        return response;
+    @RequestMapping(value = "/design/ajaxhtml/load/{phaseId}", method = RequestMethod.POST)
+    public String loadFull(@PathVariable("phaseId") String phaseId, Model model){
+        List<SysConfig> statuses = sysConfigService.querySysConfigsByParentCode("OC.SCHEDULE.STATUS");
+        model.addAttribute("statuses", statuses);
+        
+        List<CustOcDesignSchedule> designs = designScheduleService.queryDesignSchedulesById(phaseId);
+        model.addAttribute("designs", designs);
+        return "/tjad/oc/schedule/schedule_of_design_full";
     }
 
 }
