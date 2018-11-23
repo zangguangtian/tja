@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.df.project.service.IProjectApprovalService;
+import com.df.tja.domain.cust.OcStepFillMore;
+import com.df.tja.service.IOcStepFillService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -75,6 +78,9 @@ public class WorkScheduleController extends BaseController {
     @Autowired
     private ISysConfigService sysConfigService;
 
+    @Autowired
+    private IOcStepFillService ocStepFillService;
+
     /**
      *
      * <p>描述 : 工作进展列表  </p>
@@ -95,8 +101,11 @@ public class WorkScheduleController extends BaseController {
      */
     @RequestMapping(value = "/main/{proId}", method = RequestMethod.GET)
     public String viewMain(@PathVariable("proId")String proId, Model model) throws RuntimeException{
-        CustProject projectMore = projectService.queryByProId(proId);
-        model.addAttribute("project", projectMore);
+        Map<String, List<CustProject>> projectMore = projectService.queryTheMainByPreProId(proId);
+        List<CustProject> projects = projectMore.get("pre");
+        List<OcStepFillMore> ocStepFillMoreList = ocStepFillService.queryByPreProId(proId);
+        model.addAttribute("project", projects.get(0));
+        model.addAttribute("ocStepFillList", ocStepFillMoreList);
         return "/tjad/oc/schedule/schedule_of_main";
     }
     
