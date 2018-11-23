@@ -45,7 +45,7 @@ public class DataSyncDaoHbmImpl extends BaseDaoHbmImpl implements IDataSyncDao {
 
     public void writeBackSyncData(final String dataType) {
         //在存储过程调用前先flush。flush只是将Hibernate缓存的数据保存到数据库中，但事务还没有提交
-        getCurrentSession().flush();
+        flushSession();
 
         getCurrentSession().doWork(new Work() {
             public void execute(Connection connection) throws SQLException {

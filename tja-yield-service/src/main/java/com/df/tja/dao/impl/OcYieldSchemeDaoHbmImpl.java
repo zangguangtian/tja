@@ -151,8 +151,7 @@ public class OcYieldSchemeDaoHbmImpl extends BaseDaoHbmImpl implements IOcYieldS
 
     public void calOtherYield(final String schemeId, final String opType) {
         //刷新缓存
-        getCurrentSession().flush();
-
+        flushSession();
         getCurrentSession().doWork(new Work() {
             public void execute(Connection connection) throws SQLException {
                 CallableStatement cstmt;

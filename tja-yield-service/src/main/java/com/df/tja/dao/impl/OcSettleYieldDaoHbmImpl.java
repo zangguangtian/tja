@@ -74,8 +74,7 @@ public class OcSettleYieldDaoHbmImpl extends BaseDaoHbmImpl implements IOcSettle
      */
     @Override
     public void insertMegerSettleYield(Date date) {
-        getCurrentSession().flush();
-
+        flushSession();
         StringBuilder sql = new StringBuilder();
         sql.append(" MERGE INTO OC_SETTLE_YIELD AS T USING                                 ");
         sql.append(" OC_SETTLE_YIELD_IMP AS S ON T.PRO_ID = S.PRO_ID                       ");
