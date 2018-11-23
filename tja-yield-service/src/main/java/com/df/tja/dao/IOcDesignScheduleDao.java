@@ -34,5 +34,21 @@ import com.df.tja.domain.cust.CustOcDesignSchedule;
 
 public interface IOcDesignScheduleDao extends IBaseDao {
     
+    /**
+     * 
+     * <p>描述 : 通过阶段ID，查询此阶段下的设计师工作进度  </p>
+     *
+     * @param phaseId
+     * @return
+     */
     List<CustOcDesignSchedule> selectDesignSchedulesById(String phaseId);
+    
+    /**
+     * 
+     * <p>描述 : 批量更新设计师工作进度的上周进度 </p>
+     * <p>注意： 调用此方法只有存在上周数据时，才有可能存在更新记录</p>
+     *
+     * @param phaseId
+     */
+    void updateDesignPreSchedule(String phaseId);
 }

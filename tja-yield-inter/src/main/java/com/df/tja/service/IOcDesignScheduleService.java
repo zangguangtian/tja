@@ -50,4 +50,6 @@ public interface IOcDesignScheduleService extends IBaseService {
      * @param designSchedule
      */
     void createDesignSchedules(CustOcDesignSchedule designSchedule);
+    
+    void mergeDesignPreSchedule(String scheduleId);
 }

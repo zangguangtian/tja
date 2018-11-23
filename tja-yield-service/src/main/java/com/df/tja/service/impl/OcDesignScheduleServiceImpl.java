@@ -56,6 +56,7 @@ public class OcDesignScheduleServiceImpl extends BaseServiceImpl implements IOcD
             entity.setScheduleId(scheduleId);
             designScheduleDao.deleteByObject(OcScheduleFill.class, entity);
             
+            //再插入
             List<CustOcDesignSchedule> schedules = designSchedule.getSchedules();
             if(schedules != null && !schedules.isEmpty()) {
                 OcScheduleFill fill = null;
@@ -71,10 +72,16 @@ public class OcDesignScheduleServiceImpl extends BaseServiceImpl implements IOcD
                     addEntity(OcScheduleFill.class, fill);
                 }
             }
+            //更新上周进度
+            mergeDesignPreSchedule(scheduleId);
         }catch(Exception ex) {
             LoggerProxy.error(ex.getMessage(), ex);
             throw new RuntimeException(ex);
         }
+    }
+    
+    public void mergeDesignPreSchedule(String scheduleId) {
+        designScheduleDao.updateDesignPreSchedule(scheduleId);
     }
 
 }

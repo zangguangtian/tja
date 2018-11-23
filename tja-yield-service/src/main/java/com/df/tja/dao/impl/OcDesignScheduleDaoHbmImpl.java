@@ -67,4 +67,24 @@ public class OcDesignScheduleDaoHbmImpl extends BaseDaoHbmImpl implements IOcDes
         return query.list();
     }
 
+    public void updateDesignPreSchedule(String phaseId) {
+        flushSession();
+        StringBuffer sql = new StringBuffer("");
+        sql.append("UPDATE C SET C.PREV_SCHEDULE = ISNULL(P.CURR_SCHEDULE, 0)         ");
+        sql.append("FROM OC_SCHEDULE_FILL_TM C                                        ");
+        sql.append("LEFT JOIN OC_SCHEDULE_FILL_TM P ON C.PRO_ID = P.PRO_ID            ");
+        sql.append("  AND C.SCHEME_ID = P.SCHEME_ID AND C.DIVISOR_ID = P.DIVISOR_ID   ");
+        sql.append("WHERE P.SCHEDULE_ID IN (                                          ");
+        sql.append("    SELECT TOP(1) PS.ID                                           ");
+        sql.append("    FROM OC_SCHEDULE_TM PS                                        ");
+        sql.append("    WHERE EXISTS(                                                 ");
+        sql.append("      SELECT 'X' FROM OC_SCHEDULE_TM CS                           ");
+        sql.append("      WHERE CS.PRO_ID = PS.PRO_ID AND CS.SCHEME_ID = PS.SCHEME_ID ");
+        sql.append("        AND PS.WEEK_END < CS.WEEK_START AND CS.ID = C.SCHEDULE_ID ");
+        sql.append("    ) ORDER BY PS.WEEK_START DESC                                 ");
+        sql.append("  ) AND C.SCHEDULE_ID = ?                                         ");
+        SQLQuery query = this.getCurrentSession().createSQLQuery(sql.toString());
+        query.setString(0, phaseId);
+        query.executeUpdate();
+    }
 }
