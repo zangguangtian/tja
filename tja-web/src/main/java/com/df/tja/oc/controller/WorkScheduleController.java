@@ -18,17 +18,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.df.framework.hibernate.persistence.Pagination;
 import com.df.project.service.IProjectApprovalService;
+import com.df.tja.domain.cust.OcCurrweekSchedule;
 import com.df.tja.domain.cust.OcStepFillMore;
-import com.df.tja.service.IOcStepFillService;
+import com.df.tja.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.df.framework.base.controller.BaseController;
 import com.df.framework.sys.domain.SysConfig;
@@ -41,9 +39,6 @@ import com.df.tja.domain.OcSchedule;
 import com.df.tja.domain.OcScheme;
 import com.df.tja.domain.OcSchemeDivisor;
 import com.df.tja.domain.cust.CustOcDesignSchedule;
-import com.df.tja.service.IOcDesignScheduleService;
-import com.df.tja.service.IOcScheduleService;
-import com.df.tja.service.IOcSchemeService;
 
 /**
  * <p>MajorSchemeController</p>
@@ -81,6 +76,9 @@ public class WorkScheduleController extends BaseController {
     @Autowired
     private IOcStepFillService ocStepFillService;
 
+    @Autowired
+    private IOcScheduleFillService ocScheduleFillService;
+
     /**
      *
      * <p>描述 : 工作进展列表  </p>
@@ -99,13 +97,11 @@ public class WorkScheduleController extends BaseController {
      * @return
      * @throws RuntimeException
      */
-    @RequestMapping(value = "/main/{proId}", method = RequestMethod.GET)
-    public String viewMain(@PathVariable("proId")String proId, Model model) throws RuntimeException{
+    @RequestMapping(value = "/main/{proId}", method = {RequestMethod.GET,RequestMethod.POST})
+    public String viewMain(@PathVariable("proId")String proId , Model model) throws RuntimeException{
         Map<String, List<CustProject>> projectMore = projectService.queryTheMainByPreProId(proId);
         List<CustProject> projects = projectMore.get("pre");
-        List<OcStepFillMore> ocStepFillMoreList = ocStepFillService.queryByPreProId(proId);
         model.addAttribute("project", projects.get(0));
-        model.addAttribute("ocStepFillList", ocStepFillMoreList);
         return "/tjad/oc/schedule/schedule_of_main";
     }
     
@@ -225,6 +221,96 @@ public class WorkScheduleController extends BaseController {
         List<CustOcDesignSchedule> designs = designScheduleService.queryDesignSchedulesById(phaseId);
         model.addAttribute("designs", designs);
         return "/tjad/oc/schedule/schedule_of_design_full";
+    }
+
+    /**
+     * <p>描述 : 主项工作进度  </p>
+     * @param proId 主项ID
+     * @return
+     * @throws RuntimeException
+     */
+    @RequestMapping(value = "/workprog/ajaxhtml/{proId}", method = {RequestMethod.GET,RequestMethod.POST})
+    public String loadWork(@PathVariable("proId")String proId, @ModelAttribute("page") Pagination page, Model model) throws RuntimeException{
+
+        if (page == null || page.getPageNo() == 0) {
+            page = new Pagination(1,10);
+        }
+        //简化模式
+        List<OcCurrweekSchedule> ocCurrweekScheduleList = ocScheduleFillService.querySimleByProId(proId,page,1);
+        if(ocCurrweekScheduleList.size() > 0){
+            model.addAttribute("ocCurrweekScheduleList",ocCurrweekScheduleList);
+        }
+
+        //完整模式
+        List<OcCurrweekSchedule> ocCurrweekSchedules = ocScheduleFillService.queryFullByProId(proId,page,1);
+        if(ocCurrweekSchedules.size() > 0){
+            model.addAttribute("ocCurrweekSchedules",ocCurrweekSchedules);
+        }
+        model.addAttribute("page", page);
+        return "/tjad/oc/schedule/work_of_progress";
+    }
+
+    /**
+     * <p>描述 : 主项进展情况  </p>
+     * @param proId 主项ID
+     * @return
+     * @throws RuntimeException
+     */
+    @RequestMapping(value = "/progmain/ajaxhtml/{proId}", method = {RequestMethod.GET,RequestMethod.POST})
+    public String loadProg(@PathVariable("proId")String proId, @ModelAttribute("page") Pagination page, Model model) throws RuntimeException{
+
+        if (page == null || page.getPageNo() == 0) {
+            page = new Pagination(1,10);
+        }
+        List<OcStepFillMore> ocStepFillMoreList = ocStepFillService.queryByPreProId(proId,page,1);
+        model.addAttribute("ocStepFillList", ocStepFillMoreList);
+        model.addAttribute("page", page);
+        return "/tjad/oc/schedule/progress_of_main";
+    }
+
+    /**
+     * <p>描述 : 分项工作进度  </p>
+     * @param proId
+     * @return
+     * @throws RuntimeException
+     */
+    @RequestMapping(value = "/workprogitem/ajaxhtml/{proId}", method = {RequestMethod.GET,RequestMethod.POST})
+    public String loadItemWork(@PathVariable("proId")String proId, @ModelAttribute("page") Pagination page, Model model) throws RuntimeException{
+
+        if (page == null || page.getPageNo() == 0) {
+            page = new Pagination(1,10);
+        }
+        //简化模式
+        List<OcCurrweekSchedule> ocCurrweekScheduleList = ocScheduleFillService.querySimleByProId(proId,page,2);
+        if(ocCurrweekScheduleList.size() > 0){
+            model.addAttribute("ocCurrweekScheduleList",ocCurrweekScheduleList);
+        }
+
+        //完整模式
+        List<OcCurrweekSchedule> ocCurrweekSchedules = ocScheduleFillService.queryFullByProId(proId,page,2);
+        if(ocCurrweekSchedules.size() > 0){
+            model.addAttribute("ocCurrweekSchedules",ocCurrweekSchedules);
+        }
+        model.addAttribute("page", page);
+        return "/tjad/oc/schedule/work_of_progress_item";
+    }
+
+    /**
+     * <p>描述 : 分项进展情况  </p>
+     * @param proId
+     * @return
+     * @throws RuntimeException
+     */
+    @RequestMapping(value = "/progmainitem/ajaxhtml/{proId}", method = {RequestMethod.GET,RequestMethod.POST})
+    public String loadItemsProg(@PathVariable("proId")String proId, @ModelAttribute("page") Pagination page, Model model) throws RuntimeException{
+
+        if (page == null || page.getPageNo() == 0) {
+            page = new Pagination(1,10);
+        }
+        List<OcStepFillMore> ocStepFillMoreList = ocStepFillService.queryByPreProId(proId,page,2);
+        model.addAttribute("ocStepFillList", ocStepFillMoreList);
+        model.addAttribute("page", page);
+        return "/tjad/oc/schedule/progress_of_main_item";
     }
 
 }

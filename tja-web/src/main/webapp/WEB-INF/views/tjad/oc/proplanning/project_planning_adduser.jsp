@@ -30,6 +30,9 @@
 											<th class="text-center">姓名</th>
 											<th class="text-center">部门</th>
 											<th class="text-center">比例</th>
+											<th class="text-center" style="width: 5%">
+												<span id="add-role" title="添加" class="add-tr"><i class="fa fa-plus-square fa-lg plus-btn"></i></span>
+											</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -38,6 +41,7 @@
 											<td><input type="hidden" name="staffId"><input type="text" data-rule-required="true" id="staffName" class="form-control" placeholder="请选择" readonly="readonly"></td>
 											<td><input type="text" class="form-control" id="orgName" readonly="readonly"></td>
 											<td><input type="text" name="schemeRatio" class="form-control" data-rule-required="true" data-rule-number="true"></td>
+											<td><i class="fa fa-trash-o del-btn"></i></td>
 										</tr>
 									</tbody>
 								</table>
@@ -58,11 +62,21 @@
 		</div>
 	</div>
 </div>
+<table id="staffRoleTemp" style="display:none;">
+	<tr>
+		<td><tags:config type="select" parentCode="PM.MAJORROLE" ignoreCodes="PrjMajorLeader" name="staffRole" cssClass="form-control" /></td>
+		<td><input type="hidden" name="staffId"><input type="text" name="staffName" class="form-control" placeholder="请选择" readonly="readonly"></td>
+		<td><input type="text" name="orgName" class="form-control" readonly="readonly"></td>
+		<td><input type="text" name="schemeRatio" class="form-control" data-rule-number="true"></td>
+		<td><i class="fa fa-trash-o del-btn"></i></td>
+	</tr>
+</table>
 <script type="text/javascript" src="${site}/resources/js/ztree/ztree-3.4-extend.js?v=${buildVersion}"></script>
 <script type="text/javascript">
 var userObj = null;
 $(function(){
-    
+    $("#add-role").on("click", addRole);
+
  	// 选择人
 	$("#staffName").on("click",function(){
 		userObj = this;
@@ -75,6 +89,11 @@ $(function(){
     	window.close();
     });
 });
+
+function addRole(){
+    var $tr = $("#staffRoleTemp").find("tr").clone(true);
+    $("#staffRoleTab tbody").append($tr);
+}
 
 /**选择人后的回调方法*/
 function selectStaffCallBack(data){

@@ -1,6 +1,7 @@
 package com.df.tja.service.impl;
 
 import com.df.framework.base.service.impl.BaseServiceImpl;
+import com.df.framework.hibernate.persistence.Pagination;
 import com.df.tja.dao.IOcStepFillDao;
 import com.df.tja.domain.cust.OcStepFillMore;
 import com.df.tja.service.IOcStepFillService;
@@ -28,9 +29,9 @@ public class OcStepFillServiceImpl extends BaseServiceImpl implements IOcStepFil
     private IOcStepFillDao ocStepFillDao;
 
     @Override
-    public List<OcStepFillMore> queryByPreProId(String preProId) {
+    public List<OcStepFillMore> queryByPreProId(String preProId,Pagination pagination,Integer state) {
         try{
-            return ocStepFillDao.queryByPreProId(preProId);
+            return ocStepFillDao.selectByPreProId(preProId,pagination,state);
         }catch(Exception e){
             throw new RuntimeException();
         }

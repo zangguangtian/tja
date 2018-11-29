@@ -80,10 +80,10 @@
                         <input type="hidden" name="sid" value="${ocScheme.id}"/>
                         <tags:config type="select" name="proWbs" otherAttr="style='width: 100px'" cssClass="form-control" parentCode="OC.PROJECT.WBS" selectCode="${ocScheme.proWbs}"/>
                     </div>
-                    <div class="tab-content">
+                    <div class="">
                         <!-- 简化模式 -->
-                        <div class="tab-pane" id="tab_0">
-                            <div class="col-lg-5 ">
+                        <div class="form-body clearfix" id="tab_0">
+                            <div class="">
                                 <label id="addUser" class="btn blue" style="margin-bottom:10px;"><i class="fa fa-plus"></i>人员</label>
                                 <table class="table table-bordered edit">
                                     <thead>
@@ -126,8 +126,8 @@
                             <div class="col-lg-1"></div>
                         </div>
                         <!-- 完整模式 -->
-                        <div class="tab-pane active" id="tab_1">
-                            <div class="col-lg-5 ">
+                        <div class="form-body clearfix" id="tab_1">
+                            <div class=" ">
                                 <label id="addNode" class="btn blue" style="margin-bottom:10px;"><i class="fa fa-plus"></i>节点</label>
                                 <%--<input type="button" class="btn green" id="addNode"  value="节点"/>--%>
                                 <table class="table table-bordered edit">

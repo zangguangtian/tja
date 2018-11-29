@@ -183,3 +183,37 @@ function buttonToLoadingMethod($thisButton,btnText,isTimeOut){
 	}
 	$thisButton.attr('disabled','disabled').width(btnW).html(buttonLoading);
 };
+
+function changePage(formId, pageNo){
+    var pageNoObj = jQuery("#"+formId).find("input[type='hidden'][name='pageNo']");
+    if(pageNoObj!=null&&pageNoObj.length>0){
+        pageNoObj.val(pageNo);
+    }else{
+        jQuery("<input type='hidden' name='pageNo'/>").val(pageNo).appendTo("#"+formId);
+    }
+    jQuery("#"+formId).submit();
+}
+
+function ajaxChangePage(formId, pageNo){
+    var url = jQuery("#"+formId).attr("action");
+    var pageNoObj = jQuery("#"+formId).find("input[type='hidden'][name='pageNo']");
+    if(pageNoObj!=null&&pageNoObj.length>0){
+        pageNoObj.val(pageNo);
+    }else{
+        jQuery("<input type='hidden' name='pageNo'/>").val(pageNo).appendTo("#"+formId);
+    }
+    jQuery.ajax({
+        type : "POST",
+        url : url,
+        data : jQuery('#'+formId).serialize(),
+        dataType : "html",
+        async : false,
+        error : function(request) {
+            alert("Connection error");
+        },
+        success : function(data) {
+            $("#"+formId).empty();
+            $("#"+formId).append(data);
+        }
+    });
+}

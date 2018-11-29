@@ -1,6 +1,7 @@
 package com.df.tja.dao;
 
 import com.df.framework.base.dao.IBaseDao;
+import com.df.framework.hibernate.persistence.Pagination;
 import com.df.tja.domain.cust.OcStepFillMore;
 
 import java.util.List;
@@ -19,6 +20,6 @@ import java.util.List;
  */
 public interface IOcStepFillDao extends IBaseDao {
 
-    List<OcStepFillMore> queryByPreProId(String preProId);
+    List<OcStepFillMore> selectByPreProId(String preProId,Pagination pagination,Integer state);
 
 }
