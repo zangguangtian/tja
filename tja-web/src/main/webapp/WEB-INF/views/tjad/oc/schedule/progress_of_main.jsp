@@ -28,9 +28,9 @@
                 <tr>
                     <td style="text-align:right;">${vs.index+1}</td>
                     <td style="text-align:right;" rowspan="${stepFill.mergeCount}"><a href="${site }/admin/work/schedule/item/${stepFill.proId}">${stepFill.proName}</a></td>
-                    <td style="text-align:right;" rowspan="${stepFill.mergeCount}">${stepFill.proStatusName}</td>
+                    <td style="text-align:right;" rowspan="${stepFill.mergeCount}"><tags:config type="label" code="${stepFill.proStatus}"/></td>
                     <td style="text-align:right;">${stepFill.weekStart}--${stepFill.weekEnd}</td>
-                    <td style="text-align:right;">${stepFill.stepStatus}</td>
+                    <td style="text-align:right;"><tags:config type="label" code="${stepFill.stepStatus}"/></td>
                     <td style="text-align:right;">${stepFill.workContent}</td>
                     <td style="text-align:right;">${stepFill.workPlan}</td>
                     <td style="text-align:right;">${stepFill.remark}</td>
@@ -42,7 +42,7 @@
                 <tr>
                     <td style="text-align:right;">${vs.index+1}</td>
                     <td style="text-align:right;">${stepFill.weekStart}--${stepFill.weekEnd}</td>
-                    <td style="text-align:right;">${stepFill.stepStatus}</td>
+                    <td style="text-align:right;"><tags:config type="label" code="${stepFill.stepStatus}"/></td>
                     <td style="text-align:right;">${stepFill.workContent}</td>
                     <td style="text-align:right;">${stepFill.workPlan}</td>
                     <td style="text-align:right;">${stepFill.remark}</td>

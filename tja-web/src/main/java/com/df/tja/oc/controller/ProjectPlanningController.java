@@ -8,6 +8,7 @@ import com.df.project.domain.cust.CustProject;
 import com.df.project.service.IProjectService;
 import com.df.tja.domain.OcScheme;
 import com.df.tja.domain.OcSchemeDivisor;
+import com.df.tja.domain.cust.CustSchemeMajorNode;
 import com.df.tja.domain.cust.OcSchemeDivisorModel;
 import com.df.tja.domain.cust.OcSchemeMode;
 import com.df.tja.domain.cust.OcSchemeStageMajor;
@@ -196,10 +197,12 @@ public class ProjectPlanningController extends BaseController {
      */
     @RequestMapping(value = "/ajax/usersave",method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,String> usersave(@ModelAttribute OcSchemeDivisor ocSchemeDivisor){
+    public Map<String,String> usersave(@RequestBody CustSchemeMajorNode custSchemeMajorNode){
         Map<String, String> result = new HashMap<>();
         try {
-            ocSchemeDivisorService.addUser(ocSchemeDivisor);
+            for (OcSchemeDivisor ocSchemeDivisor :custSchemeMajorNode.getUserDivisors()) {
+                ocSchemeDivisorService.addUser(ocSchemeDivisor);
+            }
             result.put("flag", "true");
             result.put("msg", "保存成功");
         } catch (RuntimeException e) {

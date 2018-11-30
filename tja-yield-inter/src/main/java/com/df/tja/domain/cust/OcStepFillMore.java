@@ -28,7 +28,7 @@ public class OcStepFillMore extends OcStepFill{
     private String proName;
 
     /** 属性：分项状态 */
-    private String proStatusName;
+    private String proStatus;
 
     /** 属性：开始时间 */
     private java.util.Date weekStart;
@@ -76,21 +76,21 @@ public class OcStepFillMore extends OcStepFill{
     }
 
     /**
-     * <p> 属性：proStatusName的Getter方法. </p>
+     * <p> 属性：proStatus的Getter方法. </p>
      *
      * @return 返回分项状态属性的值
      */
-    public String getProStatusName() {
-        return proStatusName;
+    public String getProStatus() {
+        return proStatus;
     }
 
     /**
      * <p> 属性分项状态的Setter方法. </p>
      *
-     * @param proStatusName 为属性proStatusName设置的值
+     * @param proStatus 为属性proStatus设置的值
      */
-    public void setProStatusName(String proStatusName) {
-        this.proStatusName = proStatusName;
+    public void setProStatus(String proStatus) {
+        this.proStatus = proStatus;
     }
 
     /**

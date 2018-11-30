@@ -24,8 +24,8 @@
         <c:forEach items="${ocStepFillList}" var="stepFill" varStatus="vs">
             <tr>
                 <td style="text-align:right;">${vs.index+1}</td>
-                <td style="text-align:right;">${stepFill.weekStart}--${stepFill.weekEnd}</td>
-                <td style="text-align:right;">${stepFill.stepStatus}</td>
+                <td style="text-align:right;"><a onclick="toaddmod('${stepFill.id}')">${stepFill.weekStart}--${stepFill.weekEnd}</a></td>
+                <td style="text-align:right;"><tags:config type="label" code="${stepFill.stepStatus}"/></td>
                 <td style="text-align:right;">${stepFill.workContent}</td>
                 <td style="text-align:right;">${stepFill.workPlan}</td>
                 <td style="text-align:right;">${stepFill.remark}</td>

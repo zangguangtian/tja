@@ -38,10 +38,10 @@
 									<tbody>
 										<tr>
 											<td><tags:config type="select" parentCode="PM.MAJORROLE" ignoreCodes="PrjMajorLeader" name="staffRole" cssClass="form-control" otherAttr="data-rule-required='true'"/></td>
-											<td><input type="hidden" name="staffId"><input type="text" data-rule-required="true" id="staffName" class="form-control" placeholder="请选择" readonly="readonly"></td>
-											<td><input type="text" class="form-control" id="orgName" readonly="readonly"></td>
+											<td><input type="hidden" name="staffId"><input type="text" data-rule-required="true" name="staffName" class="form-control" placeholder="请选择" readonly="readonly"></td>
+											<td><input type="text" class="form-control" name="orgName" readonly="readonly"></td>
 											<td><input type="text" name="schemeRatio" class="form-control" data-rule-required="true" data-rule-number="true"></td>
-											<td><i class="fa fa-trash-o del-btn"></i></td>
+											<td><i class="fa fa-trash-o del-btn" name="del-btn"></i></td>
 										</tr>
 									</tbody>
 								</table>
@@ -68,7 +68,7 @@
 		<td><input type="hidden" name="staffId"><input type="text" name="staffName" class="form-control" placeholder="请选择" readonly="readonly"></td>
 		<td><input type="text" name="orgName" class="form-control" readonly="readonly"></td>
 		<td><input type="text" name="schemeRatio" class="form-control" data-rule-number="true"></td>
-		<td><i class="fa fa-trash-o del-btn"></i></td>
+		<td><i class="fa fa-trash-o del-btn" name="del-btn"></i></td>
 	</tr>
 </table>
 <script type="text/javascript" src="${site}/resources/js/ztree/ztree-3.4-extend.js?v=${buildVersion}"></script>
@@ -78,7 +78,7 @@ $(function(){
     $("#add-role").on("click", addRole);
 
  	// 选择人
-	$("#staffName").on("click",function(){
+	$("input[name='staffName']").on("click",function(){
 		userObj = this;
 		selectStaff(selectStaffCallBack, "radio");
 	});
@@ -99,7 +99,7 @@ function addRole(){
 function selectStaffCallBack(data){
 	$(userObj).siblings("input[name='staffId']").val(data[0].id);
 	$(userObj).val(data[0].name);
-	$(userObj).closest("tr").find("#orgName").val(data[0].orgname);
+	$(userObj).closest("tr").find("input[name='orgName']").val(data[0].orgname);
 }
 
 function saveRole(){
@@ -107,11 +107,27 @@ function saveRole(){
    	    jQuery.jalert({"jatext":"请填写完整信息"});
 		return;
 	}
+    var staffs = [];
+    var staff = null;
+    $("#staffRoleTab tbody tr").each(function(){
+        staff = {};
+        staff.staffRole = $(this).find("select[name='staffRole']").val();
+        staff.staffId = $(this).find("input[name='staffId']").val();
+        staff.schemeRatio = $(this).find("input[name='schemeRatio']").val();
+        staff.schemeId = jQuery("input[name='schemeId']").val();
+        staff.proId = jQuery("input[name='proId']").val();
+        staffs.push(staff);
+    });
+    var schemeUser = {};
+    schemeUser.userDivisors = staffs;
+
    	var url = "${site }/admin/project/planning/ajax/usersave";
     jQuery.ajax({
         type : "POST",
         url : url,
-        data : jQuery("#userForm").serialize(),
+        contentType : "application/json",
+        data : JSON.stringify(schemeUser),
+		dataType : "json",
         success : function(data, status) {
             jQuery.jalert({"jatype":"refresh", "jatext": data.msg, "onConfirm":function(){
                 if(data.flag == "true"){
@@ -125,6 +141,10 @@ function saveRole(){
         }
     });
 }
+
+jQuery("i[name='del-btn']").on("click",function(){
+   	jQuery(this).parent().parent().remove();
+});
 </script>
 </body>
 </html>

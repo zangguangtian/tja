@@ -120,7 +120,7 @@
             <div class="form-group col-lg-6 ">
                 <label class="control-label col-md-4">本年工时成本(万元)</label>
                 <div class="col-md-7">
-                    <input type="text" class="form-control" value="" disabled="disabled">
+                    <input type="text" class="form-control" value="${project.projectExtend.timeCost}" disabled="disabled">
                 </div>
             </div>
             <div class="form-group col-lg-6 ">
@@ -143,7 +143,7 @@
             </div>
         </div>
     </div>
-
+    <button type="button" style="float: right;margin-left: 30px" class="btn blue" onclick="toaddmod(0)">新增</button>
     <form id="itempageSize_0" action="${site }/admin/work/schedule/progmainitem/ajaxhtml/${project.id}" method="post">
     </form>
     <form id="itempageSize_1" action="${site }/admin/work/schedule/workprogitem/ajaxhtml/${project.id}" method="post">
@@ -184,6 +184,11 @@
             }
         });
     }
+    function toaddmod(data){
+        var stepId = data;
+        debugger;
+        openWindow("${site}/admin/work/schedule/ajax/updpro/"+data, "更新分项进展", "1000", "600", true, true);
+    };
 </script>
 </body>
 </html>

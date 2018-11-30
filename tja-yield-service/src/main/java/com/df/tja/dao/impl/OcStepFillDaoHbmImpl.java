@@ -35,7 +35,7 @@ public class OcStepFillDaoHbmImpl extends BaseDaoHbmImpl implements IOcStepFillD
     public List<OcStepFillMore> selectByPreProId(String preProId,Pagination pagination,Integer state) {
         List<OcStepFillMore> ocStepFillMoreList = null;
         StringBuilder sql = new StringBuilder();
-        sql.append("  SELECT SF.ID AS id,SF.PRO_ID AS proId,PP.PRO_NAME AS proName,SCF.CONFIG_NAME AS proStatusName,    ");
+        sql.append("  SELECT SF.ID AS id,SF.PRO_ID AS proId,PP.PRO_NAME AS proName,PP.PRO_STATUS AS proStatus,          ");
         sql.append("  (SELECT COUNT(PRO_NAME) FROM OC_STEP_FILL_TM SFT LEFT JOIN PM_PROJECT_TM PPT                      ");
         sql.append("  ON SFT.PRO_ID = PPT.ID WHERE PPT.PRE_PRO_ID = PP.PRE_PRO_ID) AS mergeCount,                       ");
         sql.append("  SD.WEEK_START AS weekStart,SD.WEEK_END AS weekEnd,SF.STEP_STATUS AS stepStatus,                   ");

@@ -2,6 +2,7 @@ package com.df.tja.service;
 
 import com.df.framework.base.service.IBaseService;
 import com.df.framework.hibernate.persistence.Pagination;
+import com.df.tja.domain.OcStepFill;
 import com.df.tja.domain.cust.OcStepFillMore;
 
 import java.util.List;
@@ -21,5 +22,9 @@ import java.util.List;
 public interface IOcStepFillService extends IBaseService{
 
     List<OcStepFillMore> queryByPreProId(String preProId,Pagination pagination,Integer state);
+
+    OcStepFill queryById(String id);
+
+    void addOrUpdStepFill(OcStepFill ocStepFill);
 
 }

@@ -20,6 +20,7 @@ import java.util.Map;
 
 import com.df.framework.hibernate.persistence.Pagination;
 import com.df.project.service.IProjectApprovalService;
+import com.df.tja.domain.OcStepFill;
 import com.df.tja.domain.cust.OcCurrweekSchedule;
 import com.df.tja.domain.cust.OcStepFillMore;
 import com.df.tja.service.*;
@@ -239,12 +240,13 @@ public class WorkScheduleController extends BaseController {
         List<OcCurrweekSchedule> ocCurrweekScheduleList = ocScheduleFillService.querySimleByProId(proId,page,1);
         if(ocCurrweekScheduleList.size() > 0){
             model.addAttribute("ocCurrweekScheduleList",ocCurrweekScheduleList);
-        }
+        }else {
 
-        //完整模式
-        List<OcCurrweekSchedule> ocCurrweekSchedules = ocScheduleFillService.queryFullByProId(proId,page,1);
-        if(ocCurrweekSchedules.size() > 0){
-            model.addAttribute("ocCurrweekSchedules",ocCurrweekSchedules);
+            //完整模式
+            List<OcCurrweekSchedule> ocCurrweekSchedules = ocScheduleFillService.queryFullByProId(proId, page, 1);
+            if (ocCurrweekSchedules.size() > 0) {
+                model.addAttribute("ocCurrweekSchedules", ocCurrweekSchedules);
+            }
         }
         model.addAttribute("page", page);
         return "/tjad/oc/schedule/work_of_progress";
@@ -284,12 +286,13 @@ public class WorkScheduleController extends BaseController {
         List<OcCurrweekSchedule> ocCurrweekScheduleList = ocScheduleFillService.querySimleByProId(proId,page,2);
         if(ocCurrweekScheduleList.size() > 0){
             model.addAttribute("ocCurrweekScheduleList",ocCurrweekScheduleList);
-        }
+        }else {
 
-        //完整模式
-        List<OcCurrweekSchedule> ocCurrweekSchedules = ocScheduleFillService.queryFullByProId(proId,page,2);
-        if(ocCurrweekSchedules.size() > 0){
-            model.addAttribute("ocCurrweekSchedules",ocCurrweekSchedules);
+            //完整模式
+            List<OcCurrweekSchedule> ocCurrweekSchedules = ocScheduleFillService.queryFullByProId(proId, page, 2);
+            if (ocCurrweekSchedules.size() > 0) {
+                model.addAttribute("ocCurrweekSchedules", ocCurrweekSchedules);
+            }
         }
         model.addAttribute("page", page);
         return "/tjad/oc/schedule/work_of_progress_item";
@@ -313,4 +316,43 @@ public class WorkScheduleController extends BaseController {
         return "/tjad/oc/schedule/progress_of_main_item";
     }
 
+    /**
+     * <p>描述 : 打开更新项目进展页面 </p>
+     *
+     * @param stepId
+     * @param model
+     * @return
+     * @throws RuntimeException
+     */
+    @RequestMapping(value = "/ajax/updpro/{stepId}", method = RequestMethod.GET)
+    public String toItemProgree(@PathVariable(value = "stepId") String stepId,Model model) throws RuntimeException {
+
+        OcStepFill ocStepFill = ocStepFillService.queryById(stepId);
+        if(ocStepFill != null){
+            model.addAttribute("ocStepFill", ocStepFill);
+        }
+        return "/tjad/oc/schedule/schedule_of_upditem";
+    }
+
+    /**
+     * <p>描述 : 项目进展信息保存</p>
+     *
+     * @param ocStepFill
+     * @return
+     */
+    @RequestMapping(value = "/ajax/item/progress", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,String> saveItemProgree(@ModelAttribute OcStepFill ocStepFill){
+        Map<String,String> result = new HashMap<>();
+        try{
+            ocStepFillService.addOrUpdStepFill(ocStepFill);
+            result.put("flag", "true");
+            result.put("msg", "保存成功!");
+        }catch(Exception e){
+            result.put("flag", "false");
+            result.put("msg", "保存失败!");
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
 }

@@ -25,7 +25,7 @@
                 <c:if test="${merge != curr.proName}">
                     <tr>
                         <td style="text-align:right;">${vs.index+1}</td>
-                        <td style="text-align:right;" rowspan="${curr.mergeCount}"><a hrea="${site }/admin/work/schedule/item/${stepFill.proId}"> ${curr.proName}</a></td>
+                        <td style="text-align:right;" rowspan="${curr.mergeCount}"><a href="${site }/admin/work/schedule/item/${curr.proId}"> ${curr.proName}</a></td>
                         <td style="text-align:right;">${curr.configName}</td>
                         <td style="text-align:right;">${curr.staffName}</td>
                         <td style="text-align:right;">${curr.orgName}</td>
