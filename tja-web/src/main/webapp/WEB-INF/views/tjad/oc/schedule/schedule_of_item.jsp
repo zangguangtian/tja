@@ -21,6 +21,7 @@
     <div id="content">
         <div class="form-body clearfix">
             <input type="hidden" id="proId" value="${project.id}"/>
+            <input type="hidden" id="scheduleId" value="${scheduleId}"/>
             <div class="form-group col-lg-6">
                 <label class="control-label col-md-4">主项编号</label>
                 <div class="col-md-7">
@@ -144,9 +145,9 @@
         </div>
     </div>
     <button type="button" style="float: right;margin-left: 30px" class="btn blue" onclick="toaddmod(0)">新增</button>
-    <form id="itempageSize_0" action="${site }/admin/work/schedule/progmainitem/ajaxhtml/${project.id}" method="post">
+    <form id="itempageSize_0" action="${site }/admin/work/schedule/progmain/ajaxhtml/2/${project.id}" method="post">
     </form>
-    <form id="itempageSize_1" action="${site }/admin/work/schedule/workprogitem/ajaxhtml/${project.id}" method="post">
+    <form id="itempageSize_1" action="${site }/admin/work/schedule/workprog/ajaxhtml/2/${project.id}" method="post">
     </form>
 </div>
 <script type="text/javascript">
@@ -160,7 +161,7 @@
         var proId = jQuery("#proId").val();
         jQuery.ajax({
             type : "POST",
-            url : "${site}/admin/work/schedule/progmainitem/ajaxhtml/"+proId,
+            url : "${site}/admin/work/schedule/progmain/ajaxhtml/2/"+proId,
             dataType : "html",
             success : function(data) {
                 jQuery("#itempageSize_0").html(data);
@@ -174,7 +175,7 @@
         var proId = jQuery("#proId").val();
         jQuery.ajax({
             type : "POST",
-            url : "${site}/admin/work/schedule/workprogitem/ajaxhtml/"+proId,
+            url : "${site}/admin/work/schedule/workprog/ajaxhtml/2/"+proId,
             dataType : "html",
             success : function(data) {
                 jQuery("#itempageSize_1").html(data);
@@ -186,8 +187,10 @@
     }
     function toaddmod(data){
         var stepId = data;
+        var scheduleId = jQuery("#scheduleId").val();
+        var proId = jQuery("#proId").val();
         debugger;
-        openWindow("${site}/admin/work/schedule/ajax/updpro/"+data, "更新分项进展", "1000", "600", true, true);
+        openWindow("${site}/admin/work/schedule/ajax/updpro/"+stepId+"/"+scheduleId+"/"+proId, "更新分项进展", "1000", "600", true, true);
     };
 </script>
 </body>

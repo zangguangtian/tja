@@ -1,6 +1,7 @@
 package com.df.tja.dao;
 
 import com.df.framework.base.dao.IBaseDao;
+import com.df.tja.domain.OcSchemeDivisor;
 import com.df.tja.domain.cust.OcSchemeDivisorModel;
 import org.apache.poi.hwpf.model.FFData;
 
@@ -36,4 +37,13 @@ public interface IOcSchemeDivisorDao extends IBaseDao{
      * @return
      */
     BigDecimal queryRatioSum(String proId,String parentId);
+
+    /**
+     * <p>描述 : 查询阶段、专业</p>
+     *
+     * @param
+     * @return
+     */
+    List<OcSchemeDivisor> selectStageMajor(String proId,String parentId);
+
 }

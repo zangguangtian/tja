@@ -124,4 +124,40 @@ public class OcScheduleFillDaoImpl extends BaseDaoHbmImpl implements IOcSchedule
         }
         return ocCurrweekScheduleList;
     }
+
+    @Override
+    public List<OcCurrweekSchedule> selectFullMajor(String proId, String majorId, Pagination pagination) {
+        List<OcCurrweekSchedule> ocCurrweekScheduleList = null;
+        StringBuilder sql = new StringBuilder();
+        sql.append(" SELECT VOS.SUB_NAME AS subName,VOS.TASK_NAME AS taskName,VOS.USER_ID AS userId,        ");
+        sql.append(" VOS.USER_ROLE_NAME AS configName,VOS.STAFF_NAME AS staffName,VOS.ORG_NAME AS orgName,  ");
+        sql.append(" VOC.PREV_SCHEDULE AS prevSchedule,VOC.CURR_SCHEDULE AS currSchedule,                   ");
+        sql.append(" VOC.CURR_SCHEDULE-VOC.PREV_SCHEDULE AS weekShare                                       ");
+        StringBuilder sqlFW = new StringBuilder(100);
+        sqlFW.append(" FROM V_OC_SCHEME_MAJOR_TASK VOS                                                      ");
+        sqlFW.append(" LEFT JOIN V_OC_CURRWEEK_SCHEDULE VOC ON VOS.USER_ID = VOC.DIVISOR_ID                 ");
+        sqlFW.append(" WHERE VOS.PRO_ID = ? AND VOS.MAJOR_ID = ?                                            ");
+        sql.append(sqlFW.toString());
+        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setParameter(0, proId);
+        query.setParameter(1, majorId);
+        query.setResultTransformer(Transformers.aliasToBean(OcCurrweekSchedule.class));
+        List<Param> params = new ArrayList<Param>(0);
+        params.add(new Param(proId, StandardBasicTypes.STRING));
+        params.add(new Param(majorId, StandardBasicTypes.STRING));
+        addQueryParams(query, params, pagination);
+        ocCurrweekScheduleList = query.list();
+        if (pagination != null) {
+            sqlFW.insert(0, "select count(*) as count ");
+            query = getCurrentSession().createSQLQuery(sqlFW.toString());
+            addQueryParams(query, params, null);
+
+            int totalCount = new Integer(query.uniqueResult().toString());
+            pagination.setTotalCount(totalCount);
+            if (ocCurrweekScheduleList != null && ocCurrweekScheduleList.size() > 0) {
+                pagination.setCurrentPageSize(ocCurrweekScheduleList.size());
+            }
+        }
+        return ocCurrweekScheduleList;
+    }
 }

@@ -27,4 +27,6 @@ public interface IOcStepFillService extends IBaseService{
 
     void addOrUpdStepFill(OcStepFill ocStepFill);
 
+    List<OcStepFillMore> queryProgressByMajor(String proId,String parentId,Pagination pagination);
+
 }

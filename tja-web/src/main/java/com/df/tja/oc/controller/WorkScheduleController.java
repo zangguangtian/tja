@@ -12,14 +12,10 @@
 
 package com.df.tja.oc.controller;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.df.framework.exception.LogicalException;
 import com.df.framework.hibernate.persistence.Pagination;
-import com.df.project.service.IProjectApprovalService;
 import com.df.tja.domain.OcStepFill;
 import com.df.tja.domain.cust.OcCurrweekSchedule;
 import com.df.tja.domain.cust.OcStepFillMore;
@@ -80,6 +76,9 @@ public class WorkScheduleController extends BaseController {
     @Autowired
     private IOcScheduleFillService ocScheduleFillService;
 
+    @Autowired
+    private IOcSchemeDivisorService ocSchemeDivisorService;
+
     /**
      *
      * <p>描述 : 工作进展列表  </p>
@@ -117,6 +116,38 @@ public class WorkScheduleController extends BaseController {
     public String viewItem(@PathVariable("proId")String proId, Model model) throws RuntimeException{
         CustProject projectMore = projectService.queryByProId(proId);
         model.addAttribute("project", projectMore);
+
+        OcScheme ocScheme = ocSchemeService.queryByProId(proId);
+        if(ocScheme != null) {
+            String scheduleId = null;
+            //检查本周是否存在填报主记录
+            OcSchedule entity = new OcSchedule();
+            entity.setProId(proId);
+            entity.setOtherCondition(" GETDATE() BETWEEN WEEK_START AND WEEK_END");
+            List<OcSchedule> list = ocScheduleService.queryByCondition(OcSchedule.class, entity);
+            if (list == null || list.isEmpty()) {
+                SysConfig sysConfig = sysConfigService.querySysConfigByCode("OC.SCHEDULE.WEEK.START");
+                int firstDay = Calendar.MONDAY;
+                if (sysConfig != null && StringUtil.isNotBlank(sysConfig.getConfigValue())) {
+                    firstDay = Integer.parseInt(sysConfig.getConfigValue());
+                }
+
+                Date now = new Date();
+                Date weekStart = DateUtil.getFirstDayOfWeek(now, firstDay);
+                Date weekEnd = DateUtil.nextSevenDate(weekStart);
+
+                entity.setProId(proId);
+                entity.setSchemeId(ocScheme.getId());
+                entity.setWeekStart(weekStart);
+                entity.setWeekEnd(weekEnd);
+                ocScheduleService.addEntity(OcSchedule.class, entity);
+                scheduleId = entity.getId();
+            } else {
+                scheduleId = list.get(0).getId();
+            }
+
+            model.addAttribute("scheduleId", scheduleId);
+        }
         return "/tjad/oc/schedule/schedule_of_item";
     }
 
@@ -130,6 +161,49 @@ public class WorkScheduleController extends BaseController {
     public String viewMajor(@PathVariable("proId")String proId, Model model) throws RuntimeException{
         CustProject projectMore = projectService.queryByProId(proId);
         model.addAttribute("project", projectMore);
+        //阶段初始化
+        List<OcSchemeDivisor> stage = null;
+        try {
+            stage = ocSchemeDivisorService.queryStageMajor(proId,null);
+            model.addAttribute("stage",stage);
+            //专业初始化
+            if(stage != null && stage.size()>0){
+                List<OcSchemeDivisor> major = ocSchemeDivisorService.queryStageMajor(proId,stage.get(0).getId());
+                model.addAttribute("major",major);
+            }
+        } catch (LogicalException e) {
+            e.printStackTrace();
+        }
+
+        OcScheme ocScheme = ocSchemeService.queryByProId(proId);
+        String scheduleId = null;
+        //检查本周是否存在填报主记录
+        OcSchedule entity = new OcSchedule();
+        entity.setProId(proId);
+        entity.setOtherCondition(" GETDATE() BETWEEN WEEK_START AND WEEK_END");
+        List<OcSchedule> list = ocScheduleService.queryByCondition(OcSchedule.class, entity);
+        if (list == null || list.isEmpty()) {
+            SysConfig sysConfig = sysConfigService.querySysConfigByCode("OC.SCHEDULE.WEEK.START");
+            int firstDay = Calendar.MONDAY;
+            if (sysConfig != null && StringUtil.isNotBlank(sysConfig.getConfigValue())) {
+                firstDay = Integer.parseInt(sysConfig.getConfigValue());
+            }
+
+            Date now = new Date();
+            Date weekStart = DateUtil.getFirstDayOfWeek(now, firstDay);
+            Date weekEnd = DateUtil.nextSevenDate(weekStart);
+
+            entity.setProId(proId);
+            entity.setSchemeId(ocScheme.getId());
+            entity.setWeekStart(weekStart);
+            entity.setWeekEnd(weekEnd);
+            ocScheduleService.addEntity(OcSchedule.class, entity);
+            scheduleId = entity.getId();
+        } else {
+            scheduleId = list.get(0).getId();
+        }
+
+        model.addAttribute("scheduleId", scheduleId);
         return "/tjad/oc/schedule/schedule_of_major";
     }
 
@@ -195,7 +269,8 @@ public class WorkScheduleController extends BaseController {
     
     @RequestMapping(value = "/design/save", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, String> saveDesignFill(@RequestBody CustOcDesignSchedule designSchedule) throws RuntimeException {
+    public Map<String, String> saveDesignFill(@RequestBody CustOcDesignSchedule designSchedule)
+            throws RuntimeException {
         Map<String, String> resultMap = new HashMap<String, String>(0);
         try {
             designScheduleService.createDesignSchedules(designSchedule);
@@ -225,95 +300,55 @@ public class WorkScheduleController extends BaseController {
     }
 
     /**
-     * <p>描述 : 主项工作进度  </p>
+     * <p>描述 : 工作进度  </p>
      * @param proId 主项ID
+     * @param way (1:主项，2:分项)
      * @return
      * @throws RuntimeException
      */
-    @RequestMapping(value = "/workprog/ajaxhtml/{proId}", method = {RequestMethod.GET,RequestMethod.POST})
-    public String loadWork(@PathVariable("proId")String proId, @ModelAttribute("page") Pagination page, Model model) throws RuntimeException{
+    @RequestMapping(value = "/workprog/ajaxhtml/{way}/{proId}", method = {RequestMethod.GET,RequestMethod.POST})
+    public String loadWork(@PathVariable("way")Integer way,@PathVariable("proId")String proId,
+                           @ModelAttribute("page") Pagination page, Model model) throws RuntimeException{
 
         if (page == null || page.getPageNo() == 0) {
             page = new Pagination(1,10);
         }
+
+
         //简化模式
-        List<OcCurrweekSchedule> ocCurrweekScheduleList = ocScheduleFillService.querySimleByProId(proId,page,1);
+        List<OcCurrweekSchedule> ocCurrweekScheduleList = ocScheduleFillService.querySimleByProId(proId,page,way);
         if(ocCurrweekScheduleList.size() > 0){
             model.addAttribute("ocCurrweekScheduleList",ocCurrweekScheduleList);
         }else {
 
             //完整模式
-            List<OcCurrweekSchedule> ocCurrweekSchedules = ocScheduleFillService.queryFullByProId(proId, page, 1);
+            List<OcCurrweekSchedule> ocCurrweekSchedules = ocScheduleFillService.queryFullByProId(proId, page, way);
             if (ocCurrweekSchedules.size() > 0) {
                 model.addAttribute("ocCurrweekSchedules", ocCurrweekSchedules);
             }
         }
         model.addAttribute("page", page);
-        return "/tjad/oc/schedule/work_of_progress";
+        return way==1?"/tjad/oc/schedule/work_of_progress":"/tjad/oc/schedule/work_of_progress_item";
     }
 
     /**
-     * <p>描述 : 主项进展情况  </p>
+     * <p>描述 : 进展情况  </p>
      * @param proId 主项ID
+     * @param way (1:主项，2:分项)
      * @return
      * @throws RuntimeException
      */
-    @RequestMapping(value = "/progmain/ajaxhtml/{proId}", method = {RequestMethod.GET,RequestMethod.POST})
-    public String loadProg(@PathVariable("proId")String proId, @ModelAttribute("page") Pagination page, Model model) throws RuntimeException{
+    @RequestMapping(value = "/progmain/ajaxhtml/{way}/{proId}", method = {RequestMethod.GET,RequestMethod.POST})
+    public String loadProg(@PathVariable("way")Integer way,@PathVariable("proId")String proId,
+                           @ModelAttribute("page") Pagination page, Model model) throws RuntimeException{
 
         if (page == null || page.getPageNo() == 0) {
             page = new Pagination(1,10);
         }
-        List<OcStepFillMore> ocStepFillMoreList = ocStepFillService.queryByPreProId(proId,page,1);
+        List<OcStepFillMore> ocStepFillMoreList = ocStepFillService.queryByPreProId(proId,page,way);
         model.addAttribute("ocStepFillList", ocStepFillMoreList);
         model.addAttribute("page", page);
-        return "/tjad/oc/schedule/progress_of_main";
-    }
-
-    /**
-     * <p>描述 : 分项工作进度  </p>
-     * @param proId
-     * @return
-     * @throws RuntimeException
-     */
-    @RequestMapping(value = "/workprogitem/ajaxhtml/{proId}", method = {RequestMethod.GET,RequestMethod.POST})
-    public String loadItemWork(@PathVariable("proId")String proId, @ModelAttribute("page") Pagination page, Model model) throws RuntimeException{
-
-        if (page == null || page.getPageNo() == 0) {
-            page = new Pagination(1,10);
-        }
-        //简化模式
-        List<OcCurrweekSchedule> ocCurrweekScheduleList = ocScheduleFillService.querySimleByProId(proId,page,2);
-        if(ocCurrweekScheduleList.size() > 0){
-            model.addAttribute("ocCurrweekScheduleList",ocCurrweekScheduleList);
-        }else {
-
-            //完整模式
-            List<OcCurrweekSchedule> ocCurrweekSchedules = ocScheduleFillService.queryFullByProId(proId, page, 2);
-            if (ocCurrweekSchedules.size() > 0) {
-                model.addAttribute("ocCurrweekSchedules", ocCurrweekSchedules);
-            }
-        }
-        model.addAttribute("page", page);
-        return "/tjad/oc/schedule/work_of_progress_item";
-    }
-
-    /**
-     * <p>描述 : 分项进展情况  </p>
-     * @param proId
-     * @return
-     * @throws RuntimeException
-     */
-    @RequestMapping(value = "/progmainitem/ajaxhtml/{proId}", method = {RequestMethod.GET,RequestMethod.POST})
-    public String loadItemsProg(@PathVariable("proId")String proId, @ModelAttribute("page") Pagination page, Model model) throws RuntimeException{
-
-        if (page == null || page.getPageNo() == 0) {
-            page = new Pagination(1,10);
-        }
-        List<OcStepFillMore> ocStepFillMoreList = ocStepFillService.queryByPreProId(proId,page,2);
-        model.addAttribute("ocStepFillList", ocStepFillMoreList);
-        model.addAttribute("page", page);
-        return "/tjad/oc/schedule/progress_of_main_item";
+        return way==1?"/tjad/oc/schedule/progress_of_main":"/tjad/oc/schedule/progress_of_main_item";
     }
 
     /**
@@ -324,13 +359,19 @@ public class WorkScheduleController extends BaseController {
      * @return
      * @throws RuntimeException
      */
-    @RequestMapping(value = "/ajax/updpro/{stepId}", method = RequestMethod.GET)
-    public String toItemProgree(@PathVariable(value = "stepId") String stepId,Model model) throws RuntimeException {
+    @RequestMapping(value = "/ajax/updpro/{stepId}/{scheduleId}/{proId}", method = RequestMethod.GET)
+    public String toItemProgree(@PathVariable(value = "stepId") String stepId,
+                                @PathVariable(value = "scheduleId") String scheduleId,
+                                @PathVariable(value = "proId") String proId, Model model) throws RuntimeException {
 
         OcStepFill ocStepFill = ocStepFillService.queryById(stepId);
+        OcScheme ocScheme = ocSchemeService.queryByProId(proId);
         if(ocStepFill != null){
             model.addAttribute("ocStepFill", ocStepFill);
         }
+        model.addAttribute("scheduleId",scheduleId);
+        model.addAttribute("proId",proId);
+        model.addAttribute("schemeId",ocScheme.getId());
         return "/tjad/oc/schedule/schedule_of_upditem";
     }
 
@@ -354,5 +395,93 @@ public class WorkScheduleController extends BaseController {
             throw new RuntimeException(e);
         }
         return result;
+    }
+
+    /**
+     * <p>描述 : 专业信息变更</p>
+     * @param
+     */
+    @ResponseBody
+    @RequestMapping(value = "/ajax/updmajor/change/{proId}/{parentId}", method = RequestMethod.POST)
+    public List<OcSchemeDivisor> changeMajor(@PathVariable(value = "proId") String proId,@PathVariable(value = "parentId") String parentId) {
+        List<OcSchemeDivisor> majors = new ArrayList<>();
+        try {
+            majors = ocSchemeDivisorService.queryStageMajor(proId,parentId);
+        }catch (LogicalException ex){
+            ex.getMess();
+            logger.error("", ex);
+        } catch (RuntimeException e) {
+            logger.error("", e);
+        }
+        return majors;
+    }
+
+    /**
+     * <p>描述 : 专业进展  </p>
+     * @param proId 主项ID
+     * @param parentId
+     * @return
+     * @throws RuntimeException
+     */
+    @RequestMapping(value = "/progmajor/ajaxhtml/{proId}/{parentId}", method = {RequestMethod.GET,RequestMethod.POST})
+    public String loadMajorProg(@PathVariable("proId")String proId, @PathVariable("parentId")String parentId,
+                           @ModelAttribute("page") Pagination page, Model model) throws RuntimeException{
+
+        if (page == null || page.getPageNo() == 0) {
+            page = new Pagination(1,10);
+        }
+        List<OcStepFillMore> ocStepFillMoreList = ocStepFillService.queryProgressByMajor(proId,parentId,page);
+        model.addAttribute("ocStepFillList", ocStepFillMoreList);
+        model.addAttribute("page", page);
+        return "/tjad/oc/schedule/progress_of_major";
+    }
+
+    /**
+     * <p>描述 : 专业进度  </p>
+     * @param proId 主项ID
+     * @param majorId
+     * @return
+     * @throws RuntimeException
+     */
+    @RequestMapping(value = "/workmajor/ajaxhtml/{proId}/{majorId}", method = {RequestMethod.GET,RequestMethod.POST})
+    public String loadMajorWork(@PathVariable("proId")String proId, @PathVariable("majorId")String majorId,
+                                @ModelAttribute("page") Pagination page, Model model) throws RuntimeException{
+
+        if (page == null || page.getPageNo() == 0) {
+            page = new Pagination(1,10);
+        }
+
+        List<OcCurrweekSchedule> ocCurrweekSchedules = ocScheduleFillService.queryFullMajor(proId,majorId, page);
+        model.addAttribute("ocCurrweekSchedules", ocCurrweekSchedules);
+        model.addAttribute("page", page);
+        return "/tjad/oc/schedule/work_of_progress_major";
+    }
+
+    /**
+     * <p>描述 : 打开更新专业进展页面 </p>
+     *
+     * @param stepId
+     * @param model
+     * @return
+     * @throws RuntimeException
+     */
+    @RequestMapping(value = "/ajax/updpromajor/{stepId}/{scheduleId}/{proId}/{majorId}", method = RequestMethod.GET)
+    public String toMajorProgree(@PathVariable(value = "stepId") String stepId, @PathVariable(value = "scheduleId") String scheduleId,
+                                @PathVariable(value = "proId") String proId,@PathVariable(value = "majorId") String majorId,
+                                Model model) throws RuntimeException {
+
+        OcScheme ocScheme = ocSchemeService.queryByProId(proId);
+        OcSchemeDivisor major = ocSchemeDivisorService.queryByPrimaryKey(OcSchemeDivisor.class,majorId);
+        OcSchemeDivisor stage = ocSchemeDivisorService.queryByPrimaryKey(OcSchemeDivisor.class,major.getParentId());
+        OcStepFill ocStepFill = ocStepFillService.queryById(stepId);
+        if(ocStepFill != null){
+            model.addAttribute("ocStepFill", ocStepFill);
+        }
+        model.addAttribute("scheduleId",scheduleId);
+        model.addAttribute("proId",proId);
+        model.addAttribute("schemeId",ocScheme.getId());
+        model.addAttribute("major",major);
+        model.addAttribute("stage",stage);
+        return "/tjad/oc/schedule/schedule_of_updmajor";
     }
 }

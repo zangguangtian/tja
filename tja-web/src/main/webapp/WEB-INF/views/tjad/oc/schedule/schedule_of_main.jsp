@@ -78,9 +78,9 @@
             </div>
         </div>
     </div>
-    <form id="pageSize_0" action="${site }/admin/work/schedule/progmain/ajaxhtml/${project.id}" method="post">
+    <form id="pageSize_0" action="${site }/admin/work/schedule/progmain/ajaxhtml/1/${project.id}" method="post">
     </form>
-    <form id="pageSize_1" action="${site }/admin/work/schedule/workprog/ajaxhtml/${project.id}" method="post">
+    <form id="pageSize_1" action="${site }/admin/work/schedule/workprog/ajaxhtml/1/${project.id}" method="post">
     </form>
 </div>
 <script type="text/javascript">
@@ -94,7 +94,7 @@
         var proId = jQuery("#proId").val();
         jQuery.ajax({
             type : "POST",
-            url : "${site}/admin/work/schedule/progmain/ajaxhtml/"+proId,
+            url : "${site}/admin/work/schedule/progmain/ajaxhtml/1/"+proId,
             dataType : "html",
             success : function(data) {
                 jQuery("#pageSize_0").html(data);
@@ -108,7 +108,7 @@
         var proId = jQuery("#proId").val();
         jQuery.ajax({
             type : "POST",
-            url : "${site}/admin/work/schedule/workprog/ajaxhtml/"+proId,
+            url : "${site}/admin/work/schedule/workprog/ajaxhtml/1/"+proId,
             dataType : "html",
             success : function(data) {
                 jQuery("#pageSize_1").html(data);

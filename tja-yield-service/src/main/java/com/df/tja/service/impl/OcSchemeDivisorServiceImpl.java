@@ -5,7 +5,6 @@ import com.df.framework.exception.LogicalException;
 import com.df.framework.util.ArithmeticUtil;
 import com.df.framework.util.StringUtil;
 import com.df.tja.dao.IOcSchemeDivisorDao;
-import com.df.tja.domain.OcScheme;
 import com.df.tja.domain.OcSchemeDivisor;
 import com.df.tja.domain.cust.OcSchemeDivisorModel;
 import com.df.tja.domain.cust.OcSchemeStageMajor;
@@ -14,11 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>OcSchemeDivisorServiceImpl </p>
@@ -161,5 +156,28 @@ public class OcSchemeDivisorServiceImpl extends BaseServiceImpl implements IOcSc
         }catch(Exception e){
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<OcSchemeDivisor> queryStageMajor(String proId, String parentId) throws LogicalException {
+        List<OcSchemeDivisor> ocSchemeDivisors = new ArrayList<>();
+        try{
+            if(StringUtil.isNotBlank(parentId)){
+                ocSchemeDivisors = ocSchemeDivisorDao.selectStageMajor(proId,parentId);
+                if(ocSchemeDivisors == null || ocSchemeDivisors.size() < 1){
+                    throw new LogicalException("没有专业信息！");
+                }
+            }else{
+                ocSchemeDivisors = ocSchemeDivisorDao.selectStageMajor(proId,parentId);
+                if(ocSchemeDivisors == null || ocSchemeDivisors.size() < 1){
+                    throw new LogicalException("没有阶段信息！");
+                }
+            }
+        }catch (LogicalException e) {
+            e.printStackTrace();
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+        return ocSchemeDivisors;
     }
 }

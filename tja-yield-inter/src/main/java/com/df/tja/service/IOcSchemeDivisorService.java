@@ -32,4 +32,6 @@ public interface IOcSchemeDivisorService extends IBaseService {
 
     void modifySimple(List<OcSchemeDivisor> ocSchemeDivisors);
 
+    List<OcSchemeDivisor> queryStageMajor(String proId,String parentId)throws LogicalException;
+
 }

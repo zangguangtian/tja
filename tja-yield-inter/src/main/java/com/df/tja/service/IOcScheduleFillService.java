@@ -21,18 +21,25 @@ import java.util.List;
 public interface IOcScheduleFillService extends IBaseService{
 
     /**
-     * <p>描述 : 主项进展页面简化模式</p>
+     * <p>描述 : 主、分项进展页面简化模式</p>
      *
      * @param proId
      * @return
      */
     List<OcCurrweekSchedule> querySimleByProId(String proId,Pagination pagination,Integer state);
     /**
-     * <p>描述 : 主项进展页面完整模式</p>
+     * <p>描述 : 主、分项进展页面完整模式</p>
      *
      * @param proId
      * @return
      */
     List<OcCurrweekSchedule> queryFullByProId(String proId,Pagination pagination,Integer state);
+    /**
+     * <p>描述 : 主、分项进展页面完整模式</p>
+     *
+     * @param proId
+     * @return
+     */
+    List<OcCurrweekSchedule> queryFullMajor(String proId,String majorId,Pagination pagination);
 
 }

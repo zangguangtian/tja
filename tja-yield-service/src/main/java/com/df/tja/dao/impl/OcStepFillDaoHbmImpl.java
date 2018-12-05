@@ -48,18 +48,59 @@ public class OcStepFillDaoHbmImpl extends BaseDaoHbmImpl implements IOcStepFillD
         sqlFW.append("  LEFT JOIN PM_PROJECT_TM PP ON SF.PRO_ID = PP.ID                                                 ");
         sqlFW.append("  LEFT JOIN SYS_CONFIG_TM SCF ON PP.PRO_STATUS = SCF.CONFIG_CODE                                  ");
         if(state == 1){
-            sqlFW.append("  WHERE PP.PRE_PRO_ID = ?                                                                         ");
+            sqlFW.append("  WHERE PP.PRE_PRO_ID = ?                                                                     ");
         }else{
-            sqlFW.append("  WHERE PP.ID = ?                                                                         ");
+            sqlFW.append("  WHERE PP.ID = ?                                                                             ");
         }
+        sqlFW.append("  AND SF.DIVISOR_ID IS NULL                                                                       ");
         sql.append(sqlFW.toString());
-        sql.append("  ORDER BY SD.PRO_ID                                                                                ");
+        sql.append("  ORDER BY SF.PRO_ID,SD.WEEK_START DESC                                                             ");
         SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
         query.setParameter(0,preProId );
         query.setResultTransformer(Transformers.aliasToBean(OcStepFillMore.class));
 
         List<Param> params = new ArrayList<Param>(0);
         params.add(new Param(preProId, StandardBasicTypes.STRING));
+        addQueryParams(query, params, pagination);
+
+        ocStepFillMoreList = query.list();
+        if (pagination != null) {
+            sqlFW.insert(0, "select count(*) as count ");
+            query = getCurrentSession().createSQLQuery(sqlFW.toString());
+            addQueryParams(query, params, null);
+
+            int totalCount = new Integer(query.uniqueResult().toString());
+            pagination.setTotalCount(totalCount);
+            if (ocStepFillMoreList != null && ocStepFillMoreList.size() > 0) {
+                pagination.setCurrentPageSize(ocStepFillMoreList.size());
+            }
+        }
+        return ocStepFillMoreList;
+    }
+
+    @Override
+    public List<OcStepFillMore> selectProgressByMajor(String proId, String parentId,Pagination pagination) {
+        List<OcStepFillMore> ocStepFillMoreList = null;
+        StringBuilder sql = new StringBuilder();
+        sql.append(" SELECT OSF.ID AS id,OSF.DIVISOR_STATUS AS divisorStatus,OS.WEEK_START AS weekStart,    ");
+        sql.append(" OS.WEEK_END AS weekEnd,OSF.STEP_STATUS AS stepStatus,OSF.WORK_CONTENT AS workContent,  ");
+        sql.append(" OSF.WORK_PLAN AS workPlan,OSF.REMARK AS remark,                                        ");
+        sql.append(" OSF.MODIFIER AS modifier,OSF.MODIFY_DATE AS modifyDate                                 ");
+
+        StringBuilder sqlFW = new StringBuilder(50);
+        sqlFW.append("  FROM OC_STEP_FILL_TM OSF                                                            ");
+        sqlFW.append("  LEFT JOIN OC_SCHEDULE_TM OS ON OSF.SCHEDULE_ID = OS.ID                              ");
+        sqlFW.append("  WHERE OSF.PRO_ID = ? AND OSF.DIVISOR_ID = ?                                         ");
+        sql.append(sqlFW.toString());
+        sql.append("  ORDER BY OSF.ID,OS.WEEK_START DESC                                                    ");
+        SQLQuery query = getCurrentSession().createSQLQuery(sql.toString());
+        query.setParameter(0, proId);
+        query.setParameter(1, parentId);
+        query.setResultTransformer(Transformers.aliasToBean(OcStepFillMore.class));
+
+        List<Param> params = new ArrayList<Param>(0);
+        params.add(new Param(proId, StandardBasicTypes.STRING));
+        params.add(new Param(parentId, StandardBasicTypes.STRING));
         addQueryParams(query, params, pagination);
 
         ocStepFillMoreList = query.list();

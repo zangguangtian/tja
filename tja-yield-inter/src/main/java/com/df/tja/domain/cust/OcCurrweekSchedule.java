@@ -40,6 +40,9 @@ public class OcCurrweekSchedule extends SuperDomain {
     /** 属性：任务 */
     private String taskName;
 
+    /** 属性：人员ID */
+    private String userId;
+
     /** 属性：项目角色 */
     private String configName;
 
@@ -69,6 +72,14 @@ public class OcCurrweekSchedule extends SuperDomain {
 
     /** 属性：专业合并 */
     private Integer majorCount;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public Integer getMajorCount() {
         return majorCount;

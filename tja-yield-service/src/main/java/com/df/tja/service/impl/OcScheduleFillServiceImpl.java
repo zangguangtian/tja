@@ -46,4 +46,13 @@ public class OcScheduleFillServiceImpl extends BaseServiceImpl implements IOcSch
         }
     }
 
+    @Override
+    public List<OcCurrweekSchedule> queryFullMajor(String proId,String majorId ,Pagination pagination) {
+        try{
+            return ocScheduleFillDao.selectFullMajor(proId,majorId,pagination);
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
 }

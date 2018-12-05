@@ -2,6 +2,7 @@ package com.df.tja.service.impl;
 
 import com.df.framework.base.service.impl.BaseServiceImpl;
 import com.df.framework.hibernate.persistence.Pagination;
+import com.df.framework.util.ObjectUtils;
 import com.df.framework.util.StringUtil;
 import com.df.tja.dao.IOcStepFillDao;
 import com.df.tja.domain.OcStepFill;
@@ -54,16 +55,21 @@ public class OcStepFillServiceImpl extends BaseServiceImpl implements IOcStepFil
             if(ocStepFill != null){
                 if(StringUtil.isNotBlank(ocStepFill.getId())){
                     OcStepFill ocStepFill1 = queryByPrimaryKey(OcStepFill.class,ocStepFill.getId());
-                    ocStepFill1.setDivisorStatus(ocStepFill.getDivisorStatus());
-                    ocStepFill1.setStepStatus(ocStepFill.getStepStatus());
-                    ocStepFill1.setWorkContent(ocStepFill.getWorkContent());
-                    ocStepFill1.setWorkPlan(ocStepFill.getWorkPlan());
-                    ocStepFill1.setRemark(ocStepFill.getRemark());
+                    ObjectUtils.copyProperties(ocStepFill, ocStepFill1, false);
                     modify(OcStepFill.class,ocStepFill1);
                 }else{
                     addEntity(OcStepFill.class,ocStepFill);
                 }
             }
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<OcStepFillMore> queryProgressByMajor(String proId, String parentId, Pagination pagination) {
+        try{
+            return ocStepFillDao.selectProgressByMajor(proId,parentId,pagination);
         }catch(Exception e){
             throw new RuntimeException(e);
         }

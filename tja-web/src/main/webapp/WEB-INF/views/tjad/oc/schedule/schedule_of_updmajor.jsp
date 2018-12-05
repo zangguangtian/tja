@@ -5,7 +5,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>更新分项进展</title>
+    <title>更新专业进展</title>
     <%--每个jsp页面所在菜单的treePath属性值 --%>
     <df:readProp var="menu-path" value="oc.work.schedule.menu.path" scope="request"  />
 </head>
@@ -19,9 +19,22 @@
             <input type="hidden" name="proId" value="${empty ocStepFill.proId ? proId : ocStepFill.proId}"/>
             <input type="hidden" name="scheduleId" value="${empty ocStepFill.scheduleId ? scheduleId : ocStepFill.scheduleId}"/>
             <input type="hidden" name="schemeId" value="${empty ocStepFill.schemeId ? schemeId : ocStepFill.schemeId}"/>
+            <input type="hidden" name="divisorId" value="${empty ocStepFill.divisorId ? major.id : ocStepFill.divisorId}"/>
             <div class="form-body clearfix">
                 <div class="form-group col-md-6 ">
-                    <label class="control-label col-md-4">分项状态</label>
+                    <label class="control-label col-md-4">阶段</label>
+                    <div class="col-md-7">
+                        <label>${stage.divisorName}</label>
+                    </div>
+                </div>
+                <div class="form-group col-md-6 ">
+                    <label class="control-label col-md-4">专业</label>
+                    <div class="col-md-7">
+                        <tags:config type="label" code="${major.divisorName}"/>
+                    </div>
+                </div>
+                <div class="form-group col-md-6 ">
+                    <label class="control-label col-md-4">专业状态</label>
                     <div class="col-md-7">
                         <tags:config type="select" name="divisorStatus" cssClass="form-control" parentCode="PM.STATUS" selectCode="${ocStepFill.divisorStatus}" />
                     </div>

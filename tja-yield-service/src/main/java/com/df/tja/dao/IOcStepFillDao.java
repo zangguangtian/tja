@@ -22,4 +22,6 @@ public interface IOcStepFillDao extends IBaseDao {
 
     List<OcStepFillMore> selectByPreProId(String preProId,Pagination pagination,Integer state);
 
+    List<OcStepFillMore> selectProgressByMajor(String proId,String parentId,Pagination pagination);
+
 }

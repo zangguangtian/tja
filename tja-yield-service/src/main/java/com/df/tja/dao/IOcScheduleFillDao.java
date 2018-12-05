@@ -37,4 +37,12 @@ public interface IOcScheduleFillDao extends IBaseDao {
      */
     List<OcCurrweekSchedule> selectFullByProId(String proId,Pagination pagination,Integer state);
 
+    /**
+     * <p>描述 : 专业进度</p>
+     *
+     * @param proId
+     * @return
+     */
+    List<OcCurrweekSchedule> selectFullMajor(String proId,String majorId,Pagination pagination);
+
 }

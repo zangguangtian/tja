@@ -21,7 +21,6 @@
         </tr>
         </thead>
         <tbody>
-        <c:set var="index" value="1"/>
         <c:set var="merge" value="0"/>
         <c:forEach items="${ocStepFillList}" var="stepFill" varStatus="vs">
             <c:if test="${merge != stepFill.proName}">
@@ -50,7 +49,6 @@
                     <td style="text-align:right;"><fmt:formatDate pattern="yyyy-MM-dd" value="${stepFill.modifyDate}"/></td>
                 </tr>
             </c:if>
-            <c:set var="index" value="${index + 1}"/>
             <c:set var="merge" value="${stepFill.proName}"/>
         </c:forEach>
         </tbody>

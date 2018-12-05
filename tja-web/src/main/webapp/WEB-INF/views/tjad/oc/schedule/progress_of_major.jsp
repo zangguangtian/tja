@@ -8,11 +8,11 @@
         <thead>
         <tr>
             <th>序号</th>
+            <th nowrap="nowrap" style="text-align:center;">专业状态</th>
             <th nowrap="nowrap" style="text-align:center;">周期时间</th>
             <th nowrap="nowrap" style="text-align:center;">进展状态</th>
             <th nowrap="nowrap" style="text-align:center;">工作内容及进展情况</th>
             <th nowrap="nowrap" style="text-align:center;">下阶段工作计划</th>
-            <th nowrap="nowrap" style="text-align:center;">备案情况</th>
             <th nowrap="nowrap" style="text-align:center;">更新人</th>
             <th nowrap="nowrap" style="text-align:center;">更新时间</th>
 
@@ -22,11 +22,11 @@
         <c:forEach items="${ocStepFillList}" var="stepFill" varStatus="vs">
             <tr>
                 <td style="text-align:right;">${vs.index+1}</td>
-                <td style="text-align:right;"><a onclick="toaddmod('${stepFill.id}')">${stepFill.weekStart} -- ${stepFill.weekEnd}</a></td>
+                <td style="text-align:right;"><tags:config type="label" code="${stepFill.divisorStatus}"/></td>
+                <td style="text-align:right;"><a onclick="toaddmajor('${stepFill.id}')">${stepFill.weekStart} -- ${stepFill.weekEnd}</a></td>
                 <td style="text-align:right;"><tags:config type="label" code="${stepFill.stepStatus}"/></td>
                 <td style="text-align:right;">${stepFill.workContent}</td>
                 <td style="text-align:right;">${stepFill.workPlan}</td>
-                <td style="text-align:right;">${stepFill.remark}</td>
                 <td style="text-align:right;">${stepFill.modifier}</td>
                 <td style="text-align:right;"><fmt:formatDate pattern="yyyy-MM-dd" value="${stepFill.modifyDate}"/></td>
             </tr>
@@ -35,4 +35,4 @@
     </table>
 </div>
 <%-- 分页标签，formId是查询表单form的ID，是必须的--%>
-<tags:pagination formId="itempageSize_0" sycn="0"/>
+<tags:pagination formId="majorPageSize_0" sycn="0"/>
