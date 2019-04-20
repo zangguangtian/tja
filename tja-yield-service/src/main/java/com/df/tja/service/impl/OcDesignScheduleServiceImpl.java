@@ -12,17 +12,16 @@
 
 package com.df.tja.service.impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.df.framework.base.service.impl.BaseServiceImpl;
 import com.df.framework.log.LoggerProxy;
 import com.df.tja.dao.IOcDesignScheduleDao;
 import com.df.tja.domain.OcScheduleFill;
 import com.df.tja.domain.cust.CustOcDesignSchedule;
 import com.df.tja.service.IOcDesignScheduleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>OcDesignScheduleServiceImpl</p>
@@ -43,11 +42,13 @@ public class OcDesignScheduleServiceImpl extends BaseServiceImpl implements IOcD
 
     @Autowired
     private IOcDesignScheduleDao designScheduleDao;
-    
+
+    @Override
     public List<CustOcDesignSchedule> queryDesignSchedulesById(String phaseId) {
         return designScheduleDao.selectDesignSchedulesById(phaseId);
     }
-    
+
+    @Override
     public void createDesignSchedules(CustOcDesignSchedule designSchedule) {
         try {
             String scheduleId = designSchedule.getScheduleId();
@@ -79,7 +80,8 @@ public class OcDesignScheduleServiceImpl extends BaseServiceImpl implements IOcD
             throw new RuntimeException(ex);
         }
     }
-    
+
+    @Override
     public void mergeDesignPreSchedule(String scheduleId) {
         designScheduleDao.updateDesignPreSchedule(scheduleId);
     }
